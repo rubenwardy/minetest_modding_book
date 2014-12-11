@@ -1,7 +1,7 @@
 ---
-title: Chapter 1 - Getting Started
+title: Folder Structure
 layout: default
-permalink: started/index.html
+permalink: folders/index.html
 ---
 
 Introduction
