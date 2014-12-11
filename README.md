@@ -1,7 +1,11 @@
-minetest_doc
+Minetest Doc
 ============
 
 Minetest Tutorials
 
+Edit site in _config.yml to point to root url.
+If using jekyll serve, then http://localhost:4000
 
-Don't fork or clone, I am going to rebase all these commits into "Initial Commit"
+```
+$ jekyll serve
+```
