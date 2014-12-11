@@ -1,11 +1,8 @@
 ---
-title: Minetest Tutorial
+title: Minetest Tutorials and Documentation
 permalink: index.html
 layout: default
 ---
-
-Minetest Tutorials and Documentation
-====================================
 
 What is this?
 -------------

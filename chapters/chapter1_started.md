@@ -1,10 +1,8 @@
 ---
-title: Chapter One - Getting Started
+title: Chapter 1 - Getting Started
 layout: default
+permalink: started/index.html
 ---
-
-Chapter One – Getting Started
-=============================
 
 Introduction
 ------------
