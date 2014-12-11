@@ -62,7 +62,7 @@ html, body {
 
 code {
 	display: inline-block;
-	padding: 10px;
+	padding: 5px 10px 5px 10px;
 	margin: 2px;
 	background: #f0f0f0;
 	border: 1px solid #e0e0e0;
@@ -77,7 +77,7 @@ h1 {
 
 h2 {
 	border-bottom: 1px solid black;
-	margin: 40px 0 10px 0;
+	margin: 30px 0 10px 0;
 	display: block;
 	padding: 0 0 5px 0;
 }
@@ -85,5 +85,5 @@ h2 {
 h3 {
 	font-size: 105%;
 	font-weight: bold;
-	margin: 20px 0 10px 0;
+	margin: 30px 0 10px 0;
 }

@@ -88,20 +88,20 @@ Are you confused? Don't worry, here is an example putting all of this together.
 
 ### init.lua
 {% highlight lua %}
-	print("This file will be run at load time!")
+print("This file will be run at load time!")
 
-	minetest.register_node("mymod:node",{
-		description = "This is a node",
-		tiles = {
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png"
-		},
-		groups = {cracky = 1}
-	})
+minetest.register_node("mymod:node",{
+	description = "This is a node",
+	tiles = {
+		"mymod_node.png",
+		"mymod_node.png",
+		"mymod_node.png",
+		"mymod_node.png",
+		"mymod_node.png",
+		"mymod_node.png"
+	},
+	groups = {cracky = 1}
+})
 {% endhighlight %}
 
 Our mod has a name of "mymod". It has two files: init.lua and depends.txt.
