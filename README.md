@@ -69,7 +69,7 @@ chapters are to be saved to chapters/
 ---
 title: Chapter Title
 layout: default
-permalink: chaptertitle/index.html
+root: ../
 ---
 
 Introduction

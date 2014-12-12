@@ -28,4 +28,4 @@ You can contribute to this project on [GitHub](https://github.com/rubenwardy/min
 It uses Jekyll to turn Markdown into a website.
 
 Book written by rubenwardy and contributers.\\
-License: [CC-BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
