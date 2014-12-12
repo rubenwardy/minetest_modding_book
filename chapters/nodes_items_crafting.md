@@ -52,7 +52,7 @@ JPEGs are supported, but they do not support transparency and are generally bad 
 Registering a Craftitem
 -----------------------
 
-Craftitems are the simplist item in Minetest. Craftitems cannot be placed in the world.
+Craftitems are the simplest item in Minetest. Craftitems cannot be placed in the world.
 They are used in recipes to create other items, or they can be used be the player, such as food.
 
 {% highlight lua %}
