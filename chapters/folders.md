@@ -2,6 +2,7 @@
 title: Folder Structure
 layout: default
 permalink: folders/index.html
+root: ../
 ---
 
 Introduction
