@@ -5,6 +5,11 @@ html, body {
 	background: #333;
 }
 
+a {
+	color: blue;
+	text-decoration: underline;
+}
+
 #page {
 	background: white;
 	margin: 0;
@@ -32,6 +37,12 @@ html, body {
 	display: block;
 	margin: 0;
 	padding: 0;
+}
+
+#navbar li hr {
+	height: 1px;
+	background: #666;
+	border: none;
 }
 
 #navbar li a {

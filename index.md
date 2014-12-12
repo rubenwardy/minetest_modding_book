@@ -14,6 +14,13 @@ to complete.
 This documentation was created by the Minetest community in order to help
 new modders gain a foothold.
 
+What you will need:
+-------------------
+
+* A plain text editor (eg: NotePad+, ConTEXT, or GEdit)
+* OR A Lua IDE such as Eclipse.
+* A copy of Minetest in the 0.4 series. (eg: 0.4.10)
+
 Contribution
 ------------
 

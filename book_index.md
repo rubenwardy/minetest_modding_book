@@ -1,0 +1,26 @@
+---
+title: Index
+permalink: book_index.html
+layout: default
+root: ../
+---
+
+## C
+* Craft item
+	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#registering-a-craftitem)
+
+## F
+* Food
+	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#foods)
+
+## I
+* Item String
+	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#item-strings)
+
+## N
+* Name
+	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#item-strings)
+* Nodes
+	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#registering-a-basic-node)
+* Node boxes
+	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#node-boxes)

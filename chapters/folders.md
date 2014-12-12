@@ -1,7 +1,6 @@
 ---
 title: Folder Structure
 layout: default
-permalink: folders/index.html
 root: ../
 ---
 
@@ -11,16 +10,9 @@ Introduction
 In this chapter we will learn how the basic structure of a mod's folder.
 This is essential for creating mods.
 
-### What you will need:
-* A plain text editor (eg: NotePad+, ConTEXT, or GEdit)
-* OR A Lua IDE such as Eclipse.
-* A copy of Minetest in the 0.4 series. (eg: 0.4.10)
-
-### Contents
 * Mod Folders
+* Dependencies
 * Mod Packs
-*	Dependencies
-*	Registering a simple node
 
 Mod Folders
 -----------
@@ -110,4 +102,3 @@ minetest.register_node("mymod:node",{
 Our mod has a name of "mymod". It has two files: init.lua and depends.txt.
 The script prints a message and then registers a node – which will be explained in the next chapter.
 The depends text file adds a dependency to the default mod, which is in minetest_game.
-

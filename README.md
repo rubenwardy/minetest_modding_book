@@ -11,15 +11,15 @@ You can contribute to this project on GitHub.
 It uses Jekyll to turn Markdown into a website.
 
 Book written by rubenwardy and contributers.  
-License: CC-BY-NC-SA 3.0
+License: CC-BY-SA 3.0
 
 Contributing
 ------------
 
 You don't need to run jekyll, you can just edit and create files in  
 chapters. In fact, you don't even need to do markdown, send me a word document  
-and I can convert it into the correct formatting. It is the writing which is the hard  
-bit, not the formatting.
+and I can convert it into the correct formatting.  
+It is the writing which is the hard bit, not the formatting.
 
 Running as a Website
 --------------------
