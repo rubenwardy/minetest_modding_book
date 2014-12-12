@@ -10,10 +10,13 @@ Introduction
 In this chapter we will learn how to register a new node or craftitem,
 and create craft recipes.
 
-* Item Names
+* Item Strings
+* Textures
 * Registering a Craftitem
-* Registering a Node
-* Drawtypes
+* Foods
+* Registering a  basic Node
+* Crafting
+* Groups
 
 Item Strings
 ------------
