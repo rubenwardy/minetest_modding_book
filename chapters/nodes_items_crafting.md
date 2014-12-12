@@ -47,7 +47,7 @@ Textures
 Normally textures have a resolution of 16x16, but they can be in the order of 2: 16, 32, 64, 128, etc.
 
 Textures should be placed in textures/. Their name should match ``modname_itemname.png``.\\
-JPEGs are supported, but PNGs are recommended for non-realistic textures.
+JPEGs are supported, but they do not support transparency and are generally bad quality at low resolutions.
 
 Registering a Craftitem
 -----------------------
