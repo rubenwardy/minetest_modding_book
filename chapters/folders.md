@@ -8,9 +8,8 @@ root: ../
 Introduction
 ------------
 
-In this chapter we will learn how to create a mod's folder structure,
-explore the modding API that Minetest has to offer, and learn how to use
-it to create simple decorative mods.
+In this chapter we will learn how the basic structure of a mod's folder.
+This is essential for creating mods.
 
 ### What you will need:
 * A plain text editor (eg: NotePad+, ConTEXT, or GEdit)
@@ -53,25 +52,28 @@ needs to be loaded before this mod.
 	modtwo
 	modthree?
 
-As you can see, each mod name is on its own line. The question mark after a mod name
-means that it is not required for the mod to load, but if it is present,
-then it needed to be loaded before this mod. Running your mod without having the
-mods with names without a question mark above, such as ``modone``, will cause your mod to
-be disabled, or if an earlier version of Minetest is used,
-then the game will stop with an error message.
+As you can see, each mod name is on its own line.
+
+Mod names with a question mark following them are optional dependencies.
+If an optional mod is installed, it is loaded before the current mod.
+However, if the mod is not installed, the current one still loads.
+This is in contrast to normal dependencies, which will cause the current
+mod not to work if the mod is not installed.
 
 Mod Packs
 ---------
 
-Mods can be grouped into mod packs, which are folders with the file modpack.txt in it
+Modpacks allow multiple mods to be packaged together, and move together.
+They are useful if you want to supply multiple mods to an end user, and don't
+want to make them download each one individually.
 
 ### Mod Pack Folder Structure
-	Mod Name
+	modpackfolder/
 	-	modone/
 	-	modtwo/
 	-	modthree/
 	-	modfour/
-	-	Modpack.txt – signals that this is a mod pack, content does not matter
+	-	modpack.txt – signals that this is a mod pack, content does not matter
 
 Example Time
 ------------
@@ -108,10 +110,4 @@ minetest.register_node("mymod:node",{
 Our mod has a name of "mymod". It has two files: init.lua and depends.txt.
 The script prints a message and then registers a node – which will be explained in the next chapter.
 The depends text file adds a dependency to the default mod, which is in minetest_game.
-
-Questions
----------
-
-* What is the minimum that a mod folder can contain?
-* What language does Minetest use in its modding capability?
 
