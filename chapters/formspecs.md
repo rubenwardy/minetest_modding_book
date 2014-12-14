@@ -19,7 +19,7 @@ tend to disrupt game play.
 * Displaying Forms
 * Callbacks
 * Contexts
-
+* Node Meta Formspecs
 
 Formspec Syntax
 ---------------
@@ -179,3 +179,35 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 {% endhighlight %}
+
+Node Meta Formspecs
+-------------------
+
+minetest.show_formspec is not the only way to show a formspec, you can also
+add formspecs to a node's meta data. This is used on nodes such as chests to
+allow for faster opening times - you don't need to wait for the server to send
+the player the chest formspec.
+
+{% highlight lua %}
+minetest.register_node("mymod:rightclick", {
+	description = "Rightclick me!",
+	tiles = {"mymod_rightclick.png"},
+	groups = {cracky = 1},
+	after_place_node = function(pos, placer)
+		-- This function is run	when the chest node is placed.
+		-- The following code sets the formspec for chest.
+		-- Meta is a way of storing data onto a node.
+
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec",
+				"size[3,2]"..
+				"label[1,1;This is shown on right click]")
+	end
+})
+{% endhighlight %}
+
+Formspecs set this way do not trigger callbacks.
+This method really only works for inventories.
+Use on_rightclick and minetest.show_formspec if you want callbacks.
+
+*Note: node meta data will have been explained by this point in the full book*
