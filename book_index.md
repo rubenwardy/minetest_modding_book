@@ -7,10 +7,14 @@ layout: default
 ## C
 * Craft item
 	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#registering-a-craftitem)
+* Context
+	* [Formspecs]({{ page.root }}chapters/formspecs.html)
 
 ## F
 * Food
 	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#foods)
+* Formspec
+	* [Formspecs]({{ page.root }}chapters/formspecs.html)
 
 ## I
 * Item String
@@ -21,5 +25,3 @@ layout: default
 	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#item-strings)
 * Nodes
 	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#registering-a-basic-node)
-* Node boxes
-	* [Registering Nodes and Items]({{ page.root }}chapters/nodes_items_crafting.html#node-boxes)
