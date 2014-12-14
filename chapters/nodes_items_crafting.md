@@ -22,21 +22,21 @@ Item Strings
 ------------
 
 Each item, whether that be a node, craftitem, tool or entity, has an item string.\\
-This is oftenly refered to as just name or registered name.
+This is sometimes referred to as registered name or just name.
 A string in programming terms is a piece of text.
 
 	modname:itemname
 
 The modname is the name of the folder your mod is in.
-You may call the itemname any thing you like, however it should be relevant to what the item is,
-and it can't be already registered.
+You may call the itemname any thing you like, however it should be relevant to
+what the item is, and it can't already be registered.
 
 ### Overriding
 
 Overriding allows you to:
 
-* Create an item in another mod's namespace.
-* Override an existing item.
+* Redefine an existing item.
+* Use an item string with a different modname.
 
 To override, you prefix the item string with a colon, ``:``.
 Declaring an item as ``:default:dirt`` will override the default:dirt in the default mod.
@@ -52,7 +52,7 @@ JPEGs are supported, but they do not support transparency and are generally bad 
 Registering a Craftitem
 -----------------------
 
-Craftitems are the simplest item in Minetest. Craftitems cannot be placed in the world.
+Craftitems are the simplest items in Minetest. Craftitems cannot be placed in the world.
 They are used in recipes to create other items, or they can be used be the player, such as food.
 
 {% highlight lua %}
@@ -62,8 +62,9 @@ minetest.register_craftitem("mymod:diamond_fragments", {
 })
 {% endhighlight %}
 
-Definitions are usually made up of an [item string](#item-strings) to identify the definition,
-and a definition table.
+Item definitions like seen above are usually made up of an unique
+[item string](#item-strings) and a definition table. The definition table
+contains attributes which affect the behavour of the item.
 
 ### Foods
 
@@ -81,6 +82,47 @@ The number supplied to the minetest.item_eat function is the number of hit point
 Two hit points make one heart, and because there are 10 hearts there are 20 hitpoints.
 Hitpoints don't have to be integers (whole numbers), they can be decimals.
 
+Sometimes you may want a food to be replaced with another item when being eaten,
+for example smaller pieces of cake or bones after eating meat. To do this, use:
+
+	minetest.item_eat(hp, replace_with_item)
+
+Where replace_with_item is an item string.
+
+### Foods, extended
+
+How about if you want to do more than just eat the item,
+such as send a message to the player?
+
+{% highlight lua %}
+minetest.register_craftitem("mymod:mudpie", {
+	description = "Alien Mud Pie",
+	inventory_image = "myfood_mudpie.png",
+	on_use = function(itemstack, user, pointed_thing)
+		hp_change = 20
+		replace_with_item = nil
+
+		minetest.chat_send_player(user:get_player_name(), "You ate an alien mud pie!")
+
+		-- Support for hunger mods using minetest.register_on_item_eat
+		for _, callback in pairs(core.registered_on_item_eats) do
+			local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing)
+			if result then
+				return result
+			end
+		end
+
+		if itemstack:take_item() ~= nil then
+			user:set_hp(user:get_hp() + hp_change)
+		end
+
+		return itemstack
+	end
+})
+{% endhighlight %}
+
+If you are creating a hunger mod, or if you are affecting foods outside of your
+mod, you should consider using minetest.register_on_item_eat
 
 Registering a basic node
 ------------------------
@@ -132,6 +174,8 @@ minetest.register_node("mymod:diamond", {
 })
 {% endhighlight %}
 
+The is_ground_content attribute allows caves to be generated over the stone.
+
 Crafting
 --------
 
@@ -144,7 +188,7 @@ identified by the ``type`` property.
 * cooking - Recipes for the furnace to use.
 * tool_repair - Used to allow the repairing of tools.
 
-Craft recipes do not use Item Strings.
+Craft recipes do not use Item Strings to uniquely identify themselves.
 
 ### Shaped
 
@@ -172,7 +216,7 @@ This means that the craft must always be exactly that.
 In most cases, such as the door recipe, you don't care if the ingredients
 are always in an exact place, you just want them correct relative to each
 other. In order to do this, delete any empty rows and columns.
-In the above case, their is an empty last column, which, when removed,
+In the above case, there is an empty last column, which, when removed,
 allows the recipe to be crafted if it was all moved one place to the right.
 
 {% highlight lua %}
