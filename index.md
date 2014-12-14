@@ -14,6 +14,10 @@ to complete.
 This documentation was created by the Minetest community in order to help
 new modders gain a foothold.
 
+* [GitHub](https://github.com/rubenwardy/minetest_doc).
+* [Download for offline use](https://github.com/rubenwardy/minetest_doc/releases)
+* [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729)
+
 What you will need:
 -------------------
 
