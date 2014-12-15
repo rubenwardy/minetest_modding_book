@@ -18,7 +18,7 @@ massive amounts of lag. Use them lightly.
 Special Growing Grass
 ---------------------
 
-We are now going to make a mod (Yay!).
+We are now going to make a mod (yay!).
 It will add a type of grass called alien grass - it grows near water on grassy
 blocks.
 
