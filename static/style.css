@@ -10,6 +10,21 @@ a {
 	text-decoration: underline;
 }
 
+.right_image {
+	float: right;
+	margin: 0 0 0 10px;
+	padding: 0;
+}
+
+.right_image img {
+	margin: 0;
+	padding: 0;
+}
+
+.right_image figcaption {
+	padding: 0 0 0 6px;
+}
+
 #page {
 	background: white;
 	margin: 0;
@@ -91,6 +106,7 @@ h2 {
 	margin: 30px 0 10px 0;
 	display: block;
 	padding: 0 0 5px 0;
+	clear: both;
 }
 
 h3 {
