@@ -17,12 +17,18 @@ This is essential for creating mods.
 Mod Folders
 -----------
 
+![Find the mod's folder]({{ page.root }}/static/folder_modfolder.png)
+
 Each mod has its own folder, where all its Lua code, textures, models and sounds are placed.
 These folders need to be placed in a mod location, such as minetest/mods, and they can be
 placed in mod packs: as explained below.
 
+The modname is used to refer to a mod. Each mod should have a unique modname, which you can choose -
+it should describe what the mod does. Modnames can be make up of letters, numbers
+or underscores.
+
 ### Mod Folder Structure
-	Mod Name
+	Modname
 	-	init.lua - the main scripting code file, which is run when the game loads.
 	-	(optional) depends.txt - a list of mod names that needs to be loaded before this mod.
 	-	(optional) textures/ - place images here, commonly in the format modname_itemname.png
