@@ -9,8 +9,9 @@ Introduction
 
 In this chapter we explain all the different types of node drawtypes there are.
 
-First of, what is a drawtype? A drawtype defines how the node is drawn onto the screen,
-they are sent along with the node definition to the client where
+First of all, what is a drawtype?
+A drawtype defines how the node is to be drawn.
+A torch looks different to water, water looks different to stone.
 
 * Normal
 * Airlike
