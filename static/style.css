@@ -14,6 +14,11 @@ img {
 	max-width: 100%;
 }
 
+figure {
+	padding: 0;
+	margin: 0;
+}
+
 .right_image {
 	float: right;
 	margin: 0 0 0 10px;
