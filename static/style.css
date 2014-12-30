@@ -80,7 +80,20 @@ figure {
 	background: #444;
 }
 
+.notice {
+	margin: 10px;
+	display: block;
+	padding: 5px;
+	border: 1px solid orange;
+	border-radius: 5px;
+	background: #FFEEDD;
 
+}
+
+.notice h2 {
+	margin: 0 0 5px 0;
+	padding: 0 0 2px 0;
+}
 #navbar li a.title {
 	text-align: center;
 	font-size: 120%;
