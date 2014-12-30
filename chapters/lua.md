@@ -20,6 +20,11 @@ and go over some techniques which you will probably find useful.
 This chapter will assume that you have had some programming experience before,
 even Scratch level is acceptable.
 
+* Tools
+	* Integrated Programming Environments
+* Local and Global
+* Including other Lua Scripts
+
 Tools
 -----
 
@@ -64,9 +69,40 @@ One such IDE is Eclipse with the Koneki Lua plugin:
 Local and Global
 ----------------
 
-Local should be used as much as possible.
-Lua is global by default, which means that variables declared in a function
-could be read by other functions.
+Whether a variable is local or global determines where it can be written to or read to.
+A local variable is only accessible from where it is defined. Here are some examples:
+
+{% highlight lua %}
+-- Accessible from within this script file
+local one = 1
+
+function myfunc()
+	-- Accessible from within this function
+	local two = one + one
+
+	if two == one then
+		-- Accessible from within this if statement
+		local three = one + two
+	end
+end
+{% endhighlight %}
+
+Whereas global variables can be accessed from anywhere in the script file, and from any other mod.
+
+{% highlight lua %}
+my_global_variable = "blah"
+
+function one()
+	my_global_variable_2 = "blah"
+end
+
+{% endhighlight %}
+
+
+### Locals should be used as much as possible
+
+Lua is global by default (unlike most other programming languages).
+Local variables must be identified as such.
 
 {% highlight lua %}
 function one()
@@ -78,7 +114,10 @@ function two()
 end
 {% endhighlight %}
 
-This is sloppy coding, and Minetest will in fact warn you about this.
+This is sloppy coding, and Minetest will in fact warn you about this:
+
+	[WARNING] Assigment to undeclared global 'foo' inside function at init.lua:2
+
 To correct this, use "local":
 
 {% highlight lua %}
@@ -91,7 +130,8 @@ function two()
 end
 {% endhighlight %}
 
-The same goes for functions, you should make functions as local as much as possible,
+The same goes for functions. Functions are variables of a special type.
+You should make functions as local as much as possible,
 as other mods could have functions of the same name.
 
 {% highlight lua %}
