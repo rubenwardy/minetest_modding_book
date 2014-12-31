@@ -57,6 +57,14 @@ end
 For example, keywords in the above snippet are highlighted, such as if, then, end, return.
 table.insert is a function which comes with Lua by default.
 
+### Recommended Editors
+
+Other editors are available, of course.
+
+* Windows: [Notepad++](http://notepad-plus-plus.org/), [Atom](http://atom.io/)
+* Linux: Kate, Gedit, [Atom](http://atom.io/)
+* OSX: [Atom](http://atom.io/)
+
 ### Integrated Programming Environments
 
 IDEs allow you to debug code like a native application.
