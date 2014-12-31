@@ -10,9 +10,6 @@ Introduction
 In this chapter we will talk about scripting in Lua, the tools required,
 and go over some techniques which you will probably find useful.
 
-This chapter will assume that you have had some programming experience before,
-even Scratch level is acceptable.
-
 * Programming
 * Tools
 	* Integrated Programming Environments
