@@ -4,13 +4,6 @@ layout: default
 root: ../
 ---
 
-<div class="notice">
-	<h2>This chapter is incomplete</h2>
-
-	The wording or phrasing may be hard to understand.
-	Don't worry, we're working on it.
-</div>
-
 Introduction
 ------------
 
@@ -20,10 +13,26 @@ and go over some techniques which you will probably find useful.
 This chapter will assume that you have had some programming experience before,
 even Scratch level is acceptable.
 
+* Programming
 * Tools
 	* Integrated Programming Environments
 * Local and Global
 * Including other Lua Scripts
+
+Programming
+-----------
+
+Teaching you how to program is beyond the scope of this book.
+
+### Codecademy
+[Codecademy](http://www.codecademy.com/) is one of the best resources for learning to 'code',
+it provides an interactive tutorial experience.
+
+### Scratch
+[Scratch](https://scratch.mit.edu) is a good resource when starting from absolute basics,
+learning the problem solving techniques required to program.\\
+Programming is all about breaking down problems into computable steps.\\
+Scratch is **designed to teach children** how to program, it isn't a serious programming language.
 
 Tools
 -----
@@ -166,7 +175,6 @@ dofile(minetest.get_modpath("modname") .. "/script.lua")
 "local" variables declared outside of any functions in a script file will be local to that script.
 You won't be able to access them from any other scripts.
 
-
-
-{% highlight lua %}
-{% endhighlight %}
+As for how you divide code up into files, it doesn't matter that much.
+The most important thing is your code is easy to read and edit.
+You won't need to use it for smaller projects.

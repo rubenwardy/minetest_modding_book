@@ -4,6 +4,13 @@ layout: default
 root: ../
 ---
 
+<div class="notice">
+	<h2>This chapter is incomplete</h2>
+
+	Some drawtypes have not been explained yet,
+	and placeholder images are being used.
+</div>
+
 Introduction
 ------------
 
@@ -370,9 +377,3 @@ minetest.register_node("default:sign_wall", {
 	},
 })
 {% endhighlight %}
-
-
-{% highlight lua %}
-{% endhighlight %}
-
-
