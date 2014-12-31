@@ -45,7 +45,8 @@ Dependencies
 The depends text file allows you to specify what mods this mod requires to run, and what
 needs to be loaded before this mod.
 
-	depends.txt
+**depends.txt**
+
 	modone
 	modtwo
 	modthree?

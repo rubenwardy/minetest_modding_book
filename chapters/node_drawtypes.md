@@ -13,8 +13,13 @@ First of all, what is a drawtype?
 A drawtype defines how the node is to be drawn.
 A torch looks different to water, water looks different to stone.
 
+The string you use to determine the drawtype in the node definition is the same as
+the title of the sections, except in lower case.
+
 * Normal
 * Airlike
+* Liquid
+	* FlowingLiquid
 * Glasslike
 * Glasslike_Framed
 	* Glasslike_Framed_Optional
@@ -142,7 +147,7 @@ minetest.register_node("default:water_source", {
 })
 {% endhighlight %}
 
-### Flowing Liquids
+### FlowingLiquid
 
 See default:water_flowing in the default mod in minetest_game, it is mostly
 the same as the above example

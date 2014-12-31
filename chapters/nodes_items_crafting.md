@@ -44,7 +44,9 @@ Declaring an item as ``:default:dirt`` will override the default:dirt in the def
 Textures
 --------
 
-Normally textures have a resolution of 16x16, but they can be in the order of 2: 16, 32, 64, 128, etc.
+Textures are usually 16 by 16 pixels.
+They can be any resolution, but it is recommended that they are in the order of 2 (eg, 16, 32, 64, 128, etc),
+as other resolutions may not be supported correctly on older devices.
 
 Textures should be placed in textures/. Their name should match ``modname_itemname.png``.\\
 JPEGs are supported, but they do not support transparency and are generally bad quality at low resolutions.
@@ -105,7 +107,7 @@ minetest.register_craftitem("mymod:mudpie", {
 		minetest.chat_send_player(user:get_player_name(), "You ate an alien mud pie!")
 
 		-- Support for hunger mods using minetest.register_on_item_eat
-		for _, callback in pairs(core.registered_on_item_eats) do
+		for _, callback in pairs(minetest.registered_on_item_eats) do
 			local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing)
 			if result then
 				return result
