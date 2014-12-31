@@ -1,5 +1,5 @@
 ---
-title: Minetest Tutorials and Documentation
+title: Introduction
 permalink: index.html
 layout: default
 ---

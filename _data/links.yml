@@ -1,0 +1,34 @@
+- title: Introduction
+  link:  index.html
+
+- title: Folder Structure
+  num:   1
+  link:  chapters/folders.html
+
+- title: Nodes, Items and Crafting
+  num:   2
+  link:  chapters/nodes_items_crafting.html
+
+- title: Node Drawtypes
+  num:   3
+  link:  chapters/node_drawtypes.html
+
+- title: Lua Scripts
+  num:   4
+  link:  chapters/lua.html
+
+- title: Active Block Modifiers
+  num:   5
+  link:  chapters/abms.html
+
+- title: Formspecs
+  num:   6
+  link:  chapters/formspecs.html
+
+- hr: true
+
+- title: Index
+  link:  book_index.html
+
+- title: Lua Modding API Reference
+  link:  lua_api.html

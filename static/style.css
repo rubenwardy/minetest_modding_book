@@ -63,10 +63,17 @@ figure {
 	padding: 0;
 }
 
-#navbar li hr {
-	height: 1px;
-	background: #666;
-	border: none;
+#navbar li a.hr {
+	border-top: 2px solid #666;
+}
+
+#navbar li a.selected {
+	background: #363 !important;
+	color: white !important;
+}
+
+#navbar li a.selected:hover {
+	background: #474 !important;
 }
 
 #navbar li a {
@@ -74,6 +81,10 @@ figure {
 	padding: 5px;
 	color: #ccc;
 	text-decoration: none;
+}
+
+#navbar li:nth-child(odd) a {
+	background: #3c3c3c;
 }
 
 #navbar li a:hover {
@@ -93,19 +104,6 @@ figure {
 .notice h2 {
 	margin: 0 0 5px 0;
 	padding: 0 0 2px 0;
-}
-#navbar li a.title {
-	text-align: center;
-	font-size: 120%;
-	font-weight: bold;
-	background: #363;
-	color: white;
-}
-
-#navbar li a.section_title {
-	text-align: center;
-	font-size: 110%;
-	border-bottom: 1px solid #999;
 }
 
 code {

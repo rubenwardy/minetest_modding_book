@@ -1,23 +1,24 @@
 <!doctype html>
 <html>
 	<head>
-		<title>{% if page.title != "Minetest Tutorials and Documentation" %}{{ page.title }} - {% endif %}Minetest Tutorials and Documentation</title>
+		<title>{% if page.title != "Introduction" %}{{ page.title }} - {% endif %}Minetest Tutorials and Documentation</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" href="{{ page.root }}static/style.css">
 		<link rel="stylesheet" href="{{ page.root }}static/syntax.css">
 	</head>
 	<body>
 		<ul id="navbar">
-			<li><a href="{{ page.root }}index.html" class="title">Minetest Tutorials</a></li>
-			<li><a href="{{ page.root }}chapters/folders.html">1 - Folder Structure</a></li>
-			<li><a href="{{ page.root }}chapters/nodes_items_crafting.html">2 - Nodes, Items and Crafting</a></li>
-			<li><a href="{{ page.root }}chapters/node_drawtypes.html">3 - Node Drawtypes</a></li>
-			<li><a href="{{ page.root }}chapters/lua.html">4 - Lua Scripts</a></li>
-			<li><a href="{{ page.root }}chapters/abms.html">5 - Active Block Modifiers</a></li>
-			<li><a href="{{ page.root }}chapters/formspecs.html">6 - Formspecs</a></li>
-			<li><hr></li>
-			<li><a href="{{ page.root }}book_index.html">Index</a></li>
-			<li><a href="{{ page.root }}lua_api.html">Webpage version of lua_api.txt</a></li>
+			{% for link in site.data.links %}
+			{% if link.hr %}
+			{% assign hr = true %}
+			{% else %}
+			<li><a href="{{ page.root }}{{ link.link }}"
+				class="{% if page.title == link.title %}selected{% endif %}{% if hr %} hr {% endif %}">
+				{% if link.num %} {{ link.num }} - {% endif %}
+				{{ link.title }}</a></li>
+			{% assign hr = false %}
+			{% endif %}
+			{% endfor %}
 		</ul>
 		<div id="page">
 			<h1>{{ page.title }}</h1>
