@@ -116,6 +116,18 @@ code {
 	white-space: pre;
 }
 
+.header-link {
+	position: absolute;
+	right: 10px;
+	text-decoration: none;
+	color: #bbb;
+}
+
+.header-link:hover {
+	color: #999;
+}
+
+
 h1 {
 	text-align: center;
 	margin: 10px 0 0 0;

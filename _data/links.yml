@@ -1,6 +1,8 @@
 - title: Introduction
   link:  index.html
 
+- hr: true
+
 - title: Folder Structure
   num:   1
   link:  chapters/folders.html
