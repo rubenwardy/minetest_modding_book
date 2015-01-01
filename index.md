@@ -4,32 +4,32 @@ permalink: index.html
 layout: default
 ---
 
-What is this?
--------------
+Welcome
+-------
 
-This online book will teach you how to create mods in easy chapters.
-The chapters will explain a concept, give examples, and set tasks for you
-to complete.
+Minetest uses Lua scripts to provide modding support.
+This online book aims to teach you how to create your own mods, starting from the basics.
 
-This documentation was created by the Minetest community in order to help
-new modders gain a foothold.
+### What you will need
+
+* A Code Editor. Talked about in the [Lua Scripts](chapters/lua.html#tools) chapter.
+* A copy of Minetest in the 0.4 series. (eg: 0.4.11)
+* The ability to work independently, without pestering other developers to write you code for you.
+* Motivation to continue trying when things go wrong.
+
+
+### So, go on then.
+
+Start reading. Use the navigation bar on the left to open a chapter.
 
 * [GitHub](https://github.com/rubenwardy/minetest_doc).
 * [Download for offline use](https://github.com/rubenwardy/minetest_doc/releases)
 * [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729)
 
-What you will need:
--------------------
-
-* A plain text editor (eg: NotePad+, ConTEXT, or GEdit)
-* OR A Lua IDE such as Eclipse.
-* A copy of Minetest in the 0.4 series. (eg: 0.4.10)
-
 Contribution
 ------------
 
 You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_doc).
-It uses Jekyll to turn Markdown into a website.
 
-Book written by rubenwardy and contributers.\\
+Written by rubenwardy.\\
 License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)

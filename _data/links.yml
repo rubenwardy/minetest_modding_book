@@ -5,17 +5,17 @@
   num:   1
   link:  chapters/folders.html
 
-- title: Nodes, Items and Crafting
+- title: Lua Scripts
   num:   2
+  link:  chapters/lua.html
+
+- title: Nodes, Items and Crafting
+  num:   3
   link:  chapters/nodes_items_crafting.html
 
 - title: Node Drawtypes
-  num:   3
-  link:  chapters/node_drawtypes.html
-
-- title: Lua Scripts
   num:   4
-  link:  chapters/lua.html
+  link:  chapters/node_drawtypes.html
 
 - title: Active Block Modifiers
   num:   5
