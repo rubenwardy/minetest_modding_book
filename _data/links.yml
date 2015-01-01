@@ -21,9 +21,15 @@
   num:   5
   link:  chapters/abms.html
 
+- hr: true
+
 - title: Formspecs
   num:   6
   link:  chapters/formspecs.html
+
+- title: HUD
+  num:   7
+  link:  chapters/hud.html
 
 - hr: true
 
