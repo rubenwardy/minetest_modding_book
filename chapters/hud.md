@@ -4,15 +4,19 @@ layout: default
 root: ../
 ---
 
+<div class="notice">
+	<h2>Experimental Feature</h2>
+
+	The HUD feature will probably be rewritten in an upcoming Minetest release.
+	Be aware that you may need to update your mods if the API is changed.
+</div>
+
 Introduction
 ------------
 
 Heads Up Display (HUD) elements allow you to show text, images, and other graphical elements.
 
 HUD doesn't except user input. For that, you should use a [Formspec](formspecs.html).
-
-Keep in mind that **the interface for creating HUD elements may change,
-as it is an experimental feature**. It is unlikely to, though.
 
 * Basic Interface
 * Positioning
