@@ -5,6 +5,18 @@ html, body {
 	background: #333;
 }
 
+.printable #navbar{
+	display: none;
+}
+
+.printable #page {
+	left: 0;
+}
+
+.printable .header-link {
+	display: none !important;
+}
+
 a {
 	color: blue;
 	text-decoration: underline;
@@ -81,6 +93,7 @@ figure {
 	padding: 5px;
 	color: #ccc;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 #navbar li:nth-child(odd) a {
