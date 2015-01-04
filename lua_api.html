@@ -2,9 +2,7 @@
 title: Lua Modding API Reference
 layout: default
 ---
-
-<h2>Table of Contents</h2>
-
+<h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
 <li><a href="#introduction">Introduction</a></li>
@@ -78,7 +76,8 @@ layout: default
 <li><a href="#ore-types">Ore types</a><ul>
 <li><a href="#scatter">scatter</a></li>
 <li><a href="#sheet">sheet</a></li>
-<li><a href="#claylike-not-yet-implemented">claylike -- not yet implemented</a></li>
+<li><a href="#blob">blob</a></li>
+<li><a href="#vein">`vein</a></li>
 </ul>
 </li>
 <li><a href="#ore-attributes">Ore attributes</a><ul>
@@ -309,6 +308,7 @@ layout: default
 </li>
 </ul>
 </div>
+
 <h2 id="introduction">Introduction</h2>
 <p>Content and functionality can be added to Minetest 0.4 by using Lua
 scripting in run-time loaded mods.</p>
@@ -319,10 +319,10 @@ files are automatically transferred to the client.</p>
 <p>If you see a deficiency in the API, feel free to attempt to add the
 functionality in the engine and API. You can send such improvements as
 source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#101;&#108;&#101;&#114;&#111;&#110;&#53;&#53;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#99;&#101;&#108;&#101;&#114;&#111;&#110;&#53;&#53;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>.</p>
-<p><strong>This may not be the most up to date version.</strong> See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">lua_api.txt</a>
-<em> More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a>
-</em> Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></p>
-<h2 id="programming-in-lua">Programming in Lua</h2>
+<ul>
+<li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
+<li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
+</ul><h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
 <p>Mods are loaded during server startup from the mod load paths by running
@@ -796,7 +796,7 @@ changed in the future.</p>
 set to level from <code>param2</code>.</p>
 <h2 id="meshes">Meshes</h2>
 <p>If drawtype <code>mesh</code> is used, tiles should hold model materials textures.
-Only static meshes are implemented.
+Only static meshes are implemented.<br />
 For supported model formats see Irrlicht engine documentation.</p>
 <h2 id="noise-parameters">Noise Parameters</h2>
 <p>Noise Parameters, or commonly called "<code>NoiseParams</code>", define the properties of perlin noise.</p>
@@ -861,18 +861,41 @@ distribution of ore.</p>
 The relative height of the sheet can be controlled by the same perlin noise as well, by specifying
 a non-zero <code>scale</code> parameter in <code>noise_params</code>.</p>
 <p><strong>IMPORTANT</strong>: The noise is not transformed by <code>offset</code> or <code>scale</code> when comparing against the noise
-threshold, but scale is used to determine relative height.
+threshold, but scale is used to determine relative height.<br />
 The height of the blob is randomly scattered, with a maximum height of <code>clust_size</code>.</p>
 <p><code>clust_scarcity</code> and <code>clust_num_ores</code> are ignored.</p>
 <p>This is essentially an improved version of the so-called "stratus" ore seen in some unofficial mods.</p>
-<h3 id="claylike-not-yet-implemented"><code>claylike</code> -- <strong>not yet implemented</strong></h3>
-<p>Places ore if there are no more than <code>clust_scarcity</code> number of specified nodes within a Von Neumann
-neighborhood of <code>clust_size</code> radius.</p>
+<h3 id="blob"><code>blob</code></h3>
+<p>Creates a deformed sphere of ore according to 3d perlin noise described by 
+<code>noise_params</code>.  The maximum size of the blob is <code>clust_size</code>, and
+<code>clust_scarcity</code> has the same meaning as with the <code>scatter</code> type.</p>
+<h3 id="vein">`vein</h3>
+<p>Creates veins of ore varying in density by according to the intersection of two
+instances of 3d perlin noise with diffferent seeds, both described by
+<code>noise_params</code>.  <code>random_factor</code> varies the influence random chance has on
+placement of an ore inside the vein, which is <code>1</code> by default. Note that
+modifying this parameter may require adjusting <code>noise_threshhold</code>.
+The parameters <code>clust_scarcity</code>, <code>clust_num_ores</code>, and <code>clust_size</code> are ignored
+by this ore type.  This ore type is difficult to control since it is sensitive
+to small changes.  The following is a decent set of parameters to work from:</p>
+<pre><code>noise_params = {
+    offset  = 0,
+    scale   = 3,
+    spread  = {x=200, y=200, z=200},
+    seed    = 5390,
+    octaves = 4,
+    persist = 0.5,
+    flags = "eased",
+},
+noise_threshhold = 1.6
+</code></pre>
+<p>WARNING:  Use this ore type <em>very</em> sparingly since it is ~200x more
+computationally expensive than any other ore.</p>
 <h2 id="ore-attributes">Ore attributes</h2>
 <p>See section "Flag Specifier Format".</p>
 <p>Currently supported flags: <code>absheight</code></p>
 <h3 id="absheight"><code>absheight</code></h3>
-<p>Also produce this same ore between the height range of <code>-height_max</code> and <code>-height_min</code>.</p>
+<p>Also produce this same ore between the height range of <code>-y_max</code> and <code>-y_min</code>.</p>
 <p>Useful for having ore in sky realms without having to duplicate ore entries.</p>
 <h2 id="decoration-types">Decoration types</h2>
 <p>The varying types of decorations that can be placed.</p>
@@ -1261,7 +1284,7 @@ return damage
 <p>Client predicts damage based on damage groups. Because of this, it is able to
 give an immediate response when an entity is damaged or dies; the response is
 pre-defined somehow (e.g. by defining a sprite animation) (not implemented;
-TODO).
+TODO).<br />
 Currently a smoke puff will appear when an entity dies.</p>
 <p>The group <code>immortal</code> completely disables normal damage.</p>
 <p>Entities can define a special armor group, which is <code>punch_operable</code>. This
@@ -1733,7 +1756,10 @@ value must (always) be two hexadecimal digits.</p>
   Optional: Also returns <code>0</code> when the absolute value is within the tolerance (default: <code>0</code>)</li>
 </ul>
 </li>
-<li><code>string:split(separator)</code><ul>
+<li>`string.split(str, separator=",", include_empty=false, max_splits=-1,</li>
+<li>sep_is_pattern=false)`<ul>
+<li>If <code>max_splits</code> is negative, do not limit splits.</li>
+<li><code>sep_is_pattern</code> specifies if separator is a plain string or a pattern (regex).</li>
 <li>e.g. <code>string:split("a,b", ",") == {"a","b"}</code></li>
 </ul>
 </li>
@@ -1936,11 +1962,6 @@ value must (always) be two hexadecimal digits.</p>
 <li>If function returns <code>true</code>, remaining functions are not called</li>
 </ul>
 </li>
-<li><code>minetest.register_on_mapgen_init(func(MapgenParams))</code><ul>
-<li>Called just before the map generator is initialized but before the environment is initialized</li>
-<li><code>MapgenParams</code> consists of a table with the fields <code>mgname</code>, <code>seed</code>, <code>water_level</code>, and <code>flags</code></li>
-</ul>
-</li>
 <li><code>minetest.register_on_craft(func(itemstack, player, old_craft_grid, craft_inv))</code><ul>
 <li>Called when <code>player</code> crafts something</li>
 <li><code>itemstack</code> is the output</li>
@@ -2113,8 +2134,9 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Return world-specific perlin noise (<code>int(worldseed)+seeddiff</code>)</li>
 </ul>
 </li>
-<li><code>minetest.get_voxel_manip()</code><ul>
-<li>Return voxel manipulator object</li>
+<li><code>minetest.get_voxel_manip([pos1, pos2])</code><ul>
+<li>Return voxel manipulator object.</li>
+<li>Loads the manipulator from the map if positions are passed.</li>
 </ul>
 </li>
 <li><code>minetest.set_gen_notify(flags, {deco_ids})</code><ul>
@@ -2128,6 +2150,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Return requested mapgen object if available (see "Mapgen objects")</li>
 </ul>
 </li>
+<li><code>minetest.get_mapgen_params()</code> Returns mapgen parameters, a table containing
+  <code>mgname</code>, <code>seed</code>, <code>chunksize</code>, <code>water_level</code>, and <code>flags</code>.</li>
 <li><code>minetest.set_mapgen_params(MapgenParams)</code><ul>
 <li>Set map generation parameters</li>
 <li>Function cannot be called after the registration period; only initialization and <code>on_mapgen_init</code></li>
@@ -2675,7 +2699,7 @@ end
 </ul>
 <h2 id="class-reference">Class reference</h2>
 <h3 id="nodemetaref"><code>NodeMetaRef</code></h3>
-<p>Node metadata: reference extra data and functionality stored in a node.
+<p>Node metadata: reference extra data and functionality stored in a node.<br />
 Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
 <h4 id="methods">Methods</h4>
 <ul>
@@ -2693,7 +2717,7 @@ Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
 </li>
 </ul>
 <h3 id="notetimerref"><code>NoteTimerRef</code></h3>
-<p>Node Timers: a high resolution persistent per-node timer.
+<p>Node Timers: a high resolution persistent per-node timer.<br />
 Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <h4 id="methods_1">Methods</h4>
 <ul>
@@ -2933,44 +2957,39 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 an itemstring, a table or <code>nil</code>.</p>
 <h4 id="methods_4">Methods</h4>
 <ul>
-<li><code>is_empty()</code>: return <code>true</code> if stack is empty</li>
-<li><code>get_name()</code>: returns item name (e.g. <code>"default:stone"</code>)</li>
-<li><code>set_name(itemname)</code></li>
-<li><code>get_count()</code>: returns number of items on the stack</li>
+<li><code>is_empty()</code>: Returns <code>true</code> if stack is empty.</li>
+<li><code>get_name()</code>: Returns item name (e.g. <code>"default:stone"</code>).</li>
+<li><code>set_name(item_name)</code>: Returns boolean success.
+  Clears item on failure.</li>
+<li><code>get_count()</code>: Returns number of items on the stack.</li>
 <li><code>set_count(count)</code></li>
-<li><code>get_wear()</code>: returns tool wear (<code>0</code>-<code>65535</code>), <code>0</code> for non-tools</li>
-<li><code>set_wear(wear)</code></li>
-<li><code>get_metadata()</code>: returns metadata (a string attached to an item stack)</li>
-<li><code>set_metadata(metadata)</code></li>
-<li><code>clear()</code>: removes all items from the stack, making it empty</li>
-<li><code>replace(item)</code>: replace the contents of this stack<ul>
-<li><code>item</code> can also be an itemstring or table</li>
+<li><code>get_wear()</code>: Returns tool wear (<code>0</code>-<code>65535</code>), <code>0</code> for non-tools.</li>
+<li><code>set_wear(wear)</code>: Returns boolean success.
+  Clears item on failure.</li>
+<li><code>get_metadata()</code>: Returns metadata (a string attached to an item stack).</li>
+<li><code>set_metadata(metadata)</code>: Returns true.</li>
+<li><code>clear()</code>: removes all items from the stack, making it empty.</li>
+<li><code>replace(item)</code>: replace the contents of this stack.<ul>
+<li><code>item</code> can also be an itemstring or table.</li>
 </ul>
 </li>
-<li><code>to_string()</code>: returns the stack in itemstring form</li>
-<li><code>to_table()</code>: returns the stack in Lua table form</li>
-<li><code>get_stack_max()</code>: returns the maximum size of the stack (depends on the item)</li>
-<li><code>get_free_space()</code>: returns <code>get_stack_max() - get_count()</code></li>
-<li><code>is_known()</code>: returns <code>true</code> if the item name refers to a defined item type</li>
-<li><code>get_definition()</code>: returns the item definition table</li>
-<li><code>get_tool_capabilities()</code>: returns the digging properties of the item,
+<li><code>to_string()</code>: Returns the stack in itemstring form.</li>
+<li><code>to_table()</code>: Returns the stack in Lua table form.</li>
+<li><code>get_stack_max()</code>: Returns the maximum size of the stack (depends on the item).</li>
+<li><code>get_free_space()</code>: Returns <code>get_stack_max() - get_count()</code>.</li>
+<li><code>is_known()</code>: Returns <code>true</code> if the item name refers to a defined item type.</li>
+<li><code>get_definition()</code>: Returns the item definition table.</li>
+<li><code>get_tool_capabilities()</code>: Returns the digging properties of the item,
   or those of the hand if none are defined for this item type</li>
-<li><code>add_wear(amount)</code>: increases wear by <code>amount</code> if the item is a tool</li>
-<li><code>add_item(item)</code>: put some item or stack onto this stack,<ul>
-<li>returns leftover ItemStack</li>
-</ul>
-</li>
-<li><code>item_fits(item)</code>: returns <code>true</code> if item or stack can be fully added to this one</li>
-<li><code>take_item(n)</code>: take (and remove) up to <code>n</code> items from this stack<ul>
-<li>returns taken <code>ItemStack</code></li>
-<li>if <code>n</code> is omitted, <code>n=1</code> is used</li>
-</ul>
-</li>
-<li><code>peek_item(n)</code>: copy (don't remove) up to <code>n</code> items from this stack<ul>
-<li>returns taken <code>ItemStack</code></li>
-<li>if <code>n</code> is omitted, <code>n=1</code> is used</li>
-</ul>
-</li>
+<li><code>add_wear(amount)</code>: Increases wear by <code>amount</code> if the item is a tool.</li>
+<li><code>add_item(item)</code>: Put some item or stack onto this stack.
+   Returns leftover <code>ItemStack</code>.</li>
+<li><code>item_fits(item)</code>: Returns <code>true</code> if item or stack can be fully added to
+  this one.</li>
+<li><code>take_item(n=1)</code>: Take (and remove) up to <code>n</code> items from this stack.
+  Returns taken <code>ItemStack</code>.</li>
+<li><code>peek_item(n=1)</code>: copy (don't remove) up to <code>n</code> items from this stack.
+  Returns taken <code>ItemStack</code>.</li>
 </ul>
 <h3 id="pseudorandom"><code>PseudoRandom</code></h3>
 <p>A pseudorandom number generator.</p>
@@ -2987,7 +3006,7 @@ an itemstring, a table or <code>nil</code>.</p>
 <h3 id="perlinnoise"><code>PerlinNoise</code></h3>
 <p>A perlin noise generator.
 It can be created via <code>PerlinNoise(seed, octaves, persistence, scale)</code>
-or <code>PerlinNoise(noiseparams)</code>.
+or <code>PerlinNoise(noiseparams)</code>.<br />
 Alternatively with <code>minetest.get_perlin(seeddiff, octaves, persistence, scale)</code>
 or <code>minetest.get_perlin(noiseparams)</code>.</p>
 <h4 id="methods_6">Methods</h4>
@@ -3013,7 +3032,8 @@ for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
 </ul>
 <h3 id="voxelmanip"><code>VoxelManip</code></h3>
 <p>An interface to the <code>MapVoxelManipulator</code> for Lua.</p>
-<p>It can be created via <code>VoxelManip()</code> or <code>minetest.get_voxel_manip()</code>.</p>
+<p>It can be created via <code>VoxelManip()</code> or <code>minetest.get_voxel_manip()</code>.
+The map will be pre-loaded if two positions are passed to either.</p>
 <h4 id="methods_8">Methods</h4>
 <ul>
 <li><code>read_from_map(p1, p2)</code>:  Reads a chunk of map from the map containing the region formed by <code>p1</code> and <code>p2</code>.<ul>
@@ -3062,6 +3082,7 @@ for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
 <li><code>update_liquids()</code>: Update liquid flow</li>
 <li><code>was_modified()</code>: Returns <code>true</code> or <code>false</code> if the data in the voxel manipulator had been modified since
   the last read from map, due to a call to <code>minetest.set_data()</code> on the loaded area elsewhere</li>
+<li><code>get_emerged_area()</code>: Returns actual emerged minimum and maximum positions.</li>
 </ul>
 <h3 id="voxelarea"><code>VoxelArea</code></h3>
 <p>A helper class for voxel areas.
@@ -3412,7 +3433,6 @@ minetest.spawn_tree(pos,apple_tree)
     liquid_alternative_source = "", -- Source version of flowing liquid
     liquid_viscosity = 0, -- Higher viscosity = slower flow (max. 7)
     liquid_renewable = true, -- Can new liquid source be created by placing two or more sources nearby?
-    freezemelt = "", -- water for snow/ice, ice/snow for water
     leveled = 0, -- Block contain level in param2. value - default level, used for snow. Don't forget use "leveled" type nodebox
     liquid_range = 8, -- number of flowing nodes around source (max. 8)
     drowning = 0, -- Player will take this amount of damage if no bubbles are left
@@ -3579,8 +3599,8 @@ minetest.spawn_tree(pos,apple_tree)
     clust_size = 3,
 --  ^ Size of the bounding box of the cluster
 --  ^ In this example, there is a 3x3x3 cluster where 8 out of the 27 nodes are coal ore
-    height_min = -31000,
-    height_max = 64,
+    y_min = -31000,
+    y_max = 64,
     flags = "",
 --  ^ Attributes for this ore generation
     noise_threshhold = 0.5,
@@ -3588,6 +3608,10 @@ minetest.spawn_tree(pos,apple_tree)
     noise_params = {offset=0, scale=1, spread={x=100, y=100, z=100}, seed=23, octaves=3, persist=0.70}
 --  ^ NoiseParams structure describing the perlin noise used for ore distribution.
 --  ^ Needed for sheet ore_type.  Omit from scatter ore_type for a uniform ore distribution
+    random_factor = 1.0,
+--  ^ Multiplier of the randomness contribution to the noise value at any
+--   given point to decide if ore should be placed.  Set to 0 for solid veins.
+--  ^ This parameter is only valid for ore_type == "vein".
 }
 </code></pre>
 <h3 id="decoration-definition-register_decoration">Decoration definition (<code>register_decoration</code>)</h3>
@@ -3607,13 +3631,18 @@ minetest.spawn_tree(pos,apple_tree)
     biomes = {"Oceanside", "Hills", "Plains"},
 --  ^ List of biomes in which this decoration occurs.  Occurs in all biomes if this is omitted,
 --  ^ and ignored if the Mapgen being used does not support biomes.
+    y_min = -31000
+    y_max = 31000
+-- ^ Minimum and maximum `y` positions these decorations can be generated at.
+-- ^ This parameter refers to the `y` position of the decoration base, so
+--   the actual maximum height would be `height_max + size.Y`.
 
     ----- Simple-type parameters
     decoration = "default:grass",
 --  ^ The node name used as the decoration.
 --  ^ If instead a list of strings, a randomly selected node from the list is placed as the decoration.
     height = 1,
---      ^ Number of nodes high the decoration is made.
+--  ^ Number of nodes high the decoration is made.
 --  ^ If height_max is not 0, this is the lower bound of the randomly selected height.
     height_max = 0,
 --      ^ Number of nodes the decoration can be at maximum.
