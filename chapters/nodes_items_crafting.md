@@ -201,7 +201,7 @@ right place for it to work.
 
 {% highlight lua %}
 minetest.register_craft({
-	output = "mymod:diamond_chair",
+	output = "mymod:diamond_chair 99",
 	recipe = {
 		{"mymod:diamond_fragments", "", ""},
 		{"mymod:diamond_fragments", "mymod:diamond_fragments", ""},
@@ -211,7 +211,8 @@ minetest.register_craft({
 {% endhighlight %}
 
 This is pretty self-explanatory. You don't need to define the type, as
-shaped crafts are default.
+shaped crafts are default. The 99 after the itemname in output makes the
+craft create 99 chairs rather than one.
 
 If you notice, there is a blank column at the far end.
 This means that the craft must always be exactly that.
