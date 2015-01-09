@@ -664,6 +664,18 @@ the global <code>minetest.registered_*</code> tables.</p>
 <li>added to <code>minetest.registered_items[name]</code></li>
 </ul>
 </li>
+<li>
+<p><code>minetest.register_ore(ore definition)</code></p>
+<ul>
+<li>added to <code>minetest.registered_ores</code></li>
+</ul>
+</li>
+<li>
+<p><code>minetest.register_decoration(decoration definition)</code></p>
+<ul>
+<li>added to <code>minetest.registered_decorations</code></li>
+</ul>
+</li>
 </ul>
 <p>Note that in some cases you will stumble upon things that are not contained
 in these tables (e.g. when a mod has been removed). Always check for
@@ -2169,6 +2181,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   should be applied to the default config or current active config</li>
 </ul>
 </li>
+<li><code>minetest.generate_ores(vm)</code></li>
+<li>Generate all registered ores within the VoxelManip specified by <code>vm</code>.</li>
+<li><code>minetest.generate_decorations(vm)</code></li>
+<li>Generate all registered decorations within the VoxelManip specified by <code>vm</code>.</li>
 <li><code>minetest.clear_objects()</code><ul>
 <li>clear all objects in the environments</li>
 </ul>
@@ -2669,31 +2685,39 @@ end
 <h3 id="global-tables">Global tables</h3>
 <ul>
 <li><code>minetest.registered_items</code><ul>
-<li>List of registered items, indexed by name</li>
+<li>Map of registered items, indexed by name</li>
 </ul>
 </li>
 <li><code>minetest.registered_nodes</code><ul>
-<li>List of registered node definitions, indexed by name</li>
+<li>Map of registered node definitions, indexed by name</li>
 </ul>
 </li>
 <li><code>minetest.registered_craftitems</code><ul>
-<li>List of registered craft item definitions, indexed by name</li>
+<li>Map of registered craft item definitions, indexed by name</li>
 </ul>
 </li>
 <li><code>minetest.registered_tools</code><ul>
-<li>List of registered tool definitions, indexed by name</li>
+<li>Map of registered tool definitions, indexed by name</li>
 </ul>
 </li>
 <li><code>minetest.registered_entities</code><ul>
-<li>List of registered entity prototypes, indexed by name</li>
+<li>Map of registered entity prototypes, indexed by name</li>
 </ul>
 </li>
 <li><code>minetest.object_refs</code><ul>
-<li>List of object references, indexed by active object id</li>
+<li>Map of object references, indexed by active object id</li>
 </ul>
 </li>
 <li><code>minetest.luaentities</code><ul>
-<li>List of Lua entities, indexed by active object id</li>
+<li>Map of Lua entities, indexed by active object id</li>
+</ul>
+</li>
+<li><code>minetest.registered_ores</code><ul>
+<li>List of registered ore definitions.</li>
+</ul>
+</li>
+<li><code>minetest.registered_decorations</code><ul>
+<li>List of registered decoration definitions.</li>
 </ul>
 </li>
 </ul>
