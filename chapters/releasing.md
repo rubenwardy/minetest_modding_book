@@ -230,11 +230,19 @@ Here is an example. The Minetest forum uses bbcode for formating.
 	For further information or help see:
 	[url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
 
+### Title
+
+Subject of topic must be in one of these formats:
+
+* [Mod] Mod Title [modname]
+* [Mod] Mod Title [version number] [modname]
+* eg: [Mod] More Blox [0.1] [moreblox]
+
 ### Profit
 
 <figure>
 	<img src="{{ page.root }}/static/releasing_profit.png" alt="Profit">
-	<figcaption>
+	<figcaption style="display:none;">
 		Profit
 	</figcaption>
 </figure>
