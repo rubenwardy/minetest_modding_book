@@ -35,6 +35,12 @@
 
 - hr: true
 
+- title: Releasing a Mod
+  num: 8
+  link: chapters/releasing.html
+
+- hr: true
+
 - title: Index
   link:  book_index.html
 
