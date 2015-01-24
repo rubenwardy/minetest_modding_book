@@ -25,18 +25,22 @@
 
 - hr: true
 
-- title: Formspecs
+- title: Player Physics
   num:   6
+  link:  chapters/player_physics.html
+
+- title: Formspecs
+  num:   7
   link:  chapters/formspecs.html
 
 - title: HUD
-  num:   7
+  num:   8
   link:  chapters/hud.html
 
 - hr: true
 
 - title: Releasing a Mod
-  num: 8
+  num: 9
   link: chapters/releasing.html
 
 - hr: true
