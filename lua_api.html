@@ -43,7 +43,7 @@ layout: default
 <li><a href="#lowpartpercentfile">[lowpart:&lt;percent&gt;:&lt;file&gt;</a></li>
 <li><a href="#verticalframetn">[verticalframe:&lt;t&gt;:&lt;n&gt;</a></li>
 <li><a href="#maskfile">[mask:&lt;file&gt;</a></li>
-<li><a href="#colorizecolor">[colorize:&lt;color&gt;</a></li>
+<li><a href="#colorizecolorratio">[colorize:&lt;color&gt;:&lt;ratio&gt;</a></li>
 </ul>
 </li>
 </ul>
@@ -580,9 +580,11 @@ Rotations are counter-clockwise.</p>
 <h4 id="maskfile"><code>[mask:&lt;file&gt;</code></h4>
 <p>Apply a mask to the base image.</p>
 <p>The mask is applied using binary AND.</p>
-<h4 id="colorizecolor"><code>[colorize:&lt;color&gt;</code></h4>
+<h4 id="colorizecolorratio"><code>[colorize:&lt;color&gt;:&lt;ratio&gt;</code></h4>
 <p>Colorize the textures with the given color.
-<code>&lt;color&gt;</code> is specified as a <code>ColorString</code>.</p>
+<code>&lt;color&gt;</code> is specified as a <code>ColorString</code>.
+<code>&lt;ratio&gt;</code> is an int ranging from 0 to 255, and specifies how much of the
+color to apply. If ommitted, the alpha will be used.</p>
 <h2 id="sounds">Sounds</h2>
 <p>Only Ogg Vorbis files are supported.</p>
 <p>For positional playing of sounds, only single-channel (mono) files are
@@ -667,15 +669,29 @@ the global <code>minetest.registered_*</code> tables.</p>
 <li>
 <p><code>minetest.register_ore(ore definition)</code></p>
 <ul>
-<li>added to <code>minetest.registered_ores</code></li>
+<li>returns an integer uniquely identifying the registered ore</li>
+<li>added to <code>minetest.registered_ores</code> with the key of <code>ore.name</code></li>
+<li>if <code>ore.name</code> is nil, the key is the returned ID</li>
 </ul>
 </li>
 <li>
 <p><code>minetest.register_decoration(decoration definition)</code></p>
 <ul>
-<li>added to <code>minetest.registered_decorations</code></li>
+<li>returns an integer uniquely identifying the registered decoration</li>
+<li>added to <code>minetest.registered_decorations</code> with the key of <code>decoration.name</code></li>
+<li>if <code>decoration.name</code> is nil, the key is the returned ID</li>
 </ul>
 </li>
+<li>
+<p><code>minetest.clear_registered_ores()</code></p>
+</li>
+<li>
+<p>clears all ores currently registered</p>
+</li>
+<li>
+<p><code>minetest.clear_registered_decorations()</code></p>
+</li>
+<li>clears all decorations currently registered</li>
 </ul>
 <p>Note that in some cases you will stumble upon things that are not contained
 in these tables (e.g. when a mod has been removed). Always check for
@@ -717,8 +733,10 @@ store arbitrary values.</p>
 node definition:</p>
 <p><code>param1</code> is reserved for the engine when <code>paramtype != "none"</code>:</p>
 <pre><code>paramtype = "light"
-^ The value stores light with and without sun in it's
-  upper and lower 4 bits.
+^ The value stores light with and without sun in its upper and lower 4 bits
+  respectively. Allows light to propagate from or through the node with
+  light value falling by 1 per node. This is essential for a light source
+  node to spread its light.
 </code></pre>
 <p><code>param2</code> is reserved for the engine when any of these are used:</p>
 <pre><code>liquidtype == "flowing"
@@ -1452,7 +1470,8 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>Position and size units are inventory slots</li>
 <li>Example for formspec 8x4 in 16x resolution:
   image shall be sized 8 times 16px  times  4 times 16px</li>
-<li>If <code>true</code> the background is clipped to formspec size (<code>x</code> and <code>y</code> are used as offset values, <code>w</code> and <code>h</code> are ignored)</li>
+<li>If <code>true</code> the background is clipped to formspec size
+  (<code>x</code> and <code>y</code> are used as offset values, <code>w</code> and <code>h</code> are ignored)</li>
 </ul>
 <h4 id="pwdfieldxywhnamelabel"><code>pwdfield[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;label&gt;]</code></h4>
 <ul>
@@ -1882,12 +1901,18 @@ value must (always) be two hexadecimal digits.</p>
 <li><code>minetest.register_craft(recipe)</code></li>
 <li><code>minetest.register_ore(ore definition)</code></li>
 <li><code>minetest.register_decoration(decoration definition)</code></li>
-<li><code>minetest.override_item(name, redefinition)</code><ul>
+<li>
+<p><code>minetest.override_item(name, redefinition)</code></p>
+<ul>
 <li>Overrides fields of an item registered with register_node/tool/craftitem.</li>
 <li>Note: Item must already be defined, (opt)depend on the mod defining it.</li>
 <li>Example: <code>minetest.override_item("default:mese", {light_source=LIGHT_MAX})</code></li>
 </ul>
 </li>
+<li>
+<p><code>minetest.clear_registered_ores()</code></p>
+</li>
+<li><code>minetest.clear_registered_decorations()</code></li>
 </ul>
 <h3 id="global-callback-registration-functions">Global callback registration functions</h3>
 <p>Call these functions only at load time!</p>
@@ -2169,7 +2194,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Function cannot be called after the registration period; only initialization and <code>on_mapgen_init</code></li>
 <li>Takes a table as an argument with the fields <code>mgname</code>, <code>seed</code>, <code>water_level</code>, and <code>flags</code>.<ul>
 <li>Leave field unset to leave that parameter unchanged</li>
-<li><code>flags</code> contains a comma-delimited string of flags to set, or if the prefix <code>"no"</code> is attached, clears instead.</li>
+<li><code>flags</code> contains a comma-delimited string of flags to set,
+  or if the prefix <code>"no"</code> is attached, clears instead.</li>
 <li><code>flags</code> is in the same format and has the same options as <code>mg_flags</code> in <code>minetest.conf</code></li>
 </ul>
 </li>
@@ -2187,6 +2213,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Generate all registered decorations within the VoxelManip specified by <code>vm</code>.</li>
 <li><code>minetest.clear_objects()</code><ul>
 <li>clear all objects in the environments</li>
+</ul>
+</li>
+<li><code>minetest.delete_area(pos1, pos2)</code><ul>
+<li>delete all mapblocks in the area from pos1 to pos2, inclusive</li>
 </ul>
 </li>
 <li><code>minetest.line_of_sight(pos1, pos2, stepsize)</code>: returns <code>boolean, pos</code><ul>
@@ -2308,7 +2338,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><code>minetest.dir_to_facedir(dir, is6d)</code><ul>
 <li>Convert a vector to a facedir value, used in <code>param2</code> for <code>paramtype2="facedir"</code>;</li>
-<li>passing something non-<code>nil</code>/<code>false</code> for the optional second parameter causes it to take the y component into account</li>
+<li>passing something non-<code>nil</code>/<code>false</code> for the optional second parameter causes it to
+  take the y component into account</li>
 </ul>
 </li>
 <li><code>minetest.facedir_to_dir(facedir)</code><ul>
@@ -2374,7 +2405,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 <h3 id="rollback">Rollback</h3>
 <ul>
-<li><code>minetest.rollback_get_node_actions(pos, range, seconds, limit)</code>: returns <code>{ {actor, pos, time, oldnode, newnode}, ...}</code><ul>
+<li><code>minetest.rollback_get_node_actions(pos, range, seconds, limit)</code>:
+  returns <code>{ {actor, pos, time, oldnode, newnode}, ...}</code><ul>
 <li>Find who has done something to a node, or near a node</li>
 <li><code>actor</code>: <code>"player:&lt;name&gt;"</code>, also <code>"liquid"</code>.</li>
 </ul>
@@ -2502,8 +2534,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>If there are two or more entries with the same pos value, the last entry is used.</li>
 <li>If <code>pos</code> is not inside the box formed by <code>p1</code> and <code>p2</code>, it is ignored.</li>
 <li>If <code>probability_list</code> equals <code>nil</code>, no probabilities are applied.</li>
-<li>Slice probability works in the same manner, except takes a field called <code>ypos</code> instead which indicates
-  the y position of the slice with a probability applied.</li>
+<li>Slice probability works in the same manner, except takes a field called <code>ypos</code> instead which
+  indicates the y position of the slice with a probability applied.</li>
 <li>If slice probability list equals <code>nil</code>, no slice probabilities are applied.</li>
 </ul>
 </li>
@@ -2928,7 +2960,8 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><code>nil</code>: Disables override, defaulting to sunlight based on day-night cycle</li>
 </ul>
 </li>
-<li><code>set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, frame_speed=30)</code>: set animation for player model in third person view<ul>
+<li><code>set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, frame_speed=30)</code>:
+  set animation for player model in third person view<ul>
 <li>stand/idle animation key frames</li>
 <li>walk animation key frames</li>
 <li>dig animation key frames</li>
@@ -3051,7 +3084,8 @@ for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
   with values starting at <code>pos={x=,y=}</code></li>
 <li><code>get3dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> times <code>&lt;size.z&gt;</code> 3D array
   of 3D noise with values starting at <code>pos={x=,y=,z=}</code></li>
-<li><code>get2dMap_flat(pos)</code>: returns a flat <code>&lt;size.x * size.y&gt;</code> element array of 2D noise with values starting at <code>pos={x=,y=}</code></li>
+<li><code>get2dMap_flat(pos)</code>: returns a flat <code>&lt;size.x * size.y&gt;</code> element array of 2D noise
+  with values starting at <code>pos={x=,y=}</code></li>
 <li><code>get3dMap_flat(pos)</code>: Same as <code>get2dMap_flat</code>, but 3D noise</li>
 </ul>
 <h3 id="voxelmanip"><code>VoxelManip</code></h3>
@@ -3443,7 +3477,9 @@ minetest.spawn_tree(pos,apple_tree)
     alpha = 255,
     use_texture_alpha = false, -- Use texture's alpha channel
     post_effect_color = {a=0, r=0, g=0, b=0}, -- If player is inside node
-    paramtype = "none", -- See "Nodes"
+    paramtype = "none", -- See "Nodes" --[[
+    ^ paramtype = "light" allows light to propagate from or through the node with light value
+    ^ falling by 1 per node. This line is essential for a light source node to spread its light. ]]
     paramtype2 = "none", -- See "Nodes"
     is_ground_content = true, -- If false, the cave generator will not carve through this
     sunlight_propagates = false, -- If true, sunlight will go infinitely through this
@@ -3457,15 +3493,17 @@ minetest.spawn_tree(pos,apple_tree)
     liquid_alternative_source = "", -- Source version of flowing liquid
     liquid_viscosity = 0, -- Higher viscosity = slower flow (max. 7)
     liquid_renewable = true, -- Can new liquid source be created by placing two or more sources nearby?
-    leveled = 0, -- Block contain level in param2. value - default level, used for snow. Don't forget use "leveled" type nodebox
+    leveled = 0, --[[
+    ^ Block contains level in param2. Value is default level, used for snow.
+    ^ Don't forget to use "leveled" type nodebox. ]]
     liquid_range = 8, -- number of flowing nodes around source (max. 8)
     drowning = 0, -- Player will take this amount of damage if no bubbles are left
     light_source = 0, -- Amount of light emitted by node
     damage_per_second = 0, -- If player is inside node, this damage is caused
     node_box = {type="regular"}, -- See "Node boxes"
     mesh = "model",
-    selection_box = {type="regular"}, -- See "Node boxes"
-    ^ If drawtype "nodebox" is used and selection_box is nil, then node_box is used
+    selection_box = {type="regular"}, -- See "Node boxes" --[[
+    ^ If drawtype "nodebox" is used and selection_box is nil, then node_box is used. ]]
     legacy_facedir_simple = false, -- Support maps made in and before January 2012
     legacy_wallmounted = false, -- Support maps made in and before January 2012
     sounds = {
