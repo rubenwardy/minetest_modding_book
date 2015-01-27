@@ -36,7 +36,7 @@ minetest.register_chatcommand("antigravity",
 ### Possible Overrides
 
 player:set_physics_override() is given a table of overrides.\\
-According to [lua_api.txt](lua_api.html#player-only-no-op-for-other-objects),
+According to [lua_api.txt](../lua_api.html#player-only-no-op-for-other-objects),
 these can be:
 
 * speed: multiplier to default walking speed value (default: 1)
