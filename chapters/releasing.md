@@ -23,7 +23,7 @@ License Choices
 ---------------
 
 You need to specify a license for your mod.
-**public domain is not a valid licence**. The definition varies in different countries.
+**Public domain is not a valid licence**, as the definition varies in different countries.
 
 First thing you need to note is that your code and your art need different types of protection.
 
@@ -40,7 +40,6 @@ You license your code under LGPL 2.1 and your art under CC-BY-SA.
 * Your copyright notice must be kept.
 
 Add this copyright notice to your README.txt, or as a new file called LICENSE.txt
-
 
 	License for Code
 	----------------
@@ -186,19 +185,24 @@ Click browse and select the zipped file. I suggest that you enter the version of
 Forum Topic
 -----------
 
-You can now create a forum topic.
+You can now create a forum topic. You should create it in
+the ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (Work In Progress) 
+forum.\\
+When you consider your mod no longer a work in progress, you can
+[request that it be moved](https://forum.minetest.net/viewtopic.php?f=11&t=10418)
+to "Mod Releases."
 
 ### Content
 
-The requirements of a forum topic the same as what is recommended for a README.txt
+The requirements of a forum topic are mostly the same as what is recommended for a README.txt
 
-* What the mod does
-* What the license is
-* Current version of mod
-* How to install the mod
-* What dependencies there are
+* What the mod does.
+* What the license is.
+* Current version of mod.
+* How to install the mod.
+* What dependencies there are.
 * Where to report problems/bugs or get help.
-* Link to download, or
+* Link to download, or an attachment.
 
 You should also include screenshots of your mod in action, if relevant.
 
@@ -209,8 +213,8 @@ Here is an example. The Minetest forum uses bbcode for formating.
 
 	See download attached.
 
-	Version: 1.1
-	Licence: LGPL 2.1 or later
+	[b]Version:[/b] 1.1
+	[b]Licence:[/b] LGPL 2.1 or later
 
 	Dependencies: default mod (found in minetest_game)
 
@@ -229,6 +233,10 @@ Here is an example. The Minetest forum uses bbcode for formating.
 
 	For further information or help see:
 	[url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
+	
+If you modify the above example for your mod topic, remember to
+change "modfldername" to the name of the folder your mod should be
+in.
 
 ### Title
 
