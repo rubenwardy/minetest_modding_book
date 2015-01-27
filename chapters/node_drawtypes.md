@@ -82,6 +82,29 @@ Airlike
 
 These nodes are see through, and thus have no textures.
 
+{% highlight lua %}
+minetest.register_node("myair:air", {
+	description = "MyAir (you hacker you!)",
+	drawtype = "airlike",
+	
+	paramtype = "light", 
+	-- ^ Allows light to propagate through the node with the
+	--   light value falling by 1 per node.
+	
+	sunlight_propagates = true, -- Sunlight shines through
+	walkable     = false, -- Would make the player collide with the air node
+	pointable    = false, -- You can't select the node
+	diggable     = false, -- You can't dig the node
+	buildable_to = true,  -- Nodes can be replace this node.
+	                      -- (you can place a node and remove the air node
+	                      -- that used to be there)
+	
+	air_equivalent = true,
+	drop = "",
+	groups = {not_in_creative_inventory=1}
+})
+{% endhighlight %}
+
 Liquid
 ------
 
@@ -100,26 +123,27 @@ For each liquid node you should also have a flowing liquid node.
 minetest.register_node("default:water_source", {
 	drawtype = "liquid",
 	paramtype = "light",
-	-- ^ light goes through node
 
 	inventory_image = minetest.inventorycube("default_water.png"),
 	-- ^ this is required to stop the inventory image from being animated
+	
 	tiles = {
 		{
 			name = "default_water_source_animated.png",
 			animation = {
-				type = "vertical_frames",
-				aspect_w=16,
-				aspect_h=16,
-				length=2.0
+				type     = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length   = 2.0
 			}
 		}
 	},
+	
 	special_tiles = {
 		-- New-style water source material (mostly unused)
 		{
-			name="default_water_source_animated.png",
-			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0},
+			name      = "default_water_source_animated.png",
+			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
 			backface_culling = false,
 		}
 	},
@@ -127,12 +151,12 @@ minetest.register_node("default:water_source", {
 	--
 	-- Behavior
 	--
-	walkable = false,    -- The player falls through
-	pointable = false,   -- The player can't highlight it
-	diggable = false,    -- The player can't dig it
-	buildable_to = true, -- The player can't build on it
+	walkable     = false, -- The player falls through
+	pointable    = false, -- The player can't highlight it
+	diggable     = false, -- The player can't dig it
+	buildable_to = true,  -- Nodes can be replace this node
 
-	alpha = WATER_ALPHA,
+	alpha = 160,
 
 	--
 	-- Liquid Properties
@@ -195,13 +219,6 @@ minetest.register_node("default:obsidian_glass", {
 Glasslike_Framed
 ----------------
 
-<figure class="right_image">
-	<img src="{{ page.root }}/static/drawtype_glasslike.png" alt="Glasslike_Framed drawtype">
-	<figcaption>
-		Glasslike_Framed
-	</figcaption>
-</figure>
-
 This makes the node's edge go around the whole thing, rather than individual nodes,
 like the following:
 
@@ -216,13 +233,16 @@ like the following:
 minetest.register_node("default:glass", {
 	description = "Glass",
 	drawtype = "glasslike_framed",
+	
 	tiles = {"default_glass.png", "default_glass_detail.png"},
 	inventory_image = minetest.inventorycube("default_glass.png"),
+	
 	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	groups = {cracky=3,oddly_breakable_by_hand=3},
-	sounds = default.node_sound_glass_defaults(),
+	sunlight_propagates = true, -- Sunlight can shine through block
+	is_ground_content = false, -- Stops caves from being generated over this node.
+	
+	groups = {cracky = 3, oddly_breakable_by_hand = 3},
+	sounds = default.node_sound_glass_defaults()
 })
 {% endhighlight %}
 
@@ -240,9 +260,10 @@ Allfaces
 	</figcaption>
 </figure>
 
-Allfaces nodes show every single face of the cube, even if sides are
+Allfaces nodes are partially transparent nodes - they have holes on
+the faces - which show every single face of the cube, even if sides are
 up against another node (which would normally be hidden).
-They are mainly used for leaves.
+Leaves in vanilla minetest_game use this drawtype.
 
 {% highlight lua %}
 minetest.register_node("default:leaves", {
@@ -254,50 +275,35 @@ minetest.register_node("default:leaves", {
 
 ### Allfaces_Optional
 
-"optional" drawtypes need less rendering time if deactivated on the client's side.
+Allows clients to disable it using `new_style_leaves = 0`, requiring less rendering time.
 
 TorchLike
 ---------
 
-TorchLike allows you to have different textures when placed against a wall,
-on the floor or on the ceiling.
+TorchLike nodes are 2D nodes which allow you to have different textures
+depending on whether they are placed against a wall, on the floor or on the ceiling.
+
+TorchLike nodes are not restricted to torches, you could use the for switches or other
+items which need to have different textures depending on where they are placed.
 
 {% highlight lua %}
-minetest.register_node("default:torch", {
-	description = "Torch",
+minetest.register_node("foobar:torch", {
+	description = "Foobar Torch",
 	drawtype = "torchlike",
 	tiles = {
-		{
-			name = "default_torch_on_floor_animated.png",
-			animation = {
-				type     = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length   = 3.0
-			}
-		},
-		{
-			name = "default_torch_on_ceiling_animated.png",
-			animation = {
-				type     = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length   = 3.0
-			}
-		},
-		{
-			name = "default_torch_animated.png",
-			animation = {
-				type     = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length   = 3.0
-			}
-		}
+		{"foobar_torch_floor.png"},
+		{"foobar_torch_ceiling.png"},
+		{"foobar_torch_wall.png"}
 	},
-	inventory_image = "default_torch_on_floor.png",
-	wield_image = "default_torch_on_floor.png",
+	inventory_image = "foobar_torch_floor.png",
+	wield_image = "default_torch_floor.png",
 	light_source = LIGHT_MAX-1,
+	
+	-- Determines how the torch is selected, ie: the wire box around it.
+	-- each value is { x1, y1, z1, x2, y2, z2 }
+	-- (x1, y1, y1) is the bottom front left corner
+	-- (x2, y2, y2) is the opposite - top back right.
+	-- Similar to the nodebox format.
 	selection_box = {
 		type = "wallmounted",
 		wall_top = {-0.1, 0.5-0.6, -0.1, 0.1, 0.5, 0.1},
