@@ -2,6 +2,7 @@
 title: Index
 permalink: book_index.html
 layout: default
+sitemap: false
 ---
 
 ## C
