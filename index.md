@@ -22,14 +22,14 @@ This online book aims to teach you how to create your own mods, starting from th
 
 Start reading. Use the navigation bar on the left to open a chapter.
 
-* [GitHub](https://github.com/rubenwardy/minetest_doc).
-* [Download for offline use](https://github.com/rubenwardy/minetest_doc/releases)
+* [GitHub](https://github.com/rubenwardy/minetest_modding_book).
+* [Download for offline use](https://github.com/rubenwardy/minetest_modding_book/releases)
 * [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729)
 
 Contribution
 ------------
 
-You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_doc).
+You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_modding_book).
 
 Written by rubenwardy.\\
 License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
