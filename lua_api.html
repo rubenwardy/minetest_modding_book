@@ -2644,9 +2644,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   check if a player can interact at a position.</li>
 <li>This function should call the old version of itself if the position is not
   protected by the mod.</li>
-<li>
-<p>Example:</p>
-<pre><code>local old_is_protected = minetest.is_protected
+<li>Example:<pre><code>local old_is_protected = minetest.is_protected
 function minetest.is_protected(pos, name)
     if mymod:position_protected_from(pos, name) then
         return true
