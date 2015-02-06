@@ -2,6 +2,7 @@ html, body {
 	font-family: "Arial", sans-serif;
 	margin: 0;
 	padding: 0;
+	font-size: 17px;
 	background: #333;
 }
 
@@ -127,6 +128,8 @@ code {
 	border: 1px solid #e0e0e0;
 	border-radius: 2px;
 	white-space: pre;
+	max-width: 95%;
+	overflow-x: scroll;
 }
 
 .header-link {
@@ -162,4 +165,22 @@ h3 {
 
 .toc > ul > li > ul > li > ul {
 	display: none;
+}
+
+@media all and (max-width: 780px) {
+	#navbar {
+		position: static;
+		margin: 0;
+		width: 100%;
+	}
+
+	#navbar li a {
+		padding: 10px;
+	}
+
+	#page {
+		position: static;
+		margin: 0;
+		padding-top: 20px;
+	}
 }
