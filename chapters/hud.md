@@ -16,7 +16,7 @@ Introduction
 
 Heads Up Display (HUD) elements allow you to show text, images, and other graphical elements.
 
-HUD doesn't except user input. For that, you should use a [Formspec](formspecs.html).
+HUD doesn't accept user input. For that, you should use a [Formspec](formspecs.html).
 
 * Basic Interface
 * Positioning
