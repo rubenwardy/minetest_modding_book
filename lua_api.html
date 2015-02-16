@@ -826,7 +826,7 @@ changed in the future.</p>
 set to level from <code>param2</code>.</p>
 <h2 id="meshes">Meshes</h2>
 <p>If drawtype <code>mesh</code> is used, tiles should hold model materials textures.
-Only static meshes are implemented.<br />
+Only static meshes are implemented.
 For supported model formats see Irrlicht engine documentation.</p>
 <h2 id="noise-parameters">Noise Parameters</h2>
 <p>Noise Parameters, or commonly called "<code>NoiseParams</code>", define the properties of perlin noise.</p>
@@ -891,12 +891,12 @@ distribution of ore.</p>
 The relative height of the sheet can be controlled by the same perlin noise as well, by specifying
 a non-zero <code>scale</code> parameter in <code>noise_params</code>.</p>
 <p><strong>IMPORTANT</strong>: The noise is not transformed by <code>offset</code> or <code>scale</code> when comparing against the noise
-threshold, but scale is used to determine relative height.<br />
+threshold, but scale is used to determine relative height.
 The height of the blob is randomly scattered, with a maximum height of <code>clust_size</code>.</p>
 <p><code>clust_scarcity</code> and <code>clust_num_ores</code> are ignored.</p>
 <p>This is essentially an improved version of the so-called "stratus" ore seen in some unofficial mods.</p>
 <h3 id="blob"><code>blob</code></h3>
-<p>Creates a deformed sphere of ore according to 3d perlin noise described by 
+<p>Creates a deformed sphere of ore according to 3d perlin noise described by
 <code>noise_params</code>.  The maximum size of the blob is <code>clust_size</code>, and
 <code>clust_scarcity</code> has the same meaning as with the <code>scatter</code> type.</p>
 <h3 id="vein">`vein</h3>
@@ -1314,7 +1314,7 @@ return damage
 <p>Client predicts damage based on damage groups. Because of this, it is able to
 give an immediate response when an entity is damaged or dies; the response is
 pre-defined somehow (e.g. by defining a sprite animation) (not implemented;
-TODO).<br />
+TODO).
 Currently a smoke puff will appear when an entity dies.</p>
 <p>The group <code>immortal</code> completely disables normal damage.</p>
 <p>Entities can define a special armor group, which is <code>punch_operable</code>. This
@@ -2281,6 +2281,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Creates a detached inventory. If it already exists, it is cleared.</li>
 </ul>
 </li>
+<li><code>minetest.do_item_eat(hp_change, replace_with_item, itemstack, user, pointed_thing)</code>: returns left over ItemStack<ul>
+<li>See <code>minetest.item_eat</code> and <code>minetest.register_on_item_eat</code></li>
+</ul>
+</li>
 </ul>
 <h3 id="formspec_1">Formspec</h3>
 <ul>
@@ -2443,7 +2447,11 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><code>minetest.item_eat(hp_change, replace_with_item)</code><ul>
-<li>Eat the item. <code>replace_with_item</code> can be <code>nil</code>.</li>
+<li>Eat the item.</li>
+<li><code>replace_with_item</code> is the itemstring which is added to the inventory.
+  If the player is eating a stack, then replace_with_item goes to a
+  different spot. Can be <code>nil</code></li>
+<li>See <code>minetest.do_item_eat</code></li>
 </ul>
 </li>
 </ul>
@@ -2753,7 +2761,7 @@ end
 </ul>
 <h2 id="class-reference">Class reference</h2>
 <h3 id="nodemetaref"><code>NodeMetaRef</code></h3>
-<p>Node metadata: reference extra data and functionality stored in a node.<br />
+<p>Node metadata: reference extra data and functionality stored in a node.
 Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
 <h4 id="methods">Methods</h4>
 <ul>
@@ -2771,7 +2779,7 @@ Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
 </li>
 </ul>
 <h3 id="notetimerref"><code>NoteTimerRef</code></h3>
-<p>Node Timers: a high resolution persistent per-node timer.<br />
+<p>Node Timers: a high resolution persistent per-node timer.
 Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <h4 id="methods_1">Methods</h4>
 <ul>
@@ -3061,7 +3069,7 @@ an itemstring, a table or <code>nil</code>.</p>
 <h3 id="perlinnoise"><code>PerlinNoise</code></h3>
 <p>A perlin noise generator.
 It can be created via <code>PerlinNoise(seed, octaves, persistence, scale)</code>
-or <code>PerlinNoise(noiseparams)</code>.<br />
+or <code>PerlinNoise(noiseparams)</code>.
 Alternatively with <code>minetest.get_perlin(seeddiff, octaves, persistence, scale)</code>
 or <code>minetest.get_perlin(noiseparams)</code>.</p>
 <h4 id="methods_6">Methods</h4>
