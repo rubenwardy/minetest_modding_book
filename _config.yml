@@ -1,14 +1,5 @@
-name: Minetest Tutorial and Documentation
-description: Simple and easy to understand tutorial book
-author: rubenwardy and contributors
-absolute_url: http://rubenwardy.github.io/minetest_doc
-
 sass:
-  # style : nested (default), compact, compressed, expanded
-  #         :nested, :compact, :compressed, :expanded also works
-  # see http://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
-  # on a typical twitter bootstrap stats are :
-  # nested 138,7kB, compact 129,1kB, expanded 135,9 kB, compressed 122,4 kB
+  #  nested (default), compact, compressed, expanded
   style: compressed
 
 gems:
