@@ -29,7 +29,8 @@ Start reading. Use the navigation bar on the left to open a chapter.
 Contribution
 ------------
 
-You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_modding_book).
+You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_modding_book).\\
+Read the [contribution README](README.html).
 
 Written by rubenwardy.\\
 License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
