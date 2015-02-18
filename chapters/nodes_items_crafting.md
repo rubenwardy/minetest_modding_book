@@ -205,7 +205,7 @@ minetest.register_craft({
 	recipe = {
 		{"mymod:diamond_fragments", "", ""},
 		{"mymod:diamond_fragments", "mymod:diamond_fragments", ""},
-		{"mymod:diamond_fragments", "mymod:diamond_fragments,  ""}
+		{"mymod:diamond_fragments", "mymod:diamond_fragments",  ""}
 	}
 })
 {% endhighlight %}
@@ -227,8 +227,8 @@ minetest.register_craft({
 	output = "mymod:diamond_chair",
 	recipe = {
 		{"mymod:diamond_fragments", ""},
-		{"mymod:diamond_fragments", "mymod:diamond_fragments",
-		{"mymod:diamond_fragments", "mymod:diamond_fragments}
+		{"mymod:diamond_fragments", "mymod:diamond_fragments"},
+		{"mymod:diamond_fragments", "mymod:diamond_fragments"}
 	}
 })
 {% endhighlight %}
