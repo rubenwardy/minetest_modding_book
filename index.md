@@ -26,8 +26,15 @@ Start reading. Use the navigation bar on the left to open a chapter.
 * [Download for offline use](https://github.com/rubenwardy/minetest_modding_book/releases)
 * [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729)
 
-Contribution
-------------
+About this Book
+---------------
+
+Noticed a mistake, or want to give feedback? Tell us about it using one of these methods:
+
+* [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
+* Post in [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
+* Send me a [PM](https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=2051) on the Forum.
+* Send me an email to rubenwardy on gmail.com
 
 You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_modding_book).\\
 Read the [contribution README](README.html).
