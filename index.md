@@ -31,6 +31,7 @@ About this Book
 
 Noticed a mistake, or want to give feedback? Tell us about it using one of these methods:
 
+* Submit a report below.
 * [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
 * Post in [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
 * Send me a [PM](https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=2051) on the Forum.
@@ -41,3 +42,17 @@ Read the [contribution README](README.html).
 
 Written by rubenwardy.\\
 License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
+
+Feedback
+--------
+
+<form class="leave_comment" action="http://pooleapp.com/stash/74bf2dfb-4c01-423c-b48a-e002ed70bbc1/" method="post">
+	<input type="hidden" name="redirect_to"
+			value="http://rubenwardy.com/minetest_modding_book/thank_you.html" />
+	Nickname (optional): <input class="name" name="name" placeholder="Your Name" type="text"><br />
+	Contact method (email or forum name, optional): <input name="contact" type="text"><br />
+	Feedback:
+	<textarea name="comment" required="" style="display:block;min-width: 90%;min-height:100px;"></textarea>
+
+	<input value="Leave Feedback" type="submit">
+</form>
