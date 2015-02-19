@@ -45,8 +45,5 @@
 
 - hr: true
 
-- title: Index
-  link:  book_index.html
-
 - title: Lua Modding API Reference
   link:  lua_api.html
