@@ -7,8 +7,8 @@ root: ../
 Introduction
 ------------
 
-In this chapter we will learn how the basic structure of a mod's folder.
-This is essential for creating mods.
+In this chapter we will learn the basic structure of a mod's folder.
+This is an essential skill when creating mods.
 
 * Mod Folders
 * Dependencies
@@ -17,18 +17,19 @@ This is essential for creating mods.
 Mod Folders
 -----------
 
-![Find the mod's folder]({{ page.root }}/static/folder_modfolder.png)
+![Find the mod's folder]({{ page.root }}/static/folder_modfolder.jpg)
 
-Each mod has its own folder, where all its Lua code, textures, models and sounds are placed.
-These folders need to be placed in a mod location, such as minetest/mods, and they can be
-placed in mod packs: as explained below.
+Each mod has its own folder, where all its Lua code, textures, models and sounds
+are placed. These folders need to be placed in a mod location, such as
+minetest/mods. Mods can be grouped into mod packs, which are explained below.
 
-The modname is used to refer to a mod. Each mod should have a unique modname, which you can choose -
-it should describe what the mod does. Modnames can be make up of letters, numbers
-or underscores.
+A "mod name" is used to refer to a mod. Each mod should have a unique mod name,
+which you can choose - a good mod name can describes what the mod does.
+Mod names can be make up of letters, numbers or underscores. The folder a mod is
+in needs to be called the same as the mod name.
 
 ### Mod Folder Structure
-	Modname
+	Mod name (eg: "mymod")
 	-	init.lua - the main scripting code file, which is run when the game loads.
 	-	(optional) depends.txt - a list of mod names that needs to be loaded before this mod.
 	-	(optional) textures/ - place images here, commonly in the format modname_itemname.png
@@ -36,8 +37,8 @@ or underscores.
 	-	(optional) models/ - place 3d models in here
 	...and any other lua files to be included by init.lua
 
-Only the init.lua file is required in a mod for it to run on game load, however the other
-items are needed by some mods to perform its functionality.
+Only the init.lua file is required in a mod for it to run on game load, however
+the other items are needed by some mods to perform their functionality.
 
 Dependencies
 ------------
@@ -51,7 +52,7 @@ needs to be loaded before this mod.
 	modtwo
 	modthree?
 
-As you can see, each mod name is on its own line.
+As you can see, each modname is on its own line.
 
 Mod names with a question mark following them are optional dependencies.
 If an optional mod is installed, it is loaded before the current mod.
@@ -63,7 +64,7 @@ Mod Packs
 ---------
 
 Modpacks allow multiple mods to be packaged together, and move together.
-They are useful if you want to supply multiple mods to an end user, and don't
+They are useful if you want to supply multiple mods to a player but don't
 want to make them download each one individually.
 
 ### Mod Pack Folder Structure
@@ -92,7 +93,7 @@ Are you confused? Don't worry, here is an example putting all of this together.
 {% highlight lua %}
 print("This file will be run at load time!")
 
-minetest.register_node("mymod:node",{
+minetest.register_node("mymod:node", {
 	description = "This is a node",
 	tiles = {
 		"mymod_node.png",
