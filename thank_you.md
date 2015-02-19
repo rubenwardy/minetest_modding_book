@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Thank You.
 permalink: thank_you.html
 layout: default
 ---
