@@ -28,15 +28,15 @@ it provides an interactive tutorial experience.
 ### Scratch
 [Scratch](https://scratch.mit.edu) is a good resource when starting from absolute basics,
 learning the problem solving techniques required to program.\\
-Programming is all about breaking down problems into computable steps.\\
+Programming is all about breaking down problems into steps a computer can manage.\\
 Scratch is **designed to teach children** how to program, it isn't a serious programming language.
 
 Tools
 -----
 
 A text editor with code highlighting is sufficient for writing scripts in Lua.
-Code highlighting gives different words and characters different colors in order to
-make it easier to read the code and spot any mistakes.
+Code highlighting gives different colors to different words and characters
+depending on what they mean. This allows you to spot mistakes.
 
 {% highlight lua %}
 function ctf.post(team,msg)
