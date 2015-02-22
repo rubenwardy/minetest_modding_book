@@ -11,8 +11,7 @@ root: ../
 	and placeholder images are being used.
 </div>
 
-Introduction
-------------
+## Introduction
 
 In this chapter we explain all the different types of node drawtypes there are.
 
@@ -44,8 +43,7 @@ This article is not complete yet. These drawtypes are missing:
 * Raillike
 * Mesh
 
-Normal
-------
+## Normal
 
 <figure class="right_image">
 	<img src="{{ page.root }}/static/drawtype_normal.png" alt="Normal Drawtype">
@@ -77,8 +75,7 @@ minetest.register_node("mymod:diamond", {
 {% endhighlight %}
 
 
-Airlike
--------
+## Airlike
 
 These nodes are see through, and thus have no textures.
 
@@ -86,11 +83,11 @@ These nodes are see through, and thus have no textures.
 minetest.register_node("myair:air", {
 	description = "MyAir (you hacker you!)",
 	drawtype = "airlike",
-	
-	paramtype = "light", 
+
+	paramtype = "light",
 	-- ^ Allows light to propagate through the node with the
 	--   light value falling by 1 per node.
-	
+
 	sunlight_propagates = true, -- Sunlight shines through
 	walkable     = false, -- Would make the player collide with the air node
 	pointable    = false, -- You can't select the node
@@ -98,15 +95,14 @@ minetest.register_node("myair:air", {
 	buildable_to = true,  -- Nodes can be replace this node.
 	                      -- (you can place a node and remove the air node
 	                      -- that used to be there)
-	
+
 	air_equivalent = true,
 	drop = "",
 	groups = {not_in_creative_inventory=1}
 })
 {% endhighlight %}
 
-Liquid
-------
+## Liquid
 
 <figure class="right_image">
 	<img src="{{ page.root }}/static/drawtype_liquid.png" alt="Liquid Drawtype">
@@ -126,7 +122,7 @@ minetest.register_node("default:water_source", {
 
 	inventory_image = minetest.inventorycube("default_water.png"),
 	-- ^ this is required to stop the inventory image from being animated
-	
+
 	tiles = {
 		{
 			name = "default_water_source_animated.png",
@@ -138,7 +134,7 @@ minetest.register_node("default:water_source", {
 			}
 		}
 	},
-	
+
 	special_tiles = {
 		-- New-style water source material (mostly unused)
 		{
@@ -183,8 +179,7 @@ minetest.register_node("default:water_source", {
 See default:water_flowing in the default mod in minetest_game, it is mostly
 the same as the above example
 
-Glasslike
----------
+## Glasslike
 
 <figure class="right_image">
 	<img src="{{ page.root }}/static/drawtype_glasslike.png" alt="Glasslike Drawtype">
@@ -216,11 +211,10 @@ minetest.register_node("default:obsidian_glass", {
 })
 {% endhighlight %}
 
-Glasslike_Framed
-----------------
+## Glasslike_Framed
 
-This makes the node's edge go around the whole thing, rather than individual nodes,
-like the following:
+This makes the node's edge go around the whole thing with a 3D effect, rather
+than individual nodes, like the following:
 
 <figure>
 	<img src="{{ page.root }}/static/drawtype_glasslike_framed.png" alt="Glasslike_framed's Edges">
@@ -233,14 +227,14 @@ like the following:
 minetest.register_node("default:glass", {
 	description = "Glass",
 	drawtype = "glasslike_framed",
-	
+
 	tiles = {"default_glass.png", "default_glass_detail.png"},
 	inventory_image = minetest.inventorycube("default_glass.png"),
-	
+
 	paramtype = "light",
 	sunlight_propagates = true, -- Sunlight can shine through block
 	is_ground_content = false, -- Stops caves from being generated over this node.
-	
+
 	groups = {cracky = 3, oddly_breakable_by_hand = 3},
 	sounds = default.node_sound_glass_defaults()
 })
@@ -250,8 +244,7 @@ minetest.register_node("default:glass", {
 
 "optional" drawtypes need less rendering time if deactivated on the client's side.
 
-Allfaces
---------
+## Allfaces
 
 <figure class="right_image">
 	<img src="{{ page.root }}/static/drawtype_allfaces.png" alt="Allfaces drawtype">
@@ -298,7 +291,7 @@ minetest.register_node("foobar:torch", {
 	inventory_image = "foobar_torch_floor.png",
 	wield_image = "default_torch_floor.png",
 	light_source = LIGHT_MAX-1,
-	
+
 	-- Determines how the torch is selected, ie: the wire box around it.
 	-- each value is { x1, y1, z1, x2, y2, z2 }
 	-- (x1, y1, y1) is the bottom front left corner
@@ -313,8 +306,7 @@ minetest.register_node("foobar:torch", {
 })
 {% endhighlight %}
 
-Nodebox
--------
+## Nodebox
 
 <figure class="right_image">
 	<img src="{{ page.root }}/static/drawtype_nodebox.gif" alt="Nodebox drawtype">

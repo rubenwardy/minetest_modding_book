@@ -4,8 +4,7 @@ layout: default
 root: ../
 ---
 
-Introduction
-------------
+## Introduction
 
 In this chapter we will find out how to publish a mod so that other users can use it.
 
@@ -19,8 +18,7 @@ In this chapter we will find out how to publish a mod so that other users can us
 * Is there another mod that does the same thing? If so, how does yours differ or improve on it?
 * Is your mod useful?
 
-License Choices
----------------
+## License Choices
 
 You need to specify a license for your mod.
 **Public domain is not a valid licence**, as the definition varies in different countries.
@@ -71,8 +69,7 @@ These licenses allows anyone to do what they want with your mod.
 Modify, redistribute, sell, leave out attribution.
 They can be used for both code and art.
 
-Packaging
----------
+## Packaging
 
 There are some files that we recommend you include in your mod
 when you release it.
@@ -182,11 +179,10 @@ Click browse and select the zipped file. I suggest that you enter the version of
 	</figcaption>
 </figure>
 
-Forum Topic
------------
+## Forum Topic
 
 You can now create a forum topic. You should create it in
-the ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (Work In Progress) 
+the ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (Work In Progress)
 forum.\\
 When you consider your mod no longer a work in progress, you can
 [request that it be moved](https://forum.minetest.net/viewtopic.php?f=11&t=10418)
@@ -233,7 +229,7 @@ Here is an example. The Minetest forum uses bbcode for formating.
 
 	For further information or help see:
 	[url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
-	
+
 If you modify the above example for your mod topic, remember to
 change "modfldername" to the name of the folder your mod should be
 in.

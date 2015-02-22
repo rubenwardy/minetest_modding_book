@@ -4,8 +4,7 @@ layout: default
 root: ../
 ---
 
-Introduction
-------------
+## Introduction
 
 In this chapter we will talk about scripting in Lua, the tools required,
 and go over some techniques which you will probably find useful.
@@ -16,8 +15,7 @@ and go over some techniques which you will probably find useful.
 * Local and Global
 * Including other Lua Scripts
 
-Programming
------------
+## Programming
 
 Teaching you how to program is beyond the scope of this book.
 
@@ -31,8 +29,7 @@ learning the problem solving techniques required to program.\\
 Programming is all about breaking down problems into steps a computer can manage.\\
 Scratch is **designed to teach children** how to program, it isn't a serious programming language.
 
-Tools
------
+## Tools
 
 A text editor with code highlighting is sufficient for writing scripts in Lua.
 Code highlighting gives different colors to different words and characters
@@ -80,8 +77,7 @@ One such IDE is Eclipse with the Koneki Lua plugin:
 * Start Minetest.
 * Enter the game to startup Lua.
 
-Local and Global
-----------------
+## Local and Global
 
 Whether a variable is local or global determines where it can be written to or read to.
 A local variable is only accessible from where it is defined. Here are some examples:
@@ -168,8 +164,7 @@ end
 mymod.foo("foobar")
 {% endhighlight %}
 
-Including other Lua Scripts
----------------------------
+## Including other Lua Scripts
 
 You can include Lua scripts from your mod, or another mod like this:
 

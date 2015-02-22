@@ -11,8 +11,7 @@ root: ../
 	Be aware that you may need to update your mods if the API is changed.
 </div>
 
-Introduction
-------------
+## Introduction
 
 Heads Up Display (HUD) elements allow you to show text, images, and other graphical elements.
 
@@ -24,8 +23,7 @@ HUD doesn't accept user input. For that, you should use a [Formspec](formspecs.h
 * Image Elements
 * Other Elements
 
-Basic Interface
----------------
+## Basic Interface
 
 HUD elements are created using a player object.
 You can get the player object from a username like this:
@@ -64,8 +62,7 @@ You can also delete the element:
 player:hud_remove(idx)
 {% endhighlight %}
 
-Positioning
------------
+## Positioning
 
 Screens come in different sizes, and HUD elements need to work well on all sizes.
 You locate an element using a combination of a position and an offset.
@@ -80,8 +77,7 @@ co-ordinates (0 * width + 10, 0 * height + 10).
 
 Please note that offset scales to DPI and a user defined factor.
 
-Text Elements
--------------
+## Text Elements
 
 A text element is the simplest form of a HUD element.\\
 Here is our earlier example, but with comments to explain each part:
@@ -112,8 +108,7 @@ local idx = player:hud_add({
 })
 {% endhighlight %}
 
-Image Elements
---------------
+## Image Elements
 
 Displays an image on the HUD.
 
@@ -122,7 +117,6 @@ Negative values represent that percentage of the screen it should take; e.g. x=-
 
 Use `text` to specify the name of the texture.
 
-Other Elements
---------------
+## Other Elements
 
 Have a look at [lua_api.txt]({{ page.root }}lua_api.html#hud-element-types) for a complete list of HUD elements.

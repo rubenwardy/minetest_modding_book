@@ -4,8 +4,7 @@ layout: default
 root: ../
 ---
 
-Introduction
-------------
+## Introduction
 
 In this chapter we will learn how to create an **A**ctive **B**lock **M**odifier (**ABM**).
 An active block modifier allows you to run code on certain nodes at certain
@@ -16,8 +15,7 @@ massive amounts of lag. Use them lightly.
 * Special Growing Grass
 * Your Turn
 
-Special Growing Grass
----------------------
+## Special Growing Grass
 
 We are now going to make a mod (yay!).
 It will add a type of grass called alien grass - it grows near water on grassy
@@ -50,8 +48,7 @@ blocks above grass blocks - you should check there is space by doing minetest.ge
 
 That's really all there is to ABMs. Specifying a neighbor is optional, so is chance.
 
-Your Turn
----------
+## Your Turn
 
 * **Midas touch**: Make water turn to gold blocks with a 1 in 100 chance, every 5 seconds.
 * **Decay**: Make wood turn into dirt when water is a neighbor.

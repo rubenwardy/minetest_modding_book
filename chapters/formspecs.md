@@ -4,8 +4,7 @@ layout: default
 root: ../
 ---
 
-Introduction
-------------
+## Introduction
 
 <figure class="right_image">
 	<img src="{{ page.root }}/static/formspec_example.png" alt="Furnace Inventory">
@@ -28,8 +27,7 @@ tend to disrupt game play.
 * Contexts
 * Node Meta Formspecs
 
-Formspec Syntax
----------------
+## Formspec Syntax
 
 Formspecs have a rather weird syntax.
 They consist of a series of tags which are in the following form:
@@ -68,8 +66,7 @@ You should look in [lua_api.txt](https://github.com/minetest/minetest/blob/maste
 for a list of all possible elements, just search for "Formspec".
 It is near line 1019, at time of writing.
 
-Displaying Formspecs
---------------------
+## Displaying Formspecs
 
 Here is a generalized way to show a formspec
 
@@ -114,8 +111,7 @@ Note: the .. is used to join two strings together. The following two lines are e
 "foo" .. "bar"
 {% endhighlight %}
 
-Callbacks
----------
+## Callbacks
 
 Let's expand on the above example.
 
@@ -177,8 +173,7 @@ for a clicked button.
 }
 {% endhighlight %}
 
-Contexts
---------
+## Contexts
 
 In quite a lot of cases you want your minetest.show_formspec to give information
 to the callback which you don't want to have to send to the client. Information
@@ -240,8 +235,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 {% endhighlight %}
 
-Node Meta Formspecs
--------------------
+## Node Meta Formspecs
 
 minetest.show_formspec is not the only way to show a formspec, you can also
 add formspecs to a node's meta data. This is used on nodes such as chests to

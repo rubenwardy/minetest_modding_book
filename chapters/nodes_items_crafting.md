@@ -4,8 +4,7 @@ layout: default
 root: ../
 ---
 
-Introduction
-------------
+## Introduction
 
 In this chapter we will learn how to register a new node or craftitem,
 and create craft recipes.
@@ -18,8 +17,7 @@ and create craft recipes.
 * Crafting
 * Groups
 
-Item Strings
-------------
+## Item Strings
 
 Each item, whether that be a node, craftitem, tool or entity, has an item string.\\
 This is sometimes referred to as registered name or just name.
@@ -41,8 +39,7 @@ Overriding allows you to:
 To override, you prefix the item string with a colon, ``:``.
 Declaring an item as ``:default:dirt`` will override the default:dirt in the default mod.
 
-Textures
---------
+## Textures
 
 Textures are usually 16 by 16 pixels.
 They can be any resolution, but it is recommended that they are in the order of 2 (eg, 16, 32, 64, 128, etc),
@@ -51,8 +48,7 @@ as other resolutions may not be supported correctly on older devices.
 Textures should be placed in textures/. Their name should match ``modname_itemname.png``.\\
 JPEGs are supported, but they do not support transparency and are generally bad quality at low resolutions.
 
-Registering a Craftitem
------------------------
+## Registering a Craftitem
 
 Craftitems are the simplest items in Minetest. Craftitems cannot be placed in the world.
 They are used in recipes to create other items, or they can be used be the player, such as food.
@@ -107,7 +103,7 @@ minetest.register_craftitem("mymod:mudpie", {
 		minetest.chat_send_player(user:get_player_name(), "You ate an alien mud pie!")
 
 		-- Support for hunger mods using minetest.register_on_item_eat
-		for _, callback in pairs(minetest.registered_on_item_eats) do
+		for _ , callback in pairs(minetest.registered_on_item_eats) do
 			local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing)
 			if result then
 				return result
@@ -126,8 +122,7 @@ minetest.register_craftitem("mymod:mudpie", {
 If you are creating a hunger mod, or if you are affecting foods outside of your
 mod, you should consider using minetest.register_on_item_eat
 
-Registering a basic node
-------------------------
+## Registering a basic node
 
 In Minetest, a node is an item that you can place.
 Most nodes are 1m x 1m x 1m cubes, however the shape doesn't
@@ -178,8 +173,7 @@ minetest.register_node("mymod:diamond", {
 
 The is_ground_content attribute allows caves to be generated over the stone.
 
-Crafting
---------
+## Crafting
 
 There are several different types of crafting,
 identified by the ``type`` property.
@@ -235,8 +229,7 @@ minetest.register_craft({
 
 (Explainations of more crafting types are coming soon)
 
-Groups
-------
+## Groups
 
 Items can be members of many groups, and groups may have many members.
 Groups are usually identified using ``group:group_name``

@@ -4,8 +4,7 @@ layout: default
 root: ../
 ---
 
-Introduction
-------------
+## Introduction
 
 Player physics can be modified using physics overrides. Physics overrides can set the
 walking speed, jump speed and gravity constants. Physics overrides are set on a player
@@ -15,8 +14,7 @@ as strong.
 * Basic Interface
 * Your Turn
 
-Basic Interface
----------------
+## Basic Interface
 
 Here is an example which adds an antigravity command, which
 puts the caller in low G:
@@ -57,8 +55,7 @@ Please be warned that mods that override the physics of a player tend
 to be incompatible with each other. When setting an override, it overwrites
 and override that has been set before, by your or anyone else's mod.
 
-Your Turn
----------
+## Your Turn
 
 * **sonic**: Set the speed multiplayer to a high value (at least 6) when a player joins the game.
 * **super bounce**: Increase the jump value so that the player can jump up 20 meters (1 meter is 1 block).

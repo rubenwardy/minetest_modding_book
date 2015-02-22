@@ -4,8 +4,7 @@ layout: default
 root: ../
 ---
 
-Introduction
-------------
+## Introduction
 
 In this chapter we will learn the basic structure of a mod's folder.
 This is an essential skill when creating mods.
@@ -14,8 +13,7 @@ This is an essential skill when creating mods.
 * Dependencies
 * Mod Packs
 
-Mod Folders
------------
+## Mod Folders
 
 ![Find the mod's folder]({{ page.root }}/static/folder_modfolder.jpg)
 
@@ -40,8 +38,7 @@ in needs to be called the same as the mod name.
 Only the init.lua file is required in a mod for it to run on game load, however
 the other items are needed by some mods to perform their functionality.
 
-Dependencies
-------------
+## Dependencies
 
 The depends text file allows you to specify what mods this mod requires to run, and what
 needs to be loaded before this mod.
@@ -60,8 +57,7 @@ However, if the mod is not installed, the current one still loads.
 This is in contrast to normal dependencies, which will cause the current
 mod not to work if the mod is not installed.
 
-Mod Packs
----------
+## Mod Packs
 
 Modpacks allow multiple mods to be packaged together, and move together.
 They are useful if you want to supply multiple mods to a player but don't
@@ -75,8 +71,7 @@ want to make them download each one individually.
 	-	modfour/
 	-	modpack.txt – signals that this is a mod pack, content does not matter
 
-Example Time
-------------
+## Example Time
 
 Are you confused? Don't worry, here is an example putting all of this together.
 
