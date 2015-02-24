@@ -1,0 +1,7 @@
+epub:
+	name: Minetest Modding Book
+	title: Minetest Modding Book
+	identifier: rubenwardy.com/minetest_modding_book
+	description: An easy guide in learning how to create mods for Minetest.
+	creator: rubenwardy
+	rights: CC-BY-SA 3.0
