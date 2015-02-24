@@ -52,10 +52,10 @@ needs to be loaded before this mod.
 As you can see, each modname is on its own line.
 
 Mod names with a question mark following them are optional dependencies.
-If an optional mod is installed, it is loaded before the current mod.
-However, if the mod is not installed, the current one still loads.
+If an optional dependency is installed, it is loaded before the mod.
+However, if the dependency is not installed, the mod still loads.
 This is in contrast to normal dependencies, which will cause the current
-mod not to work if the mod is not installed.
+mod not to work if the dependency is not installed.
 
 ## Mod Packs
 
