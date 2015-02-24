@@ -227,9 +227,12 @@ Whereas global variables can be accessed from anywhere in the script file, and f
 my_global_variable = "blah"
 
 function one()
-	my_global_variable_2 = "blah"
+	my_global_variable = "three"
 end
 
+print(my_global_variable) -- Output: "blah"
+one()
+print(my_global_variable) -- Output: "three"
 {% endhighlight %}
 
 
@@ -246,7 +249,14 @@ end
 function two()
 	print(dump(foo))  -- Output: "bar"
 end
+
+one()
+two()
 {% endhighlight %}
+
+dump() is a function that can turn any variable into a string so the programmer can
+see what it is. The foo variable will be printed as "bar", including the quotes
+which show it is a string.
 
 This is sloppy coding, and Minetest will in fact warn you about this:
 
@@ -262,7 +272,13 @@ end
 function two()
 	print(dump(foo))  -- Output: nil
 end
+
+one()
+two()
 {% endhighlight %}
+
+Nil means **not initalised**. The variable hasn't been assigned a variable yet,
+doesn't exist or has been uninitalised (ie: set to nil)
 
 The same goes for functions. Functions are variables of a special type.
 You should make functions as local as much as possible,
@@ -281,7 +297,7 @@ you add them all into a table with the same name as the mod:
 mymod = {}
 
 function mymod.foo(bar)
-	return foo .. "bar"
+	return "foo" .. bar
 end
 
 -- In another mod, or script:
