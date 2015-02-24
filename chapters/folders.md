@@ -77,6 +77,8 @@ Are you confused? Don't worry, here is an example putting all of this together.
 
 ### Mod Folder
 	mymod/
+	-	textures/
+	-	-	mymod_node.png
 	-	init.lua
 	-	depends.txt
 
@@ -102,6 +104,7 @@ minetest.register_node("mymod:node", {
 })
 {% endhighlight %}
 
-Our mod has a name of "mymod". It has two files: init.lua and depends.txt.
-The script prints a message and then registers a node – which will be explained in the next chapter.
-The depends text file adds a dependency to the default mod, which is in minetest_game.
+Our mod has a name of "mymod". It has two text files: init.lua and depends.txt.\\
+The script prints a message and then registers a node – which will be explained in the next chapter.\\
+The depends text file adds a dependency to the default mod, which is in minetest_game.\\
+There is also a texture in textures/ for the node.
