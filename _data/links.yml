@@ -15,32 +15,36 @@
   num:   3
   link:  chapters/nodes_items_crafting.html
 
-- title: Node Drawtypes
+- title: Creating Textures
   num:   4
+  link:  chapters/creating_textures.html
+
+- title: Node Drawtypes
+  num:   5
   link:  chapters/node_drawtypes.html
 
 - title: Active Block Modifiers
-  num:   5
+  num:   6
   link:  chapters/abms.html
 
 - hr: true
 
 - title: Player Physics
-  num:   6
+  num:   7
   link:  chapters/player_physics.html
 
 - title: Formspecs
-  num:   7
+  num:   8
   link:  chapters/formspecs.html
 
 - title: HUD
-  num:   8
+  num:   9
   link:  chapters/hud.html
 
 - hr: true
 
 - title: Releasing a Mod
-  num: 9
+  num: 10
   link: chapters/releasing.html
 
 - hr: true
