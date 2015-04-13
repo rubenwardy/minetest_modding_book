@@ -58,7 +58,7 @@ learning curve as lots of its features are hidden away.
 
 ## Common Mistakes
 
-### Blurred textures through incorrect tools
+### Blurred textures through usage of incorrect tools
 
 For the most part, you want to manipulate pixels on an individual basis.
 The tool for this in most editors is the pencil tool.

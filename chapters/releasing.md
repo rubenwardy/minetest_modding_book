@@ -23,7 +23,9 @@ In this chapter we will find out how to publish a mod so that other users can us
 You need to specify a license for your mod.
 **Public domain is not a valid licence**, as the definition varies in different countries.
 
-First thing you need to note is that your code and your art need different types of protection.
+First thing you need to note is that your code and your art need different things from
+the license they use. Creative Commons licenses shouldn't be used with source code,
+but rather with artistic works such as images, text and meshes.
 
 You are allowed any license, however mods which disallow derivatives are banned from the forum.
 (Other developers must be able to take your mod, modify it, and release it again.)
@@ -34,7 +36,8 @@ This is a common license combination in the Minetest community, as it is what
 Minetest and minetest_game use.
 You license your code under LGPL 2.1 and your art under CC-BY-SA.
 
-* If someone modifies your mod, they must give their version the same license
+* Anyone can modify, redistribute and sell modified or unmodified versions.
+* If someone modifies your mod, they must give their version the same license.
 * Your copyright notice must be kept.
 
 Add this copyright notice to your README.txt, or as a new file called LICENSE.txt
@@ -93,7 +96,7 @@ Example:
 	Adds magic, rainbows and other special things.
 
 	Version: 1.1
-	Licence: LGPL 2.1 or later
+	License: LGPL 2.1 or later
 
 	Dependencies: default mod (found in minetest_game)
 
@@ -105,7 +108,7 @@ Example:
 	Unzip the archive, rename the folder to to modfoldername and
 	place it in minetest/mods/minetest/
 
-	(  Linux: If you have a linux system-wide installation place
+	(  GNU/Linux: If you use a system-wide installation place
 		it in ~/.minetest/mods/minetest/.  )
 
 	(  If you only want this to be used in a single world, place
@@ -133,7 +136,7 @@ Uploading
 ---------
 
 In order for a potential user to download your mod, you need to upload it to somewhere
-which is publically accessible.\\
+which is publicly accessible.\\
 I will outline several methods you can use, but really you should use the one that works
 best for you, as long as it mets these requirements:\\
 (and any other requirements which may be added by forum moderators)
@@ -145,7 +148,7 @@ best for you, as long as it mets these requirements:\\
 
 ### Github, or another VCS
 
-It is recommended that you use Version Control System for the following reasons:
+It is recommended that you use a Version Control System for the following reasons:
 
 * Allows other developers to submit changes (easily).
 * Allows the code to be previewed before downloading.
@@ -153,7 +156,7 @@ It is recommended that you use Version Control System for the following reasons:
 
 However, such systems may be hard to understand when you first start out.
 
-The majority of Minetest developers use Github as a website to host their code,
+The majority of Minetest developers use GitHub as a website to host their code,
 however that doesn't matter that much.
 
 * [Using Git](http://git-scm.com/book/en/v1/Getting-Started) - Basic concepts. Using the command line.
@@ -210,7 +213,7 @@ Here is an example. The Minetest forum uses bbcode for formating.
 	See download attached.
 
 	[b]Version:[/b] 1.1
-	[b]Licence:[/b] LGPL 2.1 or later
+	[b]License:[/b] LGPL 2.1 or later
 
 	Dependencies: default mod (found in minetest_game)
 
@@ -221,7 +224,7 @@ Here is an example. The Minetest forum uses bbcode for formating.
 	Unzip the archive, rename the folder to to modfoldername and
 	place it in minetest/mods/minetest/
 
-	(  Linux: If you have a linux system-wide installation place
+	(  GNU/Linux: If you use a system-wide installation place
 		it in ~/.minetest/mods/minetest/.  )
 
 	(  If you only want this to be used in a single world, place

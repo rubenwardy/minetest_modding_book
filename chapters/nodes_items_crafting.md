@@ -62,7 +62,7 @@ minetest.register_craftitem("mymod:diamond_fragments", {
 
 Item definitions like seen above are usually made up of an unique
 [item string](#item-strings) and a definition table. The definition table
-contains attributes which affect the behavour of the item.
+contains attributes which affect the behaviour of the item.
 
 ### Foods
 

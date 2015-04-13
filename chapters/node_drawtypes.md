@@ -111,7 +111,8 @@ minetest.register_node("myair:air", {
 	</figcaption>
 </figure>
 
-These nodes are complete liquid nodes, the liquid flows outwards from position using the flowing liquid drawtype.
+These nodes are complete liquid nodes, the liquid flows outwards from position
+using the flowing liquid drawtype.
 For each liquid node you should also have a flowing liquid node.
 
 {% highlight lua %}

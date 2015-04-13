@@ -145,7 +145,7 @@ end
 {% endhighlight %}
 
 That example generates a random number between 1 and 100. It then prints
-"Woohoo!" if that number is bigger than 50, overwise it prints "No!".
+"Woohoo!" if that number is bigger than 50, otherwise it prints "No!".
 What else can you get apart from '>'?
 
 ### Logical Operators
@@ -278,7 +278,7 @@ two()
 {% endhighlight %}
 
 Nil means **not initalised**. The variable hasn't been assigned a variable yet,
-doesn't exist or has been uninitalised (ie: set to nil)
+doesn't exist or has been uninitialised (ie: set to nil)
 
 The same goes for functions. Functions are variables of a special type.
 You should make functions as local as much as possible,
