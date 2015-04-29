@@ -1,4 +1,4 @@
-import markdown, urllib2
+import markdown, urllib2, datetime
 
 
 #
@@ -27,6 +27,10 @@ links = """<ul>
 
 html = md.convert(text).replace("{{", "{ {")
 html = html.replace(links, "")
+links += "This page was last updated "
+links += datetime.date.today().strftime("%d/%B/%Y")
+links += ".<br />See <a href=\"https://github.com/minetest/minetest/blob/master/doc/lua_api.txt\">doc/lua_api.txt</a> for the latest version (in plaintext)."
+links += "<br />Generated using <a href=\"https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py\">a Python script</a>."
 html = html.replace("<h2 id=\"programming-in-lua\">", links + "<h2 id=\"programming-in-lua\">")
 
 #
