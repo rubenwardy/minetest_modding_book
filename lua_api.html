@@ -326,7 +326,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 29/April/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 08/May/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -2188,8 +2188,12 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li>
-<p><code>minetest.get_meta(pos)</code></p>
+<p><code>minetest.find_nodes_with_meta(pos1, pos2)</code></p>
 <ul>
+<li>Get a table of positions of nodes that have metadata within a region {pos1, pos2}</li>
+</ul>
+</li>
+<li><code>minetest.get_meta(pos)</code><ul>
 <li>Get a <code>NodeMetaRef</code> at that position</li>
 </ul>
 </li>
@@ -2647,17 +2651,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>"mts" - a string containing the binary MTS data used in the MTS file format</li>
 <li>"lua" - a string containing Lua code representing the schematic in table format</li>
 <li><code>options</code> is a table containing the following optional parameters:</li>
-<li>If <code>use_comments</code> is true and <code>format</code> is "lua", the Lua code generated will have (X, Z)</li>
+<li>If <code>lua_use_comments</code> is true and <code>format</code> is "lua", the Lua code generated will have (X, Z)</li>
 <li>position comments for every X row generated in the schematic data for easier reading.</li>
-<li>If <code>register_after_load</code> is true, then <code>schematic</code>, if not yet loaded, will be registered</li>
-<li>after loading and persist in memory.</li>
-<li>node_resolve_method can be one of either "none", "direct", or "deferred" (default: "none")</li>
-<li>This sets the way method by with node names are mapped to their content IDs, if loaded:</li>
-<li>"none" performs no node resolution and preserves all node names from the schematic definition</li>
-<li>"direct" performs an immediate lookup of content ID, given all the nodes that have been</li>
-<li>registered up to this point in script execution</li>
-<li>"deferred" pends node resolution until after the script registration phase has ended</li>
-<li>In practice, it is recommended to use "none" in nearly all use cases.</li>
+<li>If <code>lua_num_indent_spaces</code> is a nonzero number and <code>format</code> is "lua", the Lua code generated</li>
+<li>will use that number of spaces as indentation instead of a tab character.</li>
 </ul>
 </li>
 </ul>
