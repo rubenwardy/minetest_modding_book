@@ -182,7 +182,7 @@ identified by the ``type`` property.
 * shapeless - It doesn't matter where the ingredients are,
   just that there is the right amount.
 * cooking - Recipes for the furnace to use.
-	* fuel - Defines what can be burnt in furnaces.
+	* fuel - Defines items which can be burned in furnaces.
 * tool_repair - Used to allow the repairing of tools.
 
 Craft recipes do not use Item Strings to uniquely identify themselves.
@@ -228,10 +228,10 @@ minetest.register_craft({
 })
 {% endhighlight %}
 
-###Shapeless
+### Shapeless
 
-Shapeless recipes are a type of recipe that can be used when a flexible crafting
-recipe is wanted.
+Shapeless recipes are a type of recipe which is used when it doesn't matter
+where the ingredients are placed, just that they're there.
 For example, when you craft a bronze ingot, the steel and the copper do not
 need to be in any specific place for it to work.
 
@@ -245,38 +245,36 @@ minetest.register_craft({
 })
 {% endhighlight %}
 
-When you are making the diamond, the three diamond fragments can be anywhere
-in the grid.
-Note: Other options, like the number after the result, found in the shaped
-crafting recipe, can be used here, and for some of the other craft types.
+When you are crafting the diamond, the three diamond fragments can be anywhere
+in the grid.\\
+Note: You can still use options like the number after the result, as mentioned
+earlier.
 
-###Cooking
+### Cooking
 
-Recipes with the type "cooking" are not made in the crafting grid, like
-other recipes, but as the name suggests, they are cooked, in furnaces,
-or other cooking tools that might be found in mods.
-This is the way that anything that must be cooked, like bricks, or
-can be cooked to turn into something else, like cobble, are defined.
+Recipes with the type "cooking" are not made in the crafting grid,
+but are cooked in furnaces, or other cooking tools that might be found in mods.
+For example, you use a cooking recipe to turn ores into bars.
 
 {% highlight lua %}
 minetest.register_craft({
 	type = "cooking",
 	output = "mymod:diamond_fragments",
 	recipe = "default:coalblock",
-	cooktime = "10",
+	cooktime = 10,
 })
 {% endhighlight %}
 
-From this example, you can see that the only difference in the code,
-between this type of crafting and any other (apart from the type), is
-that the recipe is just a single node, and it is not in a table (between
-braces). They also have an optional "cooktime" parameter, which defines
-how long the item takes to cook. If this is not set, it defaults to 3.
-So, for this to work, the coal block is in the input slot, with the fuel
-below it, and the diamond fragments will come out on the far side
-of the furnace, after 10 seconds!
+As you can see from this example, the only real difference in the code
+is that the recipe is just a single item, compared to being in a table
+(between braces). They also have an optional "cooktime" parameter, which
+defines how long the item takes to cook. If this is not set it defaults to 3.
 
-####Fuel
+The recipe above works when the coal block is in the input slot,
+with some form of a fuel below it.
+It creates diamond fragments after 10 seconds!
+
+#### Fuel
 
 This type is an accompaniment to the cooking type, as it defines
 what can be burned in furnaces and other cooking tools from mods.
@@ -289,37 +287,14 @@ minetest.register_craft({
 })
 {% endhighlight %}
 
-They don't have an output, like other recipes, but they have a burn time,
-which defines how long they will last as fuel, in seconds. 
+They don't have an output like other recipes, but they have a burn time
+which defines how long they will last as fuel, in seconds.
 So, the diamond is good as fuel for 300 seconds!
-
-###Tool Repair
-This is a fairly simple type of craft. It simply allows two tools, of the
-same type,  to be crafted together, and produce a tool with the
-combined wear of the two separate tools, minus the additional wear
-as defined in the additional_wear field. 
-
-{% highlight lua %}
-minetest.register_craft({
-	type = "toolrepair",
-	additional_wear = -0.2,
-})
-{% endhighlight %}
-
-This looks very different from other crafts! The only field (other than
-type) that it has is a field that looks rather strange. It defines the amount
-of wear subtracted from tools that are repaired. Because it is subtracted,
-negative values make the new tool more  durable. -1 means that any 2
-tools will form to make a new one without any wear, while 1 disables
-it, because even 2 new tools will make a tool with 100% wear!
-So, in the example provided, two tools crafted together will regain 20%
-of the total wear, along with the amounts of use that both tools had
-left.
 
 ## Groups
 
-Items can be members of many groups, and groups may have many members.
-Groups are usually identified using ``group:group_name``
+Items can be members of many groups, and groups can have many members.
+Groups are usually identified using `group:group_name`
 There are several reason you use groups.
 
 Groups can be used in crafting recipes to allow interchangeability
