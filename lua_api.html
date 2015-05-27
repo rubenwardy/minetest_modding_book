@@ -188,6 +188,7 @@ layout: default
 </li>
 <li><a href="#inventory-locations">Inventory locations</a></li>
 <li><a href="#colorstring">ColorString</a></li>
+<li><a href="#colorspec">ColorSpec</a></li>
 <li><a href="#vector-helpers">Vector helpers</a></li>
 <li><a href="#helper-functions">Helper functions</a></li>
 <li><a href="#minetest-namespace-reference">minetest namespace reference</a><ul>
@@ -326,7 +327,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 08/May/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 27/May/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -986,27 +987,26 @@ structures, such as trees, cave spikes, rocks, and so on.</p>
 <h2 id="schematic-specifier">Schematic specifier</h2>
 <p>A schematic specifier identifies a schematic by either a filename to a
 Minetest Schematic file (<code>.mts</code>) or through raw data supplied through Lua,
-in the form of a table.  This table must specify two fields:</p>
+in the form of a table.  This table specifies the following fields:</p>
 <ul>
-<li>The <code>size</code> field is a 3D vector containing the dimensions of the provided schematic.</li>
-<li>The <code>data</code> field is a flat table of MapNodes making up the schematic,
-  in the order of <code>[z [y [x]]]</code>.</li>
+<li>The <code>size</code> field is a 3D vector containing the dimensions of the provided schematic. (required)</li>
+<li>The <code>yslice_prob</code> field is a table of {ypos, prob} which sets the <code>ypos</code>th vertical slice
+  of the schematic to have a <code>prob / 256 * 100</code> chance of occuring. (default: 255)</li>
+<li>The <code>data</code> field is a flat table of MapNode tables making up the schematic,
+  in the order of <code>[z [y [x]]]</code>. (required)
+  Each MapNode table contains:</li>
+<li><code>name</code>: the name of the map node to place (required)</li>
+<li><code>prob</code> (alias <code>param1</code>): the probability of this node being placed (default: 255)</li>
+<li><code>param2</code>: the raw param2 value of the node being placed onto the map (default: 0)</li>
+<li><code>force_place</code>: boolean representing if the node should forcibly overwrite any
+     previous contents (default: false)</li>
 </ul>
-<p><strong>Important</strong>: The default value for <code>param1</code> in MapNodes here is <code>255</code>,
-which represents "always place".</p>
-<p>In the bulk <code>MapNode</code> data, <code>param1</code>, instead of the typical light values,
-instead represents the probability of that node appearing in the structure.</p>
-<p>When passed to <code>minetest.create_schematic</code>, probability is an integer value
-ranging from <code>0</code> to <code>255</code>:</p>
-<ul>
-<li>A probability value of <code>0</code> means that node will never appear (0% chance).</li>
-<li>A probability value of <code>255</code> means the node will always appear (100% chance).</li>
-<li>If the probability value <code>p</code> is greater than <code>0</code>, then there is a
-  <code>(p / 256 * 100)</code>% chance that node will appear when the schematic is
-  placed on the map.</li>
-</ul>
-<p><strong>Important note</strong>: Node aliases cannot be used for a raw schematic provided
-  when registering as a decoration.</p>
+<p>About probability values:
+<em> A probability value of <code>0</code> or <code>1</code> means that node will never appear (0% chance).
+</em> A probability value of <code>254</code> or <code>255</code> means the node will always appear (100% chance).
+* If the probability value <code>p</code> is greater than <code>1</code>, then there is a
+  <code>(p / 256 * 100)</code> percent chance that node will appear when the schematic is
+  placed on the map.</p>
 <h2 id="schematic-attributes">Schematic attributes</h2>
 <p>See section "Flag Specifier Format".</p>
 <p>Currently supported flags: <code>place_center_x</code>, <code>place_center_y</code>,
@@ -1801,6 +1801,14 @@ pass key press events to formspec!</p>
 To specify the value of the alpha channel, append <code>#AA</code> to the end of the color name
 (e.g. <code>colorname#08</code>). For named colors the hexadecimal string representing the alpha
 value must (always) be two hexadecimal digits.</p>
+<h2 id="colorspec"><code>ColorSpec</code></h2>
+<p>A ColorSpec specifies a 32-bit color.  It can be written in either:
+table form, each element ranging from 0..255 (a, if absent, defaults to 255):
+    <code>colorspec = {a=255, r=0, g=255, b=0}</code>
+numerical form, the raw integer value of an ARGB8 quad:
+    <code>colorspec = 0xFF00FF00</code>
+or string form, a ColorString (defined above):
+    <code>colorspec = "green"</code></p>
 <h2 id="vector-helpers">Vector helpers</h2>
 <ul>
 <li>
@@ -1900,7 +1908,7 @@ value must (always) be two hexadecimal digits.</p>
 </li>
 <li><code>minetest.is_singleplayer()</code></li>
 <li><code>minetest.features</code><ul>
-<li>table containing API feature flags: <code>{foo=true, bar=true}</code></li>
+<li>Table containing API feature flags: <code>{foo=true, bar=true}</code></li>
 </ul>
 </li>
 <li><code>minetest.has_feature(arg)</code>: returns <code>boolean, missing_features</code><ul>
@@ -1908,24 +1916,18 @@ value must (always) be two hexadecimal digits.</p>
 <li><code>missing_features</code>: <code>{foo=true, bar=true}</code></li>
 </ul>
 </li>
-<li><code>minetest.get_player_information(playername)</code><ul>
-<li>table containing information about player peer.</li>
-</ul>
-</li>
-</ul>
-<p>Example of <code>minetest.get_player_information</code> return value:</p>
-<pre><code>{
-    address = "127.0.0.1",     -- IP address of client
-    ip_version = 4,            -- IPv4 / IPv6
-    min_rtt = 0.01,            -- minimum round trip time
-    max_rtt = 0.2,             -- maximum round trip time
-    avg_rtt = 0.02,            -- average round trip time
-    min_jitter = 0.01,         -- minimum packet time jitter
-    max_jitter = 0.5,          -- maximum packet time jitter
-    avg_jitter = 0.03,         -- average packet time jitter
-    connection_uptime = 200,   -- seconds since client connected
-
-    -- following information is available on debug build only!!!
+<li><code>minetest.get_player_information(player_name)</code>: returns a table containing
+  information about player. Example return value:
+        {
+            address = "127.0.0.1",     -- IP address of client
+            ip_version = 4,            -- IPv4 / IPv6
+            min_rtt = 0.01,            -- minimum round trip time
+            max_rtt = 0.2,             -- maximum round trip time
+            avg_rtt = 0.02,            -- average round trip time
+            min_jitter = 0.01,         -- minimum packet time jitter
+            max_jitter = 0.5,          -- maximum packet time jitter
+            avg_jitter = 0.03,         -- average packet time jitter
+            connection_uptime = 200,   -- seconds since client connected<pre><code>    -- following information is available on debug build only!!!
     -- DO NOT USE IN MODS
     --ser_vers = 26,             -- serialization version used by client
     --prot_vers = 23,            -- protocol version used by client
@@ -1936,6 +1938,18 @@ value must (always) be two hexadecimal digits.</p>
     --state = "Active"           -- current client state
 }
 </code></pre>
+<ul>
+<li><code>minetest.mkdir(path)</code>: returns success.</li>
+<li>Creates a directory specified by <code>path</code>, creating parent directories
+  if they don't exist.</li>
+<li><code>minetest.get_dir_list(path, [is_dir])</code>: returns list of entry names</li>
+<li>is_dir is one of:</li>
+<li>nil: return all entries,</li>
+<li>true: return only subdirectory names, or</li>
+<li>false: return only file names.</li>
+</ul>
+</li>
+</ul>
 <h3 id="logging">Logging</h3>
 <ul>
 <li><code>minetest.debug(line)</code><ul>
@@ -2015,6 +2029,18 @@ value must (always) be two hexadecimal digits.</p>
 </li>
 <li><code>minetest.register_on_dieplayer(func(ObjectRef))</code><ul>
 <li>Called when a player dies</li>
+</ul>
+</li>
+<li><code>minetest.register_on_punchplayer(func(player, hitter, time_from_last_punch, tool_capabilities, dir, damage))</code><ul>
+<li>Called when a player is punched</li>
+<li><code>player</code> - ObjectRef - Player that was punched</li>
+<li><code>hitter</code> - ObjectRef - Player that hit</li>
+<li><code>time_from_last_punch</code>: Meant for disallowing spamming of clicks (can be nil)</li>
+<li><code>tool_capabilities</code>: capability table of used tool (can be nil)</li>
+<li><code>dir</code>: unit vector of direction of punch. Always defined. Points from
+   the puncher to the punched.</li>
+<li><code>damage</code> - number that represents the damage calculated by the engine</li>
+<li>should return <code>true</code> to prevent the default damage mechanism</li>
 </ul>
 </li>
 <li><code>minetest.register_on_respawnplayer(func(ObjectRef))</code><ul>
@@ -2101,9 +2127,17 @@ value must (always) be two hexadecimal digits.</p>
 </ul>
 <h3 id="setting-related">Setting-related</h3>
 <ul>
-<li><code>minetest.setting_set(name, value)</code></li>
+<li><code>minetest.setting_set(name, value)</code><ul>
+<li>Setting names can't contain whitespace or any of <code>="{}#</code>.</li>
+<li>Setting values can't contain the sequence <code>\n"""</code>.</li>
+<li>Setting names starting with "secure." can't be set.</li>
+</ul>
+</li>
 <li><code>minetest.setting_get(name)</code>: returns string or <code>nil</code></li>
-<li><code>minetest.setting_setbool(name, value)</code></li>
+<li><code>minetest.setting_setbool(name, value)</code><ul>
+<li>See documentation on <code>setting_set</code> for restrictions.</li>
+</ul>
+</li>
 <li><code>minetest.setting_getbool(name)</code>: returns boolean or <code>nil</code></li>
 <li><code>minetest.setting_get_pos(name)</code>: returns position or nil</li>
 <li><code>minetest.setting_save()</code>, returns <code>nil</code>, save all settings to config file</li>
@@ -2677,6 +2711,12 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Deprecated: An alias for the former.</li>
 </ul>
 </li>
+<li><code>minetest.raillike_group(name)</code>: returns a rating<ul>
+<li>Returns rating of the connect_to_raillike group corresponding to name</li>
+<li>If name is not yet the name of a connect_to_raillike group, a new group id</li>
+<li>is created, with that name</li>
+</ul>
+</li>
 <li><code>minetest.get_content_id(name)</code>: returns an integer<ul>
 <li>Gets the internal content ID of <code>name</code></li>
 </ul>
@@ -2777,16 +2817,14 @@ end
   the floor or ceiling</li>
 <li>The first four options are mutually-exclusive; the last in the list takes
   precedence over the first.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>minetest.rotate_node(itemstack, placer, pointed_thing)</code></p>
-<ul>
+<li><code>minetest.rotate_node(itemstack, placer, pointed_thing)</code><ul>
 <li>calls <code>rotate_and_place()</code> with infinitestacks set according to the state of
    the creative mode setting, and checks for "sneak" to set the <code>invert_wall</code>
    parameter.</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
@@ -2794,6 +2832,7 @@ end
 <ul>
 <li>forceloads the position <code>pos</code>.</li>
 <li>returns <code>true</code> if area could be forceloaded</li>
+<li>Please note that forceloaded areas are saved when the server restarts.</li>
 </ul>
 </li>
 <li>
@@ -2802,19 +2841,32 @@ end
 <li>stops forceloading the position <code>pos</code></li>
 </ul>
 </li>
+<li>
+<p><code>minetest.request_insecure_environment()</code>: returns an environment containing
+  insecure functions if the calling mod has been listed as trusted in the
+  <code>secure.trusted_mods</code> setting or security is disabled, otherwise returns <code>nil</code>.</p>
+<ul>
+<li>Only works at init time.</li>
+<li><strong>DO NOT ALLOW ANY OTHER MODS TO ACCESS THE RETURNED ENVIRONMENT, STORE IT IN
+  A LOCAL VARIABLE!</strong></li>
 </ul>
-<p>Please note that forceloaded areas are saved when the server restarts.</p>
-<p>minetest.global_exists(name)
-^ Checks if a global variable has been set, without triggering a warning.</p>
+</li>
+<li>
+<p><code>minetest.global_exists(name)</code></p>
+<ul>
+<li>Checks if a global variable has been set, without triggering a warning.</li>
+</ul>
+</li>
+</ul>
 <h3 id="global-objects">Global objects</h3>
 <ul>
 <li><code>minetest.env</code>: <code>EnvRef</code> of the server environment and world.<ul>
 <li>Any function in the minetest namespace can be called using the syntax
  <code>minetest.env:somefunction(somearguments)</code>
  instead of <code>minetest.somefunction(somearguments)</code></li>
+<li>Deprecated, but support is not to be dropped soon</li>
 </ul>
 </li>
-<li>Deprecated, but support is not to be dropped soon</li>
 </ul>
 <h3 id="global-tables">Global tables</h3>
 <ul>
@@ -2950,6 +3002,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><code>set_properties(object property table)</code></li>
+<li><code>is_player()</code>: returns true for players, false otherwise</li>
 </ul>
 <h5 id="luaentitysao-only-no-op-for-other-objects">LuaEntitySAO-only (no-op for other objects)</h5>
 <ul>
@@ -2971,7 +3024,6 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 <h5 id="player-only-no-op-for-other-objects">Player-only (no-op for other objects)</h5>
 <ul>
-<li><code>is_player()</code>: true for players, false for others</li>
 <li><code>get_player_name()</code>: returns <code>""</code> if is not a player</li>
 <li><code>get_look_dir()</code>: get camera direction as a unit vector</li>
 <li><code>get_look_pitch()</code>: pitch in radians</li>
@@ -3050,7 +3102,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><code>set_sky(bgcolor, type, {texture names})</code><ul>
-<li><code>bgcolor</code>: <code>{r=0...255, g=0...255, b=0...255}</code> or <code>nil</code>, defaults to white</li>
+<li><code>bgcolor</code>: ColorSpec, defaults to white</li>
 <li>Available types:<ul>
 <li><code>"regular"</code>: Uses 0 textures, <code>bgcolor</code> ignored</li>
 <li><code>"skybox"</code>: Uses 6 textures, <code>bgcolor</code> used</li>
@@ -3081,6 +3133,21 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <ul>
 <li>in first person view</li>
 <li>in third person view (max. values <code>{x=-10/10,y=-10,15,z=-5/5}</code>)</li>
+</ul>
+</li>
+<li><code>get_nametag_attributes()</code><ul>
+<li>returns a table with the attributes of the nametag of the player</li>
+<li>{
+    color = {a=0..255, r=0..255, g=0..255, b=0..255},
+  }</li>
+</ul>
+</li>
+<li><code>set_nametag_attributes(attributes)</code><ul>
+<li>sets the attributes of the nametag of the player</li>
+<li><code>attributes</code>:
+  {
+    color = ColorSpec,
+  }</li>
 </ul>
 </li>
 </ul>
@@ -3202,15 +3269,29 @@ or <code>minetest.get_perlin(noiseparams)</code>.</p>
 <p>Format of <code>size</code> is <code>{x=dimx, y=dimy, z=dimz}</code>.  The <code>z</code> conponent is ommitted
 for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
 <code>nil</code> is returned).</p>
+<p>For each of the functions with an optional <code>buffer</code> parameter:  If <code>buffer</code> is not
+nil, this table will be used to store the result instead of creating a new table.</p>
 <h4 id="methods_8">Methods</h4>
 <ul>
 <li><code>get2dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> 2D array of 2D noise
   with values starting at <code>pos={x=,y=}</code></li>
 <li><code>get3dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> times <code>&lt;size.z&gt;</code> 3D array
   of 3D noise with values starting at <code>pos={x=,y=,z=}</code></li>
-<li><code>get2dMap_flat(pos)</code>: returns a flat <code>&lt;size.x * size.y&gt;</code> element array of 2D noise
+<li><code>get2dMap_flat(pos, buffer)</code>: returns a flat <code>&lt;size.x * size.y&gt;</code> element array of 2D noise
   with values starting at <code>pos={x=,y=}</code></li>
-<li><code>get3dMap_flat(pos)</code>: Same as <code>get2dMap_flat</code>, but 3D noise</li>
+<li><code>get3dMap_flat(pos, buffer)</code>: Same as <code>get2dMap_flat</code>, but 3D noise</li>
+<li><code>calc2dMap(pos)</code>: Calculates the 2d noise map starting at <code>pos</code>.  The result is stored internally.</li>
+<li><code>calc3dMap(pos)</code>: Calculates the 3d noise map starting at <code>pos</code>.  The result is stored internally.</li>
+<li><code>getMapSlice(slice_offset, slice_size, buffer)</code>: In the form of an array, returns a slice of the
+  most recently computed noise results.  The result slice begins at coordinates <code>slice_offset</code> and
+  takes a chunk of <code>slice_size</code>.
+  E.g. to grab a 2-slice high horizontal 2d plane of noise starting at buffer offset y = 20:
+  <code>noisevals = noise:getMapSlice({y=20}, {y=2})</code>
+  It is important to note that <code>slice_offset</code> offset coordinates begin at 1, and are relative to
+  the starting position of the most recently calculated noise.
+  To grab a single vertical column of noise starting at map coordinates x = 1023, y=1000, z = 1000:
+  <code>noise:calc3dMap({x=1000, y=1000, z=1000})</code>
+  <code>noisevals = noise:getMapSlice({x=24, z=1}, {x=1, z=1})</code></li>
 </ul>
 <h3 id="voxelmanip"><code>VoxelManip</code></h3>
 <p>An interface to the <code>MapVoxelManipulator</code> for Lua.</p>
@@ -3231,8 +3312,9 @@ The map will be pre-loaded if two positions are passed to either.</p>
   the <code>VoxelManip</code> at that position</li>
 <li><code>set_node_at(pos, node)</code>: Sets a specific <code>MapNode</code> in the <code>VoxelManip</code> at
   that position</li>
-<li><code>get_data()</code>: Gets the data read into the <code>VoxelManip</code> object<ul>
-<li>returns raw node data is in the form of an array of node content IDs</li>
+<li><code>get_data(buffer)</code>: Gets the data read into the <code>VoxelManip</code> object<ul>
+<li>returns raw node data in the form of an array of node content IDs</li>
+<li>if the param <code>buffer</code> is present, this table will be used to store the result instead</li>
 </ul>
 </li>
 <li><code>set_data(data)</code>: Sets the data contents of the <code>VoxelManip</code> object</li>
@@ -3613,7 +3695,7 @@ minetest.spawn_tree(pos,apple_tree)
     ^ List can be shortened to needed length ]]
     alpha = 255,
     use_texture_alpha = false, -- Use texture's alpha channel
-    post_effect_color = {a=0, r=0, g=0, b=0}, -- If player is inside node
+    post_effect_color = "green#0F", -- If player is inside node, see "ColorSpec"
     paramtype = "none", -- See "Nodes" --[[
     ^ paramtype = "light" allows light to propagate from or through the node with light value
     ^ falling by 1 per node. This line is essential for a light source node to spread its light. ]]
