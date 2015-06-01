@@ -59,4 +59,4 @@ and override that has been set before, by your or anyone else's mod.
 
 * **sonic**: Set the speed multiplayer to a high value (at least 6) when a player joins the game.
 * **super bounce**: Increase the jump value so that the player can jump up 20 meters (1 meter is 1 block).
-* **space**: Make the gravity decrease the the player gets higher and higher up.
+* **space**: Make the gravity decrease as the player gets higher and higher up.
