@@ -327,7 +327,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 27/May/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 01/June/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -2285,6 +2285,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li>The second parameter is a list of IDS of decorations which notification is requested for</li>
+<li><code>get_gen_notify()</code>: returns a flagstring and a table with the deco_ids</li>
 <li><code>minetest.get_mapgen_object(objectname)</code><ul>
 <li>Return requested mapgen object if available (see "Mapgen objects")</li>
 </ul>
@@ -2311,6 +2312,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   should be applied to the default config or current active config</li>
 </ul>
 </li>
+<li><code>minetest.get_noiseparams(name)</code>: returns a table of the noiseparams for name</li>
 <li><code>minetest.generate_ores(vm, pos1, pos2)</code><ul>
 <li>Generate all registered ores within the VoxelManip <code>vm</code> and in the area from <code>pos1</code> to <code>pos2</code>.</li>
 <li><code>pos1</code> and <code>pos2</code> are optional and default to mapchunk minp and maxp.</li>
@@ -2987,13 +2989,16 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><code>get_wielded_item()</code>: returns an <code>ItemStack</code></li>
 <li><code>set_wielded_item(item)</code>: replaces the wielded item, returns <code>true</code> if successful</li>
 <li><code>set_armor_groups({group1=rating, group2=rating, ...})</code></li>
+<li><code>get_armor_groups()</code>: returns a table with the armor group ratings</li>
 <li><code>set_animation({x=1,y=1}, frame_speed=15, frame_blend=0)</code></li>
+<li><code>get_animation()</code>: returns range, frame_speed and frame_blend</li>
 <li><code>set_attach(parent, bone, position, rotation)</code><ul>
 <li><code>bone</code>: string</li>
 <li><code>position</code>: <code>{x=num, y=num, z=num}</code> (relative)</li>
 <li><code>rotation</code>: <code>{x=num, y=num, z=num}</code></li>
 </ul>
 </li>
+<li><code>get_attach()</code>: returns parent, bone, position, rotation or nil if it isn't attached</li>
 <li><code>set_detach()</code></li>
 <li><code>set_bone_position(bone, position, rotation)</code><ul>
 <li><code>bone</code>: string</li>
@@ -3001,7 +3006,9 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><code>rotation</code>: <code>{x=num, y=num, z=num}</code></li>
 </ul>
 </li>
+<li><code>get_bone_position(bone)</code>: returns position and rotation of the bone</li>
 <li><code>set_properties(object property table)</code></li>
+<li><code>get_properties()</code>: returns object property table</li>
 <li><code>is_player()</code>: returns true for players, false otherwise</li>
 </ul>
 <h5 id="luaentitysao-only-no-op-for-other-objects">LuaEntitySAO-only (no-op for other objects)</h5>
@@ -3065,6 +3072,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </li>
 </ul>
 </li>
+<li><code>get_physics_override()</code>: returns the table given to set_physics_override</li>
 <li><code>hud_add(hud definition)</code>: add a HUD element described by HUD def, returns ID
    number on success</li>
 <li><code>hud_remove(id)</code>: remove the HUD element of the specified id</li>
@@ -3087,14 +3095,17 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><code>count</code>: number of items, must be between <code>1</code> and <code>23</code></li>
 </ul>
 </li>
+<li><code>hud_get_hotbar_itemcount</code>: returns number of visible items</li>
 <li><code>hud_set_hotbar_image(texturename)</code><ul>
 <li>sets background image for hotbar</li>
 </ul>
 </li>
+<li><code>hud_get_hotbar_image</code>: returns texturename</li>
 <li><code>hud_set_hotbar_selected_image(texturename)</code><ul>
 <li>sets image for selected item of hotbar</li>
 </ul>
 </li>
+<li><code>hud_get_hotbar_selected_image</code>: returns texturename</li>
 <li><code>hud_replace_builtin(name, hud_definition)</code><ul>
 <li>replace definition of a builtin hud element</li>
 <li><code>name</code>: <code>"breath"</code> or <code>"health"</code></li>
@@ -3113,13 +3124,15 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
   <code>minetest.after(0)</code> in there.</li>
 </ul>
 </li>
+<li><code>get_sky()</code>: returns bgcolor, type and a table with the textures</li>
 <li><code>override_day_night_ratio(ratio or nil)</code><ul>
 <li><code>0</code>...<code>1</code>: Overrides day-night ratio, controlling sunlight to a specific amount</li>
 <li><code>nil</code>: Disables override, defaulting to sunlight based on day-night cycle</li>
 </ul>
 </li>
+<li><code>get_day_night_ratio()</code>: returns the ratio or nil if it isn't overridden</li>
 <li>
-<p><code>set_local_animation(walk, dig, walk+dig, frame_speed=frame_speed)</code></p>
+<p><code>set_local_animation(stand/idle, walk, dig, walk+dig, frame_speed=frame_speed)</code></p>
 <p>set animation for player model in third person view</p>
 <pre><code>set_local_animation({x=0, y=79}, -- &lt; stand/idle animation key frames
     {x=168, y=187}, -- &lt; walk animation key frames
@@ -3127,22 +3140,18 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
     {x=200, y=219}, -- &lt;  walk+dig animation key frames
     frame_speed=30): -- &lt;  animation frame speed
 </code></pre>
-</li>
-<li>
-<p><code>set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})</code>: defines offset value for camera per player</p>
 <ul>
+<li><code>get_local_animation()</code>: returns stand, walk, dig, dig+walk tables and frame_speed</li>
+<li><code>set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})</code>: defines offset value for camera per player</li>
 <li>in first person view</li>
 <li>in third person view (max. values <code>{x=-10/10,y=-10,15,z=-5/5}</code>)</li>
-</ul>
-</li>
-<li><code>get_nametag_attributes()</code><ul>
+<li><code>get_eye_offset()</code>: returns offset_first and offset_third</li>
+<li><code>get_nametag_attributes()</code></li>
 <li>returns a table with the attributes of the nametag of the player</li>
 <li>{
     color = {a=0..255, r=0..255, g=0..255, b=0..255},
   }</li>
-</ul>
-</li>
-<li><code>set_nametag_attributes(attributes)</code><ul>
+<li><code>set_nametag_attributes(attributes)</code></li>
 <li>sets the attributes of the nametag of the player</li>
 <li><code>attributes</code>:
   {
