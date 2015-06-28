@@ -254,14 +254,24 @@ minetest.register_node("mymod:rightclick", {
 
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec",
-				"size[3,2]"..
-				"label[1,1;This is shown on right click]")
-	end
+				"size[5,5]"..
+				"label[1,1;This is shown on right click]"..
+                "field[1,2;2,1;x;x;]")
+	end,
+    on_receive_fields = function(pos, formname, fields, player)
+        if(fields.quit) then return end
+        print(fields.x)
+    end
 })
 {% endhighlight %}
 
-Formspecs set this way do not trigger callbacks.
-This method really only works for inventories.
-Use on_rightclick and minetest.show_formspec if you want callbacks.
+Formspecs set this way do not trigger the same callback. In order to
+receive form input for meta formspecs, you must include an
+`on_receive_fields` entry when registering the node.
+
+This style of callback can trigger the callback when you press enter
+in a field, which is impossible with `minetest.show_formspec`,
+however, this kind of form can only be shown by right-clicking on a
+node. It cannot be triggered programmatically.
 
 *Note: node meta data will have been explained by this point in the full book*
