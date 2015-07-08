@@ -151,6 +151,8 @@ layout: default
 <li><a href="#sizewhfixed_size">size[&lt;W&gt;,&lt;H&gt;,&lt;fixed_size&gt;]</a></li>
 <li><a href="#listinventory-locationlist-namexywh">list[&lt;inventory location&gt;;&lt;list name&gt;;&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;]</a></li>
 <li><a href="#listinventory-locationlist-namexywhstarting-item-index">list[&lt;inventory location&gt;;&lt;list name&gt;;&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;starting item index&gt;]</a></li>
+<li><a href="#listringinventory-locationlist-name">listring[&lt;inventory location&gt;;&lt;list name&gt;]</a></li>
+<li><a href="#listring">listring[]</a></li>
 <li><a href="#listcolorsslot_bg_normalslot_bg_hover">listcolors[&lt;slot_bg_normal&gt;;&lt;slot_bg_hover&gt;]</a></li>
 <li><a href="#listcolorsslot_bg_normalslot_bg_hoverslot_border">listcolors[&lt;slot_bg_normal&gt;;&lt;slot_bg_hover&gt;;&lt;slot_border&gt;]</a></li>
 <li><a href="#listcolorsslot_bg_normalslot_bg_hoverslot_bordertooltip_bgcolortooltip_fontcolor">listcolors[&lt;slot_bg_normal&gt;;&lt;slot_bg_hover&gt;;&lt;slot_border&gt;;&lt;tooltip_bgcolor&gt;;&lt;tooltip_fontcolor&gt;]</a></li>
@@ -327,7 +329,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 01/June/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 08/July/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -1476,6 +1478,19 @@ list[current_player;craftpreview;7,1;1,1;]
 <ul>
 <li>Show an inventory list</li>
 </ul>
+<h4 id="listringinventory-locationlist-name"><code>listring[&lt;inventory location&gt;;&lt;list name&gt;]</code></h4>
+<ul>
+<li>Allows to create a ring of inventory lists</li>
+<li>Shift-clicking on items in one element of the ring</li>
+<li>will send them to the next inventory list inside the ring</li>
+<li>The first occurrence of an element inside the ring will</li>
+<li>determine the inventory where items will be sent to</li>
+</ul>
+<h4 id="listring"><code>listring[]</code></h4>
+<ul>
+<li>Shorthand for doing <code>listring[&lt;inventory location&gt;;&lt;list name&gt;]</code></li>
+<li>for the last two inventory lists added by list[...]</li>
+</ul>
 <h4 id="listcolorsslot_bg_normalslot_bg_hover"><code>listcolors[&lt;slot_bg_normal&gt;;&lt;slot_bg_hover&gt;]</code></h4>
 <ul>
 <li>Sets background color of slots as <code>ColorString</code></li>
@@ -2043,6 +2058,15 @@ or string form, a ColorString (defined above):
 <li>should return <code>true</code> to prevent the default damage mechanism</li>
 </ul>
 </li>
+<li><code>minetest.register_on_player_hpchange(func(player, hp_change), modifier)</code><ul>
+<li>Called when the player gets damaged or healed</li>
+<li><code>player</code>: ObjectRef of the player</li>
+<li><code>hp_change</code>: the amount of change. Negative when it is damage.</li>
+<li><code>modifier</code>: when true, the function should return the actual hp_change.
+  Note: modifiers only get a temporary hp_change that can be modified by later modifiers.
+  modifiers can return true as a second argument to stop the execution of further functions.</li>
+</ul>
+</li>
 <li><code>minetest.register_on_respawnplayer(func(ObjectRef))</code><ul>
 <li>Called when player is to be respawned</li>
 <li>Called <em>before</em> repositioning of player occurs</li>
@@ -2260,6 +2284,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><code>minetest.find_nodes_in_area(minp, maxp, nodenames)</code>: returns a list of positions<ul>
+<li>returns as second value a table with the count of the individual nodes found</li>
 <li><code>nodenames</code>: e.g. <code>{"ignore", "group:tree"}</code> or <code>"default:dirt"</code></li>
 </ul>
 </li>
@@ -2479,6 +2504,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   <code>{ stack1, stack2, stack3, stack4, stack 5, stack 6, stack 7, stack 8, stack 9 }</code></li>
 <li><code>output.item</code> = <code>ItemStack</code>, if unsuccessful: empty <code>ItemStack</code></li>
 <li><code>output.time</code> = a number, if unsuccessful: <code>0</code></li>
+<li><code>output.replacements</code> = list of <code>ItemStack</code>s that couldn't be placed in
+  <code>decremented_input.items</code></li>
 <li><code>decremented_input</code> = like <code>input</code></li>
 </ul>
 </li>
@@ -2990,8 +3017,8 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><code>set_wielded_item(item)</code>: replaces the wielded item, returns <code>true</code> if successful</li>
 <li><code>set_armor_groups({group1=rating, group2=rating, ...})</code></li>
 <li><code>get_armor_groups()</code>: returns a table with the armor group ratings</li>
-<li><code>set_animation({x=1,y=1}, frame_speed=15, frame_blend=0)</code></li>
-<li><code>get_animation()</code>: returns range, frame_speed and frame_blend</li>
+<li><code>set_animation({x=1,y=1}, frame_speed=15, frame_blend=0, frame_loop=true)</code></li>
+<li><code>get_animation()</code>: returns range, frame_speed, frame_blend and frame_loop</li>
 <li><code>set_attach(parent, bone, position, rotation)</code><ul>
 <li><code>bone</code>: string</li>
 <li><code>position</code>: <code>{x=num, y=num, z=num}</code> (relative)</li>
