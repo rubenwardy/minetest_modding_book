@@ -9,7 +9,10 @@ layout: default
 <li><a href="#programming-in-lua">Programming in Lua</a></li>
 <li><a href="#startup">Startup</a></li>
 <li><a href="#paths">Paths</a></li>
-<li><a href="#games">Games</a></li>
+<li><a href="#games">Games</a><ul>
+<li><a href="#menu-images">Menu images</a></li>
+</ul>
+</li>
 <li><a href="#mod-load-path">Mod load path</a></li>
 <li><a href="#mod-load-path-for-world-specific-games">Mod load path for world-specific games</a></li>
 <li><a href="#modpack-support">Modpack support</a></li>
@@ -241,36 +244,40 @@ layout: default
 <li><a href="#methods_3">Methods</a></li>
 </ul>
 </li>
-<li><a href="#itemstack_1">ItemStack</a><ul>
+<li><a href="#areastore">AreaStore</a><ul>
 <li><a href="#methods_4">Methods</a></li>
 </ul>
 </li>
-<li><a href="#pseudorandom">PseudoRandom</a><ul>
+<li><a href="#itemstack_1">ItemStack</a><ul>
 <li><a href="#methods_5">Methods</a></li>
 </ul>
 </li>
-<li><a href="#pcgrandom">PcgRandom</a><ul>
+<li><a href="#pseudorandom">PseudoRandom</a><ul>
 <li><a href="#methods_6">Methods</a></li>
 </ul>
 </li>
-<li><a href="#perlinnoise">PerlinNoise</a><ul>
+<li><a href="#pcgrandom">PcgRandom</a><ul>
 <li><a href="#methods_7">Methods</a></li>
 </ul>
 </li>
-<li><a href="#perlinnoisemap">PerlinNoiseMap</a><ul>
+<li><a href="#perlinnoise">PerlinNoise</a><ul>
 <li><a href="#methods_8">Methods</a></li>
 </ul>
 </li>
-<li><a href="#voxelmanip">VoxelManip</a><ul>
+<li><a href="#perlinnoisemap">PerlinNoiseMap</a><ul>
 <li><a href="#methods_9">Methods</a></li>
 </ul>
 </li>
-<li><a href="#voxelarea">VoxelArea</a><ul>
+<li><a href="#voxelmanip">VoxelManip</a><ul>
 <li><a href="#methods_10">Methods</a></li>
 </ul>
 </li>
-<li><a href="#settings">Settings</a><ul>
+<li><a href="#voxelarea">VoxelArea</a><ul>
 <li><a href="#methods_11">Methods</a></li>
+</ul>
+</li>
+<li><a href="#settings">Settings</a><ul>
+<li><a href="#methods_12">Methods</a></li>
 </ul>
 </li>
 </ul>
@@ -329,7 +336,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 08/July/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 12/August/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -379,6 +386,11 @@ the <code>init.lua</code> scripts in a shared environment.</p>
 </code></pre>
 <p>The game directory can contain the file minetest.conf, which will be used
 to set default settings when running the particular game.</p>
+<h3 id="menu-images">Menu images</h3>
+<p>Games can provide custom main menu images. They are put inside a <code>menu</code> directory inside the game directory.</p>
+<p>The images are named <code>$identifier.png</code>, where <code>$identifier</code> is one of <code>overlay,background,footer,header</code>.
+If you want to specify multiple images for one identifier, add additional images named like <code>$identifier.$n.png</code>, with an ascending number $n starting with 1,
+and a random image will be chosen from the provided ones.</p>
 <h2 id="mod-load-path">Mod load path</h2>
 <p>Generic:</p>
 <ul>
@@ -2100,6 +2112,7 @@ or string form, a ColorString (defined above):
 </li>
 <li><code>minetest.register_on_chat_message(func(name, message))</code><ul>
 <li>Called always when a player says something</li>
+<li>Return <code>true</code> to mark the message as handled, which means that it will not be sent to other players</li>
 </ul>
 </li>
 <li><code>minetest.register_on_player_receive_fields(func(player, formname, fields))</code><ul>
@@ -2626,7 +2639,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 <h3 id="server">Server</h3>
 <ul>
-<li><code>minetest.request_shutdown()</code>: request for server shutdown</li>
+<li><code>minetest.request_shutdown([message],[reconnect])</code>: request for server shutdown. Will display <code>message</code> to clients,
+    and <code>reconnect</code> == true displays a reconnect button.</li>
 <li><code>minetest.get_server_status()</code>: returns server status string</li>
 </ul>
 <h3 id="bans">Bans</h3>
@@ -2650,7 +2664,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <p><code>minetest.add_particlespawner(particlespawner definition)</code></p>
 <ul>
 <li>Add a <code>ParticleSpawner</code>, an object that spawns an amount of particles over <code>time</code> seconds</li>
-<li>Returns an <code>id</code></li>
+<li>Returns an <code>id</code>, and -1 if adding didn't succeed</li>
 <li><code>Deprecated: minetest.add_particlespawner(amount, time,
   minpos, maxpos,
   minvel, maxvel,
@@ -2811,6 +2825,9 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>
 <p><code>minetest.is_protected(pos, name)</code>: returns boolean</p>
 <ul>
+<li>Returns true, if player <code>name</code> shouldn't be abled to dig at <code>pos</code> or do other
+  actions, defineable by mods, due to some mod-defined ownership-like concept.
+  Returns false or nil, if the player is allowed to do such actions.</li>
 <li>This function should be overridden by protection mods and should be used to
   check if a player can interact at a position.</li>
 <li>This function should call the old version of itself if the position is not
@@ -3059,6 +3076,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <h5 id="player-only-no-op-for-other-objects">Player-only (no-op for other objects)</h5>
 <ul>
 <li><code>get_player_name()</code>: returns <code>""</code> if is not a player</li>
+<li><code>get_player_velocity()</code>: returns <code>nil</code> if is not a player otherwise a table {x, y, z} representing the player's instantaneous velocity in nodes/s</li>
 <li><code>get_look_dir()</code>: get camera direction as a unit vector</li>
 <li><code>get_look_pitch()</code>: pitch in radians</li>
 <li><code>get_look_yaw()</code>: yaw in radians (wraps around pretty randomly as of now)</li>
@@ -3220,11 +3238,35 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 </ul>
+<h3 id="areastore"><code>AreaStore</code></h3>
+<p>A fast access data structure to store areas, and find areas near a given position or area.
+Every area has a <code>data</code> string attribute to store additional information.
+You can create an empty <code>AreaStore</code> by calling <code>AreaStore()</code>, or <code>AreaStore(type_name)</code>.
+If you chose the parameter-less constructor, a fast implementation will be automatically chosen for you.</p>
+<h4 id="methods_4">Methods</h4>
+<ul>
+<li><code>get_area(id, include_borders, include_data)</code>: returns the area with the id <code>id</code>. (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.</li>
+<li><code>get_areas_for_pos(pos, include_borders, include_data)</code>: returns all areas that contain the position <code>pos</code>. (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.</li>
+<li><code>get_areas_in_area(edge1, edge2, accept_overlap, include_borders, include_data)</code>: returns all areas that contain all nodes inside the area specified by <code>edge1</code> and <code>edge2</code> (inclusive). If <code>accept_overlap</code> is true, also areas are returned that have nodes in common with the specified area. (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.</li>
+<li><code>insert_area(edge1, edge2, data)</code>: inserts an area into the store. Returns the id if successful, nil otherwise. The (inclusive) positions <code>edge1</code> and <code>edge2</code> describe the area, <code>data</code>
+is a string stored with the area.</li>
+<li><code>reserve(count)</code>: reserves resources for at most <code>count</code> many contained areas. Only needed for efficiency, and only some implementations profit.</li>
+<li><code>remove_area(id)</code>: removes the area with the given id from the store, returns success.</li>
+<li><code>set_cache_params(params)</code>: sets params for the included prefiltering cache. Calling invalidates the cache, so that its elements have to be newly generated.<ul>
+<li><code>params</code>:
+  {
+    enabled = boolean, -- whether to enable, default true
+    block_radius = number, -- the radius (in nodes) of the areas the cache generates prefiltered lists for, minimum 16, default 64
+    limit = number, -- the cache's size, minimum 20, default 1000
+  }</li>
+</ul>
+</li>
+</ul>
 <h3 id="itemstack_1"><code>ItemStack</code></h3>
 <p>An <code>ItemStack</code> is a stack of items.</p>
 <p>It can be created via <code>ItemStack(x)</code>, where x is an <code>ItemStack</code>,
 an itemstring, a table or <code>nil</code>.</p>
-<h4 id="methods_4">Methods</h4>
+<h4 id="methods_5">Methods</h4>
 <ul>
 <li><code>is_empty()</code>: Returns <code>true</code> if stack is empty.</li>
 <li><code>get_name()</code>: Returns item name (e.g. <code>"default:stone"</code>).</li>
@@ -3264,7 +3306,7 @@ an itemstring, a table or <code>nil</code>.</p>
 <p>A 16-bit pseudorandom number generator.
 Uses a well-known LCG algorithm introduced by K&amp;R.</p>
 <p>It can be created via <code>PseudoRandom(seed)</code>.</p>
-<h4 id="methods_5">Methods</h4>
+<h4 id="methods_6">Methods</h4>
 <ul>
 <li><code>next()</code>: return next integer random number [<code>0</code>...<code>32767</code>]</li>
 <li><code>next(min, max)</code>: return next integer random number [<code>min</code>...<code>max</code>]<ul>
@@ -3277,7 +3319,7 @@ Uses a well-known LCG algorithm introduced by K&amp;R.</p>
 <p>A 32-bit pseudorandom number generator.
 Uses PCG32, an algorithm of the permuted congruential generator family, offering very strong randomness.</p>
 <p>It can be created via <code>PcgRandom(seed)</code> or <code>PcgRandom(seed, sequence)</code>.</p>
-<h4 id="methods_6">Methods</h4>
+<h4 id="methods_7">Methods</h4>
 <ul>
 <li><code>next()</code>: return next integer random number [<code>-2147483648</code>...<code>2147483647</code>]</li>
 <li><code>next(min, max)</code>: return next integer random number [<code>min</code>...<code>max</code>]</li>
@@ -3293,7 +3335,7 @@ It can be created via <code>PerlinNoise(seed, octaves, persistence, scale)</code
 or <code>PerlinNoise(noiseparams)</code>.
 Alternatively with <code>minetest.get_perlin(seeddiff, octaves, persistence, scale)</code>
 or <code>minetest.get_perlin(noiseparams)</code>.</p>
-<h4 id="methods_7">Methods</h4>
+<h4 id="methods_8">Methods</h4>
 <ul>
 <li><code>get2d(pos)</code>: returns 2D noise value at <code>pos={x=,y=}</code></li>
 <li><code>get3d(pos)</code>: returns 3D noise value at <code>pos={x=,y=,z=}</code></li>
@@ -3307,7 +3349,7 @@ for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
 <code>nil</code> is returned).</p>
 <p>For each of the functions with an optional <code>buffer</code> parameter:  If <code>buffer</code> is not
 nil, this table will be used to store the result instead of creating a new table.</p>
-<h4 id="methods_8">Methods</h4>
+<h4 id="methods_9">Methods</h4>
 <ul>
 <li><code>get2dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> 2D array of 2D noise
   with values starting at <code>pos={x=,y=}</code></li>
@@ -3333,7 +3375,7 @@ nil, this table will be used to store the result instead of creating a new table
 <p>An interface to the <code>MapVoxelManipulator</code> for Lua.</p>
 <p>It can be created via <code>VoxelManip()</code> or <code>minetest.get_voxel_manip()</code>.
 The map will be pre-loaded if two positions are passed to either.</p>
-<h4 id="methods_9">Methods</h4>
+<h4 id="methods_10">Methods</h4>
 <ul>
 <li><code>read_from_map(p1, p2)</code>:  Reads a chunk of map from the map containing the
   region formed by <code>p1</code> and <code>p2</code>.<ul>
@@ -3395,7 +3437,7 @@ The map will be pre-loaded if two positions are passed to either.</p>
 <p>A helper class for voxel areas.
 It can be created via <code>VoxelArea:new{MinEdge=pmin, MaxEdge=pmax}</code>.
 The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
-<h4 id="methods_10">Methods</h4>
+<h4 id="methods_11">Methods</h4>
 <ul>
 <li><code>getExtent()</code>: returns a 3D vector containing the size of the area formed by
   <code>MinEdge</code> and <code>MaxEdge</code></li>
@@ -3419,7 +3461,7 @@ The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
 <h3 id="settings"><code>Settings</code></h3>
 <p>An interface to read config files in the format of <code>minetest.conf</code>.</p>
 <p>It can be created via <code>Settings(filename)</code>.</p>
-<h4 id="methods_11">Methods</h4>
+<h4 id="methods_12">Methods</h4>
 <ul>
 <li><code>get(key)</code>: returns a value</li>
 <li><code>get_bool(key)</code>: returns a boolean</li>
@@ -3700,8 +3742,13 @@ minetest.spawn_tree(pos,apple_tree)
 <ul>
 <li><code>"image.png"</code></li>
 <li><code>{name="image.png", animation={Tile Animation definition}}</code></li>
-<li><code>{name="image.png", backface_culling=bool}</code><ul>
-<li>backface culling only supported in special tiles</li>
+<li><code>{name="image.png", backface_culling=bool, tileable_vertical=bool,
+    tileable_horizontal=bool}</code><ul>
+<li>backface culling only supported in special tiles.</li>
+<li>tileable flags are info for shaders, how they should treat texture
+  when displacement mapping is used
+  Directions are from the point of view of the tile texture,
+  not the node it's on</li>
 </ul>
 </li>
 <li>deprecated, yet still supported field names:<ul>
@@ -3970,7 +4017,9 @@ minetest.spawn_tree(pos,apple_tree)
 --      ^ Number of nodes the decoration can be at maximum.
 --  ^ If absent, the parameter 'height' is used as a constant.
     spawn_by = "default:water",
---  ^ Node that the decoration only spawns next to, in a 1-node square radius.
+--  ^ Node that the decoration only spawns next to.
+--  ^ The neighbours checked are the 8 nodes horizontally surrounding the lowest node of the
+--  ^ decoration, and the 8 nodes horizontally surrounding the ground node below the decoration.
     num_spawn_by = 1,
 --  ^ Number of spawn_by nodes that must be surrounding the decoration position to occur.
 --  ^ If absent or -1, decorations occur next to any nodes.
