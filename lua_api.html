@@ -5,6 +5,7 @@ layout: default
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
+<li><a href="#minetest-lua-modding-api-reference-0413">Minetest Lua Modding API Reference 0.4.13</a><ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#programming-in-lua">Programming in Lua</a></li>
 <li><a href="#startup">Startup</a></li>
@@ -321,7 +322,10 @@ layout: default
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 </div>
+<h1 id="minetest-lua-modding-api-reference-0413">Minetest Lua Modding API Reference 0.4.13</h1>
 
 <h2 id="introduction">Introduction</h2>
 <p>Content and functionality can be added to Minetest 0.4 by using Lua
@@ -336,7 +340,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 12/August/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 03/September/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -3127,13 +3131,15 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </li>
 <li><code>hud_get(id)</code>: gets the HUD element definition structure of the specified ID</li>
 <li><code>hud_set_flags(flags)</code>: sets specified HUD flags to <code>true</code>/<code>false</code><ul>
-<li><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code></li>
+<li><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>minimap</code></li>
 <li>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
 <li>if a flag equals <code>nil</code>, the flag is not modified</li>
+<li>note that setting <code>minimap</code> modifies the client's permission to view the minimap -</li>
+<li>the client may locally elect to not view the minimap</li>
 </ul>
 </li>
 <li><code>hud_get_flags()</code>: returns a table containing status of hud flags<ul>
-<li>returns <code>{ hotbar=true, healthbar=true, crosshair=true, wielditem=true, breathbar=true }</code></li>
+<li>returns <code>{ hotbar=true, healthbar=true, crosshair=true, wielditem=true, breathbar=true, minimap=true }</code></li>
 </ul>
 </li>
 <li><code>hud_set_hotbar_itemcount(count)</code>: sets number of items in builtin hotbar<ul>
