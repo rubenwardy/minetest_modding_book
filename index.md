@@ -13,29 +13,29 @@ This online book aims to teach you how to create your own mods, starting from th
 ### What you will need
 
 * A Code Editor. Talked about in the [Lua Scripts](chapters/lua.html#tools) chapter.
-* A copy of Minetest in the 0.4 series. (eg: 0.4.11)
-* The ability to work independently, without pestering other developers to write you code for you.
-* Motivation to continue trying when things go wrong.
+* A copy of Minetest in the 0.4 series. (eg: 0.4.13)
+* The ability to work independently, without pestering other developers to write your code for you.
+* Motivation to keep trying when things go wrong.
 
 
 ### So, go on then.
 
-Start reading. Use the navigation bar on the left to open a chapter.
+Start reading. Use the navigation bar on the left (or on the top on mobiles)
+to open a chapter.
 
 * [GitHub](https://github.com/rubenwardy/minetest_modding_book).
-* [Download for offline use](https://github.com/rubenwardy/minetest_modding_book/releases)
-* [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729)
+* [Download for offline use](https://github.com/rubenwardy/minetest_modding_book/releases).
+* [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
 
 About this Book
 ---------------
 
 Noticed a mistake, or want to give feedback? Tell us about it using one of these methods:
 
-* Submit a report below.
 * [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
-* Post in [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
+* Post in the [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
 * Send me a [PM](https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=2051) on the Forum.
-* Send me an email to rubenwardy on gmail.com
+* Submit a report below.
 
 You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_modding_book).\\
 Read the [contribution README](README.html).
