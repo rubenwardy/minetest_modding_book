@@ -8,7 +8,7 @@ print("Downloading lua_api.txt...")
 
 url = "https://raw.githubusercontent.com/minetest/minetest/master/doc/lua_api.txt"
 text = urllib2.urlopen(url).read()
-header = """Minetest Lua Modding API Reference 0.4.12
+header = """Minetest Lua Modding API Reference 0.4.13
 ========================================="""
 text = text.replace(header, "")
 
