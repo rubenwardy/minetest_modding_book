@@ -8,7 +8,8 @@ Welcome
 -------
 
 Minetest uses Lua scripts to provide modding support.
-This online book aims to teach you how to create your own mods, starting from the basics.
+This online book aims to teach you how to create your own mods, 
+starting from the basics.
 
 ### What you will need
 
