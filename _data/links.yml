@@ -11,6 +11,8 @@
   num:   2
   link:  chapters/lua.html
 
+- hr: true
+
 - title: Nodes, Items and Crafting
   num:   3
   link:  chapters/nodes_items_crafting.html
@@ -29,22 +31,26 @@
 
 - hr: true
 
-- title: Player Physics
+- title: Chat
   num:   7
+  link:  chapters/chat.html
+
+- title: Player Physics
+  num:   8
   link:  chapters/player_physics.html
 
 - title: Formspecs
-  num:   8
+  num:   9
   link:  chapters/formspecs.html
 
 - title: HUD
-  num:   9
+  num:   10
   link:  chapters/hud.html
 
 - hr: true
 
 - title: Releasing a Mod
-  num: 10
+  num: 11
   link: chapters/releasing.html
 
 - hr: true
