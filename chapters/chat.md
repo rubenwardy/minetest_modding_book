@@ -40,19 +40,19 @@ minetest.chat_send_player("player1", "This is a chat message for player1")
 
 Only player1 can see this message, and it's displayed the same as above.
 
-### Server =!=
+### Older mods
 
-You can prefix a message to a single player with `Server =!=` by using
+Occasionally you'll see mods with code like this:
 
 {% highlight lua %}
 minetest.chat_send_player("player1", "This is a server message", true)
+minetest.chat_send_player("player1", "This is a server message", false)
 {% endhighlight %}
 
-It will look like this:
+The boolean at the end has been
+[depreciated](https://github.com/minetest/minetest/commit/9a3b7715e2c2390a3a549d4e105ed8c18defb228)
+so the third parameter is ignored and has no effect.
 
-	<player1> Look at this entrance
-	Server =!= This is a server message
-	<player2> What about it?
 
 ## Chat commands
 
