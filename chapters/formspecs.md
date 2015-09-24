@@ -34,7 +34,15 @@ They consist of a series of tags which are in the following form:
 
 	element_type[param1;param2;...]
 
-Firstly the element type is declared, and then the attributes are given in square brackets.
+Firstly the element type is declared, and then the attributes are given
+in square brackets.
+
+(An element is an item such as a text box or button, or it is meta data such
+as size or background).
+
+Here are two elements, of types foo and bar.
+
+	foo[param1]bar[param1]
 
 ### Size[w, h]
 
