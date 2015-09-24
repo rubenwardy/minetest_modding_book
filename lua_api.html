@@ -79,12 +79,15 @@ layout: default
 <li><a href="#ore-types">Ore types</a><ul>
 <li><a href="#scatter">scatter</a></li>
 <li><a href="#sheet">sheet</a></li>
+<li><a href="#puff">puff</a></li>
 <li><a href="#blob">blob</a></li>
-<li><a href="#vein">`vein</a></li>
+<li><a href="#vein">vein</a></li>
 </ul>
 </li>
 <li><a href="#ore-attributes">Ore attributes</a><ul>
 <li><a href="#absheight">absheight</a></li>
+<li><a href="#puff_cliffs">puff_cliffs</a></li>
+<li><a href="#puff_additive_composition">puff_additive_composition</a></li>
 </ul>
 </li>
 <li><a href="#decoration-types">Decoration types</a><ul>
@@ -228,7 +231,7 @@ layout: default
 <li><a href="#methods">Methods</a></li>
 </ul>
 </li>
-<li><a href="#notetimerref">NoteTimerRef</a><ul>
+<li><a href="#nodetimerref">NodeTimerRef</a><ul>
 <li><a href="#methods_1">Methods</a></li>
 </ul>
 </li>
@@ -336,7 +339,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 03/September/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 25/September/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -942,20 +945,31 @@ that point is greater than the <code>noise_threshold</code>, giving the ability 
 a non-equal distribution of ore.</p>
 <h3 id="sheet"><code>sheet</code></h3>
 <p>Creates a sheet of ore in a blob shape according to the 2D perlin noise
-described by <code>noise_params</code>. The relative height of the sheet can be
-controlled by the same perlin noise as well, by specifying a non-zero
-<code>scale</code> parameter in <code>noise_params</code>.</p>
-<p><strong>IMPORTANT</strong>: The noise is not transformed by <code>offset</code> or <code>scale</code> when comparing
-against the noise threshold, but scale is used to determine relative height.
-The height of the blob is randomly scattered, with a maximum height of <code>clust_size</code>.</p>
-<p><code>clust_scarcity</code> and <code>clust_num_ores</code> are ignored.</p>
-<p>This is essentially an improved version of the so-called "stratus" ore seen in
-some unofficial mods.</p>
+described by <code>noise_params</code> and <code>noise_threshold</code>. This is essentially an
+improved version of the so-called "stratus" ore seen in some unofficial mods.</p>
+<p>This sheet consists of vertical columns of uniform randomly distributed height,
+varying between the inclusive range <code>column_height_min</code> and <code>column_height_max</code>.
+If <code>column_height_min</code> is not specified, this parameter defaults to 1.
+If <code>column_height_max</code> is not specified, this parameter defaults to <code>clust_size</code>
+for reverse compatibility.  New code should prefer <code>column_height_max</code>.</p>
+<p>The <code>column_midpoint_factor</code> parameter controls the position of the column at which
+ore eminates from.  If 1, columns grow upward.  If 0, columns grow downward.  If 0.5,
+columns grow equally starting from each direction.  <code>column_midpoint_factor</code> is a
+decimal number ranging in value from 0 to 1.  If this parameter is not specified,
+the default is 0.5.</p>
+<p>The ore parameters <code>clust_scarcity</code> and <code>clust_num_ores</code> are ignored for this ore type.</p>
+<h3 id="puff"><code>puff</code></h3>
+<p>Creates a sheet of ore in a cloud-like puff shape.</p>
+<p>As with the <code>sheet</code> ore type, the size and shape of puffs are described by
+<code>noise_params</code> and <code>noise_threshold</code> and are placed at random vertical positions
+within the currently generated chunk.</p>
+<p>The vertical top and bottom displacement of each puff are determined by the noise
+parameters <code>np_puff_top</code> and <code>np_puff_bottom</code>, respectively.</p>
 <h3 id="blob"><code>blob</code></h3>
 <p>Creates a deformed sphere of ore according to 3d perlin noise described by
 <code>noise_params</code>.  The maximum size of the blob is <code>clust_size</code>, and
 <code>clust_scarcity</code> has the same meaning as with the <code>scatter</code> type.</p>
-<h3 id="vein">`vein</h3>
+<h3 id="vein"><code>vein</code></h3>
 <p>Creates veins of ore varying in density by according to the intersection of two
 instances of 3d perlin noise with diffferent seeds, both described by
 <code>noise_params</code>.  <code>random_factor</code> varies the influence random chance has on
@@ -983,6 +997,15 @@ computationally expensive than any other ore.</p>
 <h3 id="absheight"><code>absheight</code></h3>
 <p>Also produce this same ore between the height range of <code>-y_max</code> and <code>-y_min</code>.</p>
 <p>Useful for having ore in sky realms without having to duplicate ore entries.</p>
+<h3 id="puff_cliffs"><code>puff_cliffs</code></h3>
+<p>If set, puff ore generation will not taper down large differences in displacement
+when approaching the edge of a puff.  This flag has no effect for ore types other
+than <code>puff</code>.</p>
+<h3 id="puff_additive_composition"><code>puff_additive_composition</code></h3>
+<p>By default, when noise described by <code>np_puff_top</code> or <code>np_puff_bottom</code> results in a
+negative displacement, the sub-column at that point is not generated.  With this
+attribute set, puff ore generation will instead generate the absolute difference in
+noise displacement values.  This flag has no effect for ore types other than <code>puff</code>.</p>
 <h2 id="decoration-types">Decoration types</h2>
 <p>The varying types of decorations that can be placed.</p>
 <p>The default value is <code>simple</code>, and is currently the only type supported.</p>
@@ -1900,6 +1923,10 @@ or string form, a ColorString (defined above):
 <li>Same but in reverse. Returns <code>nil</code> if the string can't be parsed to a position.</li>
 </ul>
 </li>
+<li><code>minetest.string_to_area("(X1, Y1, Z1) (X2, Y2, Z2)")</code>: returns two positions<ul>
+<li>Converts a string representing an area box into two positions</li>
+</ul>
+</li>
 <li><code>minetest.formspec_escape(string)</code>: returns a string<ul>
 <li>escapes the characters "[", "]", "\", "," and ";", which can not be used in formspecs</li>
 </ul>
@@ -2235,15 +2262,16 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Returns <code>nil</code> for unloaded area</li>
 </ul>
 </li>
-<li>
-<p><code>minetest.get_node_light(pos, timeofday)</code> returns a number between <code>0</code> and <code>15</code> or <code>nil</code></p>
-<ul>
+<li><code>minetest.get_node_light(pos, timeofday)</code><ul>
+<li>Gets the light value at the given position. Note that the light value
+  "inside" the node at the given position is returned, so you usually want
+  to get the light value of a neighbor.</li>
+<li><code>pos</code>: The position where to measure the light.</li>
 <li><code>timeofday</code>: <code>nil</code> for current time, <code>0</code> for night, <code>0.5</code> for day</li>
+<li>Returns a number between <code>0</code> and <code>15</code> or <code>nil</code></li>
 </ul>
 </li>
-<li>
-<p><code>minetest.place_node(pos, node)</code></p>
-<ul>
+<li><code>minetest.place_node(pos, node)</code><ul>
 <li>Place node with the same effects that a player would cause</li>
 </ul>
 </li>
@@ -2363,6 +2391,11 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><code>minetest.clear_objects()</code><ul>
 <li>clear all objects in the environments</li>
+</ul>
+</li>
+<li><code>minetest.emerge_area(pos1, pos2)</code><ul>
+<li>queues all mapblocks in the area from pos1 to pos2, inclusive, for emerge</li>
+<li>i.e. asynchronously loads blocks from disk, or if inexistent, generates them</li>
 </ul>
 </li>
 <li><code>minetest.delete_area(pos1, pos2)</code><ul>
@@ -2972,7 +3005,7 @@ Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
 </ul>
 </li>
 </ul>
-<h3 id="notetimerref"><code>NoteTimerRef</code></h3>
+<h3 id="nodetimerref"><code>NodeTimerRef</code></h3>
 <p>Node Timers: a high resolution persistent per-node timer.
 Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <h4 id="methods_1">Methods</h4>
