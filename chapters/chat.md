@@ -1,5 +1,5 @@
 ---
-title: Chat
+title: Chat and Commands
 layout: default
 root: ../
 ---
