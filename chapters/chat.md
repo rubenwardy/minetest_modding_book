@@ -11,7 +11,6 @@ sending messages, intercepting messages and registering chat commands.
 
 * Send a message to all players.
 * Send a message to a certain player.
-	* Server =!=
 * Chat commands.
 * Intercepting messages.
 
