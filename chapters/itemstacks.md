@@ -10,8 +10,8 @@ In this chapter you will learn how to use ItemStacks.
 
 * Creating ItemStacks
 * Name and Count
+* Adding and Taking Items
 * Wear
-* Copying a stack
 * Lua Tables
 * Metadata
 * More Methods
@@ -39,6 +39,12 @@ else
 end
 {% endhighlight %}
 
+And you can copy stacks like this:
+
+{% highlight lua %}
+local items2 = ItemStack(items)
+{% endhighlight %}
+
 ## Name and Count
 
 {% highlight lua %}
@@ -56,6 +62,34 @@ if items:set_name("default:dirt") then
 else
 	error("This shouldn't happen")
 end
+{% endhighlight %}
+
+## Adding and Taking Items
+
+### Adding
+
+Use `add_item` to add items to an ItemStack.
+An ItemStack of the items that could not be added is returned.
+
+{% highlight lua %}
+local items = ItemStack("default:stone 50")
+local to_add = ItemStack("default:stone 100")
+local leftovers = items:add_item(to_add)
+
+print("Could not add" .. leftovers:get_count() .. " of the items.")
+-- ^ will be 51
+{% endhighlight %}
+
+## Taking
+
+The following code takes **up to** 100.
+If there aren't enough items in the stack, it will take as much as it can.
+
+{% highlight lua %}
+local taken = items:take_item(100)
+-- taken is the ItemStack taken from the main ItemStack
+
+print("Took " .. taken:get_count() .. " items")
 {% endhighlight %}
 
 ## Wear
@@ -76,14 +110,6 @@ items:add_wear(65535 / (max_uses - 1))
 
 When digging a node, the amount of wear a tool gets may depends on the node
 being dug. So max_uses varies depending on what is being dug.
-
-## Copying a stack
-
-It's as simple as this:
-
-{% highlight lua %}
-local items2 = ItemStack(items)
-{% endhighlight %}
 
 ## Lua Tables
 
