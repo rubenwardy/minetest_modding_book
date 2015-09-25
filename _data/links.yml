@@ -63,6 +63,10 @@
   num: 13
   link: chapters/releasing.html
 
+- title: Read More
+  num: 14
+  link: chapters/readmore.html
+
 - hr: true
 
 - title: Lua Modding API Reference
