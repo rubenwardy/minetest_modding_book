@@ -53,8 +53,14 @@
 
 - hr: true
 
+- title: ItemStacks
+  num:   12
+  link:  chapters/itemstacks.html
+
+- hr: true
+
 - title: Releasing a Mod
-  num: 12
+  num: 13
   link: chapters/releasing.html
 
 - hr: true
