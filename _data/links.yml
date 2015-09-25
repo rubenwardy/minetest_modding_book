@@ -25,32 +25,36 @@
   num:   5
   link:  chapters/node_drawtypes.html
 
-- title: Active Block Modifiers
+- title: Node Metadata
   num:   6
+  link:  chapters/node_metadata.html
+
+- title: Active Block Modifiers
+  num:   7
   link:  chapters/abms.html
 
 - hr: true
 
 - title: Chat and Commands
-  num:   7
+  num:   8
   link:  chapters/chat.html
 
 - title: Player Physics
-  num:   8
+  num:   9
   link:  chapters/player_physics.html
 
 - title: Formspecs
-  num:   9
+  num:   10
   link:  chapters/formspecs.html
 
 - title: HUD
-  num:   10
+  num:   11
   link:  chapters/hud.html
 
 - hr: true
 
 - title: Releasing a Mod
-  num: 11
+  num: 12
   link: chapters/releasing.html
 
 - hr: true

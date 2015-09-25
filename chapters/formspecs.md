@@ -246,7 +246,7 @@ end)
 ## Node Meta Formspecs
 
 minetest.show_formspec is not the only way to show a formspec, you can also
-add formspecs to a node's meta data. This is used on nodes such as chests to
+add formspecs to a [node's meta data](node_metadata.html). This is used on nodes such as chests to
 allow for faster opening times - you don't need to wait for the server to send
 the player the chest formspec.
 
@@ -281,5 +281,3 @@ This style of callback can trigger the callback when you press enter
 in a field, which is impossible with `minetest.show_formspec`,
 however, this kind of form can only be shown by right-clicking on a
 node. It cannot be triggered programmatically.
-
-*Note: node meta data will have been explained by this point in the full book*
