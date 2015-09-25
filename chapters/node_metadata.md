@@ -13,6 +13,7 @@ In this chapter you will learn how to manipulate a node's metadata.
 * Reading Metadata
 * Setting Metadata
 * Lua Tables
+* Infotext
 * Your Turn
 
 ## What is Node Metadata?
@@ -105,6 +106,16 @@ You can convert to and from lua tables using `to_table` and `from_table`:
 local tmp = meta:to_table()
 tmp.foo = "bar"
 meta:from_table(tmp)
+{% endhighlight %}
+
+## Infotext
+
+The Minetest Engine reads the field `infotext` in order to make text
+appear on mouse-over. This is used by furnaces to show progress and signs
+to show their text.
+
+{% highlight lua %}
+meta:set_string("infotext", "Here is some text that will appear on mouse over!")
 {% endhighlight %}
 
 ## Your Turn
