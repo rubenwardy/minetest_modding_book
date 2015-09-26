@@ -168,6 +168,9 @@ minetest.register_node("default:water_source", {
 	-- ^ when the liquid is a source
 
 	liquid_viscosity = WATER_VISC,
+	-- ^ how fast
+
+	liquid_range = 8,
 	-- ^ how far
 
 	post_effect_color = {a=64, r=100, g=100, b=200},
