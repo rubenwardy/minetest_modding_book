@@ -21,6 +21,7 @@ layout: default
 <li><a href="#dependstxt">depends.txt</a></li>
 <li><a href="#screenshotpng">screenshot.png</a></li>
 <li><a href="#descriptiontxt">description.txt</a></li>
+<li><a href="#settingtypestxt">settingtypes.txt</a></li>
 <li><a href="#initlua">init.lua</a></li>
 <li><a href="#models">models</a></li>
 <li><a href="#textures-sounds-media">textures, sounds, media</a></li>
@@ -197,7 +198,7 @@ layout: default
 <li><a href="#inventory-locations">Inventory locations</a></li>
 <li><a href="#colorstring">ColorString</a></li>
 <li><a href="#colorspec">ColorSpec</a></li>
-<li><a href="#vector-helpers">Vector helpers</a></li>
+<li><a href="#spatial-vectors">Spatial Vectors</a></li>
 <li><a href="#helper-functions">Helper functions</a></li>
 <li><a href="#minetest-namespace-reference">minetest namespace reference</a><ul>
 <li><a href="#utilities">Utilities</a></li>
@@ -339,7 +340,7 @@ source code patches to <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#1
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 25/September/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 26/October/2015.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -388,7 +389,9 @@ the <code>init.lua</code> scripts in a shared environment.</p>
 <pre><code>name = Minetest
 </code></pre>
 <p>The game directory can contain the file minetest.conf, which will be used
-to set default settings when running the particular game.</p>
+to set default settings when running the particular game.
+It can also contain a settingtypes.txt in the same format as the one in builtin.
+This settingtypes.txt will be parsed by the menu and the settings will be displayed in the "Games" category in the settings tab.</p>
 <h3 id="menu-images">Menu images</h3>
 <p>Games can provide custom main menu images. They are put inside a <code>menu</code> directory inside the game directory.</p>
 <p>The images are named <code>$identifier.png</code>, where <code>$identifier</code> is one of <code>overlay,background,footer,header</code>.
@@ -435,6 +438,7 @@ empty, except for lines starting with <code>#</code>, which are comments.</p>
 |   |-- depends.txt
 |   |-- screenshot.png
 |   |-- description.txt
+|   |-- settingtypes.txt
 |   |-- init.lua
 |   |-- models
 |   |-- textures
@@ -458,6 +462,9 @@ is missing, that does not prevent this mod from being loaded.</p>
 <p>A screenshot shown in modmanager within mainmenu.</p>
 <h3 id="descriptiontxt"><code>description.txt</code></h3>
 <p>A File containing description to be shown within mainmenu.</p>
+<h3 id="settingtypestxt"><code>settingtypes.txt</code></h3>
+<p>A file in the same format as the one in builtin. It will be parsed by the
+settings menu and the settings will be displayed in the "Mods" category.</p>
 <h3 id="initlua"><code>init.lua</code></h3>
 <p>The main Lua script. Running this script should register everything it
 wants to register. Subsequent execution depends on minetest calling the
@@ -642,13 +649,13 @@ from the available ones of the following files:</p>
 {
     pos = {x=1,y=2,z=3},
     gain = 1.0, -- default
-    max_hear_distance = 32, -- default
+    max_hear_distance = 32, -- default, uses an euclidean metric
 }
 -- Play connected to an object, looped
 {
     object = &lt;an ObjectRef&gt;,
     gain = 1.0, -- default
-    max_hear_distance = 32, -- default
+    max_hear_distance = 32, -- default, uses an euclidean metric
     loop = true, -- only sounds connected to objects can be looped
 }
 </code></pre>
@@ -812,6 +819,10 @@ paramtype2 == "facedir"
   0 = y+    1 = z+    2 = z-    3 = x+    4 = x-    5 = y-
   facedir's two less significant bits are rotation around the axis
 paramtype2 == "leveled"
+paramtype2 == "degrotate"
+^ The rotation of this node is stored in param2. Plants are rotated this way.
+  Values range 0 - 179. The value stored in param2 is multiplied by two to
+  get the actual rotation of the node.
 collision_box = {
   type = "fixed",
   fixed = {
@@ -1008,14 +1019,13 @@ attribute set, puff ore generation will instead generate the absolute difference
 noise displacement values.  This flag has no effect for ore types other than <code>puff</code>.</p>
 <h2 id="decoration-types">Decoration types</h2>
 <p>The varying types of decorations that can be placed.</p>
-<p>The default value is <code>simple</code>, and is currently the only type supported.</p>
 <h3 id="simple"><code>simple</code></h3>
 <p>Creates a 1 times <code>H</code> times 1 column of a specified node (or a random node from
 a list, if a decoration list is specified). Can specify a certain node it must
 spawn next to, such as water or lava, for example. Can also generate a
 decoration of random height between a specified lower and upper bound.
 This type of decoration is intended for placement of grass, flowers, cacti,
-papyri, and so on.</p>
+papyri, waterlilies and so on.</p>
 <h3 id="schematic"><code>schematic</code></h3>
 <p>Copies a box of <code>MapNodes</code> from a specified schematic file (or raw description).
 Can specify a probability of a node randomly appearing when placed.
@@ -1046,8 +1056,8 @@ in the form of a table.  This table specifies the following fields:</p>
   placed on the map.</p>
 <h2 id="schematic-attributes">Schematic attributes</h2>
 <p>See section "Flag Specifier Format".</p>
-<p>Currently supported flags: <code>place_center_x</code>, <code>place_center_y</code>,
-               <code>place_center_z</code>, <code>force_placement</code>.</p>
+<p>Currently supported flags: <code>place_center_x</code>, <code>place_center_y</code>, <code>place_center_z</code>,
+                           <code>force_placement</code>.</p>
 <ul>
 <li><code>place_center_x</code>: Placement of this decoration is centered along the X axis.</li>
 <li><code>place_center_y</code>: Placement of this decoration is centered along the Y axis.</li>
@@ -1859,7 +1869,7 @@ numerical form, the raw integer value of an ARGB8 quad:
     <code>colorspec = 0xFF00FF00</code>
 or string form, a ColorString (defined above):
     <code>colorspec = "green"</code></p>
-<h2 id="vector-helpers">Vector helpers</h2>
+<h2 id="spatial-vectors">Spatial Vectors</h2>
 <ul>
 <li>
 <p><code>vector.new([x[, y, z]])</code>: returns a vector.</p>
@@ -1881,8 +1891,8 @@ or string form, a ColorString (defined above):
 <ul>
 <li><code>vector.add(v, x)</code>: returns a vector</li>
 <li><code>vector.subtract(v, x)</code>: returns a vector</li>
-<li><code>vector.multiply(v, x)</code>: returns a vector</li>
-<li><code>vector.divide(v, x)</code>: returns a vector</li>
+<li><code>vector.multiply(v, x)</code>: returns a scaled vector or Schur product</li>
+<li><code>vector.divide(v, x)</code>: returns a scaled vector or Schur quotient</li>
 </ul>
 <h2 id="helper-functions">Helper functions</h2>
 <ul>
@@ -2006,13 +2016,13 @@ or string form, a ColorString (defined above):
 </ul>
 <h3 id="logging">Logging</h3>
 <ul>
-<li><code>minetest.debug(line)</code><ul>
-<li>Always printed to <code>stderr</code> and logfile (<code>print()</code> is redirected here)</li>
+<li><code>minetest.debug(...)</code><ul>
+<li>Equivalent to <code>minetest.log(table.concat({...}, "\t"))</code></li>
 </ul>
 </li>
-<li><code>minetest.log(line)</code></li>
-<li><code>minetest.log(loglevel, line)</code><ul>
-<li><code>loglevel</code> is one of <code>"error"</code>, <code>"action"</code>, <code>"info"</code>, <code>"verbose"</code></li>
+<li><code>minetest.log([level,] text)</code><ul>
+<li><code>level</code> is one of <code>"none"</code>, <code>"error"</code>, <code>"warning"</code>, <code>"action"</code>,
+  <code>"info"</code>, or <code>"verbose"</code>.  Default is <code>"none"</code>.</li>
 </ul>
 </li>
 </ul>
@@ -2226,8 +2236,11 @@ or string form, a ColorString (defined above):
 <li><code>minetest.set_player_privs(name, {priv1=true,...})</code></li>
 <li><code>minetest.get_player_privs(name) -&gt; {priv1=true,...}</code></li>
 <li><code>minetest.auth_reload()</code></li>
-<li><code>minetest.check_player_privs(name, {priv1=true,...})</code>: returns <code>bool, missing_privs</code><ul>
-<li>A quickhand for checking privileges</li>
+<li><code>minetest.check_player_privs(player_or_name, ...)</code>: returns <code>bool, missing_privs</code><ul>
+<li>A quickhand for checking privileges.</li>
+<li><code>player_or_name</code>: Either a Player object or the name of a player.</li>
+<li><code>...</code> is either a list of strings, e.g. <code>"priva", "privb"</code> or
+  a table, e.g. <code>{ priva = true, privb = true }</code>.</li>
 </ul>
 </li>
 <li><code>minetest.get_player_ip(name)</code>: returns an IP address string</li>
@@ -2313,7 +2326,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><code>minetest.get_player_by_name(name)</code>: Get an <code>ObjectRef</code> to a player</li>
-<li><code>minetest.get_objects_inside_radius(pos, radius)</code></li>
+<li><code>minetest.get_objects_inside_radius(pos, radius)</code><ul>
+<li><code>radius</code>: using an euclidean metric</li>
+</ul>
+</li>
 <li><code>minetest.set_timeofday(val)</code><ul>
 <li><code>val</code> is between <code>0</code> and <code>1</code>; <code>0</code> for midnight, <code>0.5</code> for midday</li>
 </ul>
@@ -2321,6 +2337,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><code>minetest.get_timeofday()</code></li>
 <li><code>minetest.get_gametime()</code>: returns the time, in seconds, since the world was created</li>
 <li><code>minetest.find_node_near(pos, radius, nodenames)</code>: returns pos or <code>nil</code><ul>
+<li><code>radius</code>: using a maximum metric</li>
 <li><code>nodenames</code>: e.g. <code>{"ignore", "group:tree"}</code> or <code>"default:dirt"</code></li>
 </ul>
 </li>
@@ -2354,6 +2371,11 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><code>get_gen_notify()</code>: returns a flagstring and a table with the deco_ids</li>
 <li><code>minetest.get_mapgen_object(objectname)</code><ul>
 <li>Return requested mapgen object if available (see "Mapgen objects")</li>
+</ul>
+</li>
+<li><code>minetest.get_biome_id(biome_name)</code><ul>
+<li>Returns the biome id, as used in the biomemap Mapgen object, for a
+  given biome_name string.</li>
 </ul>
 </li>
 <li><code>minetest.get_mapgen_params()</code> Returns mapgen parameters, a table containing
@@ -2416,7 +2438,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>returns a table of 3D points representing a path from <code>pos1</code> to <code>pos2</code> or <code>nil</code></li>
 <li><code>pos1</code>: start position</li>
 <li><code>pos2</code>: end position</li>
-<li><code>searchdistance</code>: number of blocks to search in each direction</li>
+<li><code>searchdistance</code>: number of blocks to search in each direction using a maximum metric</li>
 <li><code>max_jump</code>: maximum height difference to consider walkable</li>
 <li><code>max_drop</code>: maximum height difference to consider droppable</li>
 <li><code>algorithm</code>: One of <code>"A*_noprefetch"</code> (default), <code>"A*"</code>, <code>"Dijkstra"</code></li>
@@ -3674,6 +3696,7 @@ minetest.spawn_tree(pos,apple_tree)
     stepheight = 0,
     automatic_face_movement_dir = 0.0,
 --  ^ automatically set yaw to movement direction; offset in degrees; false to disable
+    backface_culling = true, -- false to disable backface_culling for model
 }
 </code></pre>
 <h3 id="entity-definition-register_entity">Entity definition (<code>register_entity</code>)</h3>
@@ -3698,10 +3721,14 @@ minetest.spawn_tree(pos,apple_tree)
 <pre><code>{
 --  In the following two fields, also group:groupname will work.
     nodenames = {"default:lava_source"},
-    neighbors = {"default:water_source", "default:water_flowing"}, -- (any of these)
---  ^ If left out or empty, any neighbor will do
-    interval = 1.0, -- (operation interval)
-    chance = 1, -- (chance of trigger is 1.0/this)
+    neighbors = {"default:water_source", "default:water_flowing"}, -- Any of these --[[
+    ^ If left out or empty, any neighbor will do ]]
+    interval = 1.0, -- Operation interval in seconds
+    chance = 1, -- Chance of trigger per-node per-interval is 1.0 / this
+    catch_up = true, -- If true, catch-up behaviour is enabled --[[
+    ^ The chance value is temporarily reduced when returning to
+      an area to simulate time lost by the area being unattended.
+    ^ Note chance value can often be reduced to 1 ]]
     action = func(pos, node, active_object_count, active_object_count_wider),
 }
 </code></pre>
@@ -3862,14 +3889,17 @@ minetest.spawn_tree(pos,apple_tree)
     },
 
     on_construct = func(pos), --[[
-    ^ Node constructor; always called after adding node
+    ^ Node constructor; called after adding node
     ^ Can set up metadata and stuff like that
+    ^ Not called for bulk node placement (i.e. schematics and VoxelManip)
     ^ default: nil ]]
     on_destruct = func(pos), --[[
-    ^ Node destructor; always called before removing node
+    ^ Node destructor; called before removing node
+    ^ Not called for bulk node placement (i.e. schematics and VoxelManip)
     ^ default: nil ]]
     after_destruct = func(pos, oldnode), --[[
-    ^ Node destructor; always called after removing node
+    ^ Node destructor; called after removing node
+    ^ Not called for bulk node placement (i.e. schematics and VoxelManip)
     ^ default: nil ]]
 
     after_place_node = func(pos, placer, itemstack, pointed_thing) --[[
@@ -4040,6 +4070,11 @@ minetest.spawn_tree(pos,apple_tree)
 -- ^ Minimum and maximum `y` positions these decorations can be generated at.
 -- ^ This parameter refers to the `y` position of the decoration base, so
 --   the actual maximum height would be `height_max + size.Y`.
+    flags = "liquid_surface",
+--  ^ Flags for all decoration types.
+--  ^ "liquid_surface": Instead of placement on the highest solid surface
+--  ^ in a mapchunk column, placement is on the highest liquid surface.
+--  ^ Placement is disabled if solid nodes are found above the liquid surface.
 
     ----- Simple-type parameters
     decoration = "default:grass",
