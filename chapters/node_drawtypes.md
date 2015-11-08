@@ -77,7 +77,7 @@ minetest.register_node("mymod:diamond", {
 
 ## Airlike
 
-These nodes are see through, and thus have no textures.
+These nodes are see through and thus have no textures.
 
 {% highlight lua %}
 minetest.register_node("myair:air", {
@@ -181,7 +181,7 @@ minetest.register_node("default:water_source", {
 ### FlowingLiquid
 
 See default:water_flowing in the default mod in minetest_game, it is mostly
-the same as the above example
+the same as the above example.
 
 ## Glasslike
 
@@ -278,9 +278,9 @@ TorchLike
 ---------
 
 TorchLike nodes are 2D nodes which allow you to have different textures
-depending on whether they are placed against a wall, on the floor or on the ceiling.
+depending on whether they are placed against a wall, on the floor, or on the ceiling.
 
-TorchLike nodes are not restricted to torches, you could use the for switches or other
+TorchLike nodes are not restricted to torches, you could use them for switches or other
 items which need to have different textures depending on where they are placed.
 
 {% highlight lua %}
@@ -353,8 +353,7 @@ create node boxes by dragging the edges, it is more visual than doing it by hand
 
 ### Wallmounted Nodebox
 
-Sometimes you want different nodeboxes for when it is place on the floor, wall and
-ceiling, like with torches.
+Sometimes you want different nodeboxes for when it is placed on the floor, wall, or ceiling like with torches.
 
 {% highlight lua %}
 minetest.register_node("default:sign_wall", {
