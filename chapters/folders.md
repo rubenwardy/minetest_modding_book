@@ -17,13 +17,13 @@ This is an essential skill when creating mods.
 
 ![Find the mod's folder]({{ page.root }}/static/folder_modfolder.jpg)
 
-Each mod has its own folder, where all its Lua code, textures, models and sounds
-are placed. These folders need to be placed in a mod location, such as
-minetest/mods. Mods can be grouped into mod packs, which are explained below.
+Each mod has its own folder where all its Lua code, textures, models, and sounds
+are placed. These folders need to be placed in a mod location such as
+minetest/mods. Mods can be grouped into mod packs which are explained below.
 
 A "mod name" is used to refer to a mod. Each mod should have a unique mod name,
-which you can choose - a good mod name can describes what the mod does.
-Mod names can be make up of letters, numbers or underscores. The folder a mod is
+which you can choose - a good mod name describes what the mod does.
+Mod names can be made up of letters, numbers, or underscores. The folder a mod is
 in needs to be called the same as the mod name.
 
 ### Mod Folder Structure
@@ -35,12 +35,12 @@ in needs to be called the same as the mod name.
 	-	(optional) models/ - place 3d models in here
 	...and any other lua files to be included by init.lua
 
-Only the init.lua file is required in a mod for it to run on game load, however
+Only the init.lua file is required in a mod for it to run on game load; however,
 the other items are needed by some mods to perform their functionality.
 
 ## Dependencies
 
-The depends text file allows you to specify what mods this mod requires to run, and what
+The depends text file allows you to specify which mods this mod requires to run and what
 needs to be loaded before this mod.
 
 **depends.txt**
@@ -54,12 +54,12 @@ As you can see, each modname is on its own line.
 Mod names with a question mark following them are optional dependencies.
 If an optional dependency is installed, it is loaded before the mod.
 However, if the dependency is not installed, the mod still loads.
-This is in contrast to normal dependencies, which will cause the current
+This is in contrast to normal dependencies which will cause the current
 mod not to work if the dependency is not installed.
 
 ## Mod Packs
 
-Modpacks allow multiple mods to be packaged together, and move together.
+Modpacks allow multiple mods to be packaged together and move together.
 They are useful if you want to supply multiple mods to a player but don't
 want to make them download each one individually.
 
@@ -106,5 +106,5 @@ minetest.register_node("mymod:node", {
 
 Our mod has a name of "mymod". It has two text files: init.lua and depends.txt.\\
 The script prints a message and then registers a node – which will be explained in the next chapter.\\
-The depends text file adds a dependency to the default mod, which is in minetest_game.\\
+The depends text file adds a dependency to the default mod which is in minetest_game.\\
 There is also a texture in textures/ for the node.
