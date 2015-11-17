@@ -40,7 +40,7 @@ function ctf.post(team,msg)
 end
 {% endhighlight %}
 
-For example, keywords in the above snippet are highlighted, such as if, then, end, return.
+For example, keywords in the above snippet are highlighted such as if, then, end, return.
 table.insert is a function which comes with Lua by default.
 
 ### Recommended Editors
@@ -93,11 +93,11 @@ a = a + 10
 print("Sum is "..result)
 {% endhighlight %}
 
-Woah, what happened there? a, b and result are **variables**. They're like what
+Woah, what happened there? a, b, and result are **variables**. They're like what
 you get in mathematics, A = w * h. The equals signs are **assignments**, so
 "result" is set to a + b. Variable names can be longer than one character
-unlike in maths, as seen with the "result" variable. Lua is **case sensitive**.
-A is a different variable to a.
+unlike in math, as seen with the "result" variable. Lua is **case sensitive**.
+A is a different variable than a.
 
 The word "local" before they are first used means that they have local scope,
 I'll discuss that shortly.
@@ -189,8 +189,8 @@ end
 Programming is the action of talking a problem, such as sorting a list
 of items, and then turning it into steps that a computer can understand.
 
-Teaching you the logical process of programming is beyond the scope of this book,
-however the following websites are quite useful in developing this:
+Teaching you the logical process of programming is beyond the scope of this book;
+however, the following websites are quite useful in developing this:
 
 ### Codecademy
 [Codecademy](http://www.codecademy.com/) is one of the best resources for learning to 'code',
@@ -277,8 +277,8 @@ one()
 two()
 {% endhighlight %}
 
-Nil means **not initalised**. The variable hasn't been assigned a variable yet,
-doesn't exist or has been uninitialised (ie: set to nil)
+Nil means **not initalised**. The variable hasn't been assigned a value yet,
+doesn't exist, or has been uninitialised. (ie: set to nil)
 
 The same goes for functions. Functions are variables of a special type.
 You should make functions as local as much as possible,
@@ -306,7 +306,7 @@ mymod.foo("foobar")
 
 ## Including other Lua Scripts
 
-You can include Lua scripts from your mod, or another mod like this:
+You can include Lua scripts from your mod or another mod like this:
 
 {% highlight lua %}
 dofile(minetest.get_modpath("modname") .. "/script.lua")
@@ -316,5 +316,5 @@ dofile(minetest.get_modpath("modname") .. "/script.lua")
 You won't be able to access them from any other scripts.
 
 As for how you divide code up into files, it doesn't matter that much.
-The most important thing is your code is easy to read and edit.
+The most important thing is that your code is easy to read and edit.
 You won't need to use it for smaller projects.
