@@ -1,5 +1,5 @@
 ---
-title: Nodes, Items and Crafting
+title: Nodes, Items, and Crafting
 layout: default
 root: ../
 ---
@@ -19,15 +19,15 @@ and create craft recipes.
 
 ## Item Strings
 
-Each item, whether that be a node, craftitem, tool or entity, has an item string.\\
+Each item, whether that be a node, craftitem, tool, or entity, has an item string.\\
 This is sometimes referred to as registered name or just name.
 A string in programming terms is a piece of text.
 
 	modname:itemname
 
 The modname is the name of the folder your mod is in.
-You may call the itemname any thing you like, however it should be relevant to
-what the item is, and it can't already be registered.
+You may call the itemname anything you like; however, it should be relevant to
+what the item is and it can't already be registered.
 
 ### Overriding
 
@@ -60,13 +60,13 @@ minetest.register_craftitem("mymod:diamond_fragments", {
 })
 {% endhighlight %}
 
-Item definitions like seen above are usually made up of an unique
+Item definitions like seen above are usually made up of a unique
 [item string](#item-strings) and a definition table. The definition table
 contains attributes which affect the behaviour of the item.
 
 ### Foods
 
-Foods are items that cure health. To create a food item, you need to define the on_use property like this:
+Foods are items that cure health. To create a food item you need to define the on_use property like this:
 
 {% highlight lua %}
 minetest.register_craftitem("mymod:mudpie", {
@@ -77,7 +77,7 @@ minetest.register_craftitem("mymod:mudpie", {
 {% endhighlight %}
 
 The number supplied to the minetest.item_eat function is the number of hit points that are healed by this food.
-Two hit points make one heart, and because there are 10 hearts there are 20 hitpoints.
+Two hit points make one heart and because there are 10 hearts there are 20 hitpoints.
 Hitpoints don't have to be integers (whole numbers), they can be decimals.
 
 Sometimes you may want a food to be replaced with another item when being eaten,
@@ -125,11 +125,11 @@ mod, you should consider using minetest.register_on_item_eat
 ## Registering a basic node
 
 In Minetest, a node is an item that you can place.
-Most nodes are 1m x 1m x 1m cubes, however the shape doesn't
+Most nodes are 1m x 1m x 1m cubes; however, the shape doesn't
 have to be a cube - as we will explore later.
 
 Let's get onto it. A node's definition table is very similar to a craftitem's
-definition table, however you need to set the textures for the faces of the cube.
+definition table; however, you need to set the textures for the faces of the cube.
 
 {% highlight lua %}
 minetest.register_node("mymod:diamond", {
@@ -267,7 +267,7 @@ minetest.register_craft({
 
 As you can see from this example, the only real difference in the code
 is that the recipe is just a single item, compared to being in a table
-(between braces). They also have an optional "cooktime" parameter, which
+(between braces). They also have an optional "cooktime" parameter which
 defines how long the item takes to cook. If this is not set it defaults to 3.
 
 The recipe above works when the coal block is in the input slot,
@@ -288,14 +288,14 @@ minetest.register_craft({
 {% endhighlight %}
 
 They don't have an output like other recipes, but they have a burn time
-which defines how long they will last as fuel, in seconds.
+which defines how long they will last as fuel in seconds.
 So, the diamond is good as fuel for 300 seconds!
 
 ## Groups
 
-Items can be members of many groups, and groups can have many members.
+Items can be members of many groups and groups can have many members.
 Groups are usually identified using `group:group_name`
-There are several reason you use groups.
+There are several reasons you use groups.
 
 Groups can be used in crafting recipes to allow interchangeability
 of ingredients. For example, you may use group:wood to allow any wood
