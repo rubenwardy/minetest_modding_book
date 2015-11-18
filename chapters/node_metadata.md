@@ -26,8 +26,8 @@ You may use metadata to store:
 * progress on crafting (such as in a furnace).
 * who owns the node (such as in a locked chest).
 
-The node's type, light levels
-and orientation are not stored in the metadata, but are rather part
+The node's type, light levels,
+and orientation are not stored in the metadata, but rather are part
 of the data itself.
 
 Metadata is stored in a key value relationship.
