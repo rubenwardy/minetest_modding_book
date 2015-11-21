@@ -57,14 +57,18 @@
   num:   12
   link:  chapters/itemstacks.html
 
+- title: Inventories
+  num:   13
+  link:  chapters/inventories.html
+
 - hr: true
 
 - title: Releasing a Mod
-  num: 13
+  num: 14
   link: chapters/releasing.html
 
 - title: Read More
-  num: 14
+  num: 15
   link: chapters/readmore.html
 
 - hr: true
