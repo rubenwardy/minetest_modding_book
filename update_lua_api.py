@@ -8,6 +8,10 @@ print("Downloading lua_api.txt...")
 
 url = "https://raw.githubusercontent.com/minetest/minetest/master/doc/lua_api.txt"
 text = urllib2.urlopen(url).read()
+
+
+print("Pre-processing...")
+
 header = """Minetest Lua Modding API Reference 0.4.13
 ========================================="""
 text = text.replace(header, "")
@@ -19,13 +23,15 @@ text = text.replace(header, "")
 #
 print("Generating HTML...")
 md = markdown.Markdown(extensions=['markdown.extensions.toc'])
+html = md.convert(text)
 
+print("Post-processing...")
 links = """<ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
 </ul>"""
 
-html = md.convert(text).replace("{{", "{ {")
+html = html.replace("{{", "{ {")
 html = html.replace(links, "")
 links += "This page was last updated "
 links += datetime.date.today().strftime("%d/%B/%Y")
@@ -45,5 +51,3 @@ file.write(html)
 file.close()
 
 print("Done")
-
-
