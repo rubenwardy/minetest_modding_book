@@ -59,7 +59,7 @@ mod not to work if the dependency is not installed.
 
 ## Mod Packs
 
-Modpacks allow multiple mods to be packaged together and move together.
+Modpacks allow multiple mods to be packaged together and be moved together.
 They are useful if you want to supply multiple mods to a player but don't
 want to make them download each one individually.
 
