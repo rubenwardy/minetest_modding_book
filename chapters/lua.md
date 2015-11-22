@@ -96,7 +96,7 @@ print("Sum is "..result)
 Woah, what happened there? a, b, and result are **variables**. They're like what
 you get in mathematics, A = w * h. The equals signs are **assignments**, so
 "result" is set to a + b. Variable names can be longer than one character
-unlike in math, as seen with the "result" variable. Lua is **case sensitive**.
+unlike in mathematics, as seen with the "result" variable. Lua is **case sensitive**.
 A is a different variable than a.
 
 The word "local" before they are first used means that they have local scope,
