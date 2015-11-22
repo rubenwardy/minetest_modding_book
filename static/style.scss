@@ -137,11 +137,15 @@ code {
 	vertical-align: middle;
 }
 
+.header-link, .anchor {
+	text-decoration: none;
+	color: #bbb;
+	padding: 0 10px 0 0;
+}
+
 .header-link {
 	position: absolute;
 	right: 10px;
-	text-decoration: none;
-	color: #bbb;
 }
 
 .header-link:hover {
