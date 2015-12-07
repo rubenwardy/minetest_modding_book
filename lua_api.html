@@ -329,6 +329,7 @@ layout: default
 <li><a href="#recipe-for-register_craft-cooking">Recipe for register_craft (cooking)</a></li>
 <li><a href="#recipe-for-register_craft-furnace-fuel">Recipe for register_craft (furnace fuel)</a></li>
 <li><a href="#ore-definition-register_ore">Ore definition (register_ore)</a></li>
+<li><a href="#biome-definition-register_biome">Biome definition (register_biome)</a></li>
 <li><a href="#decoration-definition-register_decoration">Decoration definition (register_decoration)</a></li>
 <li><a href="#chat-command-definition-register_chatcommand">Chat command definition (register_chatcommand)</a></li>
 <li><a href="#detached-inventory-callbacks">Detached inventory callbacks</a></li>
@@ -353,7 +354,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 22/November/2015.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 07/December/2015.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -998,7 +999,7 @@ parameters <code>np_puff_top</code> and <code>np_puff_bottom</code>, respectivel
 instances of 3d perlin noise with diffferent seeds, both described by
 <code>noise_params</code>.  <code>random_factor</code> varies the influence random chance has on
 placement of an ore inside the vein, which is <code>1</code> by default. Note that
-modifying this parameter may require adjusting <code>noise_threshhold</code>.
+modifying this parameter may require adjusting <code>noise_threshold</code>.
 The parameters <code>clust_scarcity</code>, <code>clust_num_ores</code>, and <code>clust_size</code> are ignored
 by this ore type.  This ore type is difficult to control since it is sensitive
 to small changes.  The following is a decent set of parameters to work from:</p>
@@ -1011,7 +1012,7 @@ to small changes.  The following is a decent set of parameters to work from:</p>
     persist = 0.5,
     flags = "eased",
 },
-noise_threshhold = 1.6
+noise_threshold = 1.6
 </code></pre>
 <p>WARNING:  Use this ore type <em>very</em> sparingly since it is ~200x more
 computationally expensive than any other ore.</p>
@@ -1463,12 +1464,16 @@ the entity itself.</p>
 <p>The instance of a node in the world normally only contains the three values
 mentioned in "Nodes". However, it is possible to insert extra data into a
 node. It is called "node metadata"; See "<code>NodeMetaRef</code>".</p>
-<p>Metadata contains two things:
-<em> A key-value store
-</em> An inventory</p>
-<p>Some of the values in the key-value store are handled specially:
-<em> <code>formspec</code>: Defines a right-click inventory menu. See "Formspec".
-</em> <code>infotext</code>: Text shown on the screen when the node is pointed at</p>
+<p>Metadata contains two things:</p>
+<ul>
+<li>A key-value store</li>
+<li>An inventory</li>
+</ul>
+<p>Some of the values in the key-value store are handled specially:</p>
+<ul>
+<li><a class="anchor" href="#formspec_2" name="formspec_2">#</a><code>formspec</code>: Defines a right-click inventory menu. See "Formspec".</li>
+<li><a class="anchor" href="#infotext" name="infotext">#</a><code>infotext</code>: Text shown on the screen when the node is pointed at</li>
+</ul>
 <p>Example stuff:</p>
 <pre><code>local meta = minetest.get_meta(pos)
 meta:set_string("formspec",
@@ -2237,7 +2242,11 @@ or string form, a ColorString (defined above):
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_password_hashnameraw_password" name="minetestget_password_hashnameraw_password">#</a><code>minetest.get_password_hash(name, raw_password)</code><ul>
-<li>Convert a name-password pair to a password hash that Minetest can use</li>
+<li>Convert a name-password pair to a password hash that Minetest can use.</li>
+<li>The returned value alone is not a good basis for password checks based</li>
+<li>on comparing the password hash in the database with the password hash</li>
+<li>from the function, with an externally provided password, as the hash</li>
+<li>in the db might use the new SRP verifier format.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#mineteststring_to_privsstr" name="mineteststring_to_privsstr">#</a><code>minetest.string_to_privs(str)</code>: returns <code>{priv1=true,...}</code></li>
@@ -2537,7 +2546,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#playername_1" name="playername_1">#</a><code>playername</code>: name of player to show formspec</li>
 <li><a class="anchor" href="#formname" name="formname">#</a><code>formname</code>: name passed to <code>on_player_receive_fields</code> callbacks.
   It should follow the <code>"modname:&lt;whatever&gt;"</code> naming convention</li>
-<li><a class="anchor" href="#formspec_2" name="formspec_2">#</a><code>formspec</code>: formspec to display</li>
+<li><a class="anchor" href="#formspec_3" name="formspec_3">#</a><code>formspec</code>: formspec to display</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestformspec_escapestring_1" name="minetestformspec_escapestring_1">#</a><code>minetest.formspec_escape(string)</code>: returns a string<ul>
@@ -3572,20 +3581,22 @@ core.CONTENT_IGNORE  (ID for "ignore" nodes)</code></p>
 <h5 id="mapgen-voxelmanip-objects">Mapgen VoxelManip objects</h5>
 <p>Inside of <code>on_generated()</code> callbacks, it is possible to retrieve the same VoxelManip object used by the
 core's Map Generator (commonly abbreviated Mapgen).  Most of the rules previously described still apply
-but with a few differences:
-<em> The Mapgen VoxelManip object is retrieved using: <code>minetest.get_mapgen_object("voxelmanip")</code>
-</em> This VoxelManip object already has the region of map just generated loaded into it; it's not necessary
-  to call <code>VoxelManip:read_from_map()</code> before using a Mapgen VoxelManip.
-<em> The <code>on_generated()</code> callbacks of some mods may place individual nodes in the generated area using
+but with a few differences:</p>
+<ul>
+<li><a class="anchor" href="#minetestget_mapgen_objectvoxelmanip" name="minetestget_mapgen_objectvoxelmanip">#</a>The Mapgen VoxelManip object is retrieved using: <code>minetest.get_mapgen_object("voxelmanip")</code></li>
+<li><a class="anchor" href="#VoxelManipread_from_map" name="VoxelManipread_from_map">#</a>This VoxelManip object already has the region of map just generated loaded into it; it's not necessary
+  to call <code>VoxelManip:read_from_map()</code> before using a Mapgen VoxelManip.</li>
+<li><a class="anchor" href="#on_generated" name="on_generated">#</a>The <code>on_generated()</code> callbacks of some mods may place individual nodes in the generated area using
   non-VoxelManip map modification methods.  Because the same Mapgen VoxelManip object is passed through
   each <code>on_generated()</code> callback, it becomes necessary for the Mapgen VoxelManip object to maintain
   consistency with the current map state.  For this reason, calling any of the following functions:
   <code>minetest.add_node()</code>, <code>minetest.set_node()</code>, or <code>minetest.swap_node()</code>
-  will also update the Mapgen VoxelManip object's internal state active on the current thread.
-</em> After modifying the Mapgen VoxelManip object's internal buffer, it may be necessary to update lighting
-  information using either: <code>VoxelManip:calc_lighting()</code> or <code>VoxelManip:set_lighting()</code>.
-* <code>VoxelManip:update_map()</code> does not need to be called after <code>write_to_map()</code>.  The map update is performed
-  automatically after all on_generated callbacks have been run for that generated block.</p>
+  will also update the Mapgen VoxelManip object's internal state active on the current thread.</li>
+<li><a class="anchor" href="#VoxelManipcalc_lighting" name="VoxelManipcalc_lighting">#</a>After modifying the Mapgen VoxelManip object's internal buffer, it may be necessary to update lighting
+  information using either: <code>VoxelManip:calc_lighting()</code> or <code>VoxelManip:set_lighting()</code>.</li>
+<li><a class="anchor" href="#VoxelManipupdate_map" name="VoxelManipupdate_map">#</a><code>VoxelManip:update_map()</code> does not need to be called after <code>write_to_map()</code>.  The map update is performed
+  automatically after all on_generated callbacks have been run for that generated block.</li>
+</ul>
 <h5 id="other-api-functions-operating-on-a-voxelmanip">Other API functions operating on a VoxelManip</h5>
 <p>If any VoxelManip contents were set to a liquid node, <code>VoxelManip:update_liquids()</code> must be called
 for these liquid nodes to begin flowing.  It is recommended to call this function only after having
@@ -3607,7 +3618,7 @@ will place the schematic inside of the VoxelManip.</p>
   object.  With the exception of Mapgen VoxelManips (see above section), the internal buffers are not
   updated.  For this reason, it is strongly encouraged to complete the usage of a particular VoxelManip
   object in the same callback it had been created.</li>
-<li><a class="anchor" href="#on_generated" name="on_generated">#</a>If a VoxelManip object will be used often, such as in an <code>on_generated()</code> callback, consider passing
+<li><a class="anchor" href="#on_generated_1" name="on_generated_1">#</a>If a VoxelManip object will be used often, such as in an <code>on_generated()</code> callback, consider passing
   a file-scoped table as the optional parameter to <code>VoxelManip:get_data()</code>, which serves as a static
   buffer the function can use to write map data to instead of returning a new table each call.  This
   greatly enhances performance by avoiding unnecessary memory allocations.</li>
@@ -3637,7 +3648,7 @@ will place the schematic inside of the VoxelManip.</p>
   not a <code>VoxelManip</code> that was retrieved from <code>minetest.get_mapgen_object</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#set_lightinglightp1p2" name="set_lightinglightp1p2">#</a><code>set_lighting(light, p1, p2)</code>: Set the lighting within the <code>VoxelManip</code> to a uniform value<ul>
+<li><a class="anchor" href="#set_lightinglightp1p2" name="set_lightinglightp1p2">#</a><code>set_lighting(light, [p1, p2])</code>: Set the lighting within the <code>VoxelManip</code> to a uniform value<ul>
 <li><a class="anchor" href="#light" name="light">#</a><code>light</code> is a table, <code>{day=&lt;0...15&gt;, night=&lt;0...15&gt;}</code></li>
 <li><a class="anchor" href="#VoxelManip_1" name="VoxelManip_1">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
 <li><a class="anchor" href="#p1" name="p1">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set;
@@ -3657,10 +3668,12 @@ will place the schematic inside of the VoxelManip.</p>
 </li>
 <li><a class="anchor" href="#get_param2_data" name="get_param2_data">#</a><code>get_param2_data()</code>: Gets the raw <code>param2</code> data read into the <code>VoxelManip</code> object</li>
 <li><a class="anchor" href="#set_param2_dataparam2_data" name="set_param2_dataparam2_data">#</a><code>set_param2_data(param2_data)</code>: Sets the <code>param2</code> contents of each node in the <code>VoxelManip</code></li>
-<li><a class="anchor" href="#calc_lightingp1p2" name="calc_lightingp1p2">#</a><code>calc_lighting(p1, p2)</code>:  Calculate lighting within the <code>VoxelManip</code><ul>
+<li><a class="anchor" href="#calc_lightingp1p2propagate_shadow" name="calc_lightingp1p2propagate_shadow">#</a><code>calc_lighting([p1, p2], [propagate_shadow])</code>:  Calculate lighting within the <code>VoxelManip</code><ul>
 <li><a class="anchor" href="#VoxelManip_2" name="VoxelManip_2">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
 <li><a class="anchor" href="#p1_1" name="p1_1">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set; defaults to the whole area
-  if left out</li>
+  if left out or nil</li>
+<li><a class="anchor" href="#propagate_shadow" name="propagate_shadow">#</a><code>propagate_shadow</code> is an optional boolean deciding whether shadows in a generated
+  mapchunk above are propagated down into the mapchunk; defaults to <code>true</code> if left out</li>
 </ul>
 </li>
 <li><a class="anchor" href="#update_liquids" name="update_liquids">#</a><code>update_liquids()</code>: Update liquid flow</li>
@@ -3953,6 +3966,11 @@ minetest.spawn_tree(pos,apple_tree)
     --[[
     ^ Shall place item and return the leftover itemstack
     ^ default: minetest.item_place ]]
+    on_secondary_use = func(itemstack, user, pointed_thing),
+    --[[
+    ^ Same as on_place but called when pointing at nothing.
+    ^ pointed_thing : always { type = "nothing" }
+    ]]
     on_drop = func(itemstack, dropper, pos),
     --[[
     ^ Shall drop item and return the leftover itemstack
@@ -4212,7 +4230,7 @@ minetest.spawn_tree(pos,apple_tree)
     y_max = 64,
     flags = "",
 --  ^ Attributes for this ore generation
-    noise_threshhold = 0.5,
+    noise_threshold = 0.5,
 --  ^ If noise is above this threshold, ore is placed.  Not needed for a uniform distribution
     noise_params = {offset=0, scale=1, spread={x=100, y=100, z=100}, seed=23, octaves=3, persist=0.70}
 --  ^ NoiseParams structure describing the perlin noise used for ore distribution.
@@ -4225,6 +4243,50 @@ minetest.spawn_tree(pos,apple_tree)
 --  ^ List of biomes in which this decoration occurs.  Occurs in all biomes if this is omitted,
 --  ^ and ignored if the Mapgen being used does not support biomes.
 --  ^ Can be a list of (or a single) biome names, IDs, or definitions.
+}
+</code></pre>
+<h3 id="biome-definition-register_biome">Biome definition (<code>register_biome</code>)</h3>
+<pre><code>{
+    name = "tundra",
+    node_dust = "default:snow",
+--  ^ Node dropped onto upper surface after all else is generated.
+    node_top = "default:dirt_with_snow",
+    depth_top = 1,
+--  ^ Node forming surface layer of biome and thickness of this layer.
+    node_filler = "default:permafrost",
+    depth_filler = 3,
+--  ^ Node forming lower layer of biome and thickness of this layer.
+    node_stone = "default:bluestone",
+--  ^ Node that replaces all stone nodes between roughly y_min and y_max.
+    node_water_top = "default:ice",
+    depth_water_top = 10,
+--  ^ Node forming a surface layer in seawater with the defined thickness.
+    node_water = "",
+--  ^ Node that replaces all seawater nodes not in the defined surface layer.
+    node_river_water = "default:ice",
+--  ^ Node that replaces river water in mapgens that use default:river_water.
+    y_min = 1,
+    y_max = 31000,
+--  ^ Lower and upper limits for biome.
+--  ^ Because biome is not recalculated for every node in a node column
+--  ^ some biome materials can exceed their limits, especially stone.
+--  ^ For each node column in a mapchunk, biome is only recalculated at column
+--  ^ top and at each of these surfaces:
+--  ^ Ground below air, water below air, ground below water.
+--  ^ The selected biome then stays in effect for all nodes below until
+--  ^ column base or the next biome recalculation.
+    heat_point = 0,
+    humidity_point = 50,
+--  ^ Characteristic average temperature and humidity for the biome.
+--  ^ These values create 'biome points' on a voronoi diagram that has heat
+--  ^ and humidity as axes. The resulting voronoi cells determine which
+--  ^ heat/humidity points belong to which biome, and therefore determine
+--  ^ the area and location of each biome in the world.
+--  ^ The biome points need to be carefully and evenly spaced on the voronoi
+--  ^ diagram to result in roughly equal size biomes.
+--  ^ Heat and humidity have average values of 50, vary mostly between
+--  ^ 0 and 100 but also often exceed these values.
+--  ^ Heat is not in degrees celcius, both values are abstract.
 }
 </code></pre>
 <h3 id="decoration-definition-register_decoration">Decoration definition (<code>register_decoration</code>)</h3>
