@@ -89,6 +89,13 @@ return true, "You said " .. param .. "!"
 This returns two values, firstly a boolean which says that the command succeeded
 and secondly the chat message to send to the player.
 
+The reason that a player name rather than a player object is passed is because
+**the player might not actually be online, but may be running commands from IRC**.
+So don't assume that `minetest.get_player_by_name` will work in a chat command call back,
+or any other function that requires an ingame player. `minetest.show_formspec` will also
+not work for IRC players, so you should provide a text only version. For example, the
+email mod allows both `/inbox` to show the formspec, and `/inbox text` to send to chat.
+
 ## Intercepting messages
 
 You can use register_on_chat_message, like so:
