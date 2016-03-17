@@ -129,8 +129,11 @@ For example:
 
 ### screenshot.png
 
-Screenshots should have 4 pixels of width for every 3 pixels of height,
-and be at least 200 by 150. This is displayed in the mod store.
+Screenshots should be 3:2 (3 pixels of width for every 2 pixels of height)
+and a [minimum size of 300 x 200px](https://github.com/minetest/minetest/issues/2874).
+This is displayed in the mod store.
+
+
 
 Uploading
 ---------
