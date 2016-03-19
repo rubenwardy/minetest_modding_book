@@ -38,7 +38,7 @@ layout: default
 <li><a href="#texture-grouping">Texture grouping</a></li>
 <li><a href="#advanced-texture-modifiers">Advanced texture modifiers</a><ul>
 <li><a href="#cracknp">[crack:&lt;n&gt;:&lt;p&gt;</a></li>
-<li><a href="#combinewxhx1y1file1x2y2file2">[combine:&lt;w&gt;x&lt;h&gt;:&lt;x1&gt;,&lt;y1&gt;=&lt;file1&gt;:&lt;x2&gt;,&lt;y2&gt;=&lt;file2&gt;</a></li>
+<li><a href="#combinewxhx1y1file1x2y2file2">[combine:&lt;w&gt;x&lt;h&gt;:&lt;x1&gt;,&lt;y1&gt;=&lt;file1&gt;:&lt;x2&gt;,&lt;y2&gt;=&lt;file2&gt;:...</a></li>
 <li><a href="#brighten">[brighten</a></li>
 <li><a href="#noalpha">[noalpha</a></li>
 <li><a href="#makealphargb">[makealpha:&lt;r&gt;,&lt;g&gt;,&lt;b&gt;</a></li>
@@ -222,6 +222,7 @@ layout: default
 <li><a href="#bans">Bans</a></li>
 <li><a href="#particles">Particles</a></li>
 <li><a href="#schematics">Schematics</a></li>
+<li><a href="#http-requests">HTTP Requests:</a></li>
 <li><a href="#misc">Misc.</a></li>
 <li><a href="#global-objects">Global objects</a></li>
 <li><a href="#global-tables">Global tables</a></li>
@@ -319,6 +320,7 @@ layout: default
 <li><a href="#object-properties">Object Properties</a></li>
 <li><a href="#entity-definition-register_entity">Entity definition (register_entity)</a></li>
 <li><a href="#abm-activeblockmodifier-definition-register_abm">ABM (ActiveBlockModifier) definition (register_abm)</a></li>
+<li><a href="#lbm-loadingblockmodifier-definition-register_lbm">LBM (LoadingBlockModifier) definition (register_lbm)</a></li>
 <li><a href="#item-definition-register_node-register_craftitem-register_tool">Item definition (register_node, register_craftitem, register_tool)</a></li>
 <li><a href="#tile-definition">Tile definition</a></li>
 <li><a href="#tile-animation-definition">Tile animation definition</a></li>
@@ -336,6 +338,8 @@ layout: default
 <li><a href="#hud-definition-hud_add-hud_get">HUD Definition (hud_add, hud_get)</a></li>
 <li><a href="#particle-definition-add_particle">Particle definition (add_particle)</a></li>
 <li><a href="#particlespawner-definition-add_particlespawner">ParticleSpawner definition (add_particlespawner)</a></li>
+<li><a href="#httprequest-definition-http_fetch-http_fetch_async">HTTPRequest definition (http_fetch, http_fetch_async)</a></li>
+<li><a href="#httprequestresult-definition-http_fetch-callback-http_fetch_async_get">HTTPRequestResult definition (http_fetch callback, http_fetch_async_get)</a></li>
 </ul>
 </li>
 </ul>
@@ -354,7 +358,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 07/December/2015.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 19/March/2016.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -552,16 +556,16 @@ texture is overlaid over <code>cobble.png</code>.</p>
 <p>Example:</p>
 <pre><code>default_cobble.png^[crack:10:1
 </code></pre>
-<h4 id="combinewxhx1y1file1x2y2file2"><code>[combine:&lt;w&gt;x&lt;h&gt;:&lt;x1&gt;,&lt;y1&gt;=&lt;file1&gt;:&lt;x2&gt;,&lt;y2&gt;=&lt;file2&gt;</code></h4>
+<h4 id="combinewxhx1y1file1x2y2file2"><code>[combine:&lt;w&gt;x&lt;h&gt;:&lt;x1&gt;,&lt;y1&gt;=&lt;file1&gt;:&lt;x2&gt;,&lt;y2&gt;=&lt;file2&gt;:...</code></h4>
 <ul>
 <li><a class="anchor" href="#w" name="w">#</a><code>&lt;w&gt;</code> = width</li>
 <li><a class="anchor" href="#h" name="h">#</a><code>&lt;h&gt;</code> = height</li>
-<li><a class="anchor" href="#x1" name="x1">#</a><code>&lt;x1&gt;</code>/<code>&lt;x2&gt;</code> = x positions</li>
-<li><a class="anchor" href="#y1" name="y1">#</a><code>&lt;y1&gt;</code>/<code>&lt;y1&gt;</code> = y positions</li>
-<li><a class="anchor" href="#file1" name="file1">#</a><code>&lt;file1&gt;</code>/<code>&lt;file2&gt;</code> = textures to combine</li>
+<li><a class="anchor" href="#x" name="x">#</a><code>&lt;x&gt;</code> = x position</li>
+<li><a class="anchor" href="#y" name="y">#</a><code>&lt;y&gt;</code> = y position</li>
+<li><a class="anchor" href="#file" name="file">#</a><code>&lt;file&gt;</code> = texture to combine</li>
 </ul>
-<p>Create a texture of size <code>&lt;w&gt;</code> times <code>&lt;h&gt;</code> and blit <code>&lt;file1&gt;</code> to (<code>&lt;x1&gt;</code>,<code>&lt;y1&gt;</code>)
-and blit <code>&lt;file2&gt;</code> to (<code>&lt;x2&gt;</code>,<code>&lt;y2&gt;</code>).</p>
+<p>Creates a texture of size <code>&lt;w&gt;</code> times <code>&lt;h&gt;</code> and blits the listed files to their
+specified coordinates.</p>
 <p>Example:</p>
 <pre><code>[combine:16x32:0,0=default_cobble.png:0,16=default_wood.png
 </code></pre>
@@ -895,6 +899,18 @@ changed in the future.</p>
     wall_top = box,
     wall_bottom = box,
     wall_side = box
+}
+{
+    -- A node that has optional boxes depending on neighbouring nodes'
+    -- presence and type. See also `connects_to`.
+    type = "connected",
+    fixed = box OR {box1, box2, ...}
+    connect_top = box OR {box1, box2, ...}
+    connect_bottom = box OR {box1, box2, ...}
+    connect_front = box OR {box1, box2, ...}
+    connect_left = box OR {box1, box2, ...}
+    connect_back = box OR {box1, box2, ...}
+    connect_right = box OR {box1, box2, ...}
 }
 </code></pre>
 <p>A <code>box</code> is defined as:</p>
@@ -1613,7 +1629,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="pwdfieldxywhnamelabel"><code>pwdfield[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;label&gt;]</code></h4>
 <ul>
 <li>Textual password style field; will be sent to server when a button is clicked</li>
-<li><a class="anchor" href="#x" name="x">#</a><code>x</code> and <code>y</code> position the field relative to the top left of the menu</li>
+<li><a class="anchor" href="#x_1" name="x_1">#</a><code>x</code> and <code>y</code> position the field relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_1" name="w_1">#</a><code>w</code> and <code>h</code> are the size of the field</li>
 <li><a class="anchor" href="#h_1" name="h_1">#</a>fields are a set height, but will be vertically centred on <code>h</code></li>
 <li>Position and size units are inventory slots</li>
@@ -1623,7 +1639,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="fieldxywhnamelabeldefault"><code>field[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;label&gt;;&lt;default&gt;]</code></h4>
 <ul>
 <li>Textual field; will be sent to server when a button is clicked</li>
-<li><a class="anchor" href="#x_1" name="x_1">#</a><code>x</code> and <code>y</code> position the field relative to the top left of the menu</li>
+<li><a class="anchor" href="#x_2" name="x_2">#</a><code>x</code> and <code>y</code> position the field relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_2" name="w_2">#</a><code>w</code> and <code>h</code> are the size of the field</li>
 <li><a class="anchor" href="#h_2" name="h_2">#</a>fields are a set height, but will be vertically centred on <code>h</code></li>
 <li>Position and size units are inventory slots</li>
@@ -1649,34 +1665,34 @@ list[current_player;craftpreview;7,1;1,1;]
 </ul>
 <h4 id="labelxylabel"><code>label[&lt;X&gt;,&lt;Y&gt;;&lt;label&gt;]</code></h4>
 <ul>
-<li><a class="anchor" href="#x_2" name="x_2">#</a><code>x</code> and <code>y</code> work as per field</li>
+<li><a class="anchor" href="#x_3" name="x_3">#</a><code>x</code> and <code>y</code> work as per field</li>
 <li><a class="anchor" href="#label_2" name="label_2">#</a><code>label</code> is the text on the label</li>
 <li>Position and size units are inventory slots</li>
 </ul>
 <h4 id="vertlabelxylabel"><code>vertlabel[&lt;X&gt;,&lt;Y&gt;;&lt;label&gt;]</code></h4>
 <ul>
 <li>Textual label drawn vertically</li>
-<li><a class="anchor" href="#x_3" name="x_3">#</a><code>x</code> and <code>y</code> work as per field</li>
+<li><a class="anchor" href="#x_4" name="x_4">#</a><code>x</code> and <code>y</code> work as per field</li>
 <li><a class="anchor" href="#label_3" name="label_3">#</a><code>label</code> is the text on the label</li>
 <li>Position and size units are inventory slots</li>
 </ul>
 <h4 id="buttonxywhnamelabel"><code>button[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;label&gt;]</code></h4>
 <ul>
 <li>Clickable button. When clicked, fields will be sent.</li>
-<li><a class="anchor" href="#x_4" name="x_4">#</a><code>x</code>, <code>y</code> and <code>name</code> work as per field</li>
+<li><a class="anchor" href="#x_5" name="x_5">#</a><code>x</code>, <code>y</code> and <code>name</code> work as per field</li>
 <li><a class="anchor" href="#w_3" name="w_3">#</a><code>w</code> and <code>h</code> are the size of the button</li>
 <li><a class="anchor" href="#label_4" name="label_4">#</a><code>label</code> is the text on the button</li>
 <li>Position and size units are inventory slots</li>
 </ul>
 <h4 id="image_buttonxywhtexture-namenamelabel"><code>image_button[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;texture name&gt;;&lt;name&gt;;&lt;label&gt;]</code></h4>
 <ul>
-<li><a class="anchor" href="#x_5" name="x_5">#</a><code>x</code>, <code>y</code>, <code>w</code>, <code>h</code>, and <code>name</code> work as per button</li>
+<li><a class="anchor" href="#x_6" name="x_6">#</a><code>x</code>, <code>y</code>, <code>w</code>, <code>h</code>, and <code>name</code> work as per button</li>
 <li><a class="anchor" href="#texturename" name="texturename">#</a><code>texture name</code> is the filename of an image</li>
 <li>Position and size units are inventory slots</li>
 </ul>
 <h4 id="image_buttonxywhtexture-namenamelabelnoclipdrawborderpressed-texture-name"><code>image_button[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;texture name&gt;;&lt;name&gt;;&lt;label&gt;;&lt;noclip&gt;;&lt;drawborder&gt;;&lt;pressed texture name&gt;]</code></h4>
 <ul>
-<li><a class="anchor" href="#x_6" name="x_6">#</a><code>x</code>, <code>y</code>, <code>w</code>, <code>h</code>, and <code>name</code> work as per button</li>
+<li><a class="anchor" href="#x_7" name="x_7">#</a><code>x</code>, <code>y</code>, <code>w</code>, <code>h</code>, and <code>name</code> work as per button</li>
 <li><a class="anchor" href="#texturename_1" name="texturename_1">#</a><code>texture name</code> is the filename of an image</li>
 <li>Position and size units are inventory slots</li>
 <li><a class="anchor" href="#nocliptrue" name="nocliptrue">#</a><code>noclip=true</code> means the image button doesn't need to be within specified formsize</li>
@@ -1685,7 +1701,7 @@ list[current_player;craftpreview;7,1;1,1;]
 </ul>
 <h4 id="item_image_buttonxywhitem-namenamelabel"><code>item_image_button[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;item name&gt;;&lt;name&gt;;&lt;label&gt;]</code></h4>
 <ul>
-<li><a class="anchor" href="#x_7" name="x_7">#</a><code>x</code>, <code>y</code>, <code>w</code>, <code>h</code>, <code>name</code> and <code>label</code> work as per button</li>
+<li><a class="anchor" href="#x_8" name="x_8">#</a><code>x</code>, <code>y</code>, <code>w</code>, <code>h</code>, <code>name</code> and <code>label</code> work as per button</li>
 <li><a class="anchor" href="#itemname" name="itemname">#</a><code>item name</code> is the registered name of an item/node,
    tooltip will be made out of its description
    to override it use tooltip element</li>
@@ -1702,7 +1718,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="textlistxywhnamelistelem-1listelem-2listelem-n"><code>textlist[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;listelem 1&gt;,&lt;listelem 2&gt;,...,&lt;listelem n&gt;]</code></h4>
 <ul>
 <li>Scrollable item list showing arbitrary text elements</li>
-<li><a class="anchor" href="#x_8" name="x_8">#</a><code>x</code> and <code>y</code> position the itemlist relative to the top left of the menu</li>
+<li><a class="anchor" href="#x_9" name="x_9">#</a><code>x</code> and <code>y</code> position the itemlist relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_4" name="w_4">#</a><code>w</code> and <code>h</code> are the size of the itemlist</li>
 <li><a class="anchor" href="#name_4" name="name_4">#</a><code>name</code> fieldname sent to server on doubleclick value is current selected element</li>
 <li><a class="anchor" href="#listelements" name="listelements">#</a><code>listelements</code> can be prepended by #color in hexadecimal format RRGGBB (only),<ul>
@@ -1713,7 +1729,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="textlistxywhnamelistelem-1listelem-2listelem-nselected-idxtransparent"><code>textlist[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;listelem 1&gt;,&lt;listelem 2&gt;,...,&lt;listelem n&gt;;&lt;selected idx&gt;;&lt;transparent&gt;]</code></h4>
 <ul>
 <li>Scrollable itemlist showing arbitrary text elements</li>
-<li><a class="anchor" href="#x_9" name="x_9">#</a><code>x</code> and <code>y</code> position the item list relative to the top left of the menu</li>
+<li><a class="anchor" href="#x_10" name="x_10">#</a><code>x</code> and <code>y</code> position the item list relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_5" name="w_5">#</a><code>w</code> and <code>h</code> are the size of the item list</li>
 <li><a class="anchor" href="#name_5" name="name_5">#</a><code>name</code> fieldname sent to server on doubleclick value is current selected element</li>
 <li><a class="anchor" href="#listelements_1" name="listelements_1">#</a><code>listelements</code> can be prepended by #RRGGBB (only) in hexadecimal format<ul>
@@ -1727,7 +1743,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="tabheaderxynamecaption-1caption-2caption-ncurrent_tabtransparentdraw_border"><code>tabheader[&lt;X&gt;,&lt;Y&gt;;&lt;name&gt;;&lt;caption 1&gt;,&lt;caption 2&gt;,...,&lt;caption n&gt;;&lt;current_tab&gt;;&lt;transparent&gt;;&lt;draw_border&gt;]</code></h4>
 <ul>
 <li>show a tab<strong>header</strong> at specific position (ignores formsize)</li>
-<li><a class="anchor" href="#x_10" name="x_10">#</a><code>x</code> and <code>y</code> position the itemlist relative to the top left of the menu</li>
+<li><a class="anchor" href="#x_11" name="x_11">#</a><code>x</code> and <code>y</code> position the itemlist relative to the top left of the menu</li>
 <li><a class="anchor" href="#name_6" name="name_6">#</a><code>name</code> fieldname data is transferred to Lua</li>
 <li><a class="anchor" href="#caption1" name="caption1">#</a><code>caption 1</code>...: name shown on top of tab</li>
 <li><a class="anchor" href="#current_tab" name="current_tab">#</a><code>current_tab</code>: index of selected tab 1...</li>
@@ -1737,7 +1753,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="boxxywhcolor"><code>box[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;color&gt;]</code></h4>
 <ul>
 <li>simple colored semitransparent box</li>
-<li><a class="anchor" href="#x_11" name="x_11">#</a><code>x</code> and <code>y</code> position the box relative to the top left of the menu</li>
+<li><a class="anchor" href="#x_12" name="x_12">#</a><code>x</code> and <code>y</code> position the box relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_6" name="w_6">#</a><code>w</code> and <code>h</code> are the size of box</li>
 <li><a class="anchor" href="#color" name="color">#</a><code>color</code> is color specified as a <code>ColorString</code></li>
 </ul>
@@ -1749,7 +1765,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>read the value on pressing a button (all dropdown values are available)</li>
 </ol>
 </li>
-<li><a class="anchor" href="#x_12" name="x_12">#</a><code>x</code> and <code>y</code> position of dropdown</li>
+<li><a class="anchor" href="#x_13" name="x_13">#</a><code>x</code> and <code>y</code> position of dropdown</li>
 <li>width of dropdown</li>
 <li>fieldname data is transferred to Lua</li>
 <li>items to be shown in dropdown</li>
@@ -1758,7 +1774,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="checkboxxynamelabelselectedtooltip"><code>checkbox[&lt;X&gt;,&lt;Y&gt;;&lt;name&gt;;&lt;label&gt;;&lt;selected&gt;;&lt;tooltip&gt;]</code></h4>
 <ul>
 <li>show a checkbox</li>
-<li><a class="anchor" href="#x_13" name="x_13">#</a><code>x</code> and <code>y</code>: position of checkbox</li>
+<li><a class="anchor" href="#x_14" name="x_14">#</a><code>x</code> and <code>y</code>: position of checkbox</li>
 <li><a class="anchor" href="#name_7" name="name_7">#</a><code>name</code> fieldname data is transferred to Lua</li>
 <li><a class="anchor" href="#label_5" name="label_5">#</a><code>label</code> to be shown left of checkbox</li>
 <li><a class="anchor" href="#selected" name="selected">#</a><code>selected</code> (optional): <code>true</code>/<code>false</code></li>
@@ -1772,7 +1788,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>read the value on pressing a button (all scrollbars are available)</li>
 </ol>
 </li>
-<li><a class="anchor" href="#x_14" name="x_14">#</a><code>x</code> and <code>y</code>: position of trackbar</li>
+<li><a class="anchor" href="#x_15" name="x_15">#</a><code>x</code> and <code>y</code>: position of trackbar</li>
 <li><a class="anchor" href="#w_7" name="w_7">#</a><code>w</code> and <code>h</code>: width and height</li>
 <li><a class="anchor" href="#orientation" name="orientation">#</a><code>orientation</code>:  <code>vertical</code>/<code>horizontal</code></li>
 <li>fieldname data is transferred to Lua</li>
@@ -1783,7 +1799,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <ul>
 <li><a class="anchor" href="#tableoptions" name="tableoptions">#</a>show scrollable table using options defined by the previous <code>tableoptions[]</code></li>
 <li><a class="anchor" href="#tablecolumns" name="tablecolumns">#</a>displays cells as defined by the previous <code>tablecolumns[]</code></li>
-<li><a class="anchor" href="#x_15" name="x_15">#</a><code>x</code> and <code>y</code>: position the itemlist relative to the top left of the menu</li>
+<li><a class="anchor" href="#x_16" name="x_16">#</a><code>x</code> and <code>y</code>: position the itemlist relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_8" name="w_8">#</a><code>w</code> and <code>h</code> are the size of the itemlist</li>
 <li><a class="anchor" href="#name_8" name="name_8">#</a><code>name</code>: fieldname sent to server on row select or doubleclick</li>
 <li><a class="anchor" href="#cell1" name="cell1">#</a><code>cell 1</code>...<code>cell n</code>: cell contents given in row-major order</li>
@@ -1825,7 +1841,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><a class="anchor" href="#text_6" name="text_6">#</a>types: <code>text</code>, <code>image</code>, <code>color</code>, <code>indent</code>, <code>tree</code><ul>
 <li><a class="anchor" href="#text_7" name="text_7">#</a><code>text</code>:   show cell contents as text</li>
 <li><a class="anchor" href="#image_1" name="image_1">#</a><code>image</code>:  cell contents are an image index, use column options to define images</li>
-<li><a class="anchor" href="#colo" name="colo">#</a><code>colo</code>:   cell contents are a ColorString and define color of following cell</li>
+<li><a class="anchor" href="#color_1" name="color_1">#</a><code>color</code>:   cell contents are a ColorString and define color of following cell</li>
 <li><a class="anchor" href="#indent" name="indent">#</a><code>indent</code>: cell contents are a number and define indentation of following cell</li>
 <li><a class="anchor" href="#tree" name="tree">#</a><code>tree</code>:   same as indent, but user can open and close subtrees (treeview-like)</li>
 </ul>
@@ -1852,7 +1868,7 @@ list[current_player;craftpreview;7,1;1,1;]
   non-numeric cells are treated as <code>0</code>.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#color_1" name="color_1">#</a><code>color</code> column options:<ul>
+<li><a class="anchor" href="#color_2" name="color_2">#</a><code>color</code> column options:<ul>
 <li><a class="anchor" href="#spanvalue" name="spanvalue">#</a><code>span=&lt;value&gt;</code>: number of following columns to affect (default: infinite)</li>
 </ul>
 </li>
@@ -1889,19 +1905,16 @@ or string form, a ColorString (defined above):
     <code>colorspec = "green"</code></p>
 <h2 id="spatial-vectors">Spatial Vectors</h2>
 <ul>
-<li><a class="anchor" href="#vectornewxyz" name="vectornewxyz">#</a>
-<p><code>vector.new([x[, y, z]])</code>: returns a vector.</p>
-<ul>
-<li><a class="anchor" href="#x_16" name="x_16">#</a><code>x</code> is a table or the <code>x</code> position.</li>
+<li><a class="anchor" href="#vectornewabc" name="vectornewabc">#</a><code>vector.new(a, b, c)</code>: returns a vector:<ul>
+<li><a class="anchor" href="#a" name="a">#</a>A copy of <code>a</code> if <code>a</code> is a vector.</li>
+<li><a class="anchor" href="#xaybzc" name="xaybzc">#</a><code>{x = a, y = b, z = c}</code>, if all <code>a, b, c</code> are defined</li>
 </ul>
 </li>
-<li><a class="anchor" href="#vectordirectionp1p2" name="vectordirectionp1p2">#</a>
-<p><code>vector.direction(p1, p2)</code>: returns a vector</p>
-</li>
+<li><a class="anchor" href="#vectordirectionp1p2" name="vectordirectionp1p2">#</a><code>vector.direction(p1, p2)</code>: returns a vector</li>
 <li><a class="anchor" href="#vectordistancep1p2" name="vectordistancep1p2">#</a><code>vector.distance(p1, p2)</code>: returns a number</li>
 <li><a class="anchor" href="#vectorlengthv" name="vectorlengthv">#</a><code>vector.length(v)</code>: returns a number</li>
 <li><a class="anchor" href="#vectornormalizev" name="vectornormalizev">#</a><code>vector.normalize(v)</code>: returns a vector</li>
-<li><a class="anchor" href="#vectorroundv" name="vectorroundv">#</a><code>vector.round(v)</code>: returns a vector</li>
+<li><a class="anchor" href="#vectorroundv" name="vectorroundv">#</a><code>vector.round(v)</code>: returns a vector, each dimension rounded to floor</li>
 <li><a class="anchor" href="#vectorapplyvfunc" name="vectorapplyvfunc">#</a><code>vector.apply(v, func)</code>: returns a vector</li>
 <li><a class="anchor" href="#vectorequalsv1v2" name="vectorequalsv1v2">#</a><code>vector.equals(v1, v2)</code>: returns a boolean</li>
 </ul>
@@ -1943,8 +1956,9 @@ or string form, a ColorString (defined above):
 <li><a class="anchor" href="#stringtrimnttfoobartfoobar" name="stringtrimnttfoobartfoobar">#</a>e.g. <code>string.trim("\n \t\tfoo bar\t ") == "foo bar"</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestpos_to_stringxXyYzZ" name="minetestpos_to_stringxXyYzZ">#</a><code>minetest.pos_to_string({x=X,y=Y,z=Z})</code>: returns <code>"(X,Y,Z)"</code><ul>
-<li>Convert position to a printable string</li>
+<li><a class="anchor" href="#minetestpos_to_stringxXyYzZdecimal_places" name="minetestpos_to_stringxXyYzZdecimal_places">#</a><code>minetest.pos_to_string({x=X,y=Y,z=Z}, decimal_places))</code>: returns <code>"(X,Y,Z)"</code><ul>
+<li>Convert position to a printable string
+  Optional: 'decimal_places' will round the x, y and z of the pos to the given decimal place.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#mineteststring_to_posstring" name="mineteststring_to_posstring">#</a><code>minetest.string_to_pos(string)</code>: returns a position<ul>
@@ -1964,7 +1978,7 @@ or string form, a ColorString (defined above):
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_us_time" name="minetestget_us_time">#</a><code>minetest.get_us_time()</code><ul>
-<li>returns time with microsecond precision</li>
+<li>returns time with microsecond precision. May not return wall time.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#tablecopytable" name="tablecopytable">#</a><code>table.copy(table)</code>: returns a table<ul>
@@ -2049,6 +2063,7 @@ or string form, a ColorString (defined above):
 <ul>
 <li><a class="anchor" href="#minetestregister_entitynameprototypetable_1" name="minetestregister_entitynameprototypetable_1">#</a><code>minetest.register_entity(name, prototype table)</code></li>
 <li><a class="anchor" href="#minetestregister_abmabmdefinition" name="minetestregister_abmabmdefinition">#</a><code>minetest.register_abm(abm definition)</code></li>
+<li><a class="anchor" href="#minetestregister_lbmlbmdefinition" name="minetestregister_lbmlbmdefinition">#</a><code>minetest.register_lbm(lbm definition)</code></li>
 <li><a class="anchor" href="#minetestregister_nodenamenodedefinition_1" name="minetestregister_nodenamenodedefinition_1">#</a><code>minetest.register_node(name, node definition)</code></li>
 <li><a class="anchor" href="#minetestregister_toolnameitemdefinition_1" name="minetestregister_toolnameitemdefinition_1">#</a><code>minetest.register_tool(name, item definition)</code></li>
 <li><a class="anchor" href="#minetestregister_craftitemnameitemdefinition_1" name="minetestregister_craftitemnameitemdefinition_1">#</a><code>minetest.register_craftitem(name, item definition)</code></li>
@@ -2290,11 +2305,13 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_nodepos" name="minetestget_nodepos">#</a><code>minetest.get_node(pos)</code><ul>
-<li><a class="anchor" href="#nameignore" name="nameignore">#</a>Returns <code>{name="ignore", ...}</code> for unloaded area</li>
+<li><a class="anchor" href="#namenode_nameparam10param20" name="namenode_nameparam10param20">#</a>Returns the node at the given position as table in the format
+  <code>{name="node_name", param1=0, param2=0}</code>, returns <code>{name="ignore", param1=0, param2=0}</code>
+  for unloaded areas.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_node_or_nilpos" name="minetestget_node_or_nilpos">#</a><code>minetest.get_node_or_nil(pos)</code><ul>
-<li><a class="anchor" href="#nil_1" name="nil_1">#</a>Returns <code>nil</code> for unloaded area</li>
+<li><a class="anchor" href="#get_node" name="get_node">#</a>Same as <code>get_node</code> but returns <code>nil</code> for unloaded areas.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_node_lightpostimeofday" name="minetestget_node_lightpostimeofday">#</a><code>minetest.get_node_light(pos, timeofday)</code><ul>
@@ -2358,6 +2375,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestget_timeofday" name="minetestget_timeofday">#</a><code>minetest.get_timeofday()</code></li>
 <li><a class="anchor" href="#minetestget_gametime" name="minetestget_gametime">#</a><code>minetest.get_gametime()</code>: returns the time, in seconds, since the world was created</li>
+<li><a class="anchor" href="#minetestget_day_count" name="minetestget_day_count">#</a><code>minetest.get_day_count()</code>: returns number days elapsed since world was created,<ul>
+<li>accounting for time changes.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestfind_node_nearposradiusnodenames" name="minetestfind_node_nearposradiusnodenames">#</a><code>minetest.find_node_near(pos, radius, nodenames)</code>: returns pos or <code>nil</code><ul>
 <li><a class="anchor" href="#radius_1" name="radius_1">#</a><code>radius</code>: using a maximum metric</li>
 <li><a class="anchor" href="#nodenames" name="nodenames">#</a><code>nodenames</code>: e.g. <code>{"ignore", "group:tree"}</code> or <code>"default:dirt"</code></li>
@@ -2433,8 +2454,14 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#pos1_1" name="pos1_1">#</a><code>pos1</code> and <code>pos2</code> are optional and default to mapchunk minp and maxp.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestclear_objects" name="minetestclear_objects">#</a><code>minetest.clear_objects()</code><ul>
-<li>clear all objects in the environments</li>
+<li><a class="anchor" href="#minetestclear_objectsoptions" name="minetestclear_objectsoptions">#</a><code>minetest.clear_objects([options])</code><ul>
+<li>Clear all objects in the environment</li>
+<li><a class="anchor" href="#mode" name="mode">#</a>Takes an optional table as an argument with the field <code>mode</code>.<ul>
+<li><a class="anchor" href="#full" name="full">#</a>mode = <code>"full"</code>: Load and go through every mapblock, clearing objects (default).</li>
+<li><a class="anchor" href="#quick" name="quick">#</a>mode = <code>"quick"</code>: Clear objects immediately in loaded mapblocks;
+  clear objects in unloaded mapblocks only when the mapblocks are next activated.</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestemerge_areapos1pos2callbackparam" name="minetestemerge_areapos1pos2callbackparam">#</a><code>minetest.emerge_area(pos1, pos2, [callback], [param])</code><ul>
@@ -2596,7 +2623,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestdir_to_facedirdiris6d" name="minetestdir_to_facedirdiris6d">#</a><code>minetest.dir_to_facedir(dir, is6d)</code><ul>
 <li><a class="anchor" href="#param2_1" name="param2_1">#</a>Convert a vector to a facedir value, used in <code>param2</code> for <code>paramtype2="facedir"</code>;</li>
-<li><a class="anchor" href="#nil_2" name="nil_2">#</a>passing something non-<code>nil</code>/<code>false</code> for the optional second parameter causes it to
+<li><a class="anchor" href="#nil_1" name="nil_1">#</a>passing something non-<code>nil</code>/<code>false</code> for the optional second parameter causes it to
   take the y component into account</li>
 </ul>
 </li>
@@ -2606,6 +2633,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestdir_to_wallmounteddir" name="minetestdir_to_wallmounteddir">#</a><code>minetest.dir_to_wallmounted(dir)</code><ul>
 <li><a class="anchor" href="#paramtype2wallmounted" name="paramtype2wallmounted">#</a>Convert a vector to a wallmounted value, used for <code>paramtype2="wallmounted"</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestwallmounted_to_dirwallmounted" name="minetestwallmounted_to_dirwallmounted">#</a><code>minetest.wallmounted_to_dir(wallmounted)</code><ul>
+<li>Convert a wallmounted value back into a vector aimed directly out the "back" of a node</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_node_dropsnodenametoolname" name="minetestget_node_dropsnodenametoolname">#</a><code>minetest.get_node_drops(nodename, toolname)</code><ul>
@@ -2636,7 +2667,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_all_craft_recipesqueryitem" name="minetestget_all_craft_recipesqueryitem">#</a><code>minetest.get_all_craft_recipes(query item)</code>: returns a table or <code>nil</code><ul>
-<li><a class="anchor" href="#nil_3" name="nil_3">#</a>returns indexed table with all registered recipes for query item (node)
+<li><a class="anchor" href="#nil_2" name="nil_2">#</a>returns indexed table with all registered recipes for query item (node)
   or <code>nil</code> if no recipe was found</li>
 <li>recipe entry table:
         {
@@ -2735,7 +2766,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <h3 id="timing">Timing</h3>
 <ul>
 <li><a class="anchor" href="#minetestaftertimefunc" name="minetestaftertimefunc">#</a><code>minetest.after(time, func, ...)</code><ul>
-<li><a class="anchor" href="#func" name="func">#</a>Call the function <code>func</code> after <code>time</code> seconds</li>
+<li><a class="anchor" href="#func" name="func">#</a>Call the function <code>func</code> after <code>time</code> seconds, may be fractional</li>
 <li><a class="anchor" href="#func_1" name="func_1">#</a>Optional: Variable number of arguments that are passed to <code>func</code></li>
 </ul>
 </li>
@@ -2804,7 +2835,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#ypos" name="ypos">#</a>Slice probability works in the same manner, except takes a field
   called <code>ypos</code> instead which
   indicates the y position of the slice with a probability applied.</li>
-<li><a class="anchor" href="#nil_4" name="nil_4">#</a>If slice probability list equals <code>nil</code>, no slice probabilities are applied.</li>
+<li><a class="anchor" href="#nil_3" name="nil_3">#</a>If slice probability list equals <code>nil</code>, no slice probabilities are applied.</li>
 </ul>
 </li>
 </ul>
@@ -2850,6 +2881,35 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 </ul>
+<h3 id="http-requests">HTTP Requests:</h3>
+<ul>
+<li><a class="anchor" href="#minetestrequest_http_api" name="minetestrequest_http_api">#</a><code>minetest.request_http_api()</code>:<ul>
+<li><a class="anchor" href="#HTTPApiTable" name="HTTPApiTable">#</a>returns <code>HTTPApiTable</code> containing http functions if the calling mod has been granted
+  access by being listed in the <code>secure.http_mods</code> or <code>secure.trusted_mods</code> setting,
+  otherwise returns <code>nil</code>.</li>
+<li><a class="anchor" href="#fetch" name="fetch">#</a>The returned table contains the functions <code>fetch</code>, <code>fetch_async</code> and <code>fetch_async_get</code>
+  described below.</li>
+<li>Only works at init time and must be called from the mod's main scope (not from a function).</li>
+<li>Function only exists if minetest server was built with cURL support.</li>
+<li><strong>DO NOT ALLOW ANY OTHER MODS TO ACCESS THE RETURNED TABLE, STORE IT IN
+  A LOCAL VARIABLE!</strong></li>
+</ul>
+</li>
+<li><a class="anchor" href="#HTTPApiTablefetchHTTPRequestreqcallback" name="HTTPApiTablefetchHTTPRequestreqcallback">#</a><code>HTTPApiTable.fetch(HTTPRequest req, callback)</code><ul>
+<li>Performs given request asynchronously and calls callback upon completion</li>
+<li><a class="anchor" href="#functionHTTPRequestResultres" name="functionHTTPRequestResultres">#</a>callback: <code>function(HTTPRequestResult res)</code></li>
+<li>Use this HTTP function if you are unsure, the others are for advanced use.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#HTTPApiTablefetch_asyncHTTPRequestreq" name="HTTPApiTablefetch_asyncHTTPRequestreq">#</a><code>HTTPApiTable.fetch_async(HTTPRequest req)</code>: returns handle<ul>
+<li><a class="anchor" href="#minetesthttp_fetch_async_get" name="minetesthttp_fetch_async_get">#</a>Performs given request asynchronously and returns handle for <code>minetest.http_fetch_async_get</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#HTTPApiTablefetch_async_gethandle" name="HTTPApiTablefetch_async_gethandle">#</a><code>HTTPApiTable.fetch_async_get(handle)</code>: returns HTTPRequestResult<ul>
+<li>Return response data for given asynchronous HTTP request</li>
+</ul>
+</li>
+</ul>
 <h3 id="misc">Misc.</h3>
 <ul>
 <li><a class="anchor" href="#minetestget_connected_players" name="minetestget_connected_players">#</a><code>minetest.get_connected_players()</code>: returns list of <code>ObjectRefs</code></li>
@@ -2887,7 +2947,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Convert a string containing JSON data into the Lua equivalent</li>
 <li><a class="anchor" href="#nullvalue" name="nullvalue">#</a><code>nullvalue</code>: returned in place of the JSON null; defaults to <code>nil</code></li>
 <li><a class="anchor" href="#nullvalue_1" name="nullvalue_1">#</a>On success returns a table, a string, a number, a boolean or <code>nullvalue</code></li>
-<li><a class="anchor" href="#nil_5" name="nil_5">#</a>On failure outputs an error message and returns <code>nil</code></li>
+<li><a class="anchor" href="#nil_4" name="nil_4">#</a>On failure outputs an error message and returns <code>nil</code></li>
 <li><a class="anchor" href="#parse_json10afalse" name="parse_json10afalse">#</a>Example: <code>parse_json("[10, {\"a\":false}]")</code>, returns <code>{10, {a = false}}</code></li>
 </ul>
 </li>
@@ -2905,7 +2965,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestserializetable" name="minetestserializetable">#</a><code>minetest.serialize(table)</code>: returns a string<ul>
-<li><a class="anchor" href="#nil_6" name="nil_6">#</a>Convert a table containing tables, strings, numbers, booleans and <code>nil</code>s
+<li><a class="anchor" href="#nil_5" name="nil_5">#</a>Convert a table containing tables, strings, numbers, booleans and <code>nil</code>s
   into string form readable by <code>minetest.deserialize</code></li>
 <li><a class="anchor" href="#serializefoobar" name="serializefoobar">#</a>Example: <code>serialize({foo='bar'})</code>, returns <code>'return { ["foo"] = "bar" }'</code></li>
 </ul>
@@ -3007,7 +3067,7 @@ end
   insecure functions if the calling mod has been listed as trusted in the
   <code>secure.trusted_mods</code> setting or security is disabled, otherwise returns <code>nil</code>.</p>
 <ul>
-<li>Only works at init time.</li>
+<li>Only works at init time and must be called from the mod's main scope (not from a function).</li>
 <li><strong>DO NOT ALLOW ANY OTHER MODS TO ACCESS THE RETURNED ENVIRONMENT, STORE IT IN
   A LOCAL VARIABLE!</strong></li>
 </ul>
@@ -3061,6 +3121,10 @@ end
 </li>
 <li><a class="anchor" href="#minetestregistered_ores_1" name="minetestregistered_ores_1">#</a><code>minetest.registered_ores</code><ul>
 <li>List of registered ore definitions.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestregistered_biomes" name="minetestregistered_biomes">#</a><code>minetest.registered_biomes</code><ul>
+<li>List of registered biome definitions.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregistered_decorations_1" name="minetestregistered_decorations_1">#</a><code>minetest.registered_decorations</code><ul>
@@ -3169,6 +3233,23 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#set_propertiesobjectpropertytable" name="set_propertiesobjectpropertytable">#</a><code>set_properties(object property table)</code></li>
 <li><a class="anchor" href="#get_properties" name="get_properties">#</a><code>get_properties()</code>: returns object property table</li>
 <li><a class="anchor" href="#is_player" name="is_player">#</a><code>is_player()</code>: returns true for players, false otherwise</li>
+<li><a class="anchor" href="#get_nametag_attributes" name="get_nametag_attributes">#</a><code>get_nametag_attributes()</code><ul>
+<li>returns a table with the attributes of the nametag of an object</li>
+<li>{
+    color = {a=0..255, r=0..255, g=0..255, b=0..255},
+    text = "",
+  }</li>
+</ul>
+</li>
+<li><a class="anchor" href="#set_nametag_attributesattributes" name="set_nametag_attributesattributes">#</a><code>set_nametag_attributes(attributes)</code><ul>
+<li>sets the attributes of the nametag of an object</li>
+<li><a class="anchor" href="#attributes" name="attributes">#</a><code>attributes</code>:
+  {
+    color = ColorSpec,
+    text = "My Nametag",
+  }</li>
+</ul>
+</li>
 </ul>
 <h5 id="luaentitysao-only-no-op-for-other-objects">LuaEntitySAO-only (no-op for other objects)</h5>
 <ul>
@@ -3244,7 +3325,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#hud_set_flagsflags" name="hud_set_flagsflags">#</a><code>hud_set_flags(flags)</code>: sets specified HUD flags to <code>true</code>/<code>false</code><ul>
 <li><a class="anchor" href="#flags_4" name="flags_4">#</a><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>minimap</code></li>
 <li><a class="anchor" href="#true_12" name="true_12">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
-<li><a class="anchor" href="#nil_7" name="nil_7">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
+<li><a class="anchor" href="#nil_6" name="nil_6">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
 <li><a class="anchor" href="#minimap" name="minimap">#</a>note that setting <code>minimap</code> modifies the client's permission to view the minimap -</li>
 <li>the client may locally elect to not view the minimap</li>
 </ul>
@@ -3282,14 +3363,12 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#plain" name="plain">#</a><code>"plain"</code>: Uses 0 textures, <code>bgcolor</code> used</li>
 </ul>
 </li>
-<li><a class="anchor" href="#on_joinplayer" name="on_joinplayer">#</a><strong>Note</strong>: currently does not work directly in <code>on_joinplayer</code>; use
-  <code>minetest.after(0)</code> in there.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_sky" name="get_sky">#</a><code>get_sky()</code>: returns bgcolor, type and a table with the textures</li>
 <li><a class="anchor" href="#override_day_night_ratioratioornil" name="override_day_night_ratioratioornil">#</a><code>override_day_night_ratio(ratio or nil)</code><ul>
 <li><a class="anchor" href="#0_11" name="0_11">#</a><code>0</code>...<code>1</code>: Overrides day-night ratio, controlling sunlight to a specific amount</li>
-<li><a class="anchor" href="#nil_8" name="nil_8">#</a><code>nil</code>: Disables override, defaulting to sunlight based on day-night cycle</li>
+<li><a class="anchor" href="#nil_7" name="nil_7">#</a><code>nil</code>: Disables override, defaulting to sunlight based on day-night cycle</li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_day_night_ratio" name="get_day_night_ratio">#</a><code>get_day_night_ratio()</code>: returns the ratio or nil if it isn't overridden</li>
@@ -3308,17 +3387,6 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li>in first person view</li>
 <li><a class="anchor" href="#x1010y1015z55" name="x1010y1015z55">#</a>in third person view (max. values <code>{x=-10/10,y=-10,15,z=-5/5}</code>)</li>
 <li><a class="anchor" href="#get_eye_offset" name="get_eye_offset">#</a><code>get_eye_offset()</code>: returns offset_first and offset_third</li>
-<li><a class="anchor" href="#get_nametag_attributes" name="get_nametag_attributes">#</a><code>get_nametag_attributes()</code></li>
-<li>returns a table with the attributes of the nametag of the player</li>
-<li>{
-    color = {a=0..255, r=0..255, g=0..255, b=0..255},
-  }</li>
-<li><a class="anchor" href="#set_nametag_attributesattributes" name="set_nametag_attributesattributes">#</a><code>set_nametag_attributes(attributes)</code></li>
-<li>sets the attributes of the nametag of the player</li>
-<li><a class="anchor" href="#attributes" name="attributes">#</a><code>attributes</code>:
-  {
-    color = ColorSpec,
-  }</li>
 </ul>
 </li>
 </ul>
@@ -3365,8 +3433,7 @@ If you chose the parameter-less constructor, a fast implementation will be autom
 <li><a class="anchor" href="#get_areaidinclude_bordersinclude_data" name="get_areaidinclude_bordersinclude_data">#</a><code>get_area(id, include_borders, include_data)</code>: returns the area with the id <code>id</code>. (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.</li>
 <li><a class="anchor" href="#get_areas_for_posposinclude_bordersinclude_data" name="get_areas_for_posposinclude_bordersinclude_data">#</a><code>get_areas_for_pos(pos, include_borders, include_data)</code>: returns all areas that contain the position <code>pos</code>. (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.</li>
 <li><a class="anchor" href="#get_areas_in_areaedge1edge2accept_overlapinclude_bordersinclude_data" name="get_areas_in_areaedge1edge2accept_overlapinclude_bordersinclude_data">#</a><code>get_areas_in_area(edge1, edge2, accept_overlap, include_borders, include_data)</code>: returns all areas that contain all nodes inside the area specified by <code>edge1</code> and <code>edge2</code> (inclusive). If <code>accept_overlap</code> is true, also areas are returned that have nodes in common with the specified area. (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.</li>
-<li><a class="anchor" href="#insert_areaedge1edge2data" name="insert_areaedge1edge2data">#</a><code>insert_area(edge1, edge2, data)</code>: inserts an area into the store. Returns the id if successful, nil otherwise. The (inclusive) positions <code>edge1</code> and <code>edge2</code> describe the area, <code>data</code>
-is a string stored with the area.</li>
+<li><a class="anchor" href="#insert_areaedge1edge2dataid" name="insert_areaedge1edge2dataid">#</a><code>insert_area(edge1, edge2, data, [id])</code>: inserts an area into the store. Returns the new area's ID, or nil if the insertion failed. The (inclusive) positions <code>edge1</code> and <code>edge2</code> describe the area. <code>data</code> is a string stored with the area.  If passed, <code>id</code> will be used as the internal area ID, it must be a unique number between 0 and 2^32-2. If you use the <code>id</code> parameter you must always use it, or insertions are likely to fail due to conflicts.</li>
 <li><a class="anchor" href="#reservecount" name="reservecount">#</a><code>reserve(count)</code>: reserves resources for at most <code>count</code> many contained areas. Only needed for efficiency, and only some implementations profit.</li>
 <li><a class="anchor" href="#remove_areaid" name="remove_areaid">#</a><code>remove_area(id)</code>: removes the area with the given id from the store, returns success.</li>
 <li><a class="anchor" href="#set_cache_paramsparams" name="set_cache_paramsparams">#</a><code>set_cache_params(params)</code>: sets params for the included prefiltering cache. Calling invalidates the cache, so that its elements have to be newly generated.<ul>
@@ -3378,6 +3445,10 @@ is a string stored with the area.</li>
   }</li>
 </ul>
 </li>
+<li><a class="anchor" href="#to_string" name="to_string">#</a><code>to_string()</code>: Experimental. Returns area store serialized as a (binary) string.</li>
+<li><a class="anchor" href="#to_filefilename" name="to_filefilename">#</a><code>to_file(filename)</code>: Experimental. Like <code>to_string()</code>, but writes the data to a file.</li>
+<li><a class="anchor" href="#from_stringstr" name="from_stringstr">#</a><code>from_string(str)</code>: Experimental. Deserializes string and loads it into the AreaStore.  Returns success and, optionally, an error message.</li>
+<li><a class="anchor" href="#from_filefilename" name="from_filefilename">#</a><code>from_file(filename)</code>: Experimental. Like <code>from_string()</code>, but reads the data from a file.</li>
 </ul>
 <h3 id="itemstack_1"><code>ItemStack</code></h3>
 <p>An <code>ItemStack</code> is a stack of items.</p>
@@ -3401,7 +3472,7 @@ an itemstring, a table or <code>nil</code>.</p>
 <li><a class="anchor" href="#item_1" name="item_1">#</a><code>item</code> can also be an itemstring or table.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#to_string" name="to_string">#</a><code>to_string()</code>: Returns the stack in itemstring form.</li>
+<li><a class="anchor" href="#to_string_1" name="to_string_1">#</a><code>to_string()</code>: Returns the stack in itemstring form.</li>
 <li><a class="anchor" href="#to_table_1" name="to_table_1">#</a><code>to_table()</code>: Returns the stack in Lua table form.</li>
 <li><a class="anchor" href="#get_stack_max" name="get_stack_max">#</a><code>get_stack_max()</code>: Returns the maximum size of the stack (depends on the item).</li>
 <li><a class="anchor" href="#get_free_space" name="get_free_space">#</a><code>get_free_space()</code>: Returns <code>get_stack_max() - get_count()</code>.</li>
@@ -3835,7 +3906,7 @@ numeric unique decoration ID.</p>
 <li><a class="anchor" href="#B" name="B">#</a><code>B</code>: replace with rules set B</li>
 <li><a class="anchor" href="#C" name="C">#</a><code>C</code>: replace with rules set C</li>
 <li><a class="anchor" href="#D" name="D">#</a><code>D</code>: replace with rules set D</li>
-<li><a class="anchor" href="#a" name="a">#</a><code>a</code>: replace with rules set A, chance 90%</li>
+<li><a class="anchor" href="#a_1" name="a_1">#</a><code>a</code>: replace with rules set A, chance 90%</li>
 <li><a class="anchor" href="#b" name="b">#</a><code>b</code>: replace with rules set B, chance 80%</li>
 <li><a class="anchor" href="#c" name="c">#</a><code>c</code>: replace with rules set C, chance 70%</li>
 <li><a class="anchor" href="#d" name="d">#</a><code>d</code>: replace with rules set D, chance 60%</li>
@@ -3888,7 +3959,12 @@ minetest.spawn_tree(pos,apple_tree)
     stepheight = 0,
     automatic_face_movement_dir = 0.0,
 --  ^ automatically set yaw to movement direction; offset in degrees; false to disable
+    automatic_face_movement_max_rotation_per_sec = -1,
+--  ^ limit automatic rotation to this value in degrees per second. values &lt; 0 no limit
     backface_culling = true, -- false to disable backface_culling for model
+    nametag = "", -- by default empty, for players their name is shown if empty
+    nametag_color = &lt;color&gt;, -- sets color of nametag as ColorSpec
+    infotext = "", -- by default empty, text to be shown when pointed at object
 }
 </code></pre>
 <h3 id="entity-definition-register_entity">Entity definition (<code>register_entity</code>)</h3>
@@ -3922,6 +3998,20 @@ minetest.spawn_tree(pos,apple_tree)
       an area to simulate time lost by the area being unattended.
     ^ Note chance value can often be reduced to 1 ]]
     action = func(pos, node, active_object_count, active_object_count_wider),
+}
+</code></pre>
+<h3 id="lbm-loadingblockmodifier-definition-register_lbm">LBM (LoadingBlockModifier) definition (<code>register_lbm</code>)</h3>
+<pre><code>{
+    name = "modname:replace_legacy_door",
+    nodenames = {"default:lava_source"},
+--  ^ List of node names to trigger the LBM on.
+--    Also non-registered nodes will work.
+--    Groups (as of group:groupname) will work as well.
+    run_at_every_load = false,
+--  ^ Whether to run the LBM's action every time a block gets loaded,
+--    and not just for blocks that were saved last time before LBMs were
+--    introduced to the world.
+    action = func(pos, node),
 }
 </code></pre>
 <h3 id="item-definition-register_node-register_craftitem-register_tool">Item definition (<code>register_node</code>, <code>register_craftitem</code>, <code>register_tool</code>)</h3>
@@ -4003,7 +4093,7 @@ minetest.spawn_tree(pos,apple_tree)
 <li><a class="anchor" href="#nameimagepnganimationTileAnimationdefinition" name="nameimagepnganimationTileAnimationdefinition">#</a><code>{name="image.png", animation={Tile Animation definition}}</code></li>
 <li><a class="anchor" href="#nameimagepngbackface_cullingbooltileable_verticalbooltileable_horizontalbool" name="nameimagepngbackface_cullingbooltileable_verticalbooltileable_horizontalbool">#</a><code>{name="image.png", backface_culling=bool, tileable_vertical=bool,
     tileable_horizontal=bool}</code><ul>
-<li>backface culling only supported in special tiles.</li>
+<li>backface culling enabled by default for most nodes</li>
 <li>tileable flags are info for shaders, how they should treat texture
   when displacement mapping is used
   Directions are from the point of view of the tile texture,
@@ -4049,6 +4139,7 @@ minetest.spawn_tree(pos,apple_tree)
     diggable = true, -- If false, can never be dug
     climbable = false, -- If true, can be climbed on (ladder)
     buildable_to = false, -- If true, placed nodes can replace this node
+    floodable = false, -- If true, liquids flow into and replace this node
     liquidtype = "none", -- "none"/"source"/"flowing"
     liquid_alternative_flowing = "", -- Flowing version of source liquid
     liquid_alternative_source = "", -- Source version of flowing liquid
@@ -4062,6 +4153,12 @@ minetest.spawn_tree(pos,apple_tree)
     light_source = 0, -- Amount of light emitted by node
     damage_per_second = 0, -- If player is inside node, this damage is caused
     node_box = {type="regular"}, -- See "Node boxes"
+    connects_to = nodenames, --[[
+    * Used for nodebox nodes with the type == "connected"
+    * Specifies to what neighboring nodes connections will be drawn
+    * e.g. `{"group:fence", "default:wood"}` or `"default:stone"` ]]
+    connect_sides = { "top", "bottom", "front", "left", "back", "right" }, --[[
+    ^ Tells connected nodebox nodes to connect only to these sides of this node. ]]
     mesh = "model",
     selection_box = {type="regular"}, -- See "Node boxes" --[[
     ^ If drawtype "nodebox" is used and selection_box is nil, then node_box is used. ]]
@@ -4312,11 +4409,12 @@ minetest.spawn_tree(pos,apple_tree)
 -- ^ Minimum and maximum `y` positions these decorations can be generated at.
 -- ^ This parameter refers to the `y` position of the decoration base, so
 --   the actual maximum height would be `height_max + size.Y`.
-    flags = "liquid_surface",
+    flags = "liquid_surface, force_placement",
 --  ^ Flags for all decoration types.
 --  ^ "liquid_surface": Instead of placement on the highest solid surface
 --  ^ in a mapchunk column, placement is on the highest liquid surface.
 --  ^ Placement is disabled if solid nodes are found above the liquid surface.
+--  ^ "force_placement": Nodes other than "air" and "ignore" are replaced by the decoration.
 
     ----- Simple-type parameters
     decoration = "default:grass",
@@ -4360,7 +4458,7 @@ minetest.spawn_tree(pos,apple_tree)
     },
 --  ^ See 'Schematic specifier' for details.
     replacements = {["oldname"] = "convert_to", ...},
-    flags = "place_center_x, place_center_y, place_center_z, force_placement",
+    flags = "place_center_x, place_center_y, place_center_z",
 --  ^ Flags for schematic decorations.  See 'Schematic attributes'.
     rotation = "90" -- rotate schematic 90 degrees on placement
 --  ^ Rotation can be "0", "90", "180", "270", or "random".
@@ -4465,5 +4563,37 @@ minetest.spawn_tree(pos,apple_tree)
 --  ^ Uses texture (string)
     playername = "singleplayer"
 --  ^ Playername is optional, if specified spawns particle only on the player's client
+}
+</code></pre>
+<h3 id="httprequest-definition-http_fetch-http_fetch_async"><code>HTTPRequest</code> definition (<code>http_fetch</code>, <code>http_fetch_async</code>)</h3>
+<pre><code>{
+    url = "http://example.org",
+    timeout = 10,
+ -- ^ Timeout for connection in seconds. Default is 3 seconds.
+    post_data = "Raw POST request data string" OR { field1 = "data1", field2 = "data2" },
+ -- ^ Optional, if specified a POST request with post_data is performed.
+ -- ^ Accepts both a string and a table. If a table is specified, encodes table
+ -- ^ as x-www-form-urlencoded key-value pairs.
+ -- ^ If post_data ist not specified, a GET request is performed instead.
+    user_agent = "ExampleUserAgent",
+ -- ^ Optional, if specified replaces the default minetest user agent with given string
+    extra_headers = { "Accept-Language: en-us", "Accept-Charset: utf-8" },
+ -- ^ Optional, if specified adds additional headers to the HTTP request. You must make sure
+ -- ^ that the header strings follow HTTP specification ("Key: Value").
+    multipart = boolean
+ -- ^ Optional, if true performs a multipart HTTP request. Default is false.
+}
+</code></pre>
+<h3 id="httprequestresult-definition-http_fetch-callback-http_fetch_async_get"><code>HTTPRequestResult</code> definition (<code>http_fetch</code> callback, <code>http_fetch_async_get</code>)</h3>
+<pre><code>{
+    completed = true,
+ -- ^ If true, the request has finished (either succeeded, failed or timed out)
+    succeeded = true,
+ -- ^ If true, the request was succesful
+    timeout = false,
+ -- ^ If true, the request timed out
+    code = 200,
+ -- ^ HTTP status code
+    data = "response"
 }
 </code></pre>
