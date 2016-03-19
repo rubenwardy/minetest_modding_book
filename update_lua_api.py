@@ -52,10 +52,13 @@ links = """<ul>
 
 html = html.replace("{{", "{ {")
 html = html.replace(links, "")
-links += "This page was last updated "
-links += datetime.date.today().strftime("%d/%B/%Y")
-links += ".<br />See <a href=\"https://github.com/minetest/minetest/blob/master/doc/lua_api.txt\">doc/lua_api.txt</a> for the latest version (in plaintext)."
-links += "<br />Generated using <a href=\"https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py\">a Python script</a>."
+
+
+credit = "This page was last updated "
+credit += datetime.date.today().strftime("%d/%B/%Y")
+credit += ".<br />See <a href=\"https://github.com/minetest/minetest/blob/master/doc/lua_api.txt\">doc/lua_api.txt</a> for the latest version (in plaintext)."
+credit += "<br />Generated using <a href=\"https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py\">a Python script</a>."
+links += credit
 html = html.replace("<h2 id=\"programming-in-lua\">", links + "<h2 id=\"programming-in-lua\">")
 
 print("Parsing HTML...")
@@ -96,6 +99,10 @@ html = str(soup)
 print("Writing to file...")
 file = open("lua_api.html", "w")
 file.write("---\ntitle: Lua Modding API Reference\nlayout: default\n---\n")
+file.write("<div class='notice'>\n")
+file.write("<h2>This is lua_api.txt nicely formated: I did not write this</h2>\n")
+file.write(credit)
+file.write("</div>\n")
 file.write("<h2 id=\"table-of-contents\">Table of Contents</h2>\n")
 file.write(md.toc)
 file.write(html)
