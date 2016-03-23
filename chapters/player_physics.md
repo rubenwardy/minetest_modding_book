@@ -51,9 +51,9 @@ They added the option above so you can disable it.
 
 ### Multiple mods
 
-Please be warned that mods that override the physics of a player tend
+Please be warned that mods that override the same physics values of a player tend
 to be incompatible with each other. When setting an override, it overwrites
-and override that has been set before, by your or anyone else's mod.
+any overrides that have been set before, by your or anyone else's mod.
 
 ## Your Turn
 
