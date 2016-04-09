@@ -4,7 +4,7 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 19/March/2016.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 09/April/2016.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
@@ -361,7 +361,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 19/March/2016.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 09/April/2016.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -634,8 +634,13 @@ Rotations are counter-clockwise.</p>
 <h4 id="colorizecolorratio"><code>[colorize:&lt;color&gt;:&lt;ratio&gt;</code></h4>
 <p>Colorize the textures with the given color.
 <code>&lt;color&gt;</code> is specified as a <code>ColorString</code>.
-<code>&lt;ratio&gt;</code> is an int ranging from 0 to 255, and specifies how much of the
-color to apply. If ommitted, the alpha will be used.</p>
+<code>&lt;ratio&gt;</code> is an int ranging from 0 to 255 or the word "<code>alpha</code>".  If
+it is an int, then it specifies how far to interpolate between the
+colors where 0 is only the texture color and 255 is only <code>&lt;color&gt;</code>. If
+omitted, the alpha of <code>&lt;color&gt;</code> will be used as the ratio.  If it is
+the word "<code>alpha</code>", then each texture pixel will contain the RGB of
+<code>&lt;color&gt;</code> and the alpha of <code>&lt;color&gt;</code> multiplied by the alpha of the
+texture pixel.</p>
 <h2 id="sounds">Sounds</h2>
 <p>Only Ogg Vorbis files are supported.</p>
 <p>For positional playing of sounds, only single-channel (mono) files are
@@ -1908,7 +1913,7 @@ or string form, a ColorString (defined above):
     <code>colorspec = "green"</code></p>
 <h2 id="spatial-vectors">Spatial Vectors</h2>
 <ul>
-<li><a class="anchor" href="#vectornewabc" name="vectornewabc">#</a><code>vector.new(a, b, c)</code>: returns a vector:<ul>
+<li><a class="anchor" href="#vectornewabc" name="vectornewabc">#</a><code>vector.new(a[, b, c])</code>: returns a vector:<ul>
 <li><a class="anchor" href="#a" name="a">#</a>A copy of <code>a</code> if <code>a</code> is a vector.</li>
 <li><a class="anchor" href="#xaybzc" name="xaybzc">#</a><code>{x = a, y = b, z = c}</code>, if all <code>a, b, c</code> are defined</li>
 </ul>
