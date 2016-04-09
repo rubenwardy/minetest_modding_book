@@ -35,40 +35,44 @@
 
 - hr: true
 
-- title: Chat and Commands
+- title: Privileges
   num:   8
+  link:  chapters/privileges.html
+
+- title: Chat and Commands
+  num:   9
   link:  chapters/chat.html
 
 - title: Player Physics
-  num:   9
+  num:   10
   link:  chapters/player_physics.html
 
 - title: Formspecs
-  num:   10
+  num:   11
   link:  chapters/formspecs.html
 
 - title: HUD
-  num:   11
+  num:   12
   link:  chapters/hud.html
 
 - hr: true
 
 - title: ItemStacks
-  num:   12
+  num:   13
   link:  chapters/itemstacks.html
 
 - title: Inventories
-  num:   13
+  num:   14
   link:  chapters/inventories.html
 
 - hr: true
 
 - title: Releasing a Mod
-  num: 14
+  num: 15
   link: chapters/releasing.html
 
 - title: Read More
-  num: 15
+  num: 16
   link: chapters/readmore.html
 
 - hr: true

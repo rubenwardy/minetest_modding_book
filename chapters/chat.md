@@ -48,9 +48,8 @@ minetest.chat_send_player("player1", "This is a server message", true)
 minetest.chat_send_player("player1", "This is a server message", false)
 {% endhighlight %}
 
-The boolean at the end has been
-[depreciated](https://github.com/minetest/minetest/commit/9a3b7715e2c2390a3a549d4e105ed8c18defb228)
-so the third parameter is ignored and has no effect.
+The boolean at is no longer used, and has no affect
+<sup>[[commit]](https://github.com/minetest/minetest/commit/9a3b7715e2c2390a3a549d4e105ed8c18defb228)</sup>.
 
 
 ## Chat commands
@@ -78,7 +77,7 @@ privs = {
 },
 {% endhighlight %}
 
-This makes it so that only players with the `interact` privilege can run the
+This makes it so that only players with the `interact` [privilege](privileges.html) can run the
 command. Other players will see an error message informing them which
 privilege they're missing.
 
