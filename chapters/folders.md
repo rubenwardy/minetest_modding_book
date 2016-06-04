@@ -22,7 +22,7 @@ are placed. These folders need to be placed in a mod location such as
 minetest/mods. Mods can be grouped into mod packs which are explained below.
 
 A "mod name" is used to refer to a mod. Each mod should have a unique mod name,
-which you can choose - a good mod name describes what the mod does.
+which you can choose - a good mod name should describe what the mod does.
 Mod names can be made up of letters, numbers, or underscores. The folder a mod is
 in needs to be called the same as the mod name.
 

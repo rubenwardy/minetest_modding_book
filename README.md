@@ -186,4 +186,4 @@ Replace spaces with underscores ( _ )
 
 Please note that the above is a guideline on how to make good chapter, but isn't
 exhustive and there are many exceptions. The priority is explaining the concepts
-to the reader efficiently and in a way which is understandably.
+to the reader efficiently and in a way which is understandable.
