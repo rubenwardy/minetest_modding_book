@@ -240,6 +240,10 @@ If you modify the above example for your mod topic, remember to
 change "modfldername" to the name of the folder your mod should be
 in.
 
+To not waste time fiddling about with BBCode formatting every time you make a topic,  
+you can use a script which does it automatically:  
+```$ bash <(curl -s https://raw.githubusercontent.com/HybridDog/mdcrt/master/mdcrt.sh)```
+
 ### Title
 
 Subject of topic must be in one of these formats:
