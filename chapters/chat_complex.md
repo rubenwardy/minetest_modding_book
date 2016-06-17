@@ -9,6 +9,12 @@ root: ../
 This chapter will show you how to make complex chat commands, such as
 `/msg <name> <message>`, `/team join <teamname>` or `/team leave <teamname>`.
 
+* Why ChatCmdBuilder?
+* Routes.
+* Subcommand functions.
+* Installing ChatCmdBuilder.
+* Admin complex command.
+
 ## Why ChatCmdBuilder?
 
 Traditionally mods implemented these complex commands using Lua patterns.
