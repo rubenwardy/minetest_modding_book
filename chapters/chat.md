@@ -12,6 +12,7 @@ sending messages, intercepting messages and registering chat commands.
 * Send a message to all players.
 * Send a message to a certain player.
 * Chat commands.
+* Complex subcommands.
 * Intercepting messages.
 
 ## Send a message to all players
@@ -94,6 +95,20 @@ So don't assume that `minetest.get_player_by_name` will work in a chat command c
 or any other function that requires an ingame player. `minetest.show_formspec` will also
 not work for IRC players, so you should provide a text only version. For example, the
 email mod allows both `/inbox` to show the formspec, and `/inbox text` to send to chat.
+
+## Complex subcommands
+
+It is often required to make complex chat commands, such as:
+
+* /msg <name> <message>
+* /team join <teamname>
+* /team leave <teamname>
+* /team list
+
+Traditionally mods implemented this using Lua patterns. However, a much easier
+way is to use a mod library that I wrote to do this for you.
+See [Complex Chat Commands](chat_complex.html).
+
 
 ## Intercepting messages
 
