@@ -18,6 +18,11 @@ This chapter will show you how to make complex chat commands, such as
 ## Why ChatCmdBuilder?
 
 Traditionally mods implemented these complex commands using Lua patterns.
+
+{% highlight lua %}
+local name = string.match(param, "^join ([%a%d_-]+)")
+{% endhighlight %}
+
 I however find Lua patterns annoying to write and unreadable.
 Because of this, I created a library to do this for you.
 
