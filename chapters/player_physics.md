@@ -20,7 +20,7 @@ Here is an example which adds an antigravity command, which
 puts the caller in low G:
 
 {% highlight lua %}
-minetest.register_chatcommand("antigravity",
+minetest.register_chatcommand("antigravity", {
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		player:set_physics_override({
