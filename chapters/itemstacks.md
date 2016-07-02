@@ -1,5 +1,5 @@
 ---
-title: ItemStack
+title: ItemStacks
 layout: default
 root: ../
 ---
