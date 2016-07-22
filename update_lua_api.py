@@ -33,7 +33,7 @@ text = urllib2.urlopen(url).read()
 
 print("Pre-generation replacements...")
 
-header = """Minetest Lua Modding API Reference 0.4.13
+header = """Minetest Lua Modding API Reference 0.4.14
 ========================================="""
 text = text.replace(header, "")
 
