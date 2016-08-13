@@ -88,34 +88,7 @@ You should provide a readme file. This should state:
 * What dependencies there are / what the user needs to install.
 * Where to report problems/bugs or get help.
 
-Example:
-
-	My Super Special Mod
-	====================
-
-	Adds magic, rainbows and other special things.
-
-	Version: 1.1
-	License: LGPL 2.1 or later
-
-	Dependencies: default mod (found in minetest_game)
-
-	Report bugs or request help on the forum topic.
-
-	Installation
-	------------
-
-	Unzip the archive, rename the folder to to modfoldername and
-	place it in minetest/mods/minetest/
-
-	(  GNU/Linux: If you use a system-wide installation place
-		it in ~/.minetest/mods/minetest/.  )
-
-	(  If you only want this to be used in a single world, place
-		the folder in worldmods/ in your worlddirectory.  )
-
-	For further information or help see:
-	http://wiki.minetest.com/wiki/Installing_Mods
+See appendix for an example and a generator
 
 ### description.txt
 
@@ -256,3 +229,150 @@ Subject of topic must be in one of these formats:
 		Profit
 	</figcaption>
 </figure>
+
+## Appendix: Readme and Forum Generator
+
+<noscript>
+	<p>Javascript is required for this section!</p>
+</noscript>
+
+Title: <input id="t_title" value="My Super Special Mod"><br />
+Modname: <input id="t_name" value="mysuperspecial"><br />
+Description: <input id="t_desc" value="Adds magic, rainbows and other special things."><br />
+Version: <input id="t_version" value="1.1"><br />
+License: <input id="t_license" value="LGPL 2.1 or later"><br />
+Dependencies: <input id="t_dep" value="default mod (found in minetest_game)"><br />
+Download: <input id="t_download" value="http://example.com/download.zip"><br />
+Additional:<br />
+<textarea id="t_add">Report bugs or request help on the forum topic.</textarea><br />
+
+<pre><code id="readme">My Super Special Mod
+====================
+
+Adds magic, rainbows and other special things.
+
+Version: 1.1
+License: LGPL 2.1 or later
+Dependencies: default mod (found in minetest_game)
+
+Report bugs or request help on the forum topic.
+
+Installation
+------------
+
+Unzip the archive, rename the folder to mysuperspecial and
+place it in minetest/mods/
+
+(  GNU/Linux: If you use a system-wide installation place
+	it in ~/.minetest/mods/.  )
+
+(  If you only want this to be used in a single world, place
+	the folder in worldmods/ in your worlddirectory.  )
+
+For further information or help see:
+http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
+
+<pre><code id="forum">Adds magic, rainbows and other special things.
+
+[b]Version:[/b] 1.1
+[b]License:[/b] LGPL 2.1 or later
+[b]Dependencies:[/b] default mod (found in minetest_game)
+[b]Download:[/b] http://example.com/download.zip
+
+Report bugs or request help on the forum topic.
+
+[h]Installation[/h]
+
+Unzip the archive, rename the folder to mysuperspecial and
+place it in minetest/mods/
+
+(  GNU/Linux: If you use a system-wide installation place
+	it in ~/.minetest/mods/.  )
+
+(  If you only want this to be used in a single world, place
+	the folder in worldmods/ in your worlddirectory.  )
+
+For further information or help see:
+http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
+
+<script src="http://blog.rubenwardy.com/static/jquery.min.js"></script>
+<script>function regen() {
+	var title = $("#t_title").val();
+	var name = $("#t_name").val();
+	var desc = $("#t_desc").val();
+	var version = $("#t_version").val();
+	var license = $("#t_license").val();
+	var dep = $("#t_dep").val();
+	var add = $("#t_add").val();
+
+	var download = $("#t_download").val();
+
+	{
+		var res = ((title.length > 0) ? title : name) + "\n";
+		var header_count = res.length - 1;
+		for (var i = 0; i < header_count; i++) {
+			res += "=";
+		}
+		res += "\n\n";
+
+		res += desc + "\n\n";
+
+		if (version != "") {
+			res += "Version: " + version + "\n";
+		}
+
+		res += "License: " + license + "\n";
+		res += "Dependencies: " + dep + "\n\n";
+
+		if (add != "") {
+			res += add + "\n\n";
+		}
+
+		res += "Installation\n------------\n\nUnzip the archive, rename the folder to ";
+		res += name + " and\nplace it in minetest/mods/\n\n";
+
+		res += "(  GNU/Linux: If you use a system-wide installation place\n" +
+			"\tit in ~/.minetest/mods/.  )\n\n" +
+			"(  If you only want this to be used in a single world, place\n" +
+			"\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
+			"For further information or help see:\n" +
+			"http://wiki.minetest.com/wiki/Installing_Mods\n";
+
+		$("#readme").text(res);
+	}
+
+	{
+		var res = desc + "\n\n";
+
+		if (version != "") {
+			res += "[b]Version:[/b] " + version + "\n";
+		}
+
+		res += "[b]License:[/b] " + license + "\n";
+		res += "[b]Dependencies:[/b] " + dep + "\n";
+
+		res += "[b]Download:[/b] " + download + "\n\n";
+
+		if (add != "") {
+			res += add + "\n\n";
+		}
+
+		res += "[h]Installation[/h]\n\nUnzip the archive, rename the folder to ";
+		res += name + " and\nplace it in minetest/mods/\n\n";
+
+		res += "(  GNU/Linux: If you use a system-wide installation place\n" +
+			"\tit in ~/.minetest/mods/.  )\n\n" +
+			"(  If you only want this to be used in a single world, place\n" +
+			"\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
+			"For further information or help see:\n" +
+			"http://wiki.minetest.com/wiki/Installing_Mods\n";
+
+		$("#forum").text(res);
+	}
+}
+
+$(function() {
+	jQuery('input').on('input propertychange paste', regen);
+	jQuery('textarea').on('input propertychange paste', regen);
+});
+</script>
