@@ -29,6 +29,7 @@ print("Downloading lua_api.txt...")
 
 url = "https://raw.githubusercontent.com/minetest/minetest/master/doc/lua_api.txt"
 text = urllib2.urlopen(url).read()
+text = unicode(text, "utf-8")
 
 
 print("Pre-generation replacements...")
