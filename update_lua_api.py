@@ -34,7 +34,7 @@ text = unicode(text, "utf-8")
 
 print("Pre-generation replacements...")
 
-header = """Minetest Lua Modding API Reference 0.4.14
+header = """Minetest Lua Modding API Reference 0.4.15
 ========================================="""
 text = text.replace(header, "")
 

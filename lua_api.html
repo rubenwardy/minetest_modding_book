@@ -4,7 +4,7 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 12/November/2016.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 28/December/2016.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
@@ -206,6 +206,7 @@ This page was last updated 12/November/2016.<br />See <a href="https://github.co
 </ul>
 </li>
 <li><a href="#inventory-locations">Inventory locations</a></li>
+<li><a href="#player-inventory-lists">Player Inventory lists</a></li>
 <li><a href="#colorstring">ColorString</a></li>
 <li><a href="#colorspec">ColorSpec</a></li>
 <li><a href="#escape-sequences">Escape sequences</a></li>
@@ -369,7 +370,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 12/November/2016.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 28/December/2016.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -710,18 +711,24 @@ from the available ones of the following files:</p>
 <li><a class="anchor" href="#foomod_foosound9ogg" name="foomod_foosound9ogg">#</a><code>foomod_foosound.9.ogg</code></li>
 </ul>
 <p>Examples of sound parameter tables:</p>
-<pre><code>-- Play location-less on all clients
+<pre><code>-- Play locationless on all clients
 {
     gain = 1.0, -- default
 }
--- Play location-less to a player
+-- Play locationless to one player
 {
     to_player = name,
     gain = 1.0, -- default
 }
+-- Play locationless to one player, looped
+{
+    to_player = name,
+    gain = 1.0, -- default
+    loop = true,
+}
 -- Play in a location
 {
-    pos = {x=1,y=2,z=3},
+    pos = {x = 1, y = 2, z = 3},
     gain = 1.0, -- default
     max_hear_distance = 32, -- default, uses an euclidean metric
 }
@@ -730,16 +737,18 @@ from the available ones of the following files:</p>
     object = &lt;an ObjectRef&gt;,
     gain = 1.0, -- default
     max_hear_distance = 32, -- default, uses an euclidean metric
-    loop = true, -- only sounds connected to objects can be looped
+    loop = true,
 }
 </code></pre>
+<p>Looped sounds must either be connected to an object or played locationless to
+one player using <code>to_player = name,</code></p>
 <h3 id="simplesoundspec"><code>SimpleSoundSpec</code></h3>
 <ul>
 <li>e.g. <code>""</code></li>
 <li><a class="anchor" href="#default_place_node" name="default_place_node">#</a>e.g. <code>"default_place_node"</code></li>
 <li>e.g. <code>{}</code></li>
-<li><a class="anchor" href="#namedefault_place_node" name="namedefault_place_node">#</a>e.g. <code>{name="default_place_node"}</code></li>
-<li><a class="anchor" href="#namedefault_place_nodegain10" name="namedefault_place_nodegain10">#</a>e.g. <code>{name="default_place_node", gain=1.0}</code></li>
+<li><a class="anchor" href="#namedefault_place_node" name="namedefault_place_node">#</a>e.g. <code>{name = "default_place_node"}</code></li>
+<li><a class="anchor" href="#namedefault_place_nodegain10" name="namedefault_place_nodegain10">#</a>e.g. <code>{name = "default_place_node", gain = 1.0}</code></li>
 </ul>
 <h2 id="registered-definitions-of-stuff">Registered definitions of stuff</h2>
 <p>Anything added using certain <code>minetest.register_*</code> functions get added to
@@ -1991,6 +2000,13 @@ pass key press events to formspec!</p>
 <li><a class="anchor" href="#nodemetaXYZ" name="nodemetaXYZ">#</a><code>"nodemeta:&lt;X&gt;,&lt;Y&gt;,&lt;Z&gt;"</code>: Any node metadata</li>
 <li><a class="anchor" href="#detachedname" name="detachedname">#</a><code>"detached:&lt;name&gt;"</code>: A detached inventory</li>
 </ul>
+<h2 id="player-inventory-lists">Player Inventory lists</h2>
+<ul>
+<li><a class="anchor" href="#main" name="main">#</a><code>main</code>: list containing the default inventory</li>
+<li><a class="anchor" href="#craft" name="craft">#</a><code>craft</code>: list containing the craft input</li>
+<li><a class="anchor" href="#craftpreview" name="craftpreview">#</a><code>craftpreview</code>: list containing the craft output</li>
+<li><a class="anchor" href="#hand" name="hand">#</a><code>hand</code>: list containing an override for the empty hand</li>
+</ul>
 <h2 id="colorstring"><code>ColorString</code></h2>
 <p><code>#RGB</code> defines a color in hexadecimal format.</p>
 <p><code>#RGBA</code> defines a color in hexadecimal format and alpha channel.</p>
@@ -2319,9 +2335,10 @@ The following functions provide escape sequences:
 <li><a class="anchor" href="#minetestregister_on_cheatfuncObjectRefcheat" name="minetestregister_on_cheatfuncObjectRefcheat">#</a><code>minetest.register_on_cheat(func(ObjectRef, cheat))</code><ul>
 <li>Called when a player cheats</li>
 <li><a class="anchor" href="#cheat" name="cheat">#</a><code>cheat</code>: <code>{type=&lt;cheat_type&gt;}</code>, where <code>&lt;cheat_type&gt;</code> is one of:<ul>
-<li><a class="anchor" href="#moved_too_fast" name="moved_too_fast">#</a><code>"moved_too_fast"</code></li>
-<li><a class="anchor" href="#interacted_too_far" name="interacted_too_far">#</a><code>"interacted_too_far"</code></li>
-<li><a class="anchor" href="#finished_unknown_dig" name="finished_unknown_dig">#</a><code>"finished_unknown_dig"</code></li>
+<li><a class="anchor" href="#moved_too_fast" name="moved_too_fast">#</a><code>moved_too_fast</code></li>
+<li><a class="anchor" href="#interacted_too_far" name="interacted_too_far">#</a><code>interacted_too_far</code></li>
+<li><a class="anchor" href="#interacted_while_dead" name="interacted_while_dead">#</a><code>interacted_while_dead</code></li>
+<li><a class="anchor" href="#finished_unknown_dig" name="finished_unknown_dig">#</a><code>finished_unknown_dig</code></li>
 <li><a class="anchor" href="#dug_unbreakable" name="dug_unbreakable">#</a><code>dug_unbreakable</code></li>
 <li><a class="anchor" href="#dug_too_fast" name="dug_too_fast">#</a><code>dug_too_fast</code></li>
 </ul>
@@ -2457,7 +2474,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#nodenamefooparam10param20" name="nodenamefooparam10param20">#</a>Set node at position (<code>node = {name="foo", param1=0, param2=0}</code>)</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestswap_nodeposnode" name="minetestswap_nodeposnode">#</a><code>minetest.swap_node(pos, node</code><ul>
+<li><a class="anchor" href="#minetestswap_nodeposnode" name="minetestswap_nodeposnode">#</a><code>minetest.swap_node(pos, node)</code><ul>
 <li>Set node at position, but don't remove metadata</li>
 </ul>
 </li>
@@ -2733,6 +2750,19 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>can be negative for decreasing</li>
 </ul>
 </li>
+<li><a class="anchor" href="#corecheck_single_for_fallingpos" name="corecheck_single_for_fallingpos">#</a><code>core.check_single_for_falling(pos)</code><ul>
+<li><a class="anchor" href="#groupfalling_node" name="groupfalling_node">#</a>causes an unsupported <code>group:falling_node</code> node to fall and causes an
+  unattached <code>group:attached_node</code> node to fall.</li>
+<li>does not spread these updates to neighbours.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#corecheck_for_fallingpos" name="corecheck_for_fallingpos">#</a><code>core.check_for_falling(pos)</code><ul>
+<li><a class="anchor" href="#groupfalling_node_1" name="groupfalling_node_1">#</a>causes an unsupported <code>group:falling_node</code> node to fall and causes an
+  unattached <code>group:attached_node</code> node to fall.</li>
+<li>spread these updates to neighbours and can cause a cascade
+  of nodes to fall.</li>
+</ul>
+</li>
 </ul>
 <h3 id="inventory_1">Inventory</h3>
 <p><code>minetest.get_inventory(location)</code>: returns an <code>InvRef</code></p>
@@ -2743,8 +2773,11 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#typedetachednamecreative" name="typedetachednamecreative">#</a><code>{type="detached", name="creative"}</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestcreate_detached_inventorynamecallbacks" name="minetestcreate_detached_inventorynamecallbacks">#</a><code>minetest.create_detached_inventory(name, callbacks)</code>: returns an <code>InvRef</code><ul>
+<li><a class="anchor" href="#minetestcreate_detached_inventorynamecallbacksplayer_name" name="minetestcreate_detached_inventorynamecallbacksplayer_name">#</a><code>minetest.create_detached_inventory(name, callbacks, [player_name])</code>: returns an <code>InvRef</code><ul>
 <li>callbacks: See "Detached inventory callbacks"</li>
+<li>player_name: Make detached inventory available to one player exclusively,
+  by default they will be sent to every player (even if not used).
+  Note that this parameter is mostly just a workaround and will be removed in future releases.</li>
 <li>Creates a detached inventory. If it already exists, it is cleared.</li>
 </ul>
 </li>
@@ -2761,6 +2794,15 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#formname" name="formname">#</a><code>formname</code>: name passed to <code>on_player_receive_fields</code> callbacks.
   It should follow the <code>"modname:&lt;whatever&gt;"</code> naming convention</li>
 <li><a class="anchor" href="#formspec_3" name="formspec_3">#</a><code>formspec</code>: formspec to display</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestclose_formspecplayernameformname" name="minetestclose_formspecplayernameformname">#</a><code>minetest.close_formspec(playername, formname)</code><ul>
+<li><a class="anchor" href="#playername_2" name="playername_2">#</a><code>playername</code>: name of player to close formspec</li>
+<li><a class="anchor" href="#formname_1" name="formname_1">#</a><code>formname</code>: has to exactly match the one given in show_formspec, or the formspec will
+   not close.</li>
+<li>calling show_formspec(playername, formname, "") is equal to this expression</li>
+<li>to close a formspec regardless of the formname, call
+  minetest.close_formspec(playername, ""). USE THIS ONLY WHEN ABSOLUTELY NECESSARY!</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestformspec_escapestring_1" name="minetestformspec_escapestring_1">#</a><code>minetest.formspec_escape(string)</code>: returns a string<ul>
@@ -3101,6 +3143,12 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <h3 id="misc">Misc.</h3>
 <ul>
 <li><a class="anchor" href="#minetestget_connected_players" name="minetestget_connected_players">#</a><code>minetest.get_connected_players()</code>: returns list of <code>ObjectRefs</code></li>
+<li><a class="anchor" href="#minetesthud_replace_builtinnamehud_definition" name="minetesthud_replace_builtinnamehud_definition">#</a><code>minetest.hud_replace_builtin(name, hud_definition)</code><ul>
+<li>Replaces definition of a builtin hud element</li>
+<li><a class="anchor" href="#name_12" name="name_12">#</a><code>name</code>: <code>"breath"</code> or <code>"health"</code></li>
+<li><a class="anchor" href="#hud_definition" name="hud_definition">#</a><code>hud_definition</code>: definition to replace builtin definition</li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetesthash_node_positionxyz" name="minetesthash_node_positionxyz">#</a><code>minetest.hash_node_position({x=,y=,z=})</code>: returns an 48-bit integer<ul>
 <li>Gives a unique hash number for a node position (16+16+16=48bit)</li>
 </ul>
@@ -3124,7 +3172,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_content_idname" name="minetestget_content_idname">#</a><code>minetest.get_content_id(name)</code>: returns an integer<ul>
-<li><a class="anchor" href="#name_12" name="name_12">#</a>Gets the internal content ID of <code>name</code></li>
+<li><a class="anchor" href="#name_13" name="name_13">#</a>Gets the internal content ID of <code>name</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_name_from_content_idcontent_id" name="minetestget_name_from_content_idcontent_id">#</a><code>minetest.get_name_from_content_id(content_id)</code>: returns a string<ul>
@@ -3196,7 +3244,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestis_protectedposname" name="minetestis_protectedposname">#</a>
 <p><code>minetest.is_protected(pos, name)</code>: returns boolean</p>
 <ul>
-<li><a class="anchor" href="#name_13" name="name_13">#</a>Returns true, if player <code>name</code> shouldn't be abled to dig at <code>pos</code> or do other
+<li><a class="anchor" href="#name_14" name="name_14">#</a>Returns true, if player <code>name</code> shouldn't be abled to dig at <code>pos</code> or do other
   actions, defineable by mods, due to some mod-defined ownership-like concept.
   Returns false or nil, if the player is allowed to do such actions.</li>
 <li>This function should be overridden by protection mods and should be used to
@@ -3573,12 +3621,6 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#hud_get_hotbar_selected_image" name="hud_get_hotbar_selected_image">#</a><code>hud_get_hotbar_selected_image</code>: returns texturename</li>
-<li><a class="anchor" href="#hud_replace_builtinnamehud_definition" name="hud_replace_builtinnamehud_definition">#</a><code>hud_replace_builtin(name, hud_definition)</code><ul>
-<li>replace definition of a builtin hud element</li>
-<li><a class="anchor" href="#name_14" name="name_14">#</a><code>name</code>: <code>"breath"</code> or <code>"health"</code></li>
-<li><a class="anchor" href="#hud_definition" name="hud_definition">#</a><code>hud_definition</code>: definition to replace builtin definition</li>
-</ul>
-</li>
 <li><a class="anchor" href="#set_skybgcolortypetexturenames" name="set_skybgcolortypetexturenames">#</a><code>set_sky(bgcolor, type, {texture names})</code><ul>
 <li><a class="anchor" href="#bgcolor_1" name="bgcolor_1">#</a><code>bgcolor</code>: ColorSpec, defaults to white</li>
 <li><a class="anchor" href="#regular" name="regular">#</a>Available types:<ul>
@@ -4230,8 +4272,9 @@ minetest.spawn_tree(pos,apple_tree)
 --  ^ Called sometimes; the string returned is passed to on_activate when
 --    the entity is re-activated from static state
 
-    -- Also you can define arbitrary member variables here
-    myvariable = whatever,
+    -- Also you can define arbitrary member variables here (see item definition for
+    -- more info)
+    _custom_field = whatever,
 }
 </code></pre>
 <h3 id="abm-activeblockmodifier-definition-register_abm">ABM (ActiveBlockModifier) definition (<code>register_abm</code>)</h3>
@@ -4303,6 +4346,7 @@ minetest.spawn_tree(pos,apple_tree)
       actual result to client in a short moment.
     ]]
     sound = {
+        breaks = "default_tool_break", -- tools only
         place = --[[&lt;SimpleSoundSpec&gt;]],
     },
 
@@ -4343,6 +4387,12 @@ minetest.spawn_tree(pos,apple_tree)
           return itemstack
         end
     ^ The user may be any ObjectRef or nil.
+    ]]
+    _custom_field = whatever,
+    --[[
+    ^ Add your own custom fields. By convention, all custom field names
+      should start with `_` to avoid naming collisions with future engine
+      usage.
     ]]
 }
 </code></pre>
@@ -4700,8 +4750,10 @@ The Biome API is still in an experimental phase and subject to change.</p>
 --  ^ Number of nodes high the decoration is made.
 --  ^ If height_max is not 0, this is the lower bound of the randomly selected height.
     height_max = 0,
---      ^ Number of nodes the decoration can be at maximum.
+--  ^ Number of nodes the decoration can be at maximum.
 --  ^ If absent, the parameter 'height' is used as a constant.
+    param2 = 0,
+--  ^ Param2 value of placed decoration node.
 
     ----- Schematic-type parameters
     schematic = "foobar.mts",
@@ -4833,7 +4885,8 @@ The Biome API is still in an experimental phase and subject to change.</p>
 --  ^ collision_removal: if true then particle is removed when it collides,
 --  ^ requires collisiondetection = true to have any effect
     attached = ObjectRef,
---  ^ attached: if defined, makes particle positions relative to this object.
+--  ^ attached: if defined, particle positions, velocities and accelerations
+--  ^ are relative to this object's position and yaw.
     vertical = false,
 --  ^ vertical: if true faces player using y axis only
     texture = "image.png",
