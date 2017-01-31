@@ -4,7 +4,7 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 28/December/2016.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 31/January/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
@@ -54,7 +54,9 @@ This page was last updated 28/December/2016.<br />See <a href="https://github.co
 <li><a href="#lowpartpercentfile">[lowpart:&lt;percent&gt;:&lt;file&gt;</a></li>
 <li><a href="#verticalframetn">[verticalframe:&lt;t&gt;:&lt;n&gt;</a></li>
 <li><a href="#maskfile">[mask:&lt;file&gt;</a></li>
+<li><a href="#sheetwxhxy">[sheet:&lt;w&gt;x&lt;h&gt;:&lt;x&gt;,&lt;y&gt;</a></li>
 <li><a href="#colorizecolorratio">[colorize:&lt;color&gt;:&lt;ratio&gt;</a></li>
+<li><a href="#multiplycolor">[multiply:&lt;color&gt;</a></li>
 </ul>
 </li>
 </ul>
@@ -370,7 +372,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 28/December/2016.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 31/January/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -680,6 +682,9 @@ Rotations are counter-clockwise.</p>
 <h4 id="maskfile"><code>[mask:&lt;file&gt;</code></h4>
 <p>Apply a mask to the base image.</p>
 <p>The mask is applied using binary AND.</p>
+<h4 id="sheetwxhxy"><code>[sheet:&lt;w&gt;x&lt;h&gt;:&lt;x&gt;,&lt;y&gt;</code></h4>
+<p>Retrieves a tile at position x,y from the base image
+which it assumes to be a tilesheet with dimensions w,h.</p>
 <h4 id="colorizecolorratio"><code>[colorize:&lt;color&gt;:&lt;ratio&gt;</code></h4>
 <p>Colorize the textures with the given color.
 <code>&lt;color&gt;</code> is specified as a <code>ColorString</code>.
@@ -690,6 +695,12 @@ omitted, the alpha of <code>&lt;color&gt;</code> will be used as the ratio.  If 
 the word "<code>alpha</code>", then each texture pixel will contain the RGB of
 <code>&lt;color&gt;</code> and the alpha of <code>&lt;color&gt;</code> multiplied by the alpha of the
 texture pixel.</p>
+<h4 id="multiplycolor"><code>[multiply:&lt;color&gt;</code></h4>
+<p>Multiplies texture colors with the given color.
+<code>&lt;color&gt;</code> is specified as a <code>ColorString</code>.
+Result is more like what you'd expect if you put a color on top of another
+color. Meaning white surfaces get a lot of your new color while black parts don't
+change very much.</p>
 <h2 id="sounds">Sounds</h2>
 <p>Only Ogg Vorbis files are supported.</p>
 <p>For positional playing of sounds, only single-channel (mono) files are
@@ -930,6 +941,19 @@ paramtype2 == "meshoptions"
     bit 4 (0x10) - Makes the plant mesh 1.4x larger
     bit 5 (0x20) - Moves each face randomly a small bit down (1/8 max)
     bits 6-7 are reserved for future use.
+paramtype2 == "color"
+^ `param2` tells which color is picked from the palette.
+  The palette should have 256 pixels.
+paramtype2 == "colorfacedir"
+^ Same as `facedir`, but with colors.
+  The first three bits of `param2` tells which color
+  is picked from the palette.
+  The palette should have 8 pixels.
+paramtype2 == "colorwallmounted"
+^ Same as `wallmounted`, but with colors.
+  The first five bits of `param2` tells which color
+  is picked from the palette.
+  The palette should have 32 pixels.
 collision_box = {
   type = "fixed",
   fixed = {
@@ -1545,7 +1569,7 @@ Currently a smoke puff will appear when an entity dies.</p>
 group disables the regular damage mechanism for players punching it by hand or
 a non-tool item, so that it can do something else than take damage.</p>
 <p>On the Lua side, every punch calls:</p>
-<pre><code>entity:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
+<pre><code>entity:on_punch(puncher, time_from_last_punch, tool_capabilities, direction, damage)
 </code></pre>
 <p>This should never be called directly, because damage is usually not handled by
 the entity itself.</p>
@@ -1556,6 +1580,9 @@ the entity itself.</p>
 <li><a class="anchor" href="#tool_capabilities" name="tool_capabilities">#</a><code>tool_capabilities</code> can be <code>nil</code>.</li>
 <li><a class="anchor" href="#direction_2" name="direction_2">#</a><code>direction</code> is a unit vector, pointing from the source of the punch to
    the punched object.</li>
+<li><a class="anchor" href="#damage" name="damage">#</a><code>damage</code> damage that will be done to entity
+Return value of this function will determin if damage is done by this function 
+(retval true) or shall be done by engine (retval false)</li>
 </ul>
 <p>To punch an entity/object in Lua, call:</p>
 <pre><code>object:punch(puncher, time_from_last_punch, tool_capabilities, direction)
@@ -2056,6 +2083,7 @@ The following functions provide escape sequences:
 <li><a class="anchor" href="#vectorroundv" name="vectorroundv">#</a><code>vector.round(v)</code>: returns a vector, each dimension rounded to nearest int</li>
 <li><a class="anchor" href="#vectorapplyvfunc" name="vectorapplyvfunc">#</a><code>vector.apply(v, func)</code>: returns a vector</li>
 <li><a class="anchor" href="#vectorequalsv1v2" name="vectorequalsv1v2">#</a><code>vector.equals(v1, v2)</code>: returns a boolean</li>
+<li><a class="anchor" href="#vectorsortv1v2" name="vectorsortv1v2">#</a><code>vector.sort(v1, v2)</code>: returns minp, maxp vectors of the cuboid defined by v1 and v2</li>
 </ul>
 <p>For the following functions <code>x</code> can be either a vector or a number:</p>
 <ul>
@@ -2298,7 +2326,7 @@ The following functions provide escape sequences:
 <li><a class="anchor" href="#tool_capabilities_1" name="tool_capabilities_1">#</a><code>tool_capabilities</code>: capability table of used tool (can be nil)</li>
 <li><a class="anchor" href="#dir" name="dir">#</a><code>dir</code>: unit vector of direction of punch. Always defined. Points from
    the puncher to the punched.</li>
-<li><a class="anchor" href="#damage" name="damage">#</a><code>damage</code> - number that represents the damage calculated by the engine</li>
+<li><a class="anchor" href="#damage_1" name="damage_1">#</a><code>damage</code> - number that represents the damage calculated by the engine</li>
 <li><a class="anchor" href="#true_5" name="true_5">#</a>should return <code>true</code> to prevent the default damage mechanism</li>
 </ul>
 </li>
@@ -2386,7 +2414,18 @@ The following functions provide escape sequences:
 </ul>
 <h3 id="other-registration-functions">Other registration functions</h3>
 <ul>
-<li><a class="anchor" href="#minetestregister_chatcommandcmdchatcommanddefinition" name="minetestregister_chatcommandcmdchatcommanddefinition">#</a><code>minetest.register_chatcommand(cmd, chatcommand definition)</code></li>
+<li><a class="anchor" href="#minetestregister_chatcommandcmdchatcommanddefinition" name="minetestregister_chatcommandcmdchatcommanddefinition">#</a><code>minetest.register_chatcommand(cmd, chatcommand definition)</code><ul>
+<li>Adds definition to minetest.registered_chatcommands</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestoverride_chatcommandnameredefinition" name="minetestoverride_chatcommandnameredefinition">#</a><code>minetest.override_chatcommand(name, redefinition)</code><ul>
+<li>Overrides fields of a chatcommand registered with register_chatcommand.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestunregister_chatcommandname" name="minetestunregister_chatcommandname">#</a><code>minetest.unregister_chatcommand(name)</code><ul>
+<li>Unregisters a chatcommands registered with register_chatcommand.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestregister_privilegenamedefinition" name="minetestregister_privilegenamedefinition">#</a><code>minetest.register_privilege(name, definition)</code><ul>
 <li><a class="anchor" href="#definition" name="definition">#</a><code>definition</code>: <code>"description text"</code></li>
 <li><a class="anchor" href="#definition_1" name="definition_1">#</a><code>definition</code>: <code>{ description = "description text", give_to_singleplayer = boolean}</code>
@@ -2532,8 +2571,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#NodeTimerRef" name="NodeTimerRef">#</a>Get <code>NodeTimerRef</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestadd_entityposname" name="minetestadd_entityposname">#</a>
-<p><code>minetest.add_entity(pos, name)</code>: Spawn Lua-defined entity at position</p>
+<li><a class="anchor" href="#minetestadd_entityposnamestaticdata" name="minetestadd_entityposnamestaticdata">#</a>
+<p><code>minetest.add_entity(pos, name, [staticdata])</code>: Spawn Lua-defined entity at position</p>
 <ul>
 <li><a class="anchor" href="#ObjectRef" name="ObjectRef">#</a>Returns <code>ObjectRef</code>, or <code>nil</code> if failed</li>
 </ul>
@@ -2868,6 +2907,14 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Convert a wallmounted value back into a vector aimed directly out the "back" of a node</li>
 </ul>
 </li>
+<li><a class="anchor" href="#minetestdir_to_yawdir" name="minetestdir_to_yawdir">#</a><code>minetest.dir_to_yaw(dir)</code><ul>
+<li>Convert a vector into a yaw (angle)</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestyaw_to_diryaw" name="minetestyaw_to_diryaw">#</a><code>minetest.yaw_to_dir(yaw)</code><ul>
+<li>Convert yaw (angle) to a vector</li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestget_node_dropsnodenametoolname" name="minetestget_node_dropsnodenametoolname">#</a><code>minetest.get_node_drops(nodename, toolname)</code><ul>
 <li>Returns list of item names.</li>
 <li><strong>Note</strong>: This will be removed or modified in a future version.</li>
@@ -3143,6 +3190,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <h3 id="misc">Misc.</h3>
 <ul>
 <li><a class="anchor" href="#minetestget_connected_players" name="minetestget_connected_players">#</a><code>minetest.get_connected_players()</code>: returns list of <code>ObjectRefs</code></li>
+<li><a class="anchor" href="#minetestplayer_existsname" name="minetestplayer_existsname">#</a><code>minetest.player_exists(name)</code>: boolean, whether player exists (regardless of online status)</li>
 <li><a class="anchor" href="#minetesthud_replace_builtinnamehud_definition" name="minetesthud_replace_builtinnamehud_definition">#</a><code>minetest.hud_replace_builtin(name, hud_definition)</code><ul>
 <li>Replaces definition of a builtin hud element</li>
 <li><a class="anchor" href="#name_12" name="name_12">#</a><code>name</code>: <code>"breath"</code> or <code>"health"</code></li>
@@ -3367,6 +3415,10 @@ end
 <li>Map of Lua entities, indexed by active object id</li>
 </ul>
 </li>
+<li><a class="anchor" href="#minetestregistered_chatcommands" name="minetestregistered_chatcommands">#</a><code>minetest.registered_chatcommands</code><ul>
+<li>Map of registered chat command definitions, indexed by name</li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestregistered_ores_1" name="minetestregistered_ores_1">#</a><code>minetest.registered_ores</code><ul>
 <li>List of registered ore definitions.</li>
 </ul>
@@ -3395,8 +3447,9 @@ Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
 <li><a class="anchor" href="#get_inventory" name="get_inventory">#</a><code>get_inventory()</code>: returns <code>InvRef</code></li>
 <li><a class="anchor" href="#to_table" name="to_table">#</a><code>to_table()</code>: returns <code>nil</code> or <code>{fields = {...}, inventory = {list1 = {}, ...}}</code></li>
 <li><a class="anchor" href="#from_tablenilor" name="from_tablenilor">#</a><code>from_table(nil or {})</code><ul>
-<li>to clear metadata, use from_table(nil)</li>
+<li>Any non-table value will clear the metadata</li>
 <li>See "Node Metadata"</li>
+<li><a class="anchor" href="#true_11" name="true_11">#</a>returns <code>true</code> on success</li>
 </ul>
 </li>
 </ul>
@@ -3430,7 +3483,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#is_started" name="is_started">#</a><code>is_started()</code>: returns boolean state of timer<ul>
-<li><a class="anchor" href="#true_11" name="true_11">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
+<li><a class="anchor" href="#true_12" name="true_12">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
 </ul>
 </li>
 </ul>
@@ -3443,9 +3496,9 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li>Note: Doesn't work on players, use minetest.kick_player instead</li>
 </ul>
 </li>
-<li><a class="anchor" href="#getpos" name="getpos">#</a><code>getpos()</code>: returns <code>{x=num, y=num, z=num}</code></li>
-<li><a class="anchor" href="#setpospos" name="setpospos">#</a><code>setpos(pos)</code>; <code>pos</code>=<code>{x=num, y=num, z=num}</code></li>
-<li><a class="anchor" href="#movetoposcontinuousfalse" name="movetoposcontinuousfalse">#</a><code>moveto(pos, continuous=false)</code>: interpolated move</li>
+<li><a class="anchor" href="#get_pos" name="get_pos">#</a><code>get_pos()</code>: returns <code>{x=num, y=num, z=num}</code></li>
+<li><a class="anchor" href="#set_pospos" name="set_pospos">#</a><code>set_pos(pos)</code>; <code>pos</code>=<code>{x=num, y=num, z=num}</code></li>
+<li><a class="anchor" href="#move_toposcontinuousfalse" name="move_toposcontinuousfalse">#</a><code>move_to(pos, continuous=false)</code>: interpolated move</li>
 <li><a class="anchor" href="#punchpunchertime_from_last_punchtool_capabilitiesdirection" name="punchpunchertime_from_last_punchtool_capabilitiesdirection">#</a><code>punch(puncher, time_from_last_punch, tool_capabilities, direction)</code><ul>
 <li><a class="anchor" href="#puncher_1" name="puncher_1">#</a><code>puncher</code> = another <code>ObjectRef</code>,</li>
 <li><a class="anchor" href="#time_from_last_punch_2" name="time_from_last_punch_2">#</a><code>time_from_last_punch</code> = time since last punch action of the puncher</li>
@@ -3502,14 +3555,15 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 <h5 id="luaentitysao-only-no-op-for-other-objects">LuaEntitySAO-only (no-op for other objects)</h5>
 <ul>
-<li><a class="anchor" href="#setvelocityxnumynumznum" name="setvelocityxnumynumznum">#</a><code>setvelocity({x=num, y=num, z=num})</code></li>
-<li><a class="anchor" href="#getvelocity" name="getvelocity">#</a><code>getvelocity()</code>: returns <code>{x=num, y=num, z=num}</code></li>
-<li><a class="anchor" href="#setaccelerationxnumynumznum" name="setaccelerationxnumynumznum">#</a><code>setacceleration({x=num, y=num, z=num})</code></li>
-<li><a class="anchor" href="#getacceleration" name="getacceleration">#</a><code>getacceleration()</code>: returns <code>{x=num, y=num, z=num}</code></li>
-<li><a class="anchor" href="#setyawradians" name="setyawradians">#</a><code>setyaw(radians)</code></li>
-<li><a class="anchor" href="#getyaw" name="getyaw">#</a><code>getyaw()</code>: returns number in radians</li>
-<li><a class="anchor" href="#settexturemodmod" name="settexturemodmod">#</a><code>settexturemod(mod)</code></li>
-<li><a class="anchor" href="#setspritepx0y0num_frames1framelength02select_horiz_by_yawpitchfalse" name="setspritepx0y0num_frames1framelength02select_horiz_by_yawpitchfalse">#</a><code>setsprite(p={x=0,y=0}, num_frames=1, framelength=0.2,
+<li><a class="anchor" href="#set_velocityxnumynumznum" name="set_velocityxnumynumznum">#</a><code>set_velocity({x=num, y=num, z=num})</code></li>
+<li><a class="anchor" href="#get_velocity" name="get_velocity">#</a><code>get_velocity()</code>: returns <code>{x=num, y=num, z=num}</code></li>
+<li><a class="anchor" href="#set_accelerationxnumynumznum" name="set_accelerationxnumynumznum">#</a><code>set_acceleration({x=num, y=num, z=num})</code></li>
+<li><a class="anchor" href="#get_acceleration" name="get_acceleration">#</a><code>get_acceleration()</code>: returns <code>{x=num, y=num, z=num}</code></li>
+<li><a class="anchor" href="#set_yawradians" name="set_yawradians">#</a><code>set_yaw(radians)</code></li>
+<li><a class="anchor" href="#get_yaw" name="get_yaw">#</a><code>get_yaw()</code>: returns number in radians</li>
+<li><a class="anchor" href="#set_texture_modmod" name="set_texture_modmod">#</a><code>set_texture_mod(mod)</code></li>
+<li><a class="anchor" href="#get_texture_mod" name="get_texture_mod">#</a><code>get_texture_mod()</code> returns current texture modifier</li>
+<li><a class="anchor" href="#set_spritepx0y0num_frames1framelength02select_horiz_by_yawpitchfalse" name="set_spritepx0y0num_frames1framelength02select_horiz_by_yawpitchfalse">#</a><code>set_sprite(p={x=0,y=0}, num_frames=1, framelength=0.2,
   select_horiz_by_yawpitch=false)</code><ul>
 <li>Select sprite from spritesheet with optional animation and DM-style
   texture selection based on yaw relative to camera</li>
@@ -3560,6 +3614,8 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </li>
 </ul>
 </li>
+<li><a class="anchor" href="#set_attributeattributevalue" name="set_attributeattributevalue">#</a><code>set_attribute(attribute, value)</code>: sets an extra attribute with value on player</li>
+<li><a class="anchor" href="#get_attributeattribute" name="get_attributeattribute">#</a><code>get_attribute(attribute)</code>: returns value for extra attribute. Returns nil if no attribute found.</li>
 <li><a class="anchor" href="#set_inventory_formspecformspec" name="set_inventory_formspecformspec">#</a><code>set_inventory_formspec(formspec)</code><ul>
 <li>Redefine player's inventory form</li>
 <li>Should usually be called in on_joinplayer</li>
@@ -3596,7 +3652,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#hud_getid" name="hud_getid">#</a><code>hud_get(id)</code>: gets the HUD element definition structure of the specified ID</li>
 <li><a class="anchor" href="#hud_set_flagsflags" name="hud_set_flagsflags">#</a><code>hud_set_flags(flags)</code>: sets specified HUD flags to <code>true</code>/<code>false</code><ul>
 <li><a class="anchor" href="#flags_4" name="flags_4">#</a><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>minimap</code></li>
-<li><a class="anchor" href="#true_12" name="true_12">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
+<li><a class="anchor" href="#true_13" name="true_13">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
 <li><a class="anchor" href="#nil_6" name="nil_6">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
 <li><a class="anchor" href="#minimap" name="minimap">#</a>note that setting <code>minimap</code> modifies the client's permission to view the minimap -</li>
 <li>the client may locally elect to not view the minimap</li>
@@ -4409,15 +4465,37 @@ minetest.spawn_tree(pos,apple_tree)
   not the node it's on</li>
 </ul>
 </li>
+<li><a class="anchor" href="#nameimagepngcolorColorSpec" name="nameimagepngcolorColorSpec">#</a><code>{name="image.png", color=ColorSpec}</code><ul>
+<li>the texture's color will be multiplied with this color.</li>
+<li>the tile's color overrides the owning node's color in all cases.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#image_3" name="image_3">#</a>deprecated, yet still supported field names:<ul>
 <li><a class="anchor" href="#image_4" name="image_4">#</a><code>image</code> (name)</li>
 </ul>
 </li>
 </ul>
 <h3 id="tile-animation-definition">Tile animation definition</h3>
-<ul>
-<li><a class="anchor" href="#typevertical_framesaspect_w16aspect_h16length30" name="typevertical_framesaspect_w16aspect_h16length30">#</a><code>{type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}</code></li>
-</ul>
+<pre><code>{
+    type = "vertical_frames",
+    aspect_w = 16,
+    -- ^ specify width of a frame in pixels
+    aspect_h = 16,
+    -- ^ specify height of a frame in pixels
+    length = 3.0,
+    -- ^ specify full loop length
+}
+
+{
+    type = "sheet_2d",
+    frames_w = 5,
+    -- ^ specify width in number of frames
+    frames_h = 3,
+    -- ^ specify height in number of frames
+    frame_length = 0.5,
+    -- ^ specify length of a single frame
+}
+</code></pre>
 <h3 id="node-definition-register_node">Node definition (<code>register_node</code>)</h3>
 <pre><code>{
     -- &lt;all fields allowed in item definitions&gt;,
@@ -4434,8 +4512,17 @@ minetest.spawn_tree(pos,apple_tree)
     special_tiles = {tile definition 1, Tile definition 2}, --[[
     ^ Special textures of node; used rarely (old field name: special_materials)
     ^ List can be shortened to needed length ]]
-    alpha = 255,
+    color = ColorSpec, --[[
+    ^ The node's original color will be multiplied with this color.
+    ^ If the node has a palette, then this setting only has an effect
+    ^ in the inventory and on the wield item. ]]
     use_texture_alpha = false, -- Use texture's alpha channel
+    palette = "palette.png", --[[
+    ^ The node's `param2` is used to select a pixel from the image
+    ^ (pixels are arranged from left to right and from top to bottom).
+    ^ The node's color will be multiplied with the selected pixel's
+    ^ color. Tiles can override this behavior.
+    ^ Only when `paramtype2` supports palettes. ]]
     post_effect_color = "green#0F", -- If player is inside node, see "ColorSpec"
     paramtype = "none", -- See "Nodes" --[[
     ^ paramtype = "light" allows light to propagate from or through the node with light value
@@ -4857,8 +4944,12 @@ The Biome API is still in an experimental phase and subject to change.</p>
 --  ^ vertical: if true faces player using y axis only
     texture = "image.png",
 --  ^ Uses texture (string)
-    playername = "singleplayer"
+    playername = "singleplayer",
 --  ^ optional, if specified spawns particle only on the player's client
+    animation = {Tile Animation definition},
+--  ^ optional, specifies how to animate the particle texture
+    glow = 0
+--  ^ optional, specify particle self-luminescence in darkness
 }
 </code></pre>
 <h3 id="particlespawner-definition-add_particlespawner"><code>ParticleSpawner</code> definition (<code>add_particlespawner</code>)</h3>
