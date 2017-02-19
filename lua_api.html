@@ -4,7 +4,7 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 31/January/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 19/February/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
@@ -156,6 +156,7 @@ This page was last updated 31/January/2017.<br />See <a href="https://github.com
 </li>
 <li><a href="#entity-damage-mechanism">Entity damage mechanism</a></li>
 <li><a href="#node-metadata">Node Metadata</a></li>
+<li><a href="#item-metadata">Item Metadata</a></li>
 <li><a href="#formspec">Formspec</a><ul>
 <li><a href="#examples">Examples</a><ul>
 <li><a href="#chest">Chest</a></li>
@@ -237,22 +238,35 @@ This page was last updated 31/January/2017.<br />See <a href="https://github.com
 <li><a href="#particles">Particles</a></li>
 <li><a href="#schematics">Schematics</a></li>
 <li><a href="#http-requests">HTTP Requests:</a></li>
+<li><a href="#storage-api">Storage API:</a></li>
 <li><a href="#misc">Misc.</a></li>
 <li><a href="#global-objects">Global objects</a></li>
 <li><a href="#global-tables">Global tables</a></li>
 </ul>
 </li>
 <li><a href="#class-reference">Class reference</a><ul>
-<li><a href="#nodemetaref">NodeMetaRef</a><ul>
+<li><a href="#metadataref">MetaDataRef</a><ul>
 <li><a href="#methods">Methods</a></li>
 </ul>
 </li>
-<li><a href="#nodetimerref">NodeTimerRef</a><ul>
+<li><a href="#nodemetaref">NodeMetaRef</a><ul>
 <li><a href="#methods_1">Methods</a></li>
 </ul>
 </li>
+<li><a href="#itemstackmetaref">ItemStackMetaRef</a><ul>
+<li><a href="#methods_2">Methods</a></li>
+</ul>
+</li>
+<li><a href="#storageref">StorageRef</a><ul>
+<li><a href="#methods_3">Methods</a></li>
+</ul>
+</li>
+<li><a href="#nodetimerref">NodeTimerRef</a><ul>
+<li><a href="#methods_4">Methods</a></li>
+</ul>
+</li>
 <li><a href="#objectref">ObjectRef</a><ul>
-<li><a href="#methods_2">Methods</a><ul>
+<li><a href="#methods_5">Methods</a><ul>
 <li><a href="#luaentitysao-only-no-op-for-other-objects">LuaEntitySAO-only (no-op for other objects)</a></li>
 <li><a href="#player-only-no-op-for-other-objects">Player-only (no-op for other objects)</a></li>
 </ul>
@@ -260,35 +274,35 @@ This page was last updated 31/January/2017.<br />See <a href="https://github.com
 </ul>
 </li>
 <li><a href="#invref">InvRef</a><ul>
-<li><a href="#methods_3">Methods</a></li>
-</ul>
-</li>
-<li><a href="#areastore">AreaStore</a><ul>
-<li><a href="#methods_4">Methods</a></li>
-</ul>
-</li>
-<li><a href="#itemstack_1">ItemStack</a><ul>
-<li><a href="#methods_5">Methods</a></li>
-</ul>
-</li>
-<li><a href="#pseudorandom">PseudoRandom</a><ul>
 <li><a href="#methods_6">Methods</a></li>
 </ul>
 </li>
-<li><a href="#pcgrandom">PcgRandom</a><ul>
+<li><a href="#areastore">AreaStore</a><ul>
 <li><a href="#methods_7">Methods</a></li>
 </ul>
 </li>
-<li><a href="#securerandom">SecureRandom</a><ul>
+<li><a href="#itemstack_1">ItemStack</a><ul>
 <li><a href="#methods_8">Methods</a></li>
 </ul>
 </li>
-<li><a href="#perlinnoise">PerlinNoise</a><ul>
+<li><a href="#pseudorandom">PseudoRandom</a><ul>
 <li><a href="#methods_9">Methods</a></li>
 </ul>
 </li>
-<li><a href="#perlinnoisemap">PerlinNoiseMap</a><ul>
+<li><a href="#pcgrandom">PcgRandom</a><ul>
 <li><a href="#methods_10">Methods</a></li>
+</ul>
+</li>
+<li><a href="#securerandom">SecureRandom</a><ul>
+<li><a href="#methods_11">Methods</a></li>
+</ul>
+</li>
+<li><a href="#perlinnoise">PerlinNoise</a><ul>
+<li><a href="#methods_12">Methods</a></li>
+</ul>
+</li>
+<li><a href="#perlinnoisemap">PerlinNoiseMap</a><ul>
+<li><a href="#methods_13">Methods</a></li>
 </ul>
 </li>
 <li><a href="#voxelmanip">VoxelManip</a><ul>
@@ -301,15 +315,15 @@ This page was last updated 31/January/2017.<br />See <a href="https://github.com
 <li><a href="#notes">Notes</a></li>
 </ul>
 </li>
-<li><a href="#methods_11">Methods</a></li>
+<li><a href="#methods_14">Methods</a></li>
 </ul>
 </li>
 <li><a href="#voxelarea">VoxelArea</a><ul>
-<li><a href="#methods_12">Methods</a></li>
+<li><a href="#methods_15">Methods</a></li>
 </ul>
 </li>
 <li><a href="#settings">Settings</a><ul>
-<li><a href="#methods_13">Methods</a></li>
+<li><a href="#methods_16">Methods</a></li>
 </ul>
 </li>
 </ul>
@@ -372,7 +386,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 31/January/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 19/February/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -1581,7 +1595,7 @@ the entity itself.</p>
 <li><a class="anchor" href="#direction_2" name="direction_2">#</a><code>direction</code> is a unit vector, pointing from the source of the punch to
    the punched object.</li>
 <li><a class="anchor" href="#damage" name="damage">#</a><code>damage</code> damage that will be done to entity
-Return value of this function will determin if damage is done by this function 
+Return value of this function will determin if damage is done by this function
 (retval true) or shall be done by engine (retval false)</li>
 </ul>
 <p>To punch an entity/object in Lua, call:</p>
@@ -1596,8 +1610,8 @@ Return value of this function will determin if damage is done by this function
 <h2 id="node-metadata">Node Metadata</h2>
 <p>The instance of a node in the world normally only contains the three values
 mentioned in "Nodes". However, it is possible to insert extra data into a
-node. It is called "node metadata"; See "<code>NodeMetaRef</code>".</p>
-<p>Metadata contains two things:</p>
+node. It is called "node metadata"; See <code>NodeMetaRef</code>.</p>
+<p>Node metadata contains two things:</p>
 <ul>
 <li>A key-value store</li>
 <li>An inventory</li>
@@ -1633,6 +1647,18 @@ meta:from_table({
         infotext = "Chest"
     }
 })
+</code></pre>
+<h2 id="item-metadata">Item Metadata</h2>
+<p>Item stacks can store metadata too. See <code>ItemStackMetaRef</code>.</p>
+<p>Item metadata only contains a key-value store.</p>
+<p>Some of the values in the key-value store are handled specially:</p>
+<ul>
+<li><a class="anchor" href="#description" name="description">#</a><code>description</code>: Set the itemstack's description. Defaults to idef.description</li>
+</ul>
+<p>Example stuff:</p>
+<pre><code>local meta = stack:get_meta()
+meta:set_string("key", "value")
+print(dump(meta:to_table()))
 </code></pre>
 <h2 id="formspec">Formspec</h2>
 <p>Formspec defines a menu. Currently not much else than inventories are
@@ -3187,6 +3213,14 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 </ul>
+<h3 id="storage-api">Storage API:</h3>
+<ul>
+<li><a class="anchor" href="#minetestget_mod_storage" name="minetestget_mod_storage">#</a><code>minetest.get_mod_storage()</code>:<ul>
+<li><a class="anchor" href="#StorageRef" name="StorageRef">#</a>returns reference to mod private <code>StorageRef</code></li>
+<li>must be called during mod load time</li>
+</ul>
+</li>
+</ul>
 <h3 id="misc">Misc.</h3>
 <ul>
 <li><a class="anchor" href="#minetestget_connected_players" name="minetestget_connected_players">#</a><code>minetest.get_connected_players()</code>: returns list of <code>ObjectRefs</code></li>
@@ -3433,9 +3467,8 @@ end
 </li>
 </ul>
 <h2 id="class-reference">Class reference</h2>
-<h3 id="nodemetaref"><code>NodeMetaRef</code></h3>
-<p>Node metadata: reference extra data and functionality stored in a node.
-Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
+<h3 id="metadataref"><code>MetaDataRef</code></h3>
+<p>See <code>StorageRef</code>, <code>NodeMetaRef</code> and <code>ItemStackMetaRef</code>.</p>
 <h4 id="methods">Methods</h4>
 <ul>
 <li><a class="anchor" href="#set_stringnamevalue" name="set_stringnamevalue">#</a><code>set_string(name, value)</code></li>
@@ -3444,19 +3477,44 @@ Can be gotten via <code>minetest.get_meta(pos)</code>.</p>
 <li><a class="anchor" href="#get_intname" name="get_intname">#</a><code>get_int(name)</code></li>
 <li><a class="anchor" href="#set_floatnamevalue" name="set_floatnamevalue">#</a><code>set_float(name, value)</code></li>
 <li><a class="anchor" href="#get_floatname" name="get_floatname">#</a><code>get_float(name)</code></li>
-<li><a class="anchor" href="#get_inventory" name="get_inventory">#</a><code>get_inventory()</code>: returns <code>InvRef</code></li>
-<li><a class="anchor" href="#to_table" name="to_table">#</a><code>to_table()</code>: returns <code>nil</code> or <code>{fields = {...}, inventory = {list1 = {}, ...}}</code></li>
+<li><a class="anchor" href="#to_table" name="to_table">#</a><code>to_table()</code>: returns <code>nil</code> or a table with keys:<ul>
+<li><a class="anchor" href="#fields" name="fields">#</a><code>fields</code>: key-value storage</li>
+<li><a class="anchor" href="#inventory_2" name="inventory_2">#</a><code>inventory</code>: <code>{list1 = {}, ...}}</code> (NodeMetaRef only)</li>
+</ul>
+</li>
 <li><a class="anchor" href="#from_tablenilor" name="from_tablenilor">#</a><code>from_table(nil or {})</code><ul>
 <li>Any non-table value will clear the metadata</li>
-<li>See "Node Metadata"</li>
+<li>See "Node Metadata" for an example</li>
 <li><a class="anchor" href="#true_11" name="true_11">#</a>returns <code>true</code> on success</li>
 </ul>
 </li>
 </ul>
+<h3 id="nodemetaref"><code>NodeMetaRef</code></h3>
+<p>Node metadata: reference extra data and functionality stored in a node.
+Can be obtained via <code>minetest.get_meta(pos)</code>.</p>
+<h4 id="methods_1">Methods</h4>
+<ul>
+<li>All methods in MetaDataRef</li>
+<li><a class="anchor" href="#get_inventory" name="get_inventory">#</a><code>get_inventory()</code>: returns <code>InvRef</code></li>
+</ul>
+<h3 id="itemstackmetaref"><code>ItemStackMetaRef</code></h3>
+<p>ItemStack metadata: reference extra data and functionality stored in a stack.
+Can be obtained via <code>item:get_meta()</code>.</p>
+<h4 id="methods_2">Methods</h4>
+<ul>
+<li>All methods in MetaDataRef</li>
+</ul>
+<h3 id="storageref"><code>StorageRef</code></h3>
+<p>Mod metadata: per mod metadata, saved automatically.
+Can be obtained via <code>minetest.get_mod_storage()</code> during load time.</p>
+<h4 id="methods_3">Methods</h4>
+<ul>
+<li>All methods in MetaDataRef</li>
+</ul>
 <h3 id="nodetimerref"><code>NodeTimerRef</code></h3>
 <p>Node Timers: a high resolution persistent per-node timer.
 Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
-<h4 id="methods_1">Methods</h4>
+<h4 id="methods_4">Methods</h4>
 <ul>
 <li><a class="anchor" href="#settimeoutelapsed" name="settimeoutelapsed">#</a><code>set(timeout,elapsed)</code><ul>
 <li>set a timer's state</li>
@@ -3490,7 +3548,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <h3 id="objectref"><code>ObjectRef</code></h3>
 <p>Moving things in the game are generally these.</p>
 <p>This is basically a reference to a C++ <code>ServerActiveObject</code></p>
-<h4 id="methods_2">Methods</h4>
+<h4 id="methods_5">Methods</h4>
 <ul>
 <li><a class="anchor" href="#remove" name="remove">#</a><code>remove()</code>: remove object (after returning from Lua)<ul>
 <li>Note: Doesn't work on players, use minetest.kick_player instead</li>
@@ -3714,7 +3772,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 <h3 id="invref"><code>InvRef</code></h3>
 <p>An <code>InvRef</code> is a reference to an inventory.</p>
-<h4 id="methods_3">Methods</h4>
+<h4 id="methods_6">Methods</h4>
 <ul>
 <li><a class="anchor" href="#is_emptylistname" name="is_emptylistname">#</a><code>is_empty(listname)</code>: return <code>true</code> if list is empty</li>
 <li><a class="anchor" href="#get_sizelistname" name="get_sizelistname">#</a><code>get_size(listname)</code>: get size of a list</li>
@@ -3751,7 +3809,7 @@ Every area has a <code>data</code> string attribute to store additional informat
 You can create an empty <code>AreaStore</code> by calling <code>AreaStore()</code>, or <code>AreaStore(type_name)</code>.
 If you chose the parameter-less constructor, a fast implementation will be automatically
 chosen for you.</p>
-<h4 id="methods_4">Methods</h4>
+<h4 id="methods_7">Methods</h4>
 <ul>
 <li><a class="anchor" href="#get_areaidinclude_bordersinclude_data" name="get_areaidinclude_bordersinclude_data">#</a><code>get_area(id, include_borders, include_data)</code>: returns the area with the id <code>id</code>.
   (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.
@@ -3792,7 +3850,7 @@ chosen for you.</p>
 <p>An <code>ItemStack</code> is a stack of items.</p>
 <p>It can be created via <code>ItemStack(x)</code>, where x is an <code>ItemStack</code>,
 an itemstring, a table or <code>nil</code>.</p>
-<h4 id="methods_5">Methods</h4>
+<h4 id="methods_8">Methods</h4>
 <ul>
 <li><a class="anchor" href="#is_empty" name="is_empty">#</a><code>is_empty()</code>: Returns <code>true</code> if stack is empty.</li>
 <li><a class="anchor" href="#get_name" name="get_name">#</a><code>get_name()</code>: Returns item name (e.g. <code>"default:stone"</code>).</li>
@@ -3801,8 +3859,9 @@ an itemstring, a table or <code>nil</code>.</p>
 <li><a class="anchor" href="#set_countcount" name="set_countcount">#</a><code>set_count(count)</code>: Returns boolean whether item was cleared</li>
 <li><a class="anchor" href="#get_wear" name="get_wear">#</a><code>get_wear()</code>: Returns tool wear (<code>0</code>-<code>65535</code>), <code>0</code> for non-tools.</li>
 <li><a class="anchor" href="#set_wearwear" name="set_wearwear">#</a><code>set_wear(wear)</code>: Returns boolean whether item was cleared</li>
-<li><a class="anchor" href="#get_metadata" name="get_metadata">#</a><code>get_metadata()</code>: Returns metadata (a string attached to an item stack).</li>
-<li><a class="anchor" href="#set_metadatametadata" name="set_metadatametadata">#</a><code>set_metadata(metadata)</code>: Returns true.</li>
+<li><a class="anchor" href="#get_meta" name="get_meta">#</a><code>get_meta()</code>: Returns ItemStackMetaRef. See section for more details</li>
+<li><a class="anchor" href="#get_metadata" name="get_metadata">#</a><code>get_metadata()</code>: (DEPRECATED) Returns metadata (a string attached to an item stack).</li>
+<li><a class="anchor" href="#set_metadatametadata" name="set_metadatametadata">#</a><code>set_metadata(metadata)</code>: (DEPRECATED) Returns true.</li>
 <li><a class="anchor" href="#clear" name="clear">#</a><code>clear()</code>: removes all items from the stack, making it empty.</li>
 <li><a class="anchor" href="#replaceitem" name="replaceitem">#</a><code>replace(item)</code>: replace the contents of this stack.<ul>
 <li><a class="anchor" href="#item_1" name="item_1">#</a><code>item</code> can also be an itemstring or table.</li>
@@ -3830,7 +3889,7 @@ an itemstring, a table or <code>nil</code>.</p>
 <p>A 16-bit pseudorandom number generator.
 Uses a well-known LCG algorithm introduced by K&amp;R.</p>
 <p>It can be created via <code>PseudoRandom(seed)</code>.</p>
-<h4 id="methods_6">Methods</h4>
+<h4 id="methods_9">Methods</h4>
 <ul>
 <li><a class="anchor" href="#next" name="next">#</a><code>next()</code>: return next integer random number [<code>0</code>...<code>32767</code>]</li>
 <li><a class="anchor" href="#nextminmax" name="nextminmax">#</a><code>next(min, max)</code>: return next integer random number [<code>min</code>...<code>max</code>]<ul>
@@ -3843,7 +3902,7 @@ Uses a well-known LCG algorithm introduced by K&amp;R.</p>
 <p>A 32-bit pseudorandom number generator.
 Uses PCG32, an algorithm of the permuted congruential generator family, offering very strong randomness.</p>
 <p>It can be created via <code>PcgRandom(seed)</code> or <code>PcgRandom(seed, sequence)</code>.</p>
-<h4 id="methods_7">Methods</h4>
+<h4 id="methods_10">Methods</h4>
 <ul>
 <li><a class="anchor" href="#next_1" name="next_1">#</a><code>next()</code>: return next integer random number [<code>-2147483648</code>...<code>2147483647</code>]</li>
 <li><a class="anchor" href="#nextminmax_1" name="nextminmax_1">#</a><code>next(min, max)</code>: return next integer random number [<code>min</code>...<code>max</code>]</li>
@@ -3859,7 +3918,7 @@ Uses PCG32, an algorithm of the permuted congruential generator family, offering
 <p>Interface for the operating system's crypto-secure PRNG.</p>
 <p>It can be created via <code>SecureRandom()</code>.  The constructor returns nil if a secure random device cannot be
 be found on the system.</p>
-<h4 id="methods_8">Methods</h4>
+<h4 id="methods_11">Methods</h4>
 <ul>
 <li><a class="anchor" href="#next_bytescount" name="next_bytescount">#</a><code>next_bytes([count])</code>: return next <code>count</code> (default 1, capped at 2048) many random bytes, as a string.</li>
 </ul>
@@ -3869,7 +3928,7 @@ It can be created via <code>PerlinNoise(seed, octaves, persistence, scale)</code
 or <code>PerlinNoise(noiseparams)</code>.
 Alternatively with <code>minetest.get_perlin(seeddiff, octaves, persistence, scale)</code>
 or <code>minetest.get_perlin(noiseparams)</code>.</p>
-<h4 id="methods_9">Methods</h4>
+<h4 id="methods_12">Methods</h4>
 <ul>
 <li><a class="anchor" href="#get2dpos" name="get2dpos">#</a><code>get2d(pos)</code>: returns 2D noise value at <code>pos={x=,y=}</code></li>
 <li><a class="anchor" href="#get3dpos" name="get3dpos">#</a><code>get3d(pos)</code>: returns 3D noise value at <code>pos={x=,y=,z=}</code></li>
@@ -3883,7 +3942,7 @@ for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
 <code>nil</code> is returned).</p>
 <p>For each of the functions with an optional <code>buffer</code> parameter:  If <code>buffer</code> is not
 nil, this table will be used to store the result instead of creating a new table.</p>
-<h4 id="methods_10">Methods</h4>
+<h4 id="methods_13">Methods</h4>
 <ul>
 <li><a class="anchor" href="#get2dMappos" name="get2dMappos">#</a><code>get2dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> 2D array of 2D noise
   with values starting at <code>pos={x=,y=}</code></li>
@@ -4032,7 +4091,7 @@ will place the schematic inside of the VoxelManip.</p>
   buffer the function can use to write map data to instead of returning a new table each call.  This
   greatly enhances performance by avoiding unnecessary memory allocations.</li>
 </ul>
-<h4 id="methods_11">Methods</h4>
+<h4 id="methods_14">Methods</h4>
 <ul>
 <li><a class="anchor" href="#read_from_mapp1p2" name="read_from_mapp1p2">#</a><code>read_from_map(p1, p2)</code>:  Loads a chunk of map into the VoxelManip object containing
   the region formed by <code>p1</code> and <code>p2</code>.<ul>
@@ -4099,7 +4158,7 @@ will place the schematic inside of the VoxelManip.</p>
 <p>A helper class for voxel areas.
 It can be created via <code>VoxelArea:new{MinEdge=pmin, MaxEdge=pmax}</code>.
 The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
-<h4 id="methods_12">Methods</h4>
+<h4 id="methods_15">Methods</h4>
 <ul>
 <li><a class="anchor" href="#getExtent" name="getExtent">#</a><code>getExtent()</code>: returns a 3D vector containing the size of the area formed by
   <code>MinEdge</code> and <code>MaxEdge</code></li>
@@ -4123,7 +4182,7 @@ The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
 <h3 id="settings"><code>Settings</code></h3>
 <p>An interface to read config files in the format of <code>minetest.conf</code>.</p>
 <p>It can be created via <code>Settings(filename)</code>.</p>
-<h4 id="methods_13">Methods</h4>
+<h4 id="methods_16">Methods</h4>
 <ul>
 <li><a class="anchor" href="#getkey" name="getkey">#</a><code>get(key)</code>: returns a value</li>
 <li><a class="anchor" href="#get_boolkey" name="get_boolkey">#</a><code>get_bool(key)</code>: returns a boolean</li>
