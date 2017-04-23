@@ -1,0 +1,22 @@
+graph LR
+user_rc[User right clicks]
+
+user_rc --> run_on_place
+
+run_on_place{Is def.on_place specified?}
+run_on_place -->|Yes| run[Run custom on_place]
+run --> done
+run_on_place -->|No, defaults to minetest.item_place| is_rightclickable
+
+is_rightclickable{Is pointing at right clickable node?}
+is_rightclickable -->|Yes| is_sneaking
+is_rightclickable -->|No| is_node
+is_sneaking{Is sneaking?}
+is_sneaking -->|Yes| is_node
+is_sneaking -->|No| rightclick[Call Rightclick of pointed at node]
+rightclick --> done
+
+is_node{def.type is node?}
+is_node -->|yes| place_node[Place Node]
+is_node -->|no| done
+place_node --> done

@@ -4,7 +4,7 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 19/February/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 23/April/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
@@ -166,6 +166,8 @@ This page was last updated 19/February/2017.<br />See <a href="https://github.co
 </li>
 <li><a href="#elements">Elements</a><ul>
 <li><a href="#sizewhfixed_size">size[&lt;W&gt;,&lt;H&gt;,&lt;fixed_size&gt;]</a></li>
+<li><a href="#positionxy">position[&lt;X&gt;,&lt;Y&gt;]</a></li>
+<li><a href="#anchorxy">anchor[&lt;X&gt;,&lt;Y&gt;]</a></li>
 <li><a href="#containerxy">container[&lt;X&gt;,&lt;Y&gt;]</a></li>
 <li><a href="#container_end">container_end[]</a></li>
 <li><a href="#listinventory-locationlist-namexywh">list[&lt;inventory location&gt;;&lt;list name&gt;;&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;]</a></li>
@@ -386,7 +388,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 19/February/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 23/April/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -968,6 +970,10 @@ paramtype2 == "colorwallmounted"
   The first five bits of `param2` tells which color
   is picked from the palette.
   The palette should have 32 pixels.
+paramtype2 == "glasslikeliquidlevel"
+^ Only valid for "glasslike_framed" or "glasslike_framed_optional" drawtypes.
+  param2 defines 64 levels of internal liquid.
+  Liquid texture is defined using `special_tiles = {"modname_tilename.png"},`
 collision_box = {
   type = "fixed",
   fixed = {
@@ -1425,9 +1431,8 @@ effective towards.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#dig_immediate" name="dig_immediate">#</a><code>dig_immediate</code>: (player can always pick up node without tool wear)<ul>
-<li><a class="anchor" href="#2" name="2">#</a><code>2</code>: node is removed without tool wear after 0.5 seconds or so
-  (rail, sign)</li>
-<li><a class="anchor" href="#3" name="3">#</a><code>3</code>: node is removed without tool wear immediately (torch)</li>
+<li><a class="anchor" href="#2" name="2">#</a><code>2</code>: node is removed without tool wear after 0.5 seconds (rail, sign)</li>
+<li><a class="anchor" href="#3" name="3">#</a><code>3</code>: node is removed without tool wear after 0.15 seconds (torch)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#disable_jump" name="disable_jump">#</a><code>disable_jump</code>: Player (and possibly other things) cannot jump from node</li>
@@ -1654,6 +1659,9 @@ meta:from_table({
 <p>Some of the values in the key-value store are handled specially:</p>
 <ul>
 <li><a class="anchor" href="#description" name="description">#</a><code>description</code>: Set the itemstack's description. Defaults to idef.description</li>
+<li><a class="anchor" href="#color" name="color">#</a><code>color</code>: A <code>ColorString</code>, which sets the stack's color.</li>
+<li><a class="anchor" href="#palette_index" name="palette_index">#</a><code>palette_index</code>: If the item has a palette, this is used to get the
+                  current color from the palette.</li>
 </ul>
 <p>Example stuff:</p>
 <pre><code>local meta = stack:get_meta()
@@ -1691,6 +1699,18 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>Define the size of the menu in inventory slots</li>
 <li><a class="anchor" href="#fixed_size" name="fixed_size">#</a><code>fixed_size</code>: <code>true</code>/<code>false</code> (optional)</li>
 <li><a class="anchor" href="#invsizeWH" name="invsizeWH">#</a>deprecated: <code>invsize[&lt;W&gt;,&lt;H&gt;;]</code></li>
+</ul>
+<h4 id="positionxy"><code>position[&lt;X&gt;,&lt;Y&gt;]</code></h4>
+<ul>
+<li>Define the position of the formspec</li>
+<li>A value between 0.0 and 1.0 represents a position inside the screen</li>
+<li>The default value is the center of the screen (0.5, 0.5)</li>
+</ul>
+<h4 id="anchorxy"><code>anchor[&lt;X&gt;,&lt;Y&gt;]</code></h4>
+<ul>
+<li>Define the anchor of the formspec</li>
+<li>A value between 0.0 and 1.0 represents an anchor inside the formspec</li>
+<li>The default value is the center of the formspec (0.5, 0.5)</li>
 </ul>
 <h4 id="containerxy"><code>container[&lt;X&gt;,&lt;Y&gt;]</code></h4>
 <ul>
@@ -1924,7 +1944,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>Simple colored semitransparent box</li>
 <li><a class="anchor" href="#x_12" name="x_12">#</a><code>x</code> and <code>y</code> position the box relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_6" name="w_6">#</a><code>w</code> and <code>h</code> are the size of box</li>
-<li><a class="anchor" href="#color" name="color">#</a><code>color</code> is color specified as a <code>ColorString</code></li>
+<li><a class="anchor" href="#color_1" name="color_1">#</a><code>color</code> is color specified as a <code>ColorString</code></li>
 </ul>
 <h4 id="dropdownxywnameitem-1item-2-item-nselected-idx"><code>dropdown[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;;&lt;name&gt;;&lt;item 1&gt;,&lt;item 2&gt;, ...,&lt;item n&gt;;&lt;selected idx&gt;]</code></h4>
 <ul>
@@ -2009,7 +2029,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><a class="anchor" href="#text_6" name="text_6">#</a>Types: <code>text</code>, <code>image</code>, <code>color</code>, <code>indent</code>, <code>tree</code><ul>
 <li><a class="anchor" href="#text_7" name="text_7">#</a><code>text</code>:   show cell contents as text</li>
 <li><a class="anchor" href="#image_1" name="image_1">#</a><code>image</code>:  cell contents are an image index, use column options to define images</li>
-<li><a class="anchor" href="#color_1" name="color_1">#</a><code>color</code>:   cell contents are a ColorString and define color of following cell</li>
+<li><a class="anchor" href="#color_2" name="color_2">#</a><code>color</code>:   cell contents are a ColorString and define color of following cell</li>
 <li><a class="anchor" href="#indent" name="indent">#</a><code>indent</code>: cell contents are a number and define indentation of following cell</li>
 <li><a class="anchor" href="#tree" name="tree">#</a><code>tree</code>:   same as indent, but user can open and close subtrees (treeview-like)</li>
 </ul>
@@ -2036,7 +2056,7 @@ list[current_player;craftpreview;7,1;1,1;]
   non-numeric cells are treated as <code>0</code>.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#color_2" name="color_2">#</a><code>color</code> column options:<ul>
+<li><a class="anchor" href="#color_3" name="color_3">#</a><code>color</code> column options:<ul>
 <li><a class="anchor" href="#spanvalue" name="spanvalue">#</a><code>span=&lt;value&gt;</code>: number of following columns to affect (default: infinite)</li>
 </ul>
 </li>
@@ -2090,10 +2110,16 @@ The following functions provide escape sequences:
       <code>core.get_color_escape_sequence(color) ..
        message ..
        core.get_color_escape_sequence("#ffffff")</code>
-* <code>color.get_background_escape_sequence(color)</code>
+<em> <code>color.get_background_escape_sequence(color)</code>
     * <code>color</code> is a ColorString
     * The escape sequence sets the background of the whole text element to
-      <code>color</code>. Only defined for item descriptions and tooltips.</p>
+      <code>color</code>. Only defined for item descriptions and tooltips.
+</em> <code>color.strip_foreground_colors(str)</code>
+    * Removes foreground colors added by <code>get_color_escape_sequence</code>.
+<em> <code>color.strip_background_colors(str)</code>
+    * Removes background colors added by <code>get_background_escape_sequence</code>.
+</em> <code>color.strip_colors(str)</code>
+    * Removes all color escape sequences.</p>
 <h2 id="spatial-vectors">Spatial Vectors</h2>
 <ul>
 <li><a class="anchor" href="#vectornewabc" name="vectornewabc">#</a><code>vector.new(a[, b, c])</code>: returns a vector:<ul>
@@ -2167,7 +2193,7 @@ The following functions provide escape sequences:
 </ul>
 </li>
 <li><a class="anchor" href="#minetestis_yesarg" name="minetestis_yesarg">#</a><code>minetest.is_yes(arg)</code><ul>
-<li><a class="anchor" href="#arg" name="arg">#</a>returns whether <code>arg</code> can be interpreted as yes</li>
+<li>returns true if passed 'y', 'yes', 'true' or a number that isn't zero.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_us_time" name="minetestget_us_time">#</a><code>minetest.get_us_time()</code><ul>
@@ -2176,6 +2202,10 @@ The following functions provide escape sequences:
 </li>
 <li><a class="anchor" href="#tablecopytable" name="tablecopytable">#</a><code>table.copy(table)</code>: returns a table<ul>
 <li><a class="anchor" href="#table_2" name="table_2">#</a>returns a deep copy of <code>table</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestpointed_thing_to_face_posplacerpointed_thing" name="minetestpointed_thing_to_face_posplacerpointed_thing">#</a><code>minetest.pointed_thing_to_face_pos(placer, pointed_thing)</code>: returns a position<ul>
+<li>returns the exact position on the surface of a pointed node</li>
 </ul>
 </li>
 </ul>
@@ -2196,57 +2226,73 @@ The following functions provide escape sequences:
 </ul>
 </li>
 <li><a class="anchor" href="#minetestis_singleplayer" name="minetestis_singleplayer">#</a><code>minetest.is_singleplayer()</code></li>
-<li><a class="anchor" href="#minetestfeatures" name="minetestfeatures">#</a><code>minetest.features</code><ul>
-<li><a class="anchor" href="#footruebartrue" name="footruebartrue">#</a>Table containing API feature flags: <code>{foo=true, bar=true}</code></li>
-</ul>
-</li>
+<li><a class="anchor" href="#minetestfeatures" name="minetestfeatures">#</a><code>minetest.features</code>: Table containing API feature flags
+      {
+         glasslike_framed = true,
+         nodebox_as_selectionbox = true,
+         chat_send_player_param3 = true,
+         get_all_craft_recipes_works = true,
+         use_texture_alpha = true,
+      -- ^ The transparency channel of textures can be used optionally
+         no_legacy_abms = true,
+      -- ^ Tree and grass ABMs are no longer done from C++
+         texture_names_parens = true,
+      -- ^ Texture grouping is possible using parentheses
+         area_store_custom_ids = true,
+      -- ^ Unique Area ID for AreaStore:insert_area
+         add_entity_with_staticdata = true,
+      -- ^ add_entity supports passing initial staticdata to on_activate
+         no_chat_message_prediction = true,
+      -- ^ Chat messages are no longer predicted
+      }</li>
 <li><a class="anchor" href="#minetesthas_featurearg" name="minetesthas_featurearg">#</a><code>minetest.has_feature(arg)</code>: returns <code>boolean, missing_features</code><ul>
-<li><a class="anchor" href="#arg_1" name="arg_1">#</a><code>arg</code>: string or table in format <code>{foo=true, bar=true}</code></li>
+<li><a class="anchor" href="#arg" name="arg">#</a><code>arg</code>: string or table in format <code>{foo=true, bar=true}</code></li>
 <li><a class="anchor" href="#missing_features" name="missing_features">#</a><code>missing_features</code>: <code>{foo=true, bar=true}</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestget_player_informationplayer_name" name="minetestget_player_informationplayer_name">#</a><code>minetest.get_player_information(player_name)</code>: returns a table containing
-  information about player. Example return value:
-        {
-            address = "127.0.0.1",     -- IP address of client
-            ip_version = 4,            -- IPv4 / IPv6
-            min_rtt = 0.01,            -- minimum round trip time
-            max_rtt = 0.2,             -- maximum round trip time
-            avg_rtt = 0.02,            -- average round trip time
-            min_jitter = 0.01,         -- minimum packet time jitter
-            max_jitter = 0.5,          -- maximum packet time jitter
-            avg_jitter = 0.03,         -- average packet time jitter
-            connection_uptime = 200,   -- seconds since client connected<pre><code>    -- following information is available on debug build only!!!
-    -- DO NOT USE IN MODS
-    --ser_vers = 26,             -- serialization version used by client
-    --prot_vers = 23,            -- protocol version used by client
-    --major = 0,                 -- major version number
-    --minor = 4,                 -- minor version number
-    --patch = 10,                -- patch version number
-    --vers_string = "0.4.9-git", -- full version string
-    --state = "Active"           -- current client state
-}
+<li><a class="anchor" href="#minetestget_player_informationplayer_name" name="minetestget_player_informationplayer_name">#</a><code>minetest.get_player_information(player_name)</code>:<ul>
+<li><a class="anchor" href="#followinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientprot_vers23protocolversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate" name="followinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientprot_vers23protocolversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate">#</a>Returns a table containing information about a player
+  Example return value:
+    {
+        address = "127.0.0.1",     -- IP address of client
+        ip_version = 4,            -- IPv4 / IPv6
+        min_rtt = 0.01,            -- minimum round trip time
+        max_rtt = 0.2,             -- maximum round trip time
+        avg_rtt = 0.02,            -- average round trip time
+        min_jitter = 0.01,         -- minimum packet time jitter
+        max_jitter = 0.5,          -- maximum packet time jitter
+        avg_jitter = 0.03,         -- average packet time jitter
+        connection_uptime = 200,   -- seconds since client connected<pre><code>-- following information is available on debug build only!!!
+-- DO NOT USE IN MODS
+--ser_vers = 26,             -- serialization version used by client
+--prot_vers = 23,            -- protocol version used by client
+--major = 0,                 -- major version number
+--minor = 4,                 -- minor version number
+--patch = 10,                -- patch version number
+--vers_string = "0.4.9-git", -- full version string
+--state = "Active"           -- current client state
 </code></pre>
-<ul>
-<li><a class="anchor" href="#minetestmkdirpath" name="minetestmkdirpath">#</a><code>minetest.mkdir(path)</code>: returns success.</li>
-<li><a class="anchor" href="#path" name="path">#</a>Creates a directory specified by <code>path</code>, creating parent directories
-  if they don't exist.</li>
-<li><a class="anchor" href="#minetestget_dir_listpathis_dir" name="minetestget_dir_listpathis_dir">#</a><code>minetest.get_dir_list(path, [is_dir])</code>: returns list of entry names</li>
-<li>is_dir is one of:</li>
-<li>nil: return all entries,</li>
-<li>true: return only subdirectory names, or</li>
-<li>false: return only file names.</li>
-<li><a class="anchor" href="#minetestget_version" name="minetestget_version">#</a><code>minetest.get_version()</code>: returns a table containing components of the
-   engine version.  Components:</li>
-<li><a class="anchor" href="#project" name="project">#</a><code>project</code>: Name of the project, eg, "Minetest"</li>
-<li><a class="anchor" href="#string" name="string">#</a><code>string</code>: Simple version, eg, "1.2.3-dev"</li>
-<li><a class="anchor" href="#hash" name="hash">#</a><code>hash</code>: Full git version (only set if available), eg, "1.2.3-dev-01234567-dirty"
+<p>}
+<em> <code>minetest.mkdir(path)</code>: returns success.
+    * Creates a directory specified by <code>path</code>, creating parent directories
+      if they don't exist.
+</em> <code>minetest.get_dir_list(path, [is_dir])</code>: returns list of entry names
+    * is_dir is one of:
+      * nil: return all entries,
+      * true: return only subdirectory names, or
+      * false: return only file names.
+* <code>minetest.get_version()</code>: returns a table containing components of the
+   engine version.  Components:
+    * <code>project</code>: Name of the project, eg, "Minetest"
+    * <code>string</code>: Simple version, eg, "1.2.3-dev"
+    * <code>hash</code>: Full git version (only set if available), eg, "1.2.3-dev-01234567-dirty"
   Use this for informational purposes only. The information in the returned
   table does not represent the capabilities of the engine, nor is it
   reliable or verifyable. Compatible forks will have a different name and
   version entirely. To check for the presence of engine features, test
   whether the functions exported by the wanted features exist. For example:
-  <code>if core.nodeupdate then ... end</code>.</li>
+  <code>if core.nodeupdate then ... end</code>.</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -2575,10 +2621,15 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#true_9" name="true_9">#</a>Returns <code>true</code> if successful, <code>false</code> on failure (e.g. protected location)</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestpunch_nodepos" name="minetestpunch_nodepos">#</a>
-<p><code>minetest.punch_node(pos)</code></p>
-<ul>
+<li><a class="anchor" href="#minetestpunch_nodepos" name="minetestpunch_nodepos">#</a><code>minetest.punch_node(pos)</code><ul>
 <li>Punch node with the same effects that a player would cause</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestspawn_falling_nodepos" name="minetestspawn_falling_nodepos">#</a>
+<p><code>minetest.spawn_falling_node(pos)</code></p>
+<ul>
+<li>Change node into falling node</li>
+<li><a class="anchor" href="#true_10" name="true_10">#</a>Returns <code>true</code> if successful, <code>false</code> on failure</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestfind_nodes_with_metapos1pos2" name="minetestfind_nodes_with_metapos1pos2">#</a>
@@ -2813,6 +2864,24 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#level_4" name="level_4">#</a>increase level of leveled node by level, default <code>level</code> equals <code>1</code></li>
 <li><a class="anchor" href="#totallevelmaxlevel_1" name="totallevelmaxlevel_1">#</a>if <code>totallevel &gt; maxlevel</code>, returns rest (<code>total-max</code>)</li>
 <li>can be negative for decreasing</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestfix_lightpos1pos2" name="minetestfix_lightpos1pos2">#</a><code>minetest.fix_light(pos1, pos2)</code>: returns <code>true</code>/<code>false</code><ul>
+<li>resets the light in a cuboid-shaped part of
+  the map and removes lighting bugs.</li>
+<li>Loads the area if it is not loaded.</li>
+<li><a class="anchor" href="#pos1_7" name="pos1_7">#</a><code>pos1</code> is the corner of the cuboid with the least coordinates
+  (in node coordinates), inclusive.</li>
+<li><a class="anchor" href="#pos2_2" name="pos2_2">#</a><code>pos2</code> is the opposite corner of the cuboid, inclusive.</li>
+<li>The actual updated cuboid might be larger than the specified one,
+  because only whole map blocks can be updated.
+  The actual updated area consists of those map blocks that intersect
+  with the given cuboid.</li>
+<li>However, the neighborhood of the updated area might change
+  as well, as light can spread out of the cuboid, also light
+  might be removed.</li>
+<li><a class="anchor" href="#false_1" name="false_1">#</a>returns <code>false</code> if the area is not fully generated,
+  <code>true</code> otherwise</li>
 </ul>
 </li>
 <li><a class="anchor" href="#corecheck_single_for_fallingpos" name="corecheck_single_for_fallingpos">#</a><code>core.check_single_for_falling(pos)</code><ul>
@@ -3075,10 +3144,18 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 <h3 id="server">Server</h3>
 <ul>
-<li><a class="anchor" href="#minetestrequest_shutdownmessagereconnect" name="minetestrequest_shutdownmessagereconnect">#</a><code>minetest.request_shutdown([message],[reconnect])</code>: request for server shutdown. Will display <code>message</code> to clients,
-    and <code>reconnect</code> == true displays a reconnect button.</li>
+<li><a class="anchor" href="#minetestrequest_shutdownmessagereconnectdelay" name="minetestrequest_shutdownmessagereconnectdelay">#</a><code>minetest.request_shutdown([message],[reconnect],[delay])</code>: request for server shutdown. Will display <code>message</code> to clients,
+    <code>reconnect</code> == true displays a reconnect button,
+    <code>delay</code> adds an optional delay (in seconds) before shutdown
+        negative delay cancels the current active shutdown
+        zero delay triggers an immediate shutdown.</li>
+<li><a class="anchor" href="#minetestcancel_shutdown_requests" name="minetestcancel_shutdown_requests">#</a><code>minetest.cancel_shutdown_requests()</code>: cancel current delayed shutdown</li>
 <li><a class="anchor" href="#minetestget_server_status" name="minetestget_server_status">#</a><code>minetest.get_server_status()</code>: returns server status string</li>
 <li><a class="anchor" href="#minetestget_server_uptime" name="minetestget_server_uptime">#</a><code>minetest.get_server_uptime()</code>: returns the server uptime in seconds</li>
+<li><a class="anchor" href="#minetestremove_playername" name="minetestremove_playername">#</a><code>minetest.remove_player(name)</code>: remove player from database (if he is not connected).<ul>
+<li>Returns a code (0: successful, 1: no such player, 2: player is connected)</li>
+</ul>
+</li>
 </ul>
 <h3 id="bans">Bans</h3>
 <ul>
@@ -3272,7 +3349,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestwrite_jsondatastyled" name="minetestwrite_jsondatastyled">#</a><code>minetest.write_json(data[, styled])</code>: returns a string or <code>nil</code> and an error message<ul>
 <li>Convert a Lua table into a JSON string</li>
 <li>styled: Outputs in a human-readable format if this is set, defaults to false</li>
-<li>Unserializable things like functions and userdata are saved as null.</li>
+<li>Unserializable things like functions and userdata will cause an error.</li>
 <li><strong>Warning</strong>: JSON is more strict than the Lua table format.<ol>
 <li>You can only use strings and positive integers of at least one as keys.</li>
 <li>You can not mix string and integer keys.
@@ -3290,7 +3367,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestdeserializestring" name="minetestdeserializestring">#</a><code>minetest.deserialize(string)</code>: returns a table<ul>
 <li><a class="anchor" href="#minetestdeserialize" name="minetestdeserialize">#</a>Convert a string returned by <code>minetest.deserialize</code> into a table</li>
-<li><a class="anchor" href="#string_1" name="string_1">#</a><code>string</code> is loaded in an empty sandbox environment.</li>
+<li><a class="anchor" href="#string" name="string">#</a><code>string</code> is loaded in an empty sandbox environment.</li>
 <li>Will load functions, but they cannot access the global environment.</li>
 <li><a class="anchor" href="#deserializereturnfoobar" name="deserializereturnfoobar">#</a>Example: <code>deserialize('return { ["foo"] = "bar" }')</code>, returns <code>{foo='bar'}</code></li>
 <li><a class="anchor" href="#deserializeprintfoo" name="deserializeprintfoo">#</a>Example: <code>deserialize('print("foo")')</code>, returns <code>nil</code> (function call fails)<ul>
@@ -3378,7 +3455,7 @@ end
 <p><code>minetest.forceload_block(pos[, transient])</code></p>
 <ul>
 <li><a class="anchor" href="#pos_5" name="pos_5">#</a>forceloads the position <code>pos</code>.</li>
-<li><a class="anchor" href="#true_10" name="true_10">#</a>returns <code>true</code> if area could be forceloaded</li>
+<li><a class="anchor" href="#true_11" name="true_11">#</a>returns <code>true</code> if area could be forceloaded</li>
 <li><a class="anchor" href="#transient" name="transient">#</a>If <code>transient</code> is <code>false</code> or absent, the forceload will be persistent
   (saved between server runs). If <code>true</code>, the forceload will be transient
   (not saved between server runs).</li>
@@ -3485,7 +3562,11 @@ end
 <li><a class="anchor" href="#from_tablenilor" name="from_tablenilor">#</a><code>from_table(nil or {})</code><ul>
 <li>Any non-table value will clear the metadata</li>
 <li>See "Node Metadata" for an example</li>
-<li><a class="anchor" href="#true_11" name="true_11">#</a>returns <code>true</code> on success</li>
+<li><a class="anchor" href="#true_12" name="true_12">#</a>returns <code>true</code> on success</li>
+</ul>
+</li>
+<li><a class="anchor" href="#equalsother" name="equalsother">#</a><code>equals(other)</code><ul>
+<li><a class="anchor" href="#true_13" name="true_13">#</a>returns <code>true</code> if this metadata has the same key-value pairs as <code>other</code></li>
 </ul>
 </li>
 </ul>
@@ -3541,7 +3622,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#is_started" name="is_started">#</a><code>is_started()</code>: returns boolean state of timer<ul>
-<li><a class="anchor" href="#true_12" name="true_12">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
+<li><a class="anchor" href="#true_14" name="true_14">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
 </ul>
 </li>
 </ul>
@@ -3694,7 +3775,11 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#jump" name="jump">#</a><code>jump</code>: multiplier to default jump value (default: <code>1</code>)</li>
 <li><a class="anchor" href="#gravity" name="gravity">#</a><code>gravity</code>: multiplier to default gravity value (default: <code>1</code>)</li>
 <li><a class="anchor" href="#sneak" name="sneak">#</a><code>sneak</code>: whether player can sneak (default: <code>true</code>)</li>
-<li><a class="anchor" href="#sneak_glitch" name="sneak_glitch">#</a><code>sneak_glitch</code>: whether player can use the sneak glitch (default: <code>true</code>)</li>
+<li><a class="anchor" href="#sneak_glitch" name="sneak_glitch">#</a><code>sneak_glitch</code>: whether player can use the new move code replications
+  of the old sneak side-effects: sneak ladders and 2 node sneak jump
+  (default: <code>false</code>)</li>
+<li><a class="anchor" href="#new_move" name="new_move">#</a><code>new_move</code>: use new move/sneak code. When <code>false</code> the exact old code
+  is used for the specific old sneak behaviour (default: <code>true</code>)</li>
 </ul>
 </li>
 </ul>
@@ -3710,7 +3795,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#hud_getid" name="hud_getid">#</a><code>hud_get(id)</code>: gets the HUD element definition structure of the specified ID</li>
 <li><a class="anchor" href="#hud_set_flagsflags" name="hud_set_flagsflags">#</a><code>hud_set_flags(flags)</code>: sets specified HUD flags to <code>true</code>/<code>false</code><ul>
 <li><a class="anchor" href="#flags_4" name="flags_4">#</a><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>minimap</code></li>
-<li><a class="anchor" href="#true_13" name="true_13">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
+<li><a class="anchor" href="#true_15" name="true_15">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
 <li><a class="anchor" href="#nil_6" name="nil_6">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
 <li><a class="anchor" href="#minimap" name="minimap">#</a>note that setting <code>minimap</code> modifies the client's permission to view the minimap -</li>
 <li>the client may locally elect to not view the minimap</li>
@@ -3777,7 +3862,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#is_emptylistname" name="is_emptylistname">#</a><code>is_empty(listname)</code>: return <code>true</code> if list is empty</li>
 <li><a class="anchor" href="#get_sizelistname" name="get_sizelistname">#</a><code>get_size(listname)</code>: get size of a list</li>
 <li><a class="anchor" href="#set_sizelistnamesize" name="set_sizelistnamesize">#</a><code>set_size(listname, size)</code>: set size of a list<ul>
-<li><a class="anchor" href="#false_1" name="false_1">#</a>returns <code>false</code> on error (e.g. invalid <code>listname</code> or <code>size</code>)</li>
+<li><a class="anchor" href="#false_2" name="false_2">#</a>returns <code>false</code> on error (e.g. invalid <code>listname</code> or <code>size</code>)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_widthlistname" name="get_widthlistname">#</a><code>get_width(listname)</code>: get width of a list</li>
@@ -4009,8 +4094,6 @@ otherwise explicitly stated.</p>
 format as produced by get_data() et al. and is <em>not required</em> to be a table retrieved from get_data().</p>
 <p>Once the internal VoxelManip state has been modified to your liking, the changes can be committed back
 to the map by calling <code>VoxelManip:write_to_map()</code>.</p>
-<p>Finally, a call to <code>VoxelManip:update_map()</code> is required to re-calculate lighting and set the blocks
-as being modified so that connected clients are sent the updated parts of map.</p>
 <h5 id="flat-array-format">Flat array format</h5>
 <p>Let
     <code>Nx = p2.X - p1.X + 1</code>,
@@ -4062,8 +4145,6 @@ but with a few differences:</p>
   will also update the Mapgen VoxelManip object's internal state active on the current thread.</li>
 <li><a class="anchor" href="#VoxelManipcalc_lighting" name="VoxelManipcalc_lighting">#</a>After modifying the Mapgen VoxelManip object's internal buffer, it may be necessary to update lighting
   information using either: <code>VoxelManip:calc_lighting()</code> or <code>VoxelManip:set_lighting()</code>.</li>
-<li><a class="anchor" href="#VoxelManipupdate_map" name="VoxelManipupdate_map">#</a><code>VoxelManip:update_map()</code> does not need to be called after <code>write_to_map()</code>.  The map update is performed
-  automatically after all on_generated callbacks have been run for that generated block.</li>
 </ul>
 <h5 id="other-api-functions-operating-on-a-voxelmanip">Other API functions operating on a VoxelManip</h5>
 <p>If any VoxelManip contents were set to a liquid node, <code>VoxelManip:update_liquids()</code> must be called
@@ -4098,8 +4179,14 @@ will place the schematic inside of the VoxelManip.</p>
 <li><a class="anchor" href="#pmin" name="pmin">#</a>returns actual emerged <code>pmin</code>, actual emerged <code>pmax</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#write_to_map" name="write_to_map">#</a><code>write_to_map()</code>: Writes the data loaded from the <code>VoxelManip</code> back to the map.<ul>
+<li><a class="anchor" href="#write_to_maplight" name="write_to_maplight">#</a><code>write_to_map([light])</code>: Writes the data loaded from the <code>VoxelManip</code> back to the map.<ul>
 <li><a class="anchor" href="#VoxelManipset_data" name="VoxelManipset_data">#</a><strong>important</strong>: data must be set using <code>VoxelManip:set_data()</code> before calling this</li>
+<li><a class="anchor" href="#light" name="light">#</a>if <code>light</code> is true, then lighting is automatically recalculated.
+  The default value is true.
+  If <code>light</code> is false, no light calculations happen, and you should correct
+  all modified blocks with <code>minetest.fix_light()</code> as soon as possible.
+  Keep in mind that modifying the map where light is incorrect can cause
+  more lighting bugs. </li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_node_atpos" name="get_node_atpos">#</a><code>get_node_at(pos)</code>: Returns a <code>MapNode</code> table of the node currently loaded in
@@ -4111,14 +4198,10 @@ will place the schematic inside of the VoxelManip.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#set_datadata" name="set_datadata">#</a><code>set_data(data)</code>: Sets the data contents of the <code>VoxelManip</code> object</li>
-<li><a class="anchor" href="#update_map" name="update_map">#</a><code>update_map()</code>: Update map after writing chunk back to map.<ul>
-<li><a class="anchor" href="#VoxelManip" name="VoxelManip">#</a>To be used only by <code>VoxelManip</code> objects created by the mod itself;
-  not a <code>VoxelManip</code> that was retrieved from <code>minetest.get_mapgen_object</code></li>
-</ul>
-</li>
+<li><a class="anchor" href="#update_map" name="update_map">#</a><code>update_map()</code>: Does nothing, kept for compatibility.</li>
 <li><a class="anchor" href="#set_lightinglightp1p2" name="set_lightinglightp1p2">#</a><code>set_lighting(light, [p1, p2])</code>: Set the lighting within the <code>VoxelManip</code> to a uniform value<ul>
-<li><a class="anchor" href="#light" name="light">#</a><code>light</code> is a table, <code>{day=&lt;0...15&gt;, night=&lt;0...15&gt;}</code></li>
-<li><a class="anchor" href="#VoxelManip_1" name="VoxelManip_1">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
+<li><a class="anchor" href="#light_1" name="light_1">#</a><code>light</code> is a table, <code>{day=&lt;0...15&gt;, night=&lt;0...15&gt;}</code></li>
+<li><a class="anchor" href="#VoxelManip" name="VoxelManip">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
 <li><a class="anchor" href="#p1" name="p1">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set;
   defaults to the whole area if left out</li>
 </ul>
@@ -4141,7 +4224,7 @@ will place the schematic inside of the VoxelManip.</p>
 </li>
 <li><a class="anchor" href="#set_param2_dataparam2_data" name="set_param2_dataparam2_data">#</a><code>set_param2_data(param2_data)</code>: Sets the <code>param2</code> contents of each node in the <code>VoxelManip</code></li>
 <li><a class="anchor" href="#calc_lightingp1p2propagate_shadow" name="calc_lightingp1p2propagate_shadow">#</a><code>calc_lighting([p1, p2], [propagate_shadow])</code>:  Calculate lighting within the <code>VoxelManip</code><ul>
-<li><a class="anchor" href="#VoxelManip_2" name="VoxelManip_2">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
+<li><a class="anchor" href="#VoxelManip_1" name="VoxelManip_1">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
 <li><a class="anchor" href="#p1_1" name="p1_1">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set; defaults to the whole area
   if left out or nil</li>
 <li><a class="anchor" href="#propagate_shadow" name="propagate_shadow">#</a><code>propagate_shadow</code> is an optional boolean deciding whether shadows in a generated
@@ -4164,7 +4247,7 @@ The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
   <code>MinEdge</code> and <code>MaxEdge</code></li>
 <li><a class="anchor" href="#getVolume" name="getVolume">#</a><code>getVolume()</code>: returns the volume of the area formed by <code>MinEdge</code> and <code>MaxEdge</code></li>
 <li><a class="anchor" href="#indexxyz" name="indexxyz">#</a><code>index(x, y, z)</code>: returns the index of an absolute position in a flat array starting at <code>1</code><ul>
-<li><a class="anchor" href="#VoxelManip_3" name="VoxelManip_3">#</a>useful for things like <code>VoxelManip</code>, raw Schematic specifiers,
+<li><a class="anchor" href="#VoxelManip_2" name="VoxelManip_2">#</a>useful for things like <code>VoxelManip</code>, raw Schematic specifiers,
   <code>PerlinNoiseMap:get2d</code>/<code>3dMap</code>, and so on</li>
 </ul>
 </li>
@@ -4438,6 +4521,19 @@ minetest.spawn_tree(pos,apple_tree)
                         {hard = 1, metal = 1, spikes = 1}
     inventory_image = "default_tool_steelaxe.png",
     wield_image = "",
+    palette = "",
+    --[[
+    ^ An image file containing the palette of a node.
+    ^ You can set the currently used color as the
+    ^ "palette_index" field of the item stack metadata.
+    ^ The palette is always stretched to fit indices
+    ^ between 0 and 255, to ensure compatibility with
+    ^ "colorfacedir" and "colorwallmounted" nodes.
+    ]]
+    color = "0xFFFFFFFF",
+    --[[
+    ^ The color of the item. The palette overrides this.
+    ]]
     wield_scale = {x = 1, y = 1, z = 1},
     stack_max = 99,
     range = 4.0,
@@ -4561,13 +4657,20 @@ minetest.spawn_tree(pos,apple_tree)
 
     drawtype = "normal", -- See "Node drawtypes"
     visual_scale = 1.0, --[[
-    ^ Supported for drawtypes "plantlike", "signlike", "torchlike", "mesh".
-    ^ For plantlike, the image will start at the bottom of the node; for the
-    ^ other drawtypes, the image will be centered on the node.
+    ^ Supported for drawtypes "plantlike", "signlike", "torchlike",
+    ^ "firelike", "mesh".
+    ^ For plantlike and firelike, the image will start at the bottom of the
+    ^ node, for the other drawtypes the image will be centered on the node.
     ^ Note that positioning for "torchlike" may still change. ]]
     tiles = {tile definition 1, def2, def3, def4, def5, def6}, --[[
     ^ Textures of node; +Y, -Y, +X, -X, +Z, -Z (old field name: tile_images)
     ^ List can be shortened to needed length ]]
+    overlay_tiles = {tile definition 1, def2, def3, def4, def5, def6}, --[[
+    ^ Same as `tiles`, but these textures are drawn on top of the
+    ^ base tiles. You can use this to colorize only specific parts of
+    ^ your texture. If the texture name is an empty string, that
+    ^ overlay is not drawn. Since such tiles are drawn twice, it
+    ^ is not recommended to use overlays on very common nodes.
     special_tiles = {tile definition 1, Tile definition 2}, --[[
     ^ Special textures of node; used rarely (old field name: special_materials)
     ^ List can be shortened to needed length ]]
@@ -4656,6 +4759,13 @@ minetest.spawn_tree(pos,apple_tree)
     ^ Node destructor; called after removing node
     ^ Not called for bulk node placement (i.e. schematics and VoxelManip)
     ^ default: nil ]]
+    on_flood = func(pos, oldnode, newnode), --[[
+    ^ Called when a liquid (newnode) is about to flood oldnode, if
+    ^ it has `floodable = true` in the nodedef. Not called for bulk
+    ^ node placement (i.e. schematics and VoxelManip) or air nodes. If
+    ^ return true the node is not flooded, but on_flood callback will
+    ^ most likely be called over and over again every liquid update
+    ^ interval. Default: nil ]]
 
     after_place_node = func(pos, placer, itemstack, pointed_thing) --[[
     ^ Called after constructing node when node was placed using
