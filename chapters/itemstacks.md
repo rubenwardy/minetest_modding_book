@@ -94,8 +94,8 @@ print("Took " .. taken:get_count() .. " items")
 
 ## Wear
 
-ItemStacks also have wear on them. Wear is a number out of 65535, the higher is
-more warn.
+ItemStacks also have wear on them. Wear is a number out of 65535, the higher it is,
+the more wear.
 
 You use `add_wear()`, `get_wear()` and `set_wear(wear)`.
 
