@@ -239,7 +239,7 @@ need to be in any specific place for it to work.
 minetest.register_craft({
 	type = "shapeless",
 	output = "mymod:diamond",
-	recipe = {"mymod:diamond_fragments" "mymod:diamond_fragments", "mymod:diamond_fragments"}
+	recipe = {"mymod:diamond_fragments", "mymod:diamond_fragments", "mymod:diamond_fragments"}
 })
 {% endhighlight %}
 
