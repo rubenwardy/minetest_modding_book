@@ -4,10 +4,11 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 23/April/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 08/August/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
+<li><a href="#minetest-lua-modding-api-reference-0416">Minetest Lua Modding API Reference 0.4.16</a><ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#programming-in-lua">Programming in Lua</a></li>
 <li><a href="#startup">Startup</a></li>
@@ -61,6 +62,23 @@ This page was last updated 23/April/2017.<br />See <a href="https://github.com/m
 </li>
 </ul>
 </li>
+<li><a href="#hardware-coloring">Hardware coloring</a><ul>
+<li><a href="#static-coloring">Static coloring</a><ul>
+<li><a href="#global-color">Global color</a></li>
+<li><a href="#tile-color">Tile color</a></li>
+</ul>
+</li>
+<li><a href="#palettes">Palettes</a><ul>
+<li><a href="#palette-indexing">Palette indexing</a></li>
+<li><a href="#using-palettes-with-items">Using palettes with items</a></li>
+<li><a href="#linking-palettes-with-nodes">Linking palettes with nodes</a></li>
+</ul>
+</li>
+<li><a href="#conversion-between-nodes-in-the-inventory-and-the-on-the-map">Conversion between nodes in the inventory and the on the map</a></li>
+<li><a href="#colored-items-in-craft-recipes">Colored items in craft recipes</a></li>
+</ul>
+</li>
+<li><a href="#soft-texture-overlay">Soft texture overlay</a></li>
 <li><a href="#sounds">Sounds</a><ul>
 <li><a href="#simplesoundspec">SimpleSoundSpec</a></li>
 </ul>
@@ -95,7 +113,6 @@ This page was last updated 23/April/2017.<br />See <a href="https://github.com/m
 </ul>
 </li>
 <li><a href="#ore-attributes">Ore attributes</a><ul>
-<li><a href="#absheight">absheight</a></li>
 <li><a href="#puff_cliffs">puff_cliffs</a></li>
 <li><a href="#puff_additive_composition">puff_additive_composition</a></li>
 </ul>
@@ -123,6 +140,7 @@ This page was last updated 23/April/2017.<br />See <a href="https://github.com/m
 <li><a href="#flag-specifier-format">Flag Specifier Format</a></li>
 <li><a href="#items">Items</a><ul>
 <li><a href="#item-types">Item types</a></li>
+<li><a href="#amount-and-wear">Amount and wear</a></li>
 <li><a href="#item-formats">Item formats</a><ul>
 <li><a href="#serialized">Serialized</a></li>
 <li><a href="#table-format">Table format</a></li>
@@ -177,7 +195,7 @@ This page was last updated 23/April/2017.<br />See <a href="https://github.com/m
 <li><a href="#listcolorsslot_bg_normalslot_bg_hover">listcolors[&lt;slot_bg_normal&gt;;&lt;slot_bg_hover&gt;]</a></li>
 <li><a href="#listcolorsslot_bg_normalslot_bg_hoverslot_border">listcolors[&lt;slot_bg_normal&gt;;&lt;slot_bg_hover&gt;;&lt;slot_border&gt;]</a></li>
 <li><a href="#listcolorsslot_bg_normalslot_bg_hoverslot_bordertooltip_bgcolortooltip_fontcolor">listcolors[&lt;slot_bg_normal&gt;;&lt;slot_bg_hover&gt;;&lt;slot_border&gt;;&lt;tooltip_bgcolor&gt;;&lt;tooltip_fontcolor&gt;]</a></li>
-<li><a href="#tooltipgui_element_nametooltip_textbgcolorfontcolor">tooltip[&lt;gui_element_name&gt;;&lt;tooltip_text&gt;;&lt;bgcolor&gt;,&lt;fontcolor&gt;]</a></li>
+<li><a href="#tooltipgui_element_nametooltip_textbgcolorfontcolor">tooltip[&lt;gui_element_name&gt;;&lt;tooltip_text&gt;;&lt;bgcolor&gt;;&lt;fontcolor&gt;]</a></li>
 <li><a href="#imagexywhtexture-name">image[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;texture name&gt;]</a></li>
 <li><a href="#item_imagexywhitem-name">item_image[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;item name&gt;]</a></li>
 <li><a href="#bgcolorcolorfullscreen">bgcolor[&lt;color&gt;;&lt;fullscreen&gt;]</a></li>
@@ -328,6 +346,10 @@ This page was last updated 23/April/2017.<br />See <a href="https://github.com/m
 <li><a href="#methods_16">Methods</a></li>
 </ul>
 </li>
+<li><a href="#raycast">Raycast</a><ul>
+<li><a href="#methods_17">Methods</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#mapgen-objects">Mapgen objects</a><ul>
@@ -373,8 +395,10 @@ This page was last updated 23/April/2017.<br />See <a href="https://github.com/m
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 </div>
-
+<h1 id="minetest-lua-modding-api-reference-0416">Minetest Lua Modding API Reference 0.4.16</h1>
 <h2 id="introduction">Introduction</h2>
 <p>Content and functionality can be added to Minetest 0.4 by using Lua
 scripting in run-time loaded mods.</p>
@@ -388,7 +412,7 @@ source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com<
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 23/April/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 08/August/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -522,8 +546,8 @@ settings menu and the settings will be displayed in the "Mods" category.</p>
 <p>The main Lua script. Running this script should register everything it
 wants to register. Subsequent execution depends on minetest calling the
 registered callbacks.</p>
-<p><code>minetest.setting_get(name)</code> and <code>minetest.setting_getbool(name)</code> can be used
-to read custom or existing settings at load time, if necessary.</p>
+<p><code>minetest.settings</code> can be used to read custom or existing settings at load
+time, if necessary. (See <code>Settings</code>)</p>
 <h3 id="models"><code>models</code></h3>
 <p>Models for entities or meshnodes.</p>
 <h3 id="textures-sounds-media"><code>textures</code>, <code>sounds</code>, <code>media</code></h3>
@@ -531,7 +555,10 @@ to read custom or existing settings at load time, if necessary.</p>
 client and will be available for use by the mod.</p>
 <h2 id="naming-convention-for-registered-textual-names">Naming convention for registered textual names</h2>
 <p>Registered names should generally be in this format:</p>
-<pre><code>"modname:&lt;whatever&gt;" (&lt;whatever&gt; can have characters a-zA-Z0-9_)
+<pre><code>`modname:&lt;whatever&gt;`
+</code></pre>
+<p><code>&lt;whatever&gt;</code> can have these characters:</p>
+<pre><code>a-zA-Z0-9_
 </code></pre>
 <p>This is to prevent conflicting names from corrupting maps and is
 enforced by the mod loader.</p>
@@ -548,7 +575,7 @@ be used for overriding the registrations of some other mod.</p>
 <p>The <code>:</code> prefix can also be used for maintaining backwards compatibility.</p>
 <h3 id="aliases">Aliases</h3>
 <p>Aliases can be added by using <code>minetest.register_alias(name, convert_to)</code> or
-`minetest.register_alias_force(name, convert_to).</p>
+<code>minetest.register_alias_force(name, convert_to)</code>.</p>
 <p>This will make Minetest to convert things called name to things called
 <code>convert_to</code>.</p>
 <p>The only difference between <code>minetest.register_alias</code> and
@@ -624,11 +651,9 @@ specified coordinates.</p>
 <pre><code>default_sandstone.png^[resize:16x16
 </code></pre>
 <h4 id="opacityr"><code>[opacity:&lt;r&gt;</code></h4>
-<pre><code>Makes the base image transparent according to the given ratio.
-r must be between 0 and 255.
-0 means totally transparent.
-255 means totally opaque.
-</code></pre>
+<p>Makes the base image transparent according to the given ratio.</p>
+<p><code>r</code> must be between 0 and 255.
+0 means totally transparent. 255 means totally opaque.</p>
 <p>Example:</p>
 <pre><code>default_sandstone.png^[opacity:127
 </code></pre>
@@ -717,6 +742,145 @@ texture pixel.</p>
 Result is more like what you'd expect if you put a color on top of another
 color. Meaning white surfaces get a lot of your new color while black parts don't
 change very much.</p>
+<h2 id="hardware-coloring">Hardware coloring</h2>
+<p>The goal of hardware coloring is to simplify the creation of
+colorful nodes. If your textures use the same pattern, and they only
+differ in their color (like colored wool blocks), you can use hardware
+coloring instead of creating and managing many texture files.
+All of these methods use color multiplication (so a white-black texture
+with red coloring will result in red-black color).</p>
+<h3 id="static-coloring">Static coloring</h3>
+<p>This method is useful if you wish to create nodes/items with
+the same texture, in different colors, each in a new node/item definition.</p>
+<h4 id="global-color">Global color</h4>
+<p>When you register an item or node, set its <code>color</code> field (which accepts a
+<code>ColorSpec</code>) to the desired color.</p>
+<p>An <code>ItemStack</code>s static color can be overwritten by the <code>color</code> metadata
+field. If you set that field to a <code>ColorString</code>, that color will be used.</p>
+<h4 id="tile-color">Tile color</h4>
+<p>Each tile may have an individual static color, which overwrites every
+other coloring methods. To disable the coloring of a face,
+set its color to white (because multiplying with white does nothing).
+You can set the <code>color</code> property of the tiles in the node's definition
+if the tile is in table format.</p>
+<h3 id="palettes">Palettes</h3>
+<p>For nodes and items which can have many colors, a palette is more
+suitable. A palette is a texture, which can contain up to 256 pixels.
+Each pixel is one possible color for the node/item.
+You can register one node/item, which can have up to 256 colors.</p>
+<h4 id="palette-indexing">Palette indexing</h4>
+<p>When using palettes, you always provide a pixel index for the given
+node or <code>ItemStack</code>. The palette is read from left to right and from
+top to bottom. If the palette has less than 256 pixels, then it is
+stretched to contain exactly 256 pixels (after arranging the pixels
+to one line). The indexing starts from 0.</p>
+<p>Examples:
+<em> 16x16 palette, index = 0: the top left corner
+</em> 16x16 palette, index = 4: the fifth pixel in the first row
+<em> 16x16 palette, index = 16: the pixel below the top left corner
+</em> 16x16 palette, index = 255: the bottom right corner
+<em> 2 (width)x4 (height) palette, index=31: the top left corner.
+  The palette has 8 pixels, so each pixel is stretched to 32 pixels,
+  to ensure the total 256 pixels.
+</em> 2x4 palette, index=32: the top right corner
+<em> 2x4 palette, index=63: the top right corner
+</em> 2x4 palette, index=64: the pixel below the top left corner</p>
+<h4 id="using-palettes-with-items">Using palettes with items</h4>
+<p>When registering an item, set the item definition's <code>palette</code> field to
+a texture. You can also use texture modifiers.</p>
+<p>The <code>ItemStack</code>'s color depends on the <code>palette_index</code> field of the
+stack's metadata. <code>palette_index</code> is an integer, which specifies the
+index of the pixel to use.</p>
+<h4 id="linking-palettes-with-nodes">Linking palettes with nodes</h4>
+<p>When registering a node, set the item definition's <code>palette</code> field to
+a texture. You can also use texture modifiers.
+The node's color depends on its <code>param2</code>, so you also must set an
+appropriate <code>drawtype</code>:
+<em> <code>drawtype = "color"</code> for nodes which use their full <code>param2</code> for
+  palette indexing. These nodes can have 256 different colors.
+  The palette should contain 256 pixels.
+</em> <code>drawtype = "colorwallmounted"</code> for nodes which use the first
+  five bits (most significant) of <code>param2</code> for palette indexing.
+  The remaining three bits are describing rotation, as in <code>wallmounted</code>
+  draw type. Division by 8 yields the palette index (without stretching the
+  palette). These nodes can have 32 different colors, and the palette
+  should contain 32 pixels.
+  Examples:
+  * <code>param2 = 17</code> is 2 * 8 + 1, so the rotation is 1 and the third (= 2 + 1)
+    pixel will be picked from the palette.
+  * <code>param2 = 35</code> is 4 * 8 + 3, so the rotation is 3 and the fifth (= 4 + 1)
+    pixel will be picked from the palette.
+* <code>drawtype = "colorfacedir"</code> for nodes which use the first
+  three bits of <code>param2</code> for palette indexing. The remaining
+  five bits are describing rotation, as in <code>facedir</code> draw type.
+  Division by 32 yields the palette index (without stretching the
+  palette). These nodes can have 8 different colors, and the
+  palette should contain 8 pixels.
+  Examples:
+  * <code>param2 = 17</code> is 0 * 32 + 17, so the rotation is 17 and the
+    first (= 0 + 1) pixel will be picked from the palette.
+  * <code>param2 = 35</code> is 1 * 32 + 3, so the rotation is 3 and the
+    second (= 1 + 1) pixel will be picked from the palette.</p>
+<p>To colorize a node on the map, set its <code>param2</code> value (according
+to the node's draw type).</p>
+<h3 id="conversion-between-nodes-in-the-inventory-and-the-on-the-map">Conversion between nodes in the inventory and the on the map</h3>
+<p>Static coloring is the same for both cases, there is no need
+for conversion.</p>
+<p>If the <code>ItemStack</code>'s metadata contains the <code>color</code> field, it will be
+lost on placement, because nodes on the map can only use palettes.</p>
+<p>If the <code>ItemStack</code>'s metadata contains the <code>palette_index</code> field, it is
+automatically transferred between node and item forms by the engine,
+when a player digs or places a colored node.
+You can disable this feature by setting the <code>drop</code> field of the node
+to itself (without metadata).</p>
+<h3 id="colored-items-in-craft-recipes">Colored items in craft recipes</h3>
+<p>Craft recipes only support item strings, but fortunately item strings
+can also contain metadata. Example craft recipe registration:</p>
+<pre><code>minetest.register_craft({
+    output = minetest.itemstring_with_palette("wool:block", 3),
+    type = "shapeless",
+    recipe = {
+        "wool:block",
+        "dye:red",
+    },
+})
+</code></pre>
+<p>To set the <code>color</code> field, you can use <code>minetest.itemstring_with_color</code>.</p>
+<p>Metadata field filtering in the <code>recipe</code> field are not supported yet,
+so the craft output is independent of the color of the ingredients.</p>
+<h2 id="soft-texture-overlay">Soft texture overlay</h2>
+<p>Sometimes hardware coloring is not enough, because it affects the
+whole tile. Soft texture overlays were added to Minetest to allow
+the dynamic coloring of only specific parts of the node's texture.
+For example a grass block may have colored grass, while keeping the
+dirt brown.</p>
+<p>These overlays are 'soft', because unlike texture modifiers, the layers
+are not merged in the memory, but they are simply drawn on top of each
+other. This allows different hardware coloring, but also means that
+tiles with overlays are drawn slower. Using too much overlays might
+cause FPS loss.</p>
+<p>To define an overlay, simply set the <code>overlay_tiles</code> field of the node
+definition. These tiles are defined in the same way as plain tiles:
+they can have a texture name, color etc.
+To skip one face, set that overlay tile to an empty string.</p>
+<p>Example (colored grass block):</p>
+<pre><code>minetest.register_node("default:dirt_with_grass", {
+    description = "Dirt with Grass",
+    -- Regular tiles, as usual
+    -- The dirt tile disables palette coloring
+    tiles = { {name = "default_grass.png"},
+        {name = "default_dirt.png", color = "white"}},
+    -- Overlay tiles: define them in the same style
+    -- The top and bottom tile does not have overlay
+    overlay_tiles = {"", "",
+        {name = "default_grass_side.png", tileable_vertical = false}},
+    -- Global color, used in inventory
+    color = "green",
+    -- Palette in the world
+    paramtype2 = "color",
+    palette = "default_foilage.png",
+})
+</code></pre>
 <h2 id="sounds">Sounds</h2>
 <p>Only Ogg Vorbis files are supported.</p>
 <p>For positional playing of sounds, only single-channel (mono) files are
@@ -741,11 +905,15 @@ from the available ones of the following files:</p>
 <pre><code>-- Play locationless on all clients
 {
     gain = 1.0, -- default
+    fade = 0.0, -- default, change to a value &gt; 0 to fade the sound in
+    pitch = 1.0, -- default
 }
 -- Play locationless to one player
 {
     to_player = name,
     gain = 1.0, -- default
+    fade = 0.0, -- default, change to a value &gt; 0 to fade the sound in
+    pitch = 1.0, -- default
 }
 -- Play locationless to one player, looped
 {
@@ -776,6 +944,7 @@ one player using <code>to_player = name,</code></p>
 <li>e.g. <code>{}</code></li>
 <li><a class="anchor" href="#namedefault_place_node" name="namedefault_place_node">#</a>e.g. <code>{name = "default_place_node"}</code></li>
 <li><a class="anchor" href="#namedefault_place_nodegain10" name="namedefault_place_nodegain10">#</a>e.g. <code>{name = "default_place_node", gain = 1.0}</code></li>
+<li><a class="anchor" href="#namedefault_place_nodegain10pitch10" name="namedefault_place_nodegain10pitch10">#</a>e.g. <code>{name = "default_place_node", gain = 1.0, pitch = 1.0}</code></li>
 </ul>
 <h2 id="registered-definitions-of-stuff">Registered definitions of stuff</h2>
 <p>Anything added using certain <code>minetest.register_*</code> functions get added to
@@ -811,7 +980,7 @@ the global <code>minetest.registered_*</code> tables.</p>
 <ul>
 <li>Unregisters the item name from engine, and deletes the entry with key</li>
 <li><a class="anchor" href="#name" name="name">#</a><code>name</code> from <code>minetest.registered_items</code> and from the associated item</li>
-<li>table according to its nature: minetest.registered_nodes[] etc</li>
+<li><a class="anchor" href="#minetestregistered_nodes" name="minetestregistered_nodes">#</a>table according to its nature: <code>minetest.registered_nodes[]</code> etc</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_biomebiomedefinition" name="minetestregister_biomebiomedefinition">#</a>
@@ -907,9 +1076,9 @@ are quite static.</p>
 They are represented by a table:</p>
 <pre><code>{name="name", param1=num, param2=num}
 </code></pre>
-<p><code>param1</code> and <code>param2</code> are 8-bit integers. The engine uses them for certain
-automated functions. If you don't use these functions, you can use them to
-store arbitrary values.</p>
+<p><code>param1</code> and <code>param2</code> are 8-bit integers ranging from 0 to 255. The engine uses
+them for certain automated functions. If you don't use these functions, you can
+use them to store arbitrary values.</p>
 <p>The functions of <code>param1</code> and <code>param2</code> are determined by certain fields in the
 node definition:</p>
 <p><code>param1</code> is reserved for the engine when <code>paramtype != "none"</code>:</p>
@@ -974,15 +1143,6 @@ paramtype2 == "glasslikeliquidlevel"
 ^ Only valid for "glasslike_framed" or "glasslike_framed_optional" drawtypes.
   param2 defines 64 levels of internal liquid.
   Liquid texture is defined using `special_tiles = {"modname_tilename.png"},`
-collision_box = {
-  type = "fixed",
-  fixed = {
-            {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
-  },
-},
-^ defines list of collision boxes for the node. If empty, collision boxes
-  will be the same as nodeboxes, in case of any other nodes will be full cube
-  as in the example above.
 </code></pre>
 <p>Nodes can also contain extra data. See "Node Metadata".</p>
 <h2 id="node-drawtypes">Node drawtypes</h2>
@@ -1006,6 +1166,7 @@ collision_box = {
 <li><a class="anchor" href="#raillike" name="raillike">#</a><code>raillike</code></li>
 <li><a class="anchor" href="#nodebox" name="nodebox">#</a><code>nodebox</code> -- See below. (<strong>Experimental!</strong>)</li>
 <li><a class="anchor" href="#mesh" name="mesh">#</a><code>mesh</code> -- use models for nodes</li>
+<li><a class="anchor" href="#plantlike_rooted" name="plantlike_rooted">#</a><code>plantlike_rooted</code></li>
 </ul>
 <p><code>*_optional</code> drawtypes need less rendering time if deactivated (always client side).</p>
 <h2 id="node-boxes">Node boxes</h2>
@@ -1096,19 +1257,20 @@ This results in smooth, rolling noise. Disable this (<code>noeased</code>) for s
 If no flags are specified (or defaults is), 2D noise is eased and 3D noise is not eased.</p>
 <h4 id="absvalue"><code>absvalue</code></h4>
 <p>Accumulates the absolute value of each noise gradient result.</p>
-<p>Noise parameters format example for 2D or 3D perlin noise or perlin noise maps:
-    np_terrain = {
-        offset = 0,
-        scale = 1,
-        spread = {x=500, y=500, z=500},
-        seed = 571347,
-        octaves = 5,
-        persist = 0.63,
-        lacunarity = 2.0,
-        flags = "defaults, absvalue"
-    }
-  ^ A single noise parameter table can be used to get 2D or 3D noise,
-    when getting 2D noise spread.z is ignored.</p>
+<p>Noise parameters format example for 2D or 3D perlin noise or perlin noise maps:</p>
+<pre><code>np_terrain = {
+    offset = 0,
+    scale = 1,
+    spread = {x=500, y=500, z=500},
+    seed = 571347,
+    octaves = 5,
+    persist = 0.63,
+    lacunarity = 2.0,
+    flags = "defaults, absvalue"
+}
+^ A single noise parameter table can be used to get 2D or 3D noise,
+  when getting 2D noise spread.z is ignored.
+</code></pre>
 <h2 id="ore-types">Ore types</h2>
 <p>These tell in what manner the ore is generated.</p>
 <p>All default ores are of the uniformly-distributed scatter type.</p>
@@ -1163,14 +1325,12 @@ to small changes.  The following is a decent set of parameters to work from:</p>
 },
 noise_threshold = 1.6
 </code></pre>
-<p>WARNING:  Use this ore type <em>very</em> sparingly since it is ~200x more
+<p><strong>WARNING</strong>: Use this ore type <em>very</em> sparingly since it is ~200x more
 computationally expensive than any other ore.</p>
 <h2 id="ore-attributes">Ore attributes</h2>
 <p>See section "Flag Specifier Format".</p>
-<p>Currently supported flags: <code>absheight</code></p>
-<h3 id="absheight"><code>absheight</code></h3>
-<p>Also produce this same ore between the height range of <code>-y_max</code> and <code>-y_min</code>.</p>
-<p>Useful for having ore in sky realms without having to duplicate ore entries.</p>
+<p>Currently supported flags:
+<code>puff_cliffs</code>, <code>puff_additive_composition</code>.</p>
 <h3 id="puff_cliffs"><code>puff_cliffs</code></h3>
 <p>If set, puff ore generation will not taper down large differences in displacement
 when approaching the edge of a puff.  This flag has no effect for ore types other
@@ -1211,12 +1371,14 @@ in the form of a table.  This table specifies the following fields:</p>
 <li><a class="anchor" href="#force_place" name="force_place">#</a><code>force_place</code>: boolean representing if the node should forcibly overwrite any
      previous contents (default: false)</li>
 </ul>
-<p>About probability values:
-<em> A probability value of <code>0</code> or <code>1</code> means that node will never appear (0% chance).
-</em> A probability value of <code>254</code> or <code>255</code> means the node will always appear (100% chance).
-* If the probability value <code>p</code> is greater than <code>1</code>, then there is a
+<p>About probability values:</p>
+<ul>
+<li><a class="anchor" href="#0" name="0">#</a>A probability value of <code>0</code> or <code>1</code> means that node will never appear (0% chance).</li>
+<li><a class="anchor" href="#254" name="254">#</a>A probability value of <code>254</code> or <code>255</code> means the node will always appear (100% chance).</li>
+<li><a class="anchor" href="#p_1" name="p_1">#</a>If the probability value <code>p</code> is greater than <code>1</code>, then there is a
   <code>(p / 256 * 100)</code> percent chance that node will appear when the schematic is
-  placed on the map.</p>
+  placed on the map.</li>
+</ul>
 <h2 id="schematic-attributes">Schematic attributes</h2>
 <p>See section "Flag Specifier Format".</p>
 <p>Currently supported flags: <code>place_center_x</code>, <code>place_center_y</code>, <code>place_center_z</code>,
@@ -1338,15 +1500,28 @@ is present, mapped to a boolean of any value, the specified flag is unset.</p>
   things according to <code>tool_capabilities</code>.</li>
 <li><a class="anchor" href="#register_craftitem" name="register_craftitem">#</a>Craftitem (<code>register_craftitem</code>): A miscellaneous item.</li>
 </ul>
+<h3 id="amount-and-wear">Amount and wear</h3>
+<p>All item stacks have an amount between 0 to 65535. It is 1 by
+default. Tool item stacks can not have an amount greater than 1.</p>
+<p>Tools use a wear (=damage) value ranging from 0 to 65535. The
+value 0 is the default and used is for unworn tools. The values
+1 to 65535 are used for worn tools, where a higher value stands for
+a higher wear. Non-tools always have a wear value of 0.</p>
 <h3 id="item-formats">Item formats</h3>
 <p>Items and item stacks can exist in three formats: Serializes, table format
 and <code>ItemStack</code>.</p>
 <h4 id="serialized">Serialized</h4>
-<p>This is called "stackstring" or "itemstring":</p>
+<p>This is called "stackstring" or "itemstring". It is a simple string with
+1-3 components: the full item identifier, an optional amount and an optional
+wear value. Syntax:</p>
+<pre><code>&lt;identifier&gt; [&lt;amount&gt;[ &lt;wear&gt;]]
+</code></pre>
+<p>Examples:</p>
 <ul>
-<li><a class="anchor" href="#defaultdirt5" name="defaultdirt5">#</a>e.g. <code>'default:dirt 5'</code></li>
-<li><a class="anchor" href="#defaultpick_wood21323" name="defaultpick_wood21323">#</a>e.g. <code>'default:pick_wood 21323'</code></li>
-<li><a class="anchor" href="#defaultapple" name="defaultapple">#</a>e.g. <code>'default:apple'</code></li>
+<li><a class="anchor" href="#defaultapple" name="defaultapple">#</a><code>'default:apple'</code>: 1 apple</li>
+<li><a class="anchor" href="#defaultdirt5" name="defaultdirt5">#</a><code>'default:dirt 5'</code>: 5 dirt</li>
+<li><a class="anchor" href="#defaultpick_stone" name="defaultpick_stone">#</a><code>'default:pick_stone'</code>: a new stone pickaxe</li>
+<li><a class="anchor" href="#defaultpick_wood121323" name="defaultpick_wood121323">#</a><code>'default:pick_wood 1 21323'</code>: a wooden pickaxe, ca. 1/3 worn out</li>
 </ul>
 <h4 id="table-format">Table format</h4>
 <p>Examples:</p>
@@ -1422,17 +1597,20 @@ effective towards.</p>
 <h3 id="special-groups">Special groups</h3>
 <ul>
 <li><a class="anchor" href="#immortal" name="immortal">#</a><code>immortal</code>: Disables the group damage system for an entity</li>
+<li><a class="anchor" href="#punch_operable" name="punch_operable">#</a><code>punch_operable</code>: For entities; disables the regular damage mechanism for
+  players punching it by hand or a non-tool item, so that it can do something
+  else than take damage.</li>
 <li><a class="anchor" href="#level" name="level">#</a><code>level</code>: Can be used to give an additional sense of progression in the game.<ul>
 <li>A larger level will cause e.g. a weapon of a lower level make much less
    damage, and get worn out much faster, or not be able to get drops
    from destroyed nodes.</li>
-<li><a class="anchor" href="#0" name="0">#</a><code>0</code> is something that is directly accessible at the start of gameplay</li>
+<li><a class="anchor" href="#0_1" name="0_1">#</a><code>0</code> is something that is directly accessible at the start of gameplay</li>
 <li>There is no upper limit</li>
 </ul>
 </li>
-<li><a class="anchor" href="#dig_immediate" name="dig_immediate">#</a><code>dig_immediate</code>: (player can always pick up node without tool wear)<ul>
-<li><a class="anchor" href="#2" name="2">#</a><code>2</code>: node is removed without tool wear after 0.5 seconds (rail, sign)</li>
-<li><a class="anchor" href="#3" name="3">#</a><code>3</code>: node is removed without tool wear after 0.15 seconds (torch)</li>
+<li><a class="anchor" href="#dig_immediate" name="dig_immediate">#</a><code>dig_immediate</code>: (player can always pick up node without reducing tool wear)<ul>
+<li><a class="anchor" href="#2" name="2">#</a><code>2</code>: the node always gets the digging time 0.5 seconds (rail, sign)</li>
+<li><a class="anchor" href="#3" name="3">#</a><code>3</code>: the node always gets the digging time 0 seconds (torch)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#disable_jump" name="disable_jump">#</a><code>disable_jump</code>: Player (and possibly other things) cannot jump from node</li>
@@ -1464,17 +1642,19 @@ effective towards.</p>
    suggests for the hand.</li>
 </ul>
 <h3 id="examples-of-custom-groups">Examples of custom groups</h3>
-<p>Item groups are often used for defining, well, <em>groups of items</em>.
-<em> <code>meat</code>: any meat-kind of a thing (rating might define the size or healing
-  ability or be irrelevant -- it is not defined as of yet)
-</em> <code>eatable</code>: anything that can be eaten. Rating might define HP gain in half
-  hearts.
-<em> <code>flammable</code>: can be set on fire. Rating might define the intensity of the
-  fire, affecting e.g. the speed of the spreading of an open fire.
-</em> <code>wool</code>: any wool (any origin, any color)
-<em> <code>metal</code>: any metal
-</em> <code>weapon</code>: any weapon
-* <code>heavy</code>: anything considerably heavy</p>
+<p>Item groups are often used for defining, well, <em>groups of items</em>.</p>
+<ul>
+<li><a class="anchor" href="#meat" name="meat">#</a><code>meat</code>: any meat-kind of a thing (rating might define the size or healing
+  ability or be irrelevant -- it is not defined as of yet)</li>
+<li><a class="anchor" href="#eatable" name="eatable">#</a><code>eatable</code>: anything that can be eaten. Rating might define HP gain in half
+  hearts.</li>
+<li><a class="anchor" href="#flammable" name="flammable">#</a><code>flammable</code>: can be set on fire. Rating might define the intensity of the
+  fire, affecting e.g. the speed of the spreading of an open fire.</li>
+<li><a class="anchor" href="#wool" name="wool">#</a><code>wool</code>: any wool (any origin, any color)</li>
+<li><a class="anchor" href="#metal" name="metal">#</a><code>metal</code>: any metal</li>
+<li><a class="anchor" href="#weapon" name="weapon">#</a><code>weapon</code>: any weapon</li>
+<li><a class="anchor" href="#heavy" name="heavy">#</a><code>heavy</code>: anything considerably heavy</li>
+</ul>
 <h3 id="digging-time-calculation-specifics">Digging time calculation specifics</h3>
 <p>Groups such as <code>crumbly</code>, <code>cracky</code> and <code>snappy</code> are used for this
 purpose. Rating is <code>1</code>, <code>2</code> or <code>3</code>. A higher rating for such a group implies
@@ -1491,9 +1671,9 @@ groups to enable interaction with tools.</p>
 <ul>
 <li>Full punch interval</li>
 <li>Maximum drop level</li>
-<li><a class="anchor" href="#0_1" name="0_1">#</a>For an arbitrary list of groups:<ul>
-<li><a class="anchor" href="#0_2" name="0_2">#</a>Uses (until the tool breaks)<ul>
-<li><a class="anchor" href="#0_3" name="0_3">#</a>Maximum level (usually <code>0</code>, <code>1</code>, <code>2</code> or <code>3</code>)</li>
+<li><a class="anchor" href="#0_2" name="0_2">#</a>For an arbitrary list of groups:<ul>
+<li><a class="anchor" href="#0_3" name="0_3">#</a>Uses (until the tool breaks)<ul>
+<li><a class="anchor" href="#0_4" name="0_4">#</a>Maximum level (usually <code>0</code>, <code>1</code>, <code>2</code> or <code>3</code>)</li>
 <li>Digging times</li>
 <li>Damage groups</li>
 </ul>
@@ -1529,6 +1709,9 @@ maximum level.</p>
 result in the tool to be able to dig nodes that have a rating of <code>2</code> or <code>3</code>
 for this group, and unable to dig the rating <code>1</code>, which is the toughest.
 Unless there is a matching group that enables digging otherwise.</p>
+<p>If the result digging time is 0, a delay of 0.15 seconds is added between
+digging nodes; If the player releases LMB after digging, this delay is set to 0,
+i.e. players can more quickly click the nodes away instead of holding LMB.</p>
 <h4 id="damage-groups">Damage groups</h4>
 <p>List of damage for groups of entities. See "Entity damage mechanism".</p>
 <h4 id="example-definition-of-the-capabilities-of-a-tool">Example definition of the capabilities of a tool</h4>
@@ -1658,7 +1841,7 @@ meta:from_table({
 <p>Item metadata only contains a key-value store.</p>
 <p>Some of the values in the key-value store are handled specially:</p>
 <ul>
-<li><a class="anchor" href="#description" name="description">#</a><code>description</code>: Set the itemstack's description. Defaults to idef.description</li>
+<li><a class="anchor" href="#description" name="description">#</a><code>description</code>: Set the item stack's description. Defaults to <code>idef.description</code></li>
 <li><a class="anchor" href="#color" name="color">#</a><code>color</code>: A <code>ColorString</code>, which sets the stack's color.</li>
 <li><a class="anchor" href="#palette_index" name="palette_index">#</a><code>palette_index</code>: If the item has a palette, this is used to get the
                   current color from the palette.</li>
@@ -1715,7 +1898,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="containerxy"><code>container[&lt;X&gt;,&lt;Y&gt;]</code></h4>
 <ul>
 <li>Start of a container block, moves all physical elements in the container by (X, Y)</li>
-<li>Must have matching container_end</li>
+<li><a class="anchor" href="#container_end_1" name="container_end_1">#</a>Must have matching <code>container_end</code></li>
 <li>Containers can be nested, in which case the offsets are added
   (child containers are relative to parent containers)</li>
 </ul>
@@ -1763,7 +1946,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>Sets default background color of tooltips</li>
 <li>Sets default font color of tooltips</li>
 </ul>
-<h4 id="tooltipgui_element_nametooltip_textbgcolorfontcolor"><code>tooltip[&lt;gui_element_name&gt;;&lt;tooltip_text&gt;;&lt;bgcolor&gt;,&lt;fontcolor&gt;]</code></h4>
+<h4 id="tooltipgui_element_nametooltip_textbgcolorfontcolor"><code>tooltip[&lt;gui_element_name&gt;;&lt;tooltip_text&gt;;&lt;bgcolor&gt;;&lt;fontcolor&gt;]</code></h4>
 <ul>
 <li>Adds tooltip for an element</li>
 <li><a class="anchor" href="#bgcolor" name="bgcolor">#</a><code>&lt;bgcolor&gt;</code> tooltip background color as <code>ColorString</code> (optional)</li>
@@ -1816,7 +1999,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="fieldxywhnamelabeldefault"><code>field[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;label&gt;;&lt;default&gt;]</code></h4>
 <ul>
 <li>Textual field; will be sent to server when a button is clicked</li>
-<li>When enter is pressed in field, fields.key_enter_field will be sent with the name
+<li><a class="anchor" href="#fieldskey_enter_field" name="fieldskey_enter_field">#</a>When enter is pressed in field, <code>fields.key_enter_field</code> will be sent with the name
   of this field.</li>
 <li><a class="anchor" href="#x_2" name="x_2">#</a><code>x</code> and <code>y</code> position the field relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_2" name="w_2">#</a><code>w</code> and <code>h</code> are the size of the field</li>
@@ -1830,17 +2013,17 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><strong>Note</strong>: no extra text or more than a single variable is supported ATM.</li>
 </ul>
 </li>
-<li>See field_close_on_enter to stop enter closing the formspec</li>
+<li><a class="anchor" href="#field_close_on_enter" name="field_close_on_enter">#</a>See <code>field_close_on_enter</code> to stop enter closing the formspec</li>
 </ul>
 <h4 id="fieldnamelabeldefault"><code>field[&lt;name&gt;;&lt;label&gt;;&lt;default&gt;]</code></h4>
 <ul>
 <li>As above, but without position/size units</li>
-<li>When enter is pressed in field, fields.key_enter_field will be sent with the name
+<li><a class="anchor" href="#fieldskey_enter_field_1" name="fieldskey_enter_field_1">#</a>When enter is pressed in field, <code>fields.key_enter_field</code> will be sent with the name
   of this field.</li>
 <li>Special field for creating simple forms, such as sign text input</li>
 <li><a class="anchor" href="#size_2" name="size_2">#</a>Must be used without a <code>size[]</code> element</li>
 <li>A "Proceed" button will be added automatically</li>
-<li>See field_close_on_enter to stop enter closing the formspec</li>
+<li><a class="anchor" href="#field_close_on_enter_1" name="field_close_on_enter_1">#</a>See <code>field_close_on_enter</code> to stop enter closing the formspec</li>
 </ul>
 <h4 id="field_close_on_enternameclose_on_enter"><code>field_close_on_enter[&lt;name&gt;;&lt;close_on_enter&gt;]</code></h4>
 <ul>
@@ -1870,6 +2053,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>Clickable button. When clicked, fields will be sent.</li>
 <li><a class="anchor" href="#x_5" name="x_5">#</a><code>x</code>, <code>y</code> and <code>name</code> work as per field</li>
 <li><a class="anchor" href="#w_3" name="w_3">#</a><code>w</code> and <code>h</code> are the size of the button</li>
+<li><a class="anchor" href="#h_3" name="h_3">#</a>Fixed button height. It will be vertically centred on <code>h</code></li>
 <li><a class="anchor" href="#label_4" name="label_4">#</a><code>label</code> is the text on the button</li>
 <li>Position and size units are inventory slots</li>
 </ul>
@@ -1980,7 +2164,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><a class="anchor" href="#w_7" name="w_7">#</a><code>w</code> and <code>h</code>: width and height</li>
 <li><a class="anchor" href="#orientation" name="orientation">#</a><code>orientation</code>:  <code>vertical</code>/<code>horizontal</code></li>
 <li>Fieldname data is transferred to Lua</li>
-<li><a class="anchor" href="#0_4" name="0_4">#</a>Value this trackbar is set to (<code>0</code>-<code>1000</code>)</li>
+<li><a class="anchor" href="#0_5" name="0_5">#</a>Value this trackbar is set to (<code>0</code>-<code>1000</code>)</li>
 <li><a class="anchor" href="#minetestexplode_scrollbar_event" name="minetestexplode_scrollbar_event">#</a>See also <code>minetest.explode_scrollbar_event</code> (main menu: <code>engine.explode_scrollbar_event</code>)</li>
 </ul>
 <h4 id="tablexywhnamecell-1cell-2cell-nselected-idx"><code>table[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;cell 1&gt;,&lt;cell 2&gt;,...,&lt;cell n&gt;;&lt;selected idx&gt;]</code></h4>
@@ -2052,7 +2236,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><a class="anchor" href="#0value" name="0value">#</a><code>0=&lt;value&gt;</code> sets image for image index 0</li>
 <li><a class="anchor" href="#1value" name="1value">#</a><code>1=&lt;value&gt;</code> sets image for image index 1</li>
 <li><a class="anchor" href="#2value" name="2value">#</a><code>2=&lt;value&gt;</code> sets image for image index 2</li>
-<li><a class="anchor" href="#0_5" name="0_5">#</a>and so on; defined indices need not be contiguous empty or
+<li><a class="anchor" href="#0_6" name="0_6">#</a>and so on; defined indices need not be contiguous empty or
   non-numeric cells are treated as <code>0</code>.</li>
 </ul>
 </li>
@@ -2101,25 +2285,39 @@ or string form, a ColorString (defined above):
 <h2 id="escape-sequences">Escape sequences</h2>
 <p>Most text can contain escape sequences, that can for example color the text.
 There are a few exceptions: tab headers, dropdowns and vertical labels can't.
-The following functions provide escape sequences:
-<em> <code>core.get_color_escape_sequence(color)</code>:
-    * <code>color</code> is a ColorString
-    * The escape sequence sets the text color to <code>color</code>
-</em> <code>core.colorize(color, message)</code>:
-    * Equivalent to:
-      <code>core.get_color_escape_sequence(color) ..
-       message ..
-       core.get_color_escape_sequence("#ffffff")</code>
-<em> <code>color.get_background_escape_sequence(color)</code>
-    * <code>color</code> is a ColorString
-    * The escape sequence sets the background of the whole text element to
-      <code>color</code>. Only defined for item descriptions and tooltips.
-</em> <code>color.strip_foreground_colors(str)</code>
-    * Removes foreground colors added by <code>get_color_escape_sequence</code>.
-<em> <code>color.strip_background_colors(str)</code>
-    * Removes background colors added by <code>get_background_escape_sequence</code>.
-</em> <code>color.strip_colors(str)</code>
-    * Removes all color escape sequences.</p>
+The following functions provide escape sequences:</p>
+<ul>
+<li><a class="anchor" href="#minetestget_color_escape_sequencecolor" name="minetestget_color_escape_sequencecolor">#</a><code>minetest.get_color_escape_sequence(color)</code>:<ul>
+<li><a class="anchor" href="#color_4" name="color_4">#</a><code>color</code> is a ColorString</li>
+<li><a class="anchor" href="#color_5" name="color_5">#</a>The escape sequence sets the text color to <code>color</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestcolorizecolormessage" name="minetestcolorizecolormessage">#</a><code>minetest.colorize(color, message)</code>:<ul>
+<li><a class="anchor" href="#minetestget_color_escape_sequencecolormessageminetestget_color_escape_sequenceffffff" name="minetestget_color_escape_sequencecolormessageminetestget_color_escape_sequenceffffff">#</a>Equivalent to:
+  <code>minetest.get_color_escape_sequence(color) ..
+   message ..
+   minetest.get_color_escape_sequence("#ffffff")</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestget_background_escape_sequencecolor" name="minetestget_background_escape_sequencecolor">#</a><code>minetest.get_background_escape_sequence(color)</code><ul>
+<li><a class="anchor" href="#color_6" name="color_6">#</a><code>color</code> is a ColorString</li>
+<li><a class="anchor" href="#color_7" name="color_7">#</a>The escape sequence sets the background of the whole text element to
+  <code>color</code>. Only defined for item descriptions and tooltips.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#mineteststrip_foreground_colorsstr" name="mineteststrip_foreground_colorsstr">#</a><code>minetest.strip_foreground_colors(str)</code><ul>
+<li><a class="anchor" href="#get_color_escape_sequence" name="get_color_escape_sequence">#</a>Removes foreground colors added by <code>get_color_escape_sequence</code>.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#mineteststrip_background_colorsstr" name="mineteststrip_background_colorsstr">#</a><code>minetest.strip_background_colors(str)</code><ul>
+<li><a class="anchor" href="#get_background_escape_sequence" name="get_background_escape_sequence">#</a>Removes background colors added by <code>get_background_escape_sequence</code>.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#mineteststrip_colorsstr" name="mineteststrip_colorsstr">#</a><code>minetest.strip_colors(str)</code><ul>
+<li>Removes all color escape sequences.</li>
+</ul>
+</li>
+</ul>
 <h2 id="spatial-vectors">Spatial Vectors</h2>
 <ul>
 <li><a class="anchor" href="#vectornewabc" name="vectornewabc">#</a><code>vector.new(a[, b, c])</code>: returns a vector:<ul>
@@ -2160,13 +2358,12 @@ The following functions provide escape sequences:
 </ul>
 </li>
 <li><a class="anchor" href="#mathsignxtolerance" name="mathsignxtolerance">#</a><code>math.sign(x, tolerance)</code><ul>
-<li><a class="anchor" href="#0_6" name="0_6">#</a>Get the sign of a number.
+<li><a class="anchor" href="#0_7" name="0_7">#</a>Get the sign of a number.
   Optional: Also returns <code>0</code> when the absolute value is within the tolerance (default: <code>0</code>)</li>
 </ul>
 </li>
-<li>`string.split(str, separator=",", include_empty=false, max_splits=-1,</li>
-<li><a class="anchor" href="#max_splits" name="max_splits">#</a>sep_is_pattern=false)`<ul>
-<li><a class="anchor" href="#max_splits_1" name="max_splits_1">#</a>If <code>max_splits</code> is negative, do not limit splits.</li>
+<li><a class="anchor" href="#stringsplitstrseparatorinclude_emptyfalsemax_splits1sep_is_patternfalse" name="stringsplitstrseparatorinclude_emptyfalsemax_splits1sep_is_patternfalse">#</a><code>string.split(str, separator=",", include_empty=false, max_splits=-1, sep_is_pattern=false)</code><ul>
+<li><a class="anchor" href="#max_splits" name="max_splits">#</a>If <code>max_splits</code> is negative, do not limit splits.</li>
 <li><a class="anchor" href="#sep_is_pattern" name="sep_is_pattern">#</a><code>sep_is_pattern</code> specifies if separator is a plain string or a pattern (regex).</li>
 <li><a class="anchor" href="#stringsplitabab" name="stringsplitabab">#</a>e.g. <code>string:split("a,b", ",") == {"a","b"}</code></li>
 </ul>
@@ -2175,7 +2372,12 @@ The following functions provide escape sequences:
 <li><a class="anchor" href="#stringtrimnttfoobartfoobar" name="stringtrimnttfoobartfoobar">#</a>e.g. <code>string.trim("\n \t\tfoo bar\t ") == "foo bar"</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestpos_to_stringxXyYzZdecimal_places" name="minetestpos_to_stringxXyYzZdecimal_places">#</a><code>minetest.pos_to_string({x=X,y=Y,z=Z}, decimal_places))</code>: returns <code>"(X,Y,Z)"</code><ul>
+<li><a class="anchor" href="#minetestwrap_textstrlimit" name="minetestwrap_textstrlimit">#</a><code>minetest.wrap_text(str, limit)</code>: returns a string<ul>
+<li>Adds new lines to the string to keep it within the specified character limit</li>
+<li>limit: Maximal amount of characters in one line</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestpos_to_stringxXyYzZdecimal_places" name="minetestpos_to_stringxXyYzZdecimal_places">#</a><code>minetest.pos_to_string({x=X,y=Y,z=Z}, decimal_places))</code>: returns string <code>"(X,Y,Z)"</code><ul>
 <li>Convert position to a printable string
   Optional: 'decimal_places' will round the x, y and z of the pos to the given decimal place.</li>
 </ul>
@@ -2226,72 +2428,78 @@ The following functions provide escape sequences:
 </ul>
 </li>
 <li><a class="anchor" href="#minetestis_singleplayer" name="minetestis_singleplayer">#</a><code>minetest.is_singleplayer()</code></li>
-<li><a class="anchor" href="#minetestfeatures" name="minetestfeatures">#</a><code>minetest.features</code>: Table containing API feature flags
-      {
-         glasslike_framed = true,
-         nodebox_as_selectionbox = true,
-         chat_send_player_param3 = true,
-         get_all_craft_recipes_works = true,
-         use_texture_alpha = true,
-      -- ^ The transparency channel of textures can be used optionally
-         no_legacy_abms = true,
-      -- ^ Tree and grass ABMs are no longer done from C++
-         texture_names_parens = true,
-      -- ^ Texture grouping is possible using parentheses
-         area_store_custom_ids = true,
-      -- ^ Unique Area ID for AreaStore:insert_area
-         add_entity_with_staticdata = true,
-      -- ^ add_entity supports passing initial staticdata to on_activate
-         no_chat_message_prediction = true,
-      -- ^ Chat messages are no longer predicted
-      }</li>
-<li><a class="anchor" href="#minetesthas_featurearg" name="minetesthas_featurearg">#</a><code>minetest.has_feature(arg)</code>: returns <code>boolean, missing_features</code><ul>
+<li><a class="anchor" href="#minetestfeatures" name="minetestfeatures">#</a><code>minetest.features</code>: Table containing API feature flags<pre><code>{
+   glasslike_framed = true,
+   nodebox_as_selectionbox = true,
+   chat_send_player_param3 = true,
+   get_all_craft_recipes_works = true,
+   use_texture_alpha = true,
+-- ^ The transparency channel of textures can be used optionally
+   no_legacy_abms = true,
+-- ^ Tree and grass ABMs are no longer done from C++
+   texture_names_parens = true,
+-- ^ Texture grouping is possible using parentheses
+   area_store_custom_ids = true,
+-- ^ Unique Area ID for AreaStore:insert_area
+   add_entity_with_staticdata = true,
+-- ^ add_entity supports passing initial staticdata to on_activate
+   no_chat_message_prediction = true,
+-- ^ Chat messages are no longer predicted
+}
+</code></pre>
+<ul>
+<li><a class="anchor" href="#minetesthas_featurearg" name="minetesthas_featurearg">#</a><code>minetest.has_feature(arg)</code>: returns <code>boolean, missing_features</code></li>
 <li><a class="anchor" href="#arg" name="arg">#</a><code>arg</code>: string or table in format <code>{foo=true, bar=true}</code></li>
 <li><a class="anchor" href="#missing_features" name="missing_features">#</a><code>missing_features</code>: <code>{foo=true, bar=true}</code></li>
+<li><a class="anchor" href="#minetestget_player_informationplayer_name" name="minetestget_player_informationplayer_name">#</a><code>minetest.get_player_information(player_name)</code>:</li>
+<li><a class="anchor" href="#address127001IPaddressofclientip_version4IPv4IPv6min_rtt001minimumroundtriptimemax_rtt02maximumroundtriptimeavg_rtt002averageroundtriptimemin_jitter001minimumpackettimejittermax_jitter05maximumpackettimejitteravg_jitter003averagepackettimejitterconnection_uptime200secondssinceclientconnectedprot_vers31protocolversionusedbyclientfollowinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate" name="address127001IPaddressofclientip_version4IPv4IPv6min_rtt001minimumroundtriptimemax_rtt02maximumroundtriptimeavg_rtt002averageroundtriptimemin_jitter001minimumpackettimejittermax_jitter05maximumpackettimejitteravg_jitter003averagepackettimejitterconnection_uptime200secondssinceclientconnectedprot_vers31protocolversionusedbyclientfollowinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate">#</a>Returns a table containing information about a player. Example return value:<pre><code>{
+    address = "127.0.0.1",     -- IP address of client
+    ip_version = 4,            -- IPv4 / IPv6
+    min_rtt = 0.01,            -- minimum round trip time
+    max_rtt = 0.2,             -- maximum round trip time
+    avg_rtt = 0.02,            -- average round trip time
+    min_jitter = 0.01,         -- minimum packet time jitter
+    max_jitter = 0.5,          -- maximum packet time jitter
+    avg_jitter = 0.03,         -- average packet time jitter
+    connection_uptime = 200,   -- seconds since client connected
+    prot_vers = 31,            -- protocol version used by client
+    -- following information is available on debug build only!!!
+    -- DO NOT USE IN MODS
+    --ser_vers = 26,             -- serialization version used by client
+    --major = 0,                 -- major version number
+    --minor = 4,                 -- minor version number
+    --patch = 10,                -- patch version number
+    --vers_string = "0.4.9-git", -- full version string
+    --state = "Active"           -- current client state
+}
+</code></pre>
+<ul>
+<li><a class="anchor" href="#minetestmkdirpath" name="minetestmkdirpath">#</a><code>minetest.mkdir(path)</code>: returns success.<ul>
+<li><a class="anchor" href="#path" name="path">#</a>Creates a directory specified by <code>path</code>, creating parent directories
+  if they don't exist.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestget_player_informationplayer_name" name="minetestget_player_informationplayer_name">#</a><code>minetest.get_player_information(player_name)</code>:<ul>
-<li><a class="anchor" href="#followinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientprot_vers23protocolversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate" name="followinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientprot_vers23protocolversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate">#</a>Returns a table containing information about a player
-  Example return value:
-    {
-        address = "127.0.0.1",     -- IP address of client
-        ip_version = 4,            -- IPv4 / IPv6
-        min_rtt = 0.01,            -- minimum round trip time
-        max_rtt = 0.2,             -- maximum round trip time
-        avg_rtt = 0.02,            -- average round trip time
-        min_jitter = 0.01,         -- minimum packet time jitter
-        max_jitter = 0.5,          -- maximum packet time jitter
-        avg_jitter = 0.03,         -- average packet time jitter
-        connection_uptime = 200,   -- seconds since client connected<pre><code>-- following information is available on debug build only!!!
--- DO NOT USE IN MODS
---ser_vers = 26,             -- serialization version used by client
---prot_vers = 23,            -- protocol version used by client
---major = 0,                 -- major version number
---minor = 4,                 -- minor version number
---patch = 10,                -- patch version number
---vers_string = "0.4.9-git", -- full version string
---state = "Active"           -- current client state
-</code></pre>
-<p>}
-<em> <code>minetest.mkdir(path)</code>: returns success.
-    * Creates a directory specified by <code>path</code>, creating parent directories
-      if they don't exist.
-</em> <code>minetest.get_dir_list(path, [is_dir])</code>: returns list of entry names
-    * is_dir is one of:
-      * nil: return all entries,
-      * true: return only subdirectory names, or
-      * false: return only file names.
-* <code>minetest.get_version()</code>: returns a table containing components of the
-   engine version.  Components:
-    * <code>project</code>: Name of the project, eg, "Minetest"
-    * <code>string</code>: Simple version, eg, "1.2.3-dev"
-    * <code>hash</code>: Full git version (only set if available), eg, "1.2.3-dev-01234567-dirty"
+<li><a class="anchor" href="#minetestget_dir_listpathis_dir" name="minetestget_dir_listpathis_dir">#</a><code>minetest.get_dir_list(path, [is_dir])</code>: returns list of entry names<ul>
+<li>is_dir is one of:</li>
+<li>nil: return all entries,</li>
+<li>true: return only subdirectory names, or</li>
+<li>false: return only file names.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestget_version" name="minetestget_version">#</a><code>minetest.get_version()</code>: returns a table containing components of the
+   engine version.  Components:<ul>
+<li><a class="anchor" href="#project" name="project">#</a><code>project</code>: Name of the project, eg, "Minetest"</li>
+<li><a class="anchor" href="#string" name="string">#</a><code>string</code>: Simple version, eg, "1.2.3-dev"</li>
+<li><a class="anchor" href="#hash" name="hash">#</a><code>hash</code>: Full git version (only set if available), eg, "1.2.3-dev-01234567-dirty"
   Use this for informational purposes only. The information in the returned
   table does not represent the capabilities of the engine, nor is it
   reliable or verifyable. Compatible forks will have a different name and
   version entirely. To check for the presence of engine features, test
   whether the functions exported by the wanted features exist. For example:
-  <code>if core.nodeupdate then ... end</code>.</p>
+  <code>if minetest.nodeupdate then ... end</code>.</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -2329,7 +2537,7 @@ The following functions provide escape sequences:
 <li><a class="anchor" href="#minetestregister_craftrecipe_1" name="minetestregister_craftrecipe_1">#</a>Specify either output or input only. If you specify both, input will be ignored. For input use the same recipe table
   syntax as for <code>minetest.register_craft(recipe)</code>. For output specify only the item, without a quantity.</li>
 <li>If no erase candidate could be found, Lua exception will be thrown.</li>
-<li>Warning! The type field ("shaped","cooking" or any other) will be ignored if the recipe
+<li><strong>Warning</strong>! The type field ("shaped","cooking" or any other) will be ignored if the recipe
   contains output. Erasing is then done independently from the crafting method.</li>
 </ul>
 </li>
@@ -2406,7 +2614,7 @@ The following functions provide escape sequences:
 <li>Called when the player gets damaged or healed</li>
 <li><a class="anchor" href="#player_1" name="player_1">#</a><code>player</code>: ObjectRef of the player</li>
 <li><a class="anchor" href="#hp_change" name="hp_change">#</a><code>hp_change</code>: the amount of change. Negative when it is damage.</li>
-<li><a class="anchor" href="#modifier" name="modifier">#</a><code>modifier</code>: when true, the function should return the actual hp_change.
+<li><a class="anchor" href="#modifier" name="modifier">#</a><code>modifier</code>: when true, the function should return the actual <code>hp_change</code>.
   Note: modifiers only get a temporary hp_change that can be modified by later modifiers.
   modifiers can return true as a second argument to stop the execution of further functions.
   Non-modifiers receive the final hp change calculated by the modifiers.</li>
@@ -2487,22 +2695,22 @@ The following functions provide escape sequences:
 <h3 id="other-registration-functions">Other registration functions</h3>
 <ul>
 <li><a class="anchor" href="#minetestregister_chatcommandcmdchatcommanddefinition" name="minetestregister_chatcommandcmdchatcommanddefinition">#</a><code>minetest.register_chatcommand(cmd, chatcommand definition)</code><ul>
-<li>Adds definition to minetest.registered_chatcommands</li>
+<li><a class="anchor" href="#minetestregistered_chatcommands" name="minetestregistered_chatcommands">#</a>Adds definition to <code>minetest.registered_chatcommands</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestoverride_chatcommandnameredefinition" name="minetestoverride_chatcommandnameredefinition">#</a><code>minetest.override_chatcommand(name, redefinition)</code><ul>
-<li>Overrides fields of a chatcommand registered with register_chatcommand.</li>
+<li><a class="anchor" href="#register_chatcommand" name="register_chatcommand">#</a>Overrides fields of a chatcommand registered with <code>register_chatcommand</code>.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestunregister_chatcommandname" name="minetestunregister_chatcommandname">#</a><code>minetest.unregister_chatcommand(name)</code><ul>
-<li>Unregisters a chatcommands registered with register_chatcommand.</li>
+<li><a class="anchor" href="#register_chatcommand_1" name="register_chatcommand_1">#</a>Unregisters a chatcommands registered with <code>register_chatcommand</code>.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_privilegenamedefinition" name="minetestregister_privilegenamedefinition">#</a><code>minetest.register_privilege(name, definition)</code><ul>
 <li><a class="anchor" href="#definition" name="definition">#</a><code>definition</code>: <code>"description text"</code></li>
 <li><a class="anchor" href="#definition_1" name="definition_1">#</a><code>definition</code>: <code>{ description = "description text", give_to_singleplayer = boolean}</code>
   the default of <code>give_to_singleplayer</code> is true</li>
-<li>To allow players with basic_privs to grant, see basic_privs minetest.conf setting.</li>
+<li><a class="anchor" href="#basic_privs" name="basic_privs">#</a>To allow players with <code>basic_privs</code> to grant, see <code>basic_privs</code> minetest.conf setting.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_authentication_handlerhandler" name="minetestregister_authentication_handlerhandler">#</a><code>minetest.register_authentication_handler(handler)</code><ul>
@@ -2512,20 +2720,10 @@ The following functions provide escape sequences:
 </ul>
 <h3 id="setting-related">Setting-related</h3>
 <ul>
-<li><a class="anchor" href="#minetestsetting_setnamevalue" name="minetestsetting_setnamevalue">#</a><code>minetest.setting_set(name, value)</code><ul>
-<li>Setting names can't contain whitespace or any of <code>="{}#</code>.</li>
-<li><a class="anchor" href="#n_2" name="n_2">#</a>Setting values can't contain the sequence <code>\n"""</code>.</li>
-<li>Setting names starting with "secure." can't be set.</li>
-</ul>
-</li>
-<li><a class="anchor" href="#minetestsetting_getname" name="minetestsetting_getname">#</a><code>minetest.setting_get(name)</code>: returns string or <code>nil</code></li>
-<li><a class="anchor" href="#minetestsetting_setboolnamevalue" name="minetestsetting_setboolnamevalue">#</a><code>minetest.setting_setbool(name, value)</code><ul>
-<li><a class="anchor" href="#setting_set" name="setting_set">#</a>See documentation on <code>setting_set</code> for restrictions.</li>
-</ul>
-</li>
-<li><a class="anchor" href="#minetestsetting_getboolname" name="minetestsetting_getboolname">#</a><code>minetest.setting_getbool(name)</code>: returns boolean or <code>nil</code></li>
-<li><a class="anchor" href="#minetestsetting_get_posname" name="minetestsetting_get_posname">#</a><code>minetest.setting_get_pos(name)</code>: returns position or nil</li>
-<li><a class="anchor" href="#minetestsetting_save" name="minetestsetting_save">#</a><code>minetest.setting_save()</code>, returns <code>nil</code>, save all settings to config file</li>
+<li><a class="anchor" href="#minetestsettings" name="minetestsettings">#</a><code>minetest.settings</code>: Settings object containing all of the settings from the
+  main config file (<code>minetest.conf</code>).</li>
+<li><a class="anchor" href="#minetestsetting_get_posname" name="minetestsetting_get_posname">#</a><code>minetest.setting_get_pos(name)</code>: Loads a setting from the main settings and
+  parses it as a position (in the format <code>(1,2,3)</code>). Returns a position or nil.</li>
 </ul>
 <h3 id="authentication">Authentication</h3>
 <ul>
@@ -2550,7 +2748,7 @@ The following functions provide escape sequences:
 <li>on comparing the password hash in the database with the password hash</li>
 <li>from the function, with an externally provided password, as the hash</li>
 <li>in the db might use the new SRP verifier format.</li>
-<li>For this purpose, use minetest.check_password_entry instead.</li>
+<li><a class="anchor" href="#minetestcheck_password_entry" name="minetestcheck_password_entry">#</a>For this purpose, use <code>minetest.check_password_entry</code> instead.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#mineteststring_to_privsstr" name="mineteststring_to_privsstr">#</a><code>minetest.string_to_privs(str)</code>: returns <code>{priv1=true,...}</code></li>
@@ -2609,7 +2807,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   to get the light value of a neighbor.</li>
 <li><a class="anchor" href="#pos" name="pos">#</a><code>pos</code>: The position where to measure the light.</li>
 <li><a class="anchor" href="#timeofday" name="timeofday">#</a><code>timeofday</code>: <code>nil</code> for current time, <code>0</code> for night, <code>0.5</code> for day</li>
-<li><a class="anchor" href="#0_7" name="0_7">#</a>Returns a number between <code>0</code> and <code>15</code> or <code>nil</code></li>
+<li><a class="anchor" href="#0_8" name="0_8">#</a>Returns a number between <code>0</code> and <code>15</code> or <code>nil</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestplace_nodeposnode" name="minetestplace_nodeposnode">#</a><code>minetest.place_node(pos, node)</code><ul>
@@ -2673,19 +2871,22 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>accounting for time changes.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestfind_node_nearposradiusnodenames" name="minetestfind_node_nearposradiusnodenames">#</a><code>minetest.find_node_near(pos, radius, nodenames)</code>: returns pos or <code>nil</code><ul>
+<li><a class="anchor" href="#minetestfind_node_nearposradiusnodenamessearch_center" name="minetestfind_node_nearposradiusnodenamessearch_center">#</a><code>minetest.find_node_near(pos, radius, nodenames, [search_center])</code>: returns pos or <code>nil</code><ul>
 <li><a class="anchor" href="#radius_1" name="radius_1">#</a><code>radius</code>: using a maximum metric</li>
 <li><a class="anchor" href="#nodenames" name="nodenames">#</a><code>nodenames</code>: e.g. <code>{"ignore", "group:tree"}</code> or <code>"default:dirt"</code></li>
+<li><a class="anchor" href="#search_center" name="search_center">#</a><code>search_center</code> is an optional boolean (default: <code>false</code>)
+  If true <code>pos</code> is also checked for the nodes</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestfind_nodes_in_areaminpmaxpnodenames" name="minetestfind_nodes_in_areaminpmaxpnodenames">#</a><code>minetest.find_nodes_in_area(minp, maxp, nodenames)</code>: returns a list of positions<ul>
-<li>returns as second value a table with the count of the individual nodes found</li>
+<li><a class="anchor" href="#minetestfind_nodes_in_areapos1pos2nodenames" name="minetestfind_nodes_in_areapos1pos2nodenames">#</a><code>minetest.find_nodes_in_area(pos1, pos2, nodenames)</code>: returns a list of positions<ul>
 <li><a class="anchor" href="#nodenames_1" name="nodenames_1">#</a><code>nodenames</code>: e.g. <code>{"ignore", "group:tree"}</code> or <code>"default:dirt"</code></li>
+<li>First return value: Table with all node positions</li>
+<li>Second return value: Table with the count of each node with the node name as index</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestfind_nodes_in_area_under_airminpmaxpnodenames" name="minetestfind_nodes_in_area_under_airminpmaxpnodenames">#</a><code>minetest.find_nodes_in_area_under_air(minp, maxp, nodenames)</code>: returns a list of positions<ul>
-<li>returned positions are nodes with a node air above</li>
+<li><a class="anchor" href="#minetestfind_nodes_in_area_under_airpos1pos2nodenames" name="minetestfind_nodes_in_area_under_airpos1pos2nodenames">#</a><code>minetest.find_nodes_in_area_under_air(pos1, pos2, nodenames)</code>: returns a list of positions<ul>
 <li><a class="anchor" href="#nodenames_2" name="nodenames_2">#</a><code>nodenames</code>: e.g. <code>{"ignore", "group:tree"}</code> or <code>"default:dirt"</code></li>
+<li>Return value: Table with all node positions with a node air above</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_perlinnoiseparams" name="minetestget_perlinnoiseparams">#</a><code>minetest.get_perlin(noiseparams)</code></li>
@@ -2705,7 +2906,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li>The second parameter is a list of IDS of decorations which notification is requested for</li>
-<li><a class="anchor" href="#get_gen_notify" name="get_gen_notify">#</a><code>get_gen_notify()</code>: returns a flagstring and a table with the deco_ids</li>
+<li><a class="anchor" href="#get_gen_notify" name="get_gen_notify">#</a><code>get_gen_notify()</code>: returns a flagstring and a table with the <code>deco_id</code>s</li>
 <li><a class="anchor" href="#minetestget_mapgen_objectobjectname" name="minetestget_mapgen_objectobjectname">#</a><code>minetest.get_mapgen_object(objectname)</code><ul>
 <li>Return requested mapgen object if available (see "Mapgen objects")</li>
 </ul>
@@ -2717,9 +2918,9 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestget_mapgen_params" name="minetestget_mapgen_params">#</a><code>minetest.get_mapgen_params()</code> Returns mapgen parameters, a table containing
   <code>mgname</code>, <code>seed</code>, <code>chunksize</code>, <code>water_level</code>, and <code>flags</code>.</li>
-<li>Deprecated: use minetest.get_mapgen_setting(name) instead</li>
+<li><a class="anchor" href="#minetestget_mapgen_settingname" name="minetestget_mapgen_settingname">#</a>Deprecated: use <code>minetest.get_mapgen_setting(name)</code> instead</li>
 <li><a class="anchor" href="#minetestset_mapgen_paramsMapgenParams" name="minetestset_mapgen_paramsMapgenParams">#</a><code>minetest.set_mapgen_params(MapgenParams)</code><ul>
-<li>Deprecated: use minetest.set_mapgen_setting(name, value, override) instead</li>
+<li><a class="anchor" href="#minetestset_mapgen_settingnamevalueoverride" name="minetestset_mapgen_settingnamevalueoverride">#</a>Deprecated: use <code>minetest.set_mapgen_setting(name, value, override)</code> instead</li>
 <li>Set map generation parameters</li>
 <li><a class="anchor" href="#on_mapgen_init" name="on_mapgen_init">#</a>Function cannot be called after the registration period; only initialization
   and <code>on_mapgen_init</code></li>
@@ -2733,7 +2934,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestget_mapgen_settingname" name="minetestget_mapgen_settingname">#</a><code>minetest.get_mapgen_setting(name)</code><ul>
+<li><a class="anchor" href="#minetestget_mapgen_settingname_1" name="minetestget_mapgen_settingname_1">#</a><code>minetest.get_mapgen_setting(name)</code><ul>
 <li>Gets the <em>active</em> mapgen setting (or nil if none exists) in string format with the following
   order of precedence:
     1) Settings loaded from map_meta.txt or overrides set during mod execution
@@ -2752,7 +2953,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
      is not already present in map_meta.txt.</li>
 <li><a class="anchor" href="#override_meta" name="override_meta">#</a><code>override_meta</code> is an optional boolean (default: <code>false</code>). If this is set to true,
      the setting will become the active setting regardless of the map metafile contents.</li>
-<li>Note: to set the seed, use "seed", not "fixed_map_seed"</li>
+<li><a class="anchor" href="#seed_1" name="seed_1">#</a>Note: to set the seed, use <code>"seed"</code>, not <code>"fixed_map_seed"</code></li>
 <li><a class="anchor" href="#minetestset_mapgen_setting_noiseparamsnamevalueoverride_meta" name="minetestset_mapgen_setting_noiseparamsnamevalueoverride_meta">#</a><code>minetest.set_mapgen_setting_noiseparams(name, value, [override_meta])</code></li>
 <li>Same as above, except value is a NoiseParams table.</li>
 <li><a class="anchor" href="#minetestset_noiseparamsnamenoiseparamsset_default" name="minetestset_noiseparamsnamenoiseparamsset_default">#</a><code>minetest.set_noiseparams(name, noiseparams, set_default)</code><ul>
@@ -2798,8 +2999,8 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#action_1" name="action_1">#</a><code>action</code> could be one of the following constant values:</li>
 </ul>
 </li>
-<li><a class="anchor" href="#coreEMERGE_CANCELLED" name="coreEMERGE_CANCELLED">#</a><code>core.EMERGE_CANCELLED</code>, <code>core.EMERGE_ERRORED</code>, <code>core.EMERGE_FROM_MEMORY</code>,</li>
-<li><a class="anchor" href="#coreEMERGE_FROM_DISK" name="coreEMERGE_FROM_DISK">#</a><code>core.EMERGE_FROM_DISK</code>, <code>core.EMERGE_GENERATED</code></li>
+<li><a class="anchor" href="#minetestEMERGE_CANCELLED" name="minetestEMERGE_CANCELLED">#</a><code>minetest.EMERGE_CANCELLED</code>, <code>minetest.EMERGE_ERRORED</code>, <code>minetest.EMERGE_FROM_MEMORY</code>,</li>
+<li><a class="anchor" href="#minetestEMERGE_FROM_DISK" name="minetestEMERGE_FROM_DISK">#</a><code>minetest.EMERGE_FROM_DISK</code>, <code>minetest.EMERGE_GENERATED</code></li>
 <li><a class="anchor" href="#calls_remaining" name="calls_remaining">#</a>
 <ul>
 <li><a class="anchor" href="#calls_remaining_1" name="calls_remaining_1">#</a><code>calls_remaining</code> is the number of callbacks to be expected after this one</li>
@@ -2826,11 +3027,19 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   time. Default is <code>1</code>.</li>
 </ul>
 </li>
+<li><a class="anchor" href="#minetestraycastpos1pos2objectsliquids" name="minetestraycastpos1pos2objectsliquids">#</a><code>minetest.raycast(pos1, pos2, objects, liquids)</code>: returns <code>Raycast</code><ul>
+<li><a class="anchor" href="#Raycast" name="Raycast">#</a>Creates a <code>Raycast</code> object.</li>
+<li><a class="anchor" href="#pos1_5" name="pos1_5">#</a><code>pos1</code>: start of the ray</li>
+<li><a class="anchor" href="#pos2_1" name="pos2_1">#</a><code>pos2</code>: end of the ray</li>
+<li><a class="anchor" href="#objects" name="objects">#</a><code>objects</code> : if false, only nodes will be returned. Default is <code>true</code>.</li>
+<li><a class="anchor" href="#liquidsiffalseliquidnodeswontbereturnedDefaultis" name="liquidsiffalseliquidnodeswontbereturnedDefaultis">#</a><code>liquids' : if false, liquid nodes won't be returned. Default is</code>false`.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestfind_pathpos1pos2searchdistancemax_jumpmax_dropalgorithm" name="minetestfind_pathpos1pos2searchdistancemax_jumpmax_dropalgorithm">#</a><code>minetest.find_path(pos1,pos2,searchdistance,max_jump,max_drop,algorithm)</code><ul>
 <li>returns table containing path</li>
-<li><a class="anchor" href="#pos1_5" name="pos1_5">#</a>returns a table of 3D points representing a path from <code>pos1</code> to <code>pos2</code> or <code>nil</code></li>
-<li><a class="anchor" href="#pos1_6" name="pos1_6">#</a><code>pos1</code>: start position</li>
-<li><a class="anchor" href="#pos2_1" name="pos2_1">#</a><code>pos2</code>: end position</li>
+<li><a class="anchor" href="#pos1_6" name="pos1_6">#</a>returns a table of 3D points representing a path from <code>pos1</code> to <code>pos2</code> or <code>nil</code></li>
+<li><a class="anchor" href="#pos1_7" name="pos1_7">#</a><code>pos1</code>: start position</li>
+<li><a class="anchor" href="#pos2_2" name="pos2_2">#</a><code>pos2</code>: end position</li>
 <li><a class="anchor" href="#searchdistance" name="searchdistance">#</a><code>searchdistance</code>: number of blocks to search in each direction using a maximum metric</li>
 <li><a class="anchor" href="#max_jump" name="max_jump">#</a><code>max_jump</code>: maximum height difference to consider walkable</li>
 <li><a class="anchor" href="#max_drop" name="max_drop">#</a><code>max_drop</code>: maximum height difference to consider droppable</li>
@@ -2839,8 +3048,6 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestspawn_treepostreedef" name="minetestspawn_treepostreedef">#</a><code>minetest.spawn_tree (pos, {treedef})</code><ul>
 <li><a class="anchor" href="#pos_1" name="pos_1">#</a>spawns L-system tree at given <code>pos</code> with definition in <code>treedef</code> table</li>
-<li>Warning: L-system generation currently creates lighting bugs in the form of mapblock-sized shadows.
-  Often these bugs appear as subtle shadows in water.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetesttransforming_liquid_addpos" name="minetesttransforming_liquid_addpos">#</a><code>minetest.transforming_liquid_add(pos)</code><ul>
@@ -2870,9 +3077,9 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>resets the light in a cuboid-shaped part of
   the map and removes lighting bugs.</li>
 <li>Loads the area if it is not loaded.</li>
-<li><a class="anchor" href="#pos1_7" name="pos1_7">#</a><code>pos1</code> is the corner of the cuboid with the least coordinates
+<li><a class="anchor" href="#pos1_8" name="pos1_8">#</a><code>pos1</code> is the corner of the cuboid with the least coordinates
   (in node coordinates), inclusive.</li>
-<li><a class="anchor" href="#pos2_2" name="pos2_2">#</a><code>pos2</code> is the opposite corner of the cuboid, inclusive.</li>
+<li><a class="anchor" href="#pos2_3" name="pos2_3">#</a><code>pos2</code> is the opposite corner of the cuboid, inclusive.</li>
 <li>The actual updated cuboid might be larger than the specified one,
   because only whole map blocks can be updated.
   The actual updated area consists of those map blocks that intersect
@@ -2884,13 +3091,13 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   <code>true</code> otherwise</li>
 </ul>
 </li>
-<li><a class="anchor" href="#corecheck_single_for_fallingpos" name="corecheck_single_for_fallingpos">#</a><code>core.check_single_for_falling(pos)</code><ul>
+<li><a class="anchor" href="#minetestcheck_single_for_fallingpos" name="minetestcheck_single_for_fallingpos">#</a><code>minetest.check_single_for_falling(pos)</code><ul>
 <li><a class="anchor" href="#groupfalling_node" name="groupfalling_node">#</a>causes an unsupported <code>group:falling_node</code> node to fall and causes an
   unattached <code>group:attached_node</code> node to fall.</li>
 <li>does not spread these updates to neighbours.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#corecheck_for_fallingpos" name="corecheck_for_fallingpos">#</a><code>core.check_for_falling(pos)</code><ul>
+<li><a class="anchor" href="#minetestcheck_for_fallingpos" name="minetestcheck_for_fallingpos">#</a><code>minetest.check_for_falling(pos)</code><ul>
 <li><a class="anchor" href="#groupfalling_node_1" name="groupfalling_node_1">#</a>causes an unsupported <code>group:falling_node</code> node to fall and causes an
   unattached <code>group:attached_node</code> node to fall.</li>
 <li>spread these updates to neighbours and can cause a cascade
@@ -2909,7 +3116,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestcreate_detached_inventorynamecallbacksplayer_name" name="minetestcreate_detached_inventorynamecallbacksplayer_name">#</a><code>minetest.create_detached_inventory(name, callbacks, [player_name])</code>: returns an <code>InvRef</code><ul>
 <li>callbacks: See "Detached inventory callbacks"</li>
-<li>player_name: Make detached inventory available to one player exclusively,
+<li><a class="anchor" href="#player_name" name="player_name">#</a><code>player_name</code>: Make detached inventory available to one player exclusively,
   by default they will be sent to every player (even if not used).
   Note that this parameter is mostly just a workaround and will be removed in future releases.</li>
 <li>Creates a detached inventory. If it already exists, it is cleared.</li>
@@ -2932,11 +3139,11 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestclose_formspecplayernameformname" name="minetestclose_formspecplayernameformname">#</a><code>minetest.close_formspec(playername, formname)</code><ul>
 <li><a class="anchor" href="#playername_2" name="playername_2">#</a><code>playername</code>: name of player to close formspec</li>
-<li><a class="anchor" href="#formname_1" name="formname_1">#</a><code>formname</code>: has to exactly match the one given in show_formspec, or the formspec will
+<li><a class="anchor" href="#formname_1" name="formname_1">#</a><code>formname</code>: has to exactly match the one given in <code>show_formspec</code>, or the formspec will
    not close.</li>
-<li>calling show_formspec(playername, formname, "") is equal to this expression</li>
-<li>to close a formspec regardless of the formname, call
-  minetest.close_formspec(playername, ""). USE THIS ONLY WHEN ABSOLUTELY NECESSARY!</li>
+<li><a class="anchor" href="#show_formspecplayernameformname" name="show_formspecplayernameformname">#</a>calling <code>show_formspec(playername, formname, "")</code> is equal to this expression</li>
+<li><a class="anchor" href="#minetestclose_formspecplayername" name="minetestclose_formspecplayername">#</a>to close a formspec regardless of the formname, call
+  <code>minetest.close_formspec(playername, "")</code>. <strong>USE THIS ONLY WHEN ABSOLUTELY NECESSARY!</strong></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestformspec_escapestring_1" name="minetestformspec_escapestring_1">#</a><code>minetest.formspec_escape(string)</code>: returns a string<ul>
@@ -3040,28 +3247,51 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestget_all_craft_recipesqueryitem" name="minetestget_all_craft_recipesqueryitem">#</a><code>minetest.get_all_craft_recipes(query item)</code>: returns a table or <code>nil</code><ul>
 <li><a class="anchor" href="#nil_2" name="nil_2">#</a>returns indexed table with all registered recipes for query item (node)
   or <code>nil</code> if no recipe was found</li>
-<li>recipe entry table:
-        {
-            method = 'normal' or 'cooking' or 'fuel'
-            width = 0-3, 0 means shapeless recipe
-            items = indexed [1-9] table with recipe items
-            output = string with item name and quantity
-        }</li>
-<li><a class="anchor" href="#defaultgold_ingot" name="defaultgold_ingot">#</a>Example query for <code>"default:gold_ingot"</code> will return table:
-        {
-            [1]={type = "cooking", width = 3, output = "default:gold_ingot",
-            items = {1 = "default:gold_lump"}},
-            [2]={type = "normal", width = 1, output = "default:gold_ingot 9",
-            items = {1 = "default:goldblock"}}
-        }</li>
-</ul>
-</li>
+<li><a class="anchor" href="#methodnormalorcookingorfuelwidth030meansshapelessrecipeitemsindexed19tablewithrecipeitemsoutputstringwithitemnameandquantityExamplequeryfordefaultgold_ingotwillreturntable1methodcookingwidth3outputdefaultgold_ingotitems1defaultgold_lump2methodnormalwidth1outputdefaultgold_ingot9items1defaultgoldblock" name="methodnormalorcookingorfuelwidth030meansshapelessrecipeitemsindexed19tablewithrecipeitemsoutputstringwithitemnameandquantityExamplequeryfordefaultgold_ingotwillreturntable1methodcookingwidth3outputdefaultgold_ingotitems1defaultgold_lump2methodnormalwidth1outputdefaultgold_ingot9items1defaultgoldblock">#</a>recipe entry table:<pre><code>{
+    method = 'normal' or 'cooking' or 'fuel'
+    width = 0-3, 0 means shapeless recipe
+    items = indexed [1-9] table with recipe items
+    output = string with item name and quantity
+}
+* Example query for `"default:gold_ingot"` will return table:
+
+{
+    [1]={method = "cooking", width = 3, output = "default:gold_ingot",
+    items = {1 = "default:gold_lump"}},
+    [2]={method = "normal", width = 1, output = "default:gold_ingot 9",
+    items = {1 = "default:goldblock"}}
+}
+</code></pre>
+<ul>
 <li><a class="anchor" href="#minetesthandle_node_dropsposdropsdigger" name="minetesthandle_node_dropsposdropsdigger">#</a><code>minetest.handle_node_drops(pos, drops, digger)</code><ul>
 <li><a class="anchor" href="#drops" name="drops">#</a><code>drops</code>: list of itemstrings</li>
 <li>Handles drops from nodes after digging: Default action is to put them into
   digger's inventory</li>
 <li>Can be overridden to get different functionality (e.g. dropping items on
   ground)</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestitemstring_with_paletteitempalette_index" name="minetestitemstring_with_paletteitempalette_index">#</a><code>minetest.itemstring_with_palette(item, palette_index)</code>: returns an item string<ul>
+<li>Creates an item string which contains palette index information
+  for hardware colorization. You can use the returned string
+  as an output in a craft recipe.</li>
+<li><a class="anchor" href="#item_1" name="item_1">#</a><code>item</code>: the item stack which becomes colored. Can be in string,
+  table and native form.</li>
+<li><a class="anchor" href="#palette_index_1" name="palette_index_1">#</a><code>palette_index</code>: this index is added to the item stack</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestitemstring_with_coloritemcolorstring" name="minetestitemstring_with_coloritemcolorstring">#</a><code>minetest.itemstring_with_color(item, colorstring)</code>: returns an item string<ul>
+<li>Creates an item string which contains static color information
+  for hardware colorization. Use this method if you wish to colorize
+  an item that does not own a palette. You can use the returned string
+  as an output in a craft recipe.</li>
+<li><a class="anchor" href="#item_2" name="item_2">#</a><code>item</code>: the item stack which becomes colored. Can be in string,
+  table and native form.</li>
+<li><a class="anchor" href="#colorstring_1" name="colorstring_1">#</a><code>colorstring</code>: the new color of the item stack</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -3133,6 +3363,13 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestsound_stophandle" name="minetestsound_stophandle">#</a><code>minetest.sound_stop(handle)</code></li>
+<li><a class="anchor" href="#minetestsound_fadehandlestepgain" name="minetestsound_fadehandlestepgain">#</a><code>minetest.sound_fade(handle, step, gain)</code><ul>
+<li><a class="anchor" href="#handle" name="handle">#</a><code>handle</code> is a handle returned by <code>minetest.sound_play</code></li>
+<li><a class="anchor" href="#step" name="step">#</a><code>step</code> determines how fast a sound will fade.
+  Negative step will lower the sound volume, positive step will increase the sound volume</li>
+<li><a class="anchor" href="#gain" name="gain">#</a><code>gain</code> the target gain for the fade.</li>
+</ul>
+</li>
 </ul>
 <h3 id="timing">Timing</h3>
 <ul>
@@ -3153,6 +3390,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestget_server_status" name="minetestget_server_status">#</a><code>minetest.get_server_status()</code>: returns server status string</li>
 <li><a class="anchor" href="#minetestget_server_uptime" name="minetestget_server_uptime">#</a><code>minetest.get_server_uptime()</code>: returns the server uptime in seconds</li>
 <li><a class="anchor" href="#minetestremove_playername" name="minetestremove_playername">#</a><code>minetest.remove_player(name)</code>: remove player from database (if he is not connected).<ul>
+<li>Does not remove player authentication data, minetest.player_exists will continue to return true.</li>
 <li>Returns a code (0: successful, 1: no such player, 2: player is connected)</li>
 </ul>
 </li>
@@ -3188,10 +3426,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   collisiondetection, texture, playername)</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#ParticleSpawner_1" name="ParticleSpawner_1">#</a>
-<p>`minetest.delete_particlespawner(id, player)``</p>
+<li><a class="anchor" href="#minetestdelete_particlespawneridplayer" name="minetestdelete_particlespawneridplayer">#</a>
+<p><code>minetest.delete_particlespawner(id, player)</code></p>
 <ul>
-<li><a class="anchor" href="#ParticleSpawner_2" name="ParticleSpawner_2">#</a>Delete <code>ParticleSpawner</code> with <code>id</code> (return value from <code>minetest.add_particlespawner</code>)</li>
+<li><a class="anchor" href="#ParticleSpawner_1" name="ParticleSpawner_1">#</a>Delete <code>ParticleSpawner</code> with <code>id</code> (return value from <code>minetest.add_particlespawner</code>)</li>
 <li>If playername is specified, only deletes on the player's client,</li>
 <li>otherwise on all clients</li>
 </ul>
@@ -3203,18 +3441,29 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <p><code>minetest.create_schematic(p1, p2, probability_list, filename, slice_prob_list)</code></p>
 <ul>
 <li>Create a schematic from the volume of map specified by the box formed by p1 and p2.</li>
-<li><a class="anchor" href="#probability_list" name="probability_list">#</a>Apply the specified probability values to the specified nodes in <code>probability_list</code>.<ul>
+<li><a class="anchor" href="#probability_list" name="probability_list">#</a>Apply the specified probability and per-node force-place to the specified nodes
+  according to the <code>probability_list</code>.<ul>
 <li><a class="anchor" href="#probability_list_1" name="probability_list_1">#</a><code>probability_list</code> is an array of tables containing two fields, <code>pos</code> and <code>prob</code>.<ul>
 <li><a class="anchor" href="#pos_2" name="pos_2">#</a><code>pos</code> is the 3D vector specifying the absolute coordinates of the
   node being modified,</li>
-<li><a class="anchor" href="#prob_1" name="prob_1">#</a><code>prob</code> is the integer value from <code>0</code> to <code>255</code> of the probability (see: Schematic specifier).</li>
+<li><a class="anchor" href="#prob_1" name="prob_1">#</a><code>prob</code> is an integer value from <code>0</code> to <code>255</code> that encodes probability and
+  per-node force-place. Probability has levels 0-127, then 128 is added to
+  encode per-node force-place.
+  For probability stated as 0-255, divide by 2 and round down to get values
+  0-127, then add 128 to apply per-node force-place.</li>
 <li>If there are two or more entries with the same pos value, the
   last entry is used.</li>
 <li><a class="anchor" href="#pos_3" name="pos_3">#</a>If <code>pos</code> is not inside the box formed by <code>p1</code> and <code>p2</code>, it is ignored.</li>
 <li><a class="anchor" href="#probability_list_2" name="probability_list_2">#</a>If <code>probability_list</code> equals <code>nil</code>, no probabilities are applied.</li>
-<li><a class="anchor" href="#ypos" name="ypos">#</a>Slice probability works in the same manner, except takes a field
-  called <code>ypos</code> instead which
-  indicates the y position of the slice with a probability applied.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="anchor" href="#slice_prob_list" name="slice_prob_list">#</a>Apply the specified probability to the specified horizontal slices according to the
+  <code>slice_prob_list</code>.<ul>
+<li><a class="anchor" href="#slice_prob_list_1" name="slice_prob_list_1">#</a><code>slice_prob_list</code> is an array of tables containing two fields, <code>ypos</code> and <code>prob</code>.<ul>
+<li><a class="anchor" href="#ypos" name="ypos">#</a><code>ypos</code> indicates the y position of the slice with a probability applied,
+  the lowest slice being <code>ypos = 0</code>.</li>
 <li><a class="anchor" href="#nil_3" name="nil_3">#</a>If slice probability list equals <code>nil</code>, no slice probabilities are applied.</li>
 </ul>
 </li>
@@ -3317,7 +3566,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_item_groupnamegroup" name="minetestget_item_groupnamegroup">#</a><code>minetest.get_item_group(name, group)</code>: returns a rating<ul>
-<li><a class="anchor" href="#0_8" name="0_8">#</a>Get rating of a group of an item. (<code>0</code> means: not in group)</li>
+<li><a class="anchor" href="#0_9" name="0_9">#</a>Get rating of a group of an item. (<code>0</code> means: not in group)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_node_groupnamegroup" name="minetestget_node_groupnamegroup">#</a><code>minetest.get_node_group(name, group)</code>: returns a rating<ul>
@@ -3367,7 +3616,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestdeserializestring" name="minetestdeserializestring">#</a><code>minetest.deserialize(string)</code>: returns a table<ul>
 <li><a class="anchor" href="#minetestdeserialize" name="minetestdeserialize">#</a>Convert a string returned by <code>minetest.deserialize</code> into a table</li>
-<li><a class="anchor" href="#string" name="string">#</a><code>string</code> is loaded in an empty sandbox environment.</li>
+<li><a class="anchor" href="#string_1" name="string_1">#</a><code>string</code> is loaded in an empty sandbox environment.</li>
 <li>Will load functions, but they cannot access the global environment.</li>
 <li><a class="anchor" href="#deserializereturnfoobar" name="deserializereturnfoobar">#</a>Example: <code>deserialize('return { ["foo"] = "bar" }')</code>, returns <code>{foo='bar'}</code></li>
 <li><a class="anchor" href="#deserializeprintfoo" name="deserializeprintfoo">#</a>Example: <code>deserialize('print("foo")')</code>, returns <code>nil</code> (function call fails)<ul>
@@ -3390,6 +3639,12 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestcompress" name="minetestcompress">#</a>See documentation on <code>minetest.compress()</code> for supported compression methods.</li>
 <li>currently supported.</li>
 <li><code>...</code> indicates method-specific arguments. Currently, no methods use this.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestrgbaredgreenbluealpha" name="minetestrgbaredgreenbluealpha">#</a><code>minetest.rgba(red, green, blue[, alpha])</code>: returns a string<ul>
+<li>Each argument is a 8 Bit unsigned integer</li>
+<li>Returns the ColorString from rgb or rgba values</li>
+<li><a class="anchor" href="#minetestrgba10203040" name="minetestrgba10203040">#</a>Example: <code>minetest.rgba(10, 20, 30, 40)</code>, returns <code>"#0A141E28"</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestencode_base64string" name="minetestencode_base64string">#</a><code>minetest.encode_base64(string)</code>: returns string encoded in base64<ul>
@@ -3502,7 +3757,7 @@ end
 <li>Map of registered items, indexed by name</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestregistered_nodes" name="minetestregistered_nodes">#</a><code>minetest.registered_nodes</code><ul>
+<li><a class="anchor" href="#minetestregistered_nodes_1" name="minetestregistered_nodes_1">#</a><code>minetest.registered_nodes</code><ul>
 <li>Map of registered node definitions, indexed by name</li>
 </ul>
 </li>
@@ -3526,7 +3781,7 @@ end
 <li>Map of Lua entities, indexed by active object id</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestregistered_chatcommands" name="minetestregistered_chatcommands">#</a><code>minetest.registered_chatcommands</code><ul>
+<li><a class="anchor" href="#minetestregistered_chatcommands_1" name="minetestregistered_chatcommands_1">#</a><code>minetest.registered_chatcommands</code><ul>
 <li>Map of registered chat command definitions, indexed by name</li>
 </ul>
 </li>
@@ -3577,6 +3832,10 @@ Can be obtained via <code>minetest.get_meta(pos)</code>.</p>
 <ul>
 <li>All methods in MetaDataRef</li>
 <li><a class="anchor" href="#get_inventory" name="get_inventory">#</a><code>get_inventory()</code>: returns <code>InvRef</code></li>
+<li><a class="anchor" href="#mark_as_privatenameorname1name2" name="mark_as_privatenameorname1name2">#</a><code>mark_as_private(name or {name1, name2, ...})</code>: Mark specific vars as private
+  This will prevent them from being sent to the client. Note that the "private"
+  status will only be remembered if an associated key-value pair exists, meaning
+  it's best to call this when initializing all other meta (e.g. <code>on_construct</code>).</li>
 </ul>
 <h3 id="itemstackmetaref"><code>ItemStackMetaRef</code></h3>
 <p>ItemStack metadata: reference extra data and functionality stored in a stack.
@@ -3601,7 +3860,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li>set a timer's state</li>
 <li><a class="anchor" href="#timeout" name="timeout">#</a><code>timeout</code> is in seconds, and supports fractional values (0.1 etc)</li>
 <li><a class="anchor" href="#elapsed" name="elapsed">#</a><code>elapsed</code> is in seconds, and supports fractional values (0.1 etc)</li>
-<li><a class="anchor" href="#on_timer" name="on_timer">#</a>will trigger the node's <code>on_timer</code> function after <code>timeout</code>-elapsed seconds</li>
+<li><a class="anchor" href="#on_timer" name="on_timer">#</a>will trigger the node's <code>on_timer</code> function after <code>(timeout - elapsed)</code> seconds</li>
 </ul>
 </li>
 <li><a class="anchor" href="#starttimeout" name="starttimeout">#</a><code>start(timeout)</code><ul>
@@ -3618,7 +3877,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#get_elapsed" name="get_elapsed">#</a><code>get_elapsed()</code>: returns current elapsed time in seconds<ul>
-<li><a class="anchor" href="#on_timer_1" name="on_timer_1">#</a>the node's <code>on_timer</code> function will be called after <code>timeout</code>-elapsed seconds</li>
+<li><a class="anchor" href="#on_timer_1" name="on_timer_1">#</a>the node's <code>on_timer</code> function will be called after <code>(timeout - elapsed)</code> seconds</li>
 </ul>
 </li>
 <li><a class="anchor" href="#is_started" name="is_started">#</a><code>is_started()</code>: returns boolean state of timer<ul>
@@ -3632,7 +3891,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <h4 id="methods_5">Methods</h4>
 <ul>
 <li><a class="anchor" href="#remove" name="remove">#</a><code>remove()</code>: remove object (after returning from Lua)<ul>
-<li>Note: Doesn't work on players, use minetest.kick_player instead</li>
+<li><a class="anchor" href="#minetestkick_player" name="minetestkick_player">#</a>Note: Doesn't work on players, use <code>minetest.kick_player</code> instead</li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_pos" name="get_pos">#</a><code>get_pos()</code>: returns <code>{x=num, y=num, z=num}</code></li>
@@ -3655,7 +3914,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#set_armor_groupsgroup1ratinggroup2rating" name="set_armor_groupsgroup1ratinggroup2rating">#</a><code>set_armor_groups({group1=rating, group2=rating, ...})</code></li>
 <li><a class="anchor" href="#get_armor_groups" name="get_armor_groups">#</a><code>get_armor_groups()</code>: returns a table with the armor group ratings</li>
 <li><a class="anchor" href="#set_animationx1y1frame_speed15frame_blend0frame_looptrue" name="set_animationx1y1frame_speed15frame_blend0frame_looptrue">#</a><code>set_animation({x=1,y=1}, frame_speed=15, frame_blend=0, frame_loop=true)</code></li>
-<li><a class="anchor" href="#get_animation" name="get_animation">#</a><code>get_animation()</code>: returns range, frame_speed, frame_blend and frame_loop</li>
+<li><a class="anchor" href="#get_animation" name="get_animation">#</a><code>get_animation()</code>: returns <code>range</code>, <code>frame_speed</code>, <code>frame_blend</code> and <code>frame_loop</code></li>
 <li><a class="anchor" href="#set_attachparentbonepositionrotation" name="set_attachparentbonepositionrotation">#</a><code>set_attach(parent, bone, position, rotation)</code><ul>
 <li><a class="anchor" href="#bone" name="bone">#</a><code>bone</code>: string</li>
 <li><a class="anchor" href="#position" name="position">#</a><code>position</code>: <code>{x=num, y=num, z=num}</code> (relative)</li>
@@ -3733,31 +3992,40 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li>radians - Angle from the +z direction, where positive is counter-clockwise.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#get_look_pitch" name="get_look_pitch">#</a><code>get_look_pitch()</code>: pitch in radians - Deprecated as broken. Use get_look_vertical.<ul>
+<li><a class="anchor" href="#get_look_pitch" name="get_look_pitch">#</a><code>get_look_pitch()</code>: pitch in radians - Deprecated as broken. Use <code>get_look_vertical</code>.<ul>
 <li>Angle ranges between -pi/2 and pi/2, which are straight down and up respectively.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#get_look_yaw" name="get_look_yaw">#</a><code>get_look_yaw()</code>: yaw in radians - Deprecated as broken. Use get_look_horizontal.<ul>
+<li><a class="anchor" href="#get_look_yaw" name="get_look_yaw">#</a><code>get_look_yaw()</code>: yaw in radians - Deprecated as broken. Use <code>get_look_horizontal</code>.<ul>
 <li>Angle is counter-clockwise from the +x direction.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#set_look_pitchradians" name="set_look_pitchradians">#</a><code>set_look_pitch(radians)</code>: sets look pitch - Deprecated. Use set_look_vertical.</li>
-<li><a class="anchor" href="#set_look_yawradians" name="set_look_yawradians">#</a><code>set_look_yaw(radians)</code>: sets look yaw - Deprecated. Use set_look_horizontal.</li>
+<li><a class="anchor" href="#set_look_pitchradians" name="set_look_pitchradians">#</a><code>set_look_pitch(radians)</code>: sets look pitch - Deprecated. Use <code>set_look_vertical</code>.</li>
+<li><a class="anchor" href="#set_look_yawradians" name="set_look_yawradians">#</a><code>set_look_yaw(radians)</code>: sets look yaw - Deprecated. Use <code>set_look_horizontal</code>.</li>
 <li><a class="anchor" href="#get_breath" name="get_breath">#</a><code>get_breath()</code>: returns players breath</li>
 <li><a class="anchor" href="#set_breathvalue" name="set_breathvalue">#</a><code>set_breath(value)</code>: sets players breath<ul>
-<li><a class="anchor" href="#0_9" name="0_9">#</a>values:<ul>
-<li><a class="anchor" href="#0_10" name="0_10">#</a><code>0</code>: player is drowning,</li>
+<li><a class="anchor" href="#0_10" name="0_10">#</a>values:<ul>
+<li><a class="anchor" href="#0_11" name="0_11">#</a><code>0</code>: player is drowning,</li>
 <li><a class="anchor" href="#1" name="1">#</a><code>1</code>-<code>10</code>: remaining number of bubbles</li>
 <li><a class="anchor" href="#11" name="11">#</a><code>11</code>: bubbles bar is not shown</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="anchor" href="#set_attributeattributevalue" name="set_attributeattributevalue">#</a><code>set_attribute(attribute, value)</code>: sets an extra attribute with value on player</li>
-<li><a class="anchor" href="#get_attributeattribute" name="get_attributeattribute">#</a><code>get_attribute(attribute)</code>: returns value for extra attribute. Returns nil if no attribute found.</li>
+<li><a class="anchor" href="#set_attributeattributevalue" name="set_attributeattributevalue">#</a><code>set_attribute(attribute, value)</code>:<ul>
+<li>Sets an extra attribute with value on player.</li>
+<li><a class="anchor" href="#value_1" name="value_1">#</a><code>value</code> must be a string.</li>
+<li><a class="anchor" href="#value_2" name="value_2">#</a>If <code>value</code> is <code>nil</code>, remove attribute from player.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#get_attributeattribute" name="get_attributeattribute">#</a><code>get_attribute(attribute)</code>:<ul>
+<li>Returns value (a string) for extra attribute.</li>
+<li><a class="anchor" href="#nil_6" name="nil_6">#</a>Returns <code>nil</code> if no attribute found.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#set_inventory_formspecformspec" name="set_inventory_formspecformspec">#</a><code>set_inventory_formspec(formspec)</code><ul>
 <li>Redefine player's inventory form</li>
-<li>Should usually be called in on_joinplayer</li>
+<li><a class="anchor" href="#on_joinplayer" name="on_joinplayer">#</a>Should usually be called in <code>on_joinplayer</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_inventory_formspec" name="get_inventory_formspec">#</a><code>get_inventory_formspec()</code>: returns a formspec string</li>
@@ -3784,7 +4052,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </li>
 </ul>
 </li>
-<li><a class="anchor" href="#get_physics_override" name="get_physics_override">#</a><code>get_physics_override()</code>: returns the table given to set_physics_override</li>
+<li><a class="anchor" href="#get_physics_override" name="get_physics_override">#</a><code>get_physics_override()</code>: returns the table given to <code>set_physics_override</code></li>
 <li><a class="anchor" href="#hud_addhuddefinition" name="hud_addhuddefinition">#</a><code>hud_add(hud definition)</code>: add a HUD element described by HUD def, returns ID
    number on success</li>
 <li><a class="anchor" href="#hud_removeid" name="hud_removeid">#</a><code>hud_remove(id)</code>: remove the HUD element of the specified id</li>
@@ -3796,7 +4064,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#hud_set_flagsflags" name="hud_set_flagsflags">#</a><code>hud_set_flags(flags)</code>: sets specified HUD flags to <code>true</code>/<code>false</code><ul>
 <li><a class="anchor" href="#flags_4" name="flags_4">#</a><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>minimap</code></li>
 <li><a class="anchor" href="#true_15" name="true_15">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
-<li><a class="anchor" href="#nil_6" name="nil_6">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
+<li><a class="anchor" href="#nil_7" name="nil_7">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
 <li><a class="anchor" href="#minimap" name="minimap">#</a>note that setting <code>minimap</code> modifies the client's permission to view the minimap -</li>
 <li>the client may locally elect to not view the minimap</li>
 </ul>
@@ -3820,20 +4088,36 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#hud_get_hotbar_selected_image" name="hud_get_hotbar_selected_image">#</a><code>hud_get_hotbar_selected_image</code>: returns texturename</li>
-<li><a class="anchor" href="#set_skybgcolortypetexturenames" name="set_skybgcolortypetexturenames">#</a><code>set_sky(bgcolor, type, {texture names})</code><ul>
+<li><a class="anchor" href="#set_skybgcolortypetexturenamesclouds" name="set_skybgcolortypetexturenamesclouds">#</a><code>set_sky(bgcolor, type, {texture names}, clouds)</code><ul>
 <li><a class="anchor" href="#bgcolor_1" name="bgcolor_1">#</a><code>bgcolor</code>: ColorSpec, defaults to white</li>
-<li><a class="anchor" href="#regular" name="regular">#</a>Available types:<ul>
-<li><a class="anchor" href="#regular_1" name="regular_1">#</a><code>"regular"</code>: Uses 0 textures, <code>bgcolor</code> ignored</li>
+<li><a class="anchor" href="#type_3" name="type_3">#</a><code>type</code>: Available types:<ul>
+<li><a class="anchor" href="#regular" name="regular">#</a><code>"regular"</code>: Uses 0 textures, <code>bgcolor</code> ignored</li>
 <li><a class="anchor" href="#skybox" name="skybox">#</a><code>"skybox"</code>: Uses 6 textures, <code>bgcolor</code> used</li>
 <li><a class="anchor" href="#plain" name="plain">#</a><code>"plain"</code>: Uses 0 textures, <code>bgcolor</code> used</li>
 </ul>
 </li>
+<li><a class="anchor" href="#clouds" name="clouds">#</a><code>clouds</code>: Boolean for whether clouds appear in front of <code>"skybox"</code> or
+  <code>"plain"</code> custom skyboxes (default: <code>true</code>)</li>
 </ul>
 </li>
-<li><a class="anchor" href="#get_sky" name="get_sky">#</a><code>get_sky()</code>: returns bgcolor, type and a table with the textures</li>
+<li><a class="anchor" href="#get_sky" name="get_sky">#</a><code>get_sky()</code>: returns bgcolor, type, table of textures, clouds</li>
+<li><a class="anchor" href="#set_cloudsparameters" name="set_cloudsparameters">#</a><code>set_clouds(parameters)</code>: set cloud parameters<ul>
+<li><a class="anchor" href="#parameters_1" name="parameters_1">#</a><code>parameters</code> is a table with the following optional fields:<ul>
+<li><a class="anchor" href="#density" name="density">#</a><code>density</code>: from <code>0</code> (no clouds) to <code>1</code> (full clouds) (default <code>0.4</code>)</li>
+<li><a class="anchor" href="#color_8" name="color_8">#</a><code>color</code>: basic cloud color with alpha channel, ColorSpec (default <code>#fff0f0e5</code>)</li>
+<li><a class="anchor" href="#ambient" name="ambient">#</a><code>ambient</code>: cloud color lower bound, use for a "glow at night" effect.
+  ColorSpec (alpha ignored, default <code>#000000</code>)</li>
+<li><a class="anchor" href="#height" name="height">#</a><code>height</code>: cloud height, i.e. y of cloud base (default per conf, usually <code>120</code>)</li>
+<li><a class="anchor" href="#thickness" name="thickness">#</a><code>thickness</code>: cloud thickness in nodes (default <code>16</code>)</li>
+<li><a class="anchor" href="#speed_1" name="speed_1">#</a><code>speed</code>: 2D cloud speed + direction in nodes per second (default <code>{x=0, z=-2}</code>)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="anchor" href="#get_clouds" name="get_clouds">#</a><code>get_clouds()</code>: returns a table with the current cloud parameters as in <code>set_clouds</code></li>
 <li><a class="anchor" href="#override_day_night_ratioratioornil" name="override_day_night_ratioratioornil">#</a><code>override_day_night_ratio(ratio or nil)</code><ul>
-<li><a class="anchor" href="#0_11" name="0_11">#</a><code>0</code>...<code>1</code>: Overrides day-night ratio, controlling sunlight to a specific amount</li>
-<li><a class="anchor" href="#nil_7" name="nil_7">#</a><code>nil</code>: Disables override, defaulting to sunlight based on day-night cycle</li>
+<li><a class="anchor" href="#0_12" name="0_12">#</a><code>0</code>...<code>1</code>: Overrides day-night ratio, controlling sunlight to a specific amount</li>
+<li><a class="anchor" href="#nil_8" name="nil_8">#</a><code>nil</code>: Disables override, defaulting to sunlight based on day-night cycle</li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_day_night_ratio" name="get_day_night_ratio">#</a><code>get_day_night_ratio()</code>: returns the ratio or nil if it isn't overridden</li>
@@ -3847,11 +4131,11 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
     frame_speed=30): -- &lt;  animation frame speed
 </code></pre>
 <ul>
-<li><a class="anchor" href="#get_local_animation" name="get_local_animation">#</a><code>get_local_animation()</code>: returns stand, walk, dig, dig+walk tables and frame_speed</li>
+<li><a class="anchor" href="#get_local_animation" name="get_local_animation">#</a><code>get_local_animation()</code>: returns stand, walk, dig, dig+walk tables and <code>frame_speed</code></li>
 <li><a class="anchor" href="#set_eye_offsetx0y0z0x0y0z0" name="set_eye_offsetx0y0z0x0y0z0">#</a><code>set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})</code>: defines offset value for camera per player</li>
 <li>in first person view</li>
 <li><a class="anchor" href="#x1010y1015z55" name="x1010y1015z55">#</a>in third person view (max. values <code>{x=-10/10,y=-10,15,z=-5/5}</code>)</li>
-<li><a class="anchor" href="#get_eye_offset" name="get_eye_offset">#</a><code>get_eye_offset()</code>: returns offset_first and offset_third</li>
+<li><a class="anchor" href="#get_eye_offset" name="get_eye_offset">#</a><code>get_eye_offset()</code>: returns <code>offset_first</code> and <code>offset_third</code></li>
 </ul>
 </li>
 </ul>
@@ -3876,8 +4160,9 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#add_itemlistnamestack" name="add_itemlistnamestack">#</a><code>add_item(listname, stack)</code>: add item somewhere in list, returns leftover <code>ItemStack</code></li>
 <li><a class="anchor" href="#room_for_itemlistnamestack" name="room_for_itemlistnamestack">#</a><code>room_for_item(listname, stack):</code> returns <code>true</code> if the stack of items
   can be fully added to the list</li>
-<li><a class="anchor" href="#contains_itemlistnamestack" name="contains_itemlistnamestack">#</a><code>contains_item(listname, stack)</code>: returns <code>true</code> if the stack of items
-  can be fully taken from the list</li>
+<li><a class="anchor" href="#contains_itemlistnamestackmatch_meta" name="contains_itemlistnamestackmatch_meta">#</a><code>contains_item(listname, stack, [match_meta])</code>: returns <code>true</code> if
+  the stack of items can be fully taken from the list.
+  If <code>match_meta</code> is false, only the items' names are compared (default: <code>false</code>).</li>
 <li><a class="anchor" href="#remove_itemlistnamestack" name="remove_itemlistnamestack">#</a><code>remove_item(listname, stack)</code>: take as many items as specified from the list,
   returns the items that were actually removed (as an <code>ItemStack</code>) -- note that
   any item metadata is ignored, so attempting to remove a specific unique
@@ -3949,7 +4234,7 @@ an itemstring, a table or <code>nil</code>.</p>
 <li><a class="anchor" href="#set_metadatametadata" name="set_metadatametadata">#</a><code>set_metadata(metadata)</code>: (DEPRECATED) Returns true.</li>
 <li><a class="anchor" href="#clear" name="clear">#</a><code>clear()</code>: removes all items from the stack, making it empty.</li>
 <li><a class="anchor" href="#replaceitem" name="replaceitem">#</a><code>replace(item)</code>: replace the contents of this stack.<ul>
-<li><a class="anchor" href="#item_1" name="item_1">#</a><code>item</code> can also be an itemstring or table.</li>
+<li><a class="anchor" href="#item_3" name="item_3">#</a><code>item</code> can also be an itemstring or table.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#to_string_1" name="to_string_1">#</a><code>to_string()</code>: Returns the stack in itemstring form.</li>
@@ -3993,9 +4278,9 @@ Uses PCG32, an algorithm of the permuted congruential generator family, offering
 <li><a class="anchor" href="#nextminmax_1" name="nextminmax_1">#</a><code>next(min, max)</code>: return next integer random number [<code>min</code>...<code>max</code>]</li>
 <li><a class="anchor" href="#rand_normal_distminmaxnum_trials6" name="rand_normal_distminmaxnum_trials6">#</a><code>rand_normal_dist(min, max, num_trials=6)</code>: return normally distributed random number [<code>min</code>...<code>max</code>]<ul>
 <li>This is only a rough approximation of a normal distribution with:</li>
-<li>mean = (max - min) / 2, and</li>
-<li>variance = (((max - min + 1) ^ 2) - 1) / (12 * num_trials)</li>
-<li>Increasing num_trials improves accuracy of the approximation</li>
+<li><a class="anchor" href="#meanmaxmin2" name="meanmaxmin2">#</a><code>mean = (max - min) / 2</code>, and</li>
+<li><a class="anchor" href="#variancemaxmin12112num_trials" name="variancemaxmin12112num_trials">#</a><code>variance = (((max - min + 1) ^ 2) - 1) / (12 * num_trials)</code></li>
+<li><a class="anchor" href="#num_trials" name="num_trials">#</a>Increasing <code>num_trials</code> improves accuracy of the approximation</li>
 </ul>
 </li>
 </ul>
@@ -4058,10 +4343,10 @@ to with other methods of setting nodes.  For example, nodes will not have their 
 destruction callbacks run, and no rollback information is logged.</p>
 <p>It is important to note that VoxelManip is designed for speed, and <em>not</em> ease of use or flexibility.
 If your mod requires a map manipulation facility that will handle 100% of all edge cases, or the use
-of high level node placement features, perhaps minetest.set_node() is better suited for the job.</p>
+of high level node placement features, perhaps <code>minetest.set_node()</code> is better suited for the job.</p>
 <p>In addition, VoxelManip might not be faster, or could even be slower, for your specific use case.
 VoxelManip is most effective when setting very large areas of map at once - for example, if only
-setting a 5x5x5 node area, a minetest.set_node() loop may be more optimal.  Always profile code
+setting a 5x5x5 node area, a <code>minetest.set_node()</code> loop may be more optimal.  Always profile code
 using both methods of map manipulation to determine which is most appropriate for your usage.</p>
 <h4 id="using-voxelmanip">Using VoxelManip</h4>
 <p>A VoxelManip object can be created any time using either:
@@ -4089,9 +4374,9 @@ otherwise explicitly stated.</p>
 <p>Once the bulk data has been edited to your liking, the internal VoxelManip state can be set using:
 <code>VoxelManip:set_data()</code> for node content (in Content ID form, see section 'Content IDs'),
 <code>VoxelManip:set_light_data()</code> for node light levels, and
-<code>VoxelManip:set_param2_data()</code> for the node type-dependent "param2" values.</p>
+<code>VoxelManip:set_param2_data()</code> for the node type-dependent <code>param2</code> values.</p>
 <p>The parameter to each of the above three functions can use any table at all in the same flat array
-format as produced by get_data() et al. and is <em>not required</em> to be a table retrieved from get_data().</p>
+format as produced by <code>get_data()</code> et al. and is <em>not required</em> to be a table retrieved from <code>get_data()</code>.</p>
 <p>Once the internal VoxelManip state has been modified to your liking, the changes can be committed back
 to the map by calling <code>VoxelManip:write_to_map()</code>.</p>
 <h5 id="flat-array-format">Flat array format</h5>
@@ -4101,8 +4386,8 @@ to the map by calling <code>VoxelManip:write_to_map()</code>.</p>
     <code>Nz = p2.Z - p1.Z + 1</code>.</p>
 <p>Then, for a loaded region of p1..p2, this array ranges from <code>1</code> up to and including the value of
 the expression <code>Nx * Ny * Nz</code>.</p>
-<p>Positions offset from p1 are present in the array with the format of:
-<code>[
+<p>Positions offset from p1 are present in the array with the format of:</p>
+<p><code>[
     (0, 0, 0),   (1, 0, 0),   (2, 0, 0),   ... (Nx, 0, 0),
     (0, 1, 0),   (1, 1, 0),   (2, 1, 0),   ... (Nx, 1, 0),
     ...
@@ -4125,10 +4410,12 @@ in place of the node name string for <code>VoxelManip:get_data()</code> and <cod
 <code>minetest.get_name_from_content_id()</code> to look up the node name string for a given Content ID.
 After registration of a node, its Content ID will remain the same throughout execution of the mod.
 Note that the node being queried needs to have already been been registered.</p>
-<p>The following builtin node types have their Content IDs defined as constants:
-<code>core.CONTENT_UNKNOWN (ID for "unknown" nodes)
-core.CONTENT_AIR     (ID for "air" nodes)
-core.CONTENT_IGNORE  (ID for "ignore" nodes)</code></p>
+<p>The following builtin node types have their Content IDs defined as constants:</p>
+<ul>
+<li><a class="anchor" href="#minetestCONTENT_UNKNOWN" name="minetestCONTENT_UNKNOWN">#</a><code>minetest.CONTENT_UNKNOWN</code>:   ID for "unknown" nodes</li>
+<li><a class="anchor" href="#minetestCONTENT_AIR" name="minetestCONTENT_AIR">#</a><code>minetest.CONTENT_AIR</code>:   ID for "air" nodes</li>
+<li><a class="anchor" href="#minetestCONTENT_IGNORE" name="minetestCONTENT_IGNORE">#</a><code>minetest.CONTENT_IGNORE</code>:    ID for "ignore" nodes</li>
+</ul>
 <h5 id="mapgen-voxelmanip-objects">Mapgen VoxelManip objects</h5>
 <p>Inside of <code>on_generated()</code> callbacks, it is possible to retrieve the same VoxelManip object used by the
 core's Map Generator (commonly abbreviated Mapgen).  Most of the rules previously described still apply
@@ -4186,7 +4473,7 @@ will place the schematic inside of the VoxelManip.</p>
   If <code>light</code> is false, no light calculations happen, and you should correct
   all modified blocks with <code>minetest.fix_light()</code> as soon as possible.
   Keep in mind that modifying the map where light is incorrect can cause
-  more lighting bugs. </li>
+  more lighting bugs.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_node_atpos" name="get_node_atpos">#</a><code>get_node_at(pos)</code>: Returns a <code>MapNode</code> table of the node currently loaded in
@@ -4207,8 +4494,8 @@ will place the schematic inside of the VoxelManip.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#get_light_data" name="get_light_data">#</a><code>get_light_data()</code>: Gets the light data read into the <code>VoxelManip</code> object<ul>
-<li><a class="anchor" href="#0_12" name="0_12">#</a>Returns an array (indices 1 to volume) of integers ranging from <code>0</code> to <code>255</code></li>
-<li><a class="anchor" href="#0_13" name="0_13">#</a>Each value is the bitwise combination of day and night light values (<code>0</code> to <code>15</code> each)</li>
+<li><a class="anchor" href="#0_13" name="0_13">#</a>Returns an array (indices 1 to volume) of integers ranging from <code>0</code> to <code>255</code></li>
+<li><a class="anchor" href="#0_14" name="0_14">#</a>Each value is the bitwise combination of day and night light values (<code>0</code> to <code>15</code> each)</li>
 <li><a class="anchor" href="#lightdaynight16" name="lightdaynight16">#</a><code>light = day + (night * 16)</code></li>
 </ul>
 </li>
@@ -4218,7 +4505,7 @@ will place the schematic inside of the VoxelManip.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#get_param2_databuffer" name="get_param2_databuffer">#</a><code>get_param2_data([buffer])</code>: Gets the raw <code>param2</code> data read into the <code>VoxelManip</code> object<ul>
-<li><a class="anchor" href="#0_14" name="0_14">#</a>Returns an array (indices 1 to volume) of integers ranging from <code>0</code> to <code>255</code></li>
+<li><a class="anchor" href="#0_15" name="0_15">#</a>Returns an array (indices 1 to volume) of integers ranging from <code>0</code> to <code>255</code></li>
 <li><a class="anchor" href="#buffer_1" name="buffer_1">#</a>If the param <code>buffer</code> is present, this table will be used to store the result instead</li>
 </ul>
 </li>
@@ -4269,14 +4556,43 @@ The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
 <ul>
 <li><a class="anchor" href="#getkey" name="getkey">#</a><code>get(key)</code>: returns a value</li>
 <li><a class="anchor" href="#get_boolkey" name="get_boolkey">#</a><code>get_bool(key)</code>: returns a boolean</li>
-<li><a class="anchor" href="#setkeyvalue" name="setkeyvalue">#</a><code>set(key, value)</code></li>
+<li><a class="anchor" href="#setkeyvalue" name="setkeyvalue">#</a><code>set(key, value)</code><ul>
+<li>Setting names can't contain whitespace or any of <code>="{}#</code>.</li>
+<li><a class="anchor" href="#n_2" name="n_2">#</a>Setting values can't contain the sequence <code>\n"""</code>.</li>
+<li><a class="anchor" href="#minetestsettings_1" name="minetestsettings_1">#</a>Setting names starting with "secure." can't be set on the main settings object (<code>minetest.settings</code>).</li>
+</ul>
+</li>
+<li><a class="anchor" href="#set_boolkeyvalue" name="set_boolkeyvalue">#</a><code>set_bool(key, value)</code><ul>
+<li>See documentation for set() above.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#removekey" name="removekey">#</a><code>remove(key)</code>: returns a boolean (<code>true</code> for success)</li>
 <li><a class="anchor" href="#get_names" name="get_names">#</a><code>get_names()</code>: returns <code>{key1,...}</code></li>
 <li><a class="anchor" href="#write" name="write">#</a><code>write()</code>: returns a boolean (<code>true</code> for success)<ul>
-<li>write changes to file</li>
+<li>Writes changes to file.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#to_table_2" name="to_table_2">#</a><code>to_table()</code>: returns <code>{[key1]=value1,...}</code></li>
+</ul>
+<h3 id="raycast"><code>Raycast</code></h3>
+<p>A raycast on the map. It works with selection boxes.
+Can be used as an iterator in a for loop.</p>
+<p>The map is loaded as the ray advances. If the
+map is modified after the <code>Raycast</code> is created,
+the changes may or may not have an effect on
+the object.</p>
+<p>It can be created via <code>Raycast(pos1, pos2, objects, liquids)</code> or
+<code>minetest.raycast(pos1, pos2, objects, liquids)</code> where:
+    * <code>pos1</code>: start of the ray
+    * <code>pos2</code>: end of the ray
+    * <code>objects</code> : if false, only nodes will be returned. Default is true.
+    * `liquids' : if false, liquid nodes won't be returned. Default is false.</p>
+<h4 id="methods_17">Methods</h4>
+<ul>
+<li><a class="anchor" href="#next_2" name="next_2">#</a><code>next()</code>: returns a <code>pointed_thing</code><ul>
+<li>Returns the next thing pointed by the ray or nil.</li>
+</ul>
+</li>
 </ul>
 <h2 id="mapgen-objects">Mapgen objects</h2>
 <p>A mapgen object is a construct used in map generation. Mapgen objects can be used
@@ -4346,7 +4662,10 @@ numeric unique decoration ID.</p>
 <li><a class="anchor" href="#time_from_last_punch_3" name="time_from_last_punch_3">#</a><code>time_from_last_punch</code>: Meant for disallowing spamming of clicks (can be <code>nil</code>)</li>
 <li><a class="anchor" href="#tool_capabilities_2" name="tool_capabilities_2">#</a><code>tool_capabilities</code>: capability table of used tool (can be <code>nil</code>)</li>
 <li><a class="anchor" href="#dir_1" name="dir_1">#</a><code>dir</code>: unit vector of direction of punch. Always defined. Points from
-    the puncher to the punched.</li>
+    the puncher to the punched.
+<code>on_death(self, killer)</code></li>
+<li>Called when the object dies.</li>
+<li><a class="anchor" href="#killer" name="killer">#</a><code>killer</code>: an <code>ObjectRef</code> (can be <code>nil</code>)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#on_rightclickselfclicker" name="on_rightclickselfclicker">#</a><code>on_rightclick(self, clicker)</code></li>
@@ -4432,24 +4751,26 @@ minetest.spawn_tree(pos,apple_tree)
 <pre><code>{
     hp_max = 1,
     physical = true,
-    collide_with_objects = true, -- collide with other objects if physical=true
+    collide_with_objects = true, -- collide with other objects if physical = true
     weight = 5,
-    collisionbox = {-0.5,-0.5,-0.5, 0.5,0.5,0.5},
-    visual = "cube"/"sprite"/"upright_sprite"/"mesh"/"wielditem",
-    visual_size = {x=1, y=1},
+    collisionbox = {-0.5, 0.0, -0.5, 0.5, 1.0, 0.5},
+    visual = "cube" / "sprite" / "upright_sprite" / "mesh" / "wielditem",
+    visual_size = {x = 1, y = 1},
     mesh = "model",
     textures = {}, -- number of required textures depends on visual
     colors = {}, -- number of required colors depends on visual
-    spritediv = {x=1, y=1},
-    initial_sprite_basepos = {x=0, y=0},
+    spritediv = {x = 1, y = 1},
+    initial_sprite_basepos = {x = 0, y = 0},
     is_visible = true,
     makes_footstep_sound = false,
     automatic_rotate = false,
     stepheight = 0,
     automatic_face_movement_dir = 0.0,
---  ^ automatically set yaw to movement direction; offset in degrees; false to disable
+--  ^ Automatically set yaw to movement direction, offset in degrees,
+--    'false' to disable.
     automatic_face_movement_max_rotation_per_sec = -1,
---  ^ limit automatic rotation to this value in degrees per second. values &lt; 0 no limit
+--  ^ Limit automatic rotation to this value in degrees per second,
+--    value &lt; 0 no limit.
     backface_culling = true, -- false to disable backface_culling for model
     nametag = "", -- by default empty, for players their name is shown if empty
     nametag_color = &lt;color&gt;, -- sets color of nametag as ColorSpec
@@ -4698,7 +5019,9 @@ minetest.spawn_tree(pos,apple_tree)
     diggable = true, -- If false, can never be dug
     climbable = false, -- If true, can be climbed on (ladder)
     buildable_to = false, -- If true, placed nodes can replace this node
-    floodable = false, -- If true, liquids flow into and replace this node
+    floodable = false, --[[
+    ^ If true, liquids flow into and replace this node.
+    ^ Warning: making a liquid node 'floodable' does not work and may cause problems. ]]
     liquidtype = "none", -- "none"/"source"/"flowing"
     liquid_alternative_flowing = "", -- Flowing version of source liquid
     liquid_alternative_source = "", -- Source version of flowing liquid
@@ -4727,6 +5050,12 @@ minetest.spawn_tree(pos,apple_tree)
     ^ If drawtype "nodebox" is used and selection_box is nil, then node_box is used. ]]
     legacy_facedir_simple = false, -- Support maps made in and before January 2012
     legacy_wallmounted = false, -- Support maps made in and before January 2012
+    waving = 0, --[[ valid for mesh, nodebox, plantlike, allfaces_optional nodes
+    ^ 1 - wave node like plants (top of node moves, bottom is fixed)
+    ^ 2 - wave node like leaves (whole node moves side-to-side synchronously)
+    ^ caveats: not all models will properly wave
+    ^ plantlike drawtype nodes can only wave like plants
+    ^ allfaces_optional drawtype nodes can only wave like leaves --]]
     sounds = {
         footstep = &lt;SimpleSoundSpec&gt;,
         dig = &lt;SimpleSoundSpec&gt;, -- "__group" = group-based sound (default)
@@ -4765,7 +5094,8 @@ minetest.spawn_tree(pos,apple_tree)
     ^ node placement (i.e. schematics and VoxelManip) or air nodes. If
     ^ return true the node is not flooded, but on_flood callback will
     ^ most likely be called over and over again every liquid update
-    ^ interval. Default: nil ]]
+    ^ interval. Default: nil.
+    ^ Warning: making a liquid node 'floodable' does not work and may cause problems. ]]
 
     after_place_node = func(pos, placer, itemstack, pointed_thing) --[[
     ^ Called after constructing node when node was placed using
@@ -4895,6 +5225,9 @@ minetest.spawn_tree(pos,apple_tree)
 --  ^ In this example, there is a 3x3x3 cluster where 8 out of the 27 nodes are coal ore
     y_min = -31000,
     y_max = 64,
+--  ^ Lower and upper limits for ore.
+--  ^ Limits are relative to y = water_level - 1 for core mapgen, or
+--  ^ relative to y = 0 for minetest.generate_ores().
     flags = "",
 --  ^ Attributes for this ore generation
     noise_threshold = 0.5,
@@ -4904,7 +5237,7 @@ minetest.spawn_tree(pos,apple_tree)
 --  ^ Needed for sheet ore_type.  Omit from scatter ore_type for a uniform ore distribution
     random_factor = 1.0,
 --  ^ Multiplier of the randomness contribution to the noise value at any
---   given point to decide if ore should be placed.  Set to 0 for solid veins.
+--  ^ given point to decide if ore should be placed.  Set to 0 for solid veins.
 --  ^ This parameter is only valid for ore_type == "vein".
     biomes = {"desert", "rainforest"}
 --  ^ List of biomes in which this decoration occurs.  Occurs in all biomes if this is omitted,
@@ -4940,6 +5273,7 @@ The Biome API is still in an experimental phase and subject to change.</p>
     y_min = 1,
     y_max = 31000,
 --  ^ Lower and upper limits for biome.
+--  ^ Limits are relative to y = water_level - 1.
 --  ^ Because biome is not recalculated for every node in a node column
 --  ^ some biome materials can exceed their limits, especially stone.
 --  ^ For each node column in a mapchunk, biome is only recalculated at column
@@ -4981,9 +5315,11 @@ The Biome API is still in an experimental phase and subject to change.</p>
 --  ^ Can be a list of (or a single) biome names, IDs, or definitions.
     y_min = -31000
     y_max = 31000
--- ^ Minimum and maximum `y` positions these decorations can be generated at.
--- ^ This parameter refers to the `y` position of the decoration base, so
---   the actual maximum height would be `height_max + size.Y`.
+--  ^ Lower and upper limits for decoration.
+--  ^ Limits are relative to y = water_level - 1 for core mapgen, or
+--  ^ relative to y = 0 for minetest.generate_decorations().
+--  ^ This parameter refers to the `y` position of the decoration base, so
+--    the actual maximum height would be `height_max + size.Y`.
     spawn_by = "default:water",
 --  ^ Node (or list of nodes) that the decoration only spawns next to.
 --  ^ Checks two horizontal planes of neighbouring nodes (including diagonal neighbours),
