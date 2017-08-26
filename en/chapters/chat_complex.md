@@ -28,21 +28,21 @@ Because of this, I created a library to do this for you.
 
 {% highlight lua %}
 ChatCmdBuilder.new("sethp", function(cmd)
-	cmd:sub(":target :hp:int", function(name, target, hp)
-		local player = minetest.get_player_by_name(target)		
-		if player then
-			player:set_hp(hp)
-			return true, "Killed " .. target
-		else
-			return false, "Unable to find " .. target
-		end
-	end)
+    cmd:sub(":target :hp:int", function(name, target, hp)
+        local player = minetest.get_player_by_name(target)        
+        if player then
+            player:set_hp(hp)
+            return true, "Killed " .. target
+        else
+            return false, "Unable to find " .. target
+        end
+    end)
 end, {
-	description = "Set hp of player",
-	privs = {
-		kick = true
-		-- ^ probably better to register a custom priv
-	}
+    description = "Set hp of player",
+    privs = {
+        kick = true
+        -- ^ probably better to register a custom priv
+    }
 })
 {% endhighlight %}
 
@@ -94,7 +94,7 @@ function in order.
 
 {% highlight lua %}
 cmd:sub(":target :hp:int", function(name, target, hp)
-	-- subcommand function
+    -- subcommand function
 end)
 {% endhighlight %}
 
@@ -118,55 +118,55 @@ Here is an example that creates a chat command that allows us to do this:
 {% highlight lua %}
 local admin_log
 local function load()
-	admin_log = {}
+    admin_log = {}
 end
 local function save()
-	-- todo
+    -- todo
 end
 load()
 
 ChatCmdBuilder.new("admin", function(cmd)
-	cmd:sub("kill :name", function(name, target)
-		local player = minetest.get_player_by_name(target)
-		if player then
-			player:set_hp(0)
-			return true, "Killed " .. target
-		else
-			return false, "Unable to find " .. target
-		end
-	end)
+    cmd:sub("kill :name", function(name, target)
+        local player = minetest.get_player_by_name(target)
+        if player then
+            player:set_hp(0)
+            return true, "Killed " .. target
+        else
+            return false, "Unable to find " .. target
+        end
+    end)
 
-	cmd:sub("move :name to :pos:pos", function(name, target, pos)
-		local player = minetest.get_player_by_name(target)
-		if player then
-			player:setpos(pos)
-			return true, "Moved " .. target .. " to " .. minetest.pos_to_string(pos)
-		else
-			return false, "Unable to find " .. target
-		end
-	end)
+    cmd:sub("move :name to :pos:pos", function(name, target, pos)
+        local player = minetest.get_player_by_name(target)
+        if player then
+            player:setpos(pos)
+            return true, "Moved " .. target .. " to " .. minetest.pos_to_string(pos)
+        else
+            return false, "Unable to find " .. target
+        end
+    end)
 
-	cmd:sub("log :username", function(name, target)
-		local log = admin_log[target]
-		if log then
-			return true, table.concat(log, "\n")
-		else
-			return false, "No entries for " .. target
-		end
-	end)
+    cmd:sub("log :username", function(name, target)
+        local log = admin_log[target]
+        if log then
+            return true, table.concat(log, "\n")
+        else
+            return false, "No entries for " .. target
+        end
+    end)
 
-	cmd:sub("log :username :message", function(name, target, message)
-		local log = admin_log[target] or {}
-		table.insert(log, message)
-		admin_log[target] = log
-		save()
-		return true, "Logged"
-	end)
+    cmd:sub("log :username :message", function(name, target, message)
+        local log = admin_log[target] or {}
+        table.insert(log, message)
+        admin_log[target] = log
+        save()
+        return true, "Logged"
+    end)
 end, {
-	description = "Admin tools",
-	privs = {
-		kick = true,
-		ban = true
-	}
+    description = "Admin tools",
+    privs = {
+        kick = true,
+        ban = true
+    }
 })
 {% endhighlight %}

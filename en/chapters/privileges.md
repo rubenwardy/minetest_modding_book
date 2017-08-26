@@ -44,8 +44,8 @@ given to them.
 
 {% highlight lua %}
 minetest.register_privilege("vote", {
-	description = "Can vote on issues",
-	give_to_singleplayer = true
+    description = "Can vote on issues",
+    give_to_singleplayer = true
 })
 {% endhighlight %}
 
@@ -54,7 +54,7 @@ value when not specified:
 
 {% highlight lua %}
 minetest.register_privilege("vote", {
-	description = "Can vote on issues"
+    description = "Can vote on issues"
 })
 {% endhighlight %}
 
@@ -64,8 +64,8 @@ There is a quicker way of checking that a player has all the required privileges
 
 {% highlight lua %}
 local has, missing = minetest.check_player_privs(player_or_name,  {
-	interact = true,
-	vote = true })
+    interact = true,
+    vote = true })
 {% endhighlight %}
 
 `has` is true if the player has all the privileges needed.\\
@@ -74,18 +74,18 @@ of missing privileges<sup>[checking needed]</sup>.
 
 {% highlight lua %}
 if minetest.check_player_privs(name, {interact=true, vote=true}) then
-	print("Player has all privs!")
+    print("Player has all privs!")
 else
-	print("Player is missing some privs!")
+    print("Player is missing some privs!")
 end
 
 local has, missing = minetest.check_player_privs(name, {
-	interact = true,
-	vote = true })
+    interact = true,
+    vote = true })
 if has then
-	print("Player has all privs!")
+    print("Player has all privs!")
 else
-	print("Player is missing privs: " .. dump(missing))
+    print("Player is missing privs: " .. dump(missing))
 end
 {% endhighlight %}
 
@@ -103,9 +103,9 @@ Running that example may give the following:
 
 {% highlight lua %}
 {
-	fly = true,
-	interact = true,
-	shout = true
+    fly = true,
+    interact = true,
+    shout = true
 }
 {% endhighlight %}
 
@@ -113,8 +113,8 @@ To set a player's privs, you use `minetest.set_player_privs`:
 
 {% highlight lua %}
 minetest.set_player_privs(name, {
-	interact = true,
-	shout = true })
+    interact = true,
+    shout = true })
 {% endhighlight %}
 
 To grant a player some privs, you would use a mixture of those two:
@@ -128,12 +128,12 @@ minetest.set_player_privs(name, privs)
 ## Adding privileges to basic_privs
 
 <div class="notice">
-	<h2>Workaround / PR pending</h2>
+    <h2>Workaround / PR pending</h2>
 
-	This is a workaround for a missing feature.
-	I have submitted a
-	<a href="https://github.com/minetest/minetest/pull/3976">pull request / patch</a>
-	to make it so you don't need to edit builtin to add a priv to basic_privs.
+    This is a workaround for a missing feature.
+    I have submitted a
+    <a href="https://github.com/minetest/minetest/pull/3976">pull request / patch</a>
+    to make it so you don't need to edit builtin to add a priv to basic_privs.
 </div>
 
 To allow people with basic_privs to grant and revoke your priv, you'll
@@ -143,8 +143,8 @@ In both grant and revoke, change the following if statement:
 
 {% highlight lua %}
 if priv ~= "interact" and priv ~= "shout" and
-		not core.check_player_privs(name, {privs=true}) then
-	return false, "Your privileges are insufficient."
+        not core.check_player_privs(name, {privs=true}) then
+    return false, "Your privileges are insufficient."
 end
 {% endhighlight %}
 
@@ -152,7 +152,7 @@ For example, to add vote:
 
 {% highlight lua %}
 if priv ~= "interact" and priv ~= "shout" and priv ~= "vote" and
-		not core.check_player_privs(name, {privs=true}) then
-	return false, "Your privileges are insufficient."
+        not core.check_player_privs(name, {privs=true}) then
+    return false, "Your privileges are insufficient."
 end
 {% endhighlight %}

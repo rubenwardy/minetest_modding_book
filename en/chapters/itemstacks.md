@@ -33,9 +33,9 @@ You could alternatively create a blank ItemStack and fill it using methods:
 {% highlight lua %}
 local items = ItemStack()
 if items:set_name("default:dirt") then
-	items:set_count(99)
+    items:set_count(99)
 else
-	print("An error occured!")
+    print("An error occured!")
 end
 {% endhighlight %}
 
@@ -57,10 +57,10 @@ print(items:get_name()) -- default:stone
 print(items:get_count()) -- 99
 
 if items:set_name("default:dirt") then
-	print(items:get_name()) -- default:dirt
-	print(items:get_count()) -- 99
+    print(items:get_name()) -- default:dirt
+    print(items:get_count()) -- 99
 else
-	error("This shouldn't happen")
+    error("This shouldn't happen")
 end
 {% endhighlight %}
 

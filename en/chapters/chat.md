@@ -26,9 +26,9 @@ minetest.chat_send_all("This is a chat message to all players")
 Here is an example of how it would appear ingame (there are other messages
 around it).
 
-	<player1> Look at this entrance
-	This is a chat message to all players
-	<player2> What about it?
+    <player1> Look at this entrance
+    This is a chat message to all players
+    <player2> What about it?
 
 ## Send a message to a certain player
 
@@ -59,12 +59,12 @@ In order to register a chat command, such as /foo, use register_chatcommand:
 
 {% highlight lua %}
 minetest.register_chatcommand("foo", {
-	privs = {
-		interact = true
-	},
-	func = function(name, param)
-		return true, "You said " .. param .. "!"
-	end
+    privs = {
+        interact = true
+    },
+    func = function(name, param)
+        return true, "You said " .. param .. "!"
+    end
 })
 {% endhighlight %}
 
@@ -74,7 +74,7 @@ Let's do a break down:
 
 {% highlight lua %}
 privs = {
-	interact = true
+    interact = true
 },
 {% endhighlight %}
 
@@ -116,8 +116,8 @@ You can use register_on_chat_message, like so:
 
 {% highlight lua %}
 minetest.register_on_chat_message(function(name, message)
-	print(name .. " said " .. message)
-	return false
+    print(name .. " said " .. message)
+    return false
 end)
 {% endhighlight %}
 
@@ -130,12 +130,12 @@ player messages, you need to do this:
 
 {% highlight lua %}
 minetest.register_on_chat_message(function(name, message)
-	if message:sub(1, 1) == "/" then
-		print(name .. " ran chat command")
-		return false
-	end
+    if message:sub(1, 1) == "/" then
+        print(name .. " ran chat command")
+        return false
+    end
 
-	print(name .. " said " .. message)
-	return false
+    print(name .. " said " .. message)
+    return false
 end)
 {% endhighlight %}

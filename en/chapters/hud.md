@@ -5,10 +5,10 @@ root: ../../
 ---
 
 <div class="notice">
-	<h2>Experimental Feature</h2>
+    <h2>Experimental Feature</h2>
 
-	The HUD feature will probably be rewritten in an upcoming Minetest release.
-	Be aware that you may need to update your mods if the API is changed.
+    The HUD feature will probably be rewritten in an upcoming Minetest release.
+    Be aware that you may need to update your mods if the API is changed.
 </div>
 
 ## Introduction
@@ -84,11 +84,11 @@ Here is our earlier example, but with comments to explain each part:
 
 {% highlight lua %}
 local idx = player:hud_add({
-	hud_elem_type = "text",     -- This is a text element
-	position = {x = 1, y = 0},
-	offset = {x=-100, y = 20},
-	scale = {x = 100, y = 100}, -- Maximum size of text, crops off any out of these bounds
-	text = "My Text"            -- The actual text shown
+    hud_elem_type = "text",     -- This is a text element
+    position = {x = 1, y = 0},
+    offset = {x=-100, y = 20},
+    scale = {x = 100, y = 100}, -- Maximum size of text, crops off any out of these bounds
+    text = "My Text"            -- The actual text shown
 })
 {% endhighlight %}
 
@@ -99,12 +99,12 @@ Colors are in [Hexadecimal form](http://www.colorpicker.com/).
 
 {% highlight lua %}
 local idx = player:hud_add({
-	hud_elem_type = "text",
-	position = {x = 1, y = 0},
-	offset = {x=-100, y = 20},
-	scale = {x = 100, y = 100},
-	text = "My Text",
-	number = 0xFF0000 -- Red
+    hud_elem_type = "text",
+    position = {x = 1, y = 0},
+    offset = {x=-100, y = 20},
+    scale = {x = 100, y = 100},
+    text = "My Text",
+    number = 0xFF0000 -- Red
 })
 {% endhighlight %}
 

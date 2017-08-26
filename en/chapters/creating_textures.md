@@ -31,19 +31,19 @@ learning curve as lots of its features are hidden away.
 ### Use the pencil tool to edit individual pixels
 
 <figure>
-	<img src="{{ page.root }}/static/pixel_art_gimp_pencil.png" alt="Pencil in GIMP">
-	<figcaption>
-		Pencil in GIMP
-	</figcaption>
+    <img src="{{ page.root }}/static/pixel_art_gimp_pencil.png" alt="Pencil in GIMP">
+    <figcaption>
+        Pencil in GIMP
+    </figcaption>
 </figure>
 
 ### Set the rubber to hard edge
 
 <figure>
-	<img src="{{ page.root }}/static/pixel_art_gimp_rubber.png" alt="Rubber in GIMP">
-	<figcaption>
-		Rubber in GIMP
-	</figcaption>
+    <img src="{{ page.root }}/static/pixel_art_gimp_rubber.png" alt="Rubber in GIMP">
+    <figcaption>
+        Rubber in GIMP
+    </figcaption>
 </figure>
 
 ## Common Mistakes

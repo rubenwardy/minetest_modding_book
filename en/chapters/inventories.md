@@ -13,21 +13,21 @@ This chapter assumes that you already know how to create and manipulate
 
 * Basic Concepts.
 * Types of Inventories.
-	* Player Inventories.
-	* Node Inventories.
-	* Detached Inventories.
+    * Player Inventories.
+    * Node Inventories.
+    * Detached Inventories.
 * InvRef and Lists.
-	* Type of inventory.
-	* List sizes.
-	* List is empty.
-	* Lua Tables.
-	* Lua Tables for Lists.
+    * Type of inventory.
+    * List sizes.
+    * List is empty.
+    * Lua Tables.
+    * Lua Tables for Lists.
 * InvRef, Items and Stacks.
-	* Adding to a list.
-	* Checking for room.
-	* Taking items.
-	* Contains.
-	* Manipulating Stacks.
+    * Adding to a list.
+    * Checking for room.
+    * Taking items.
+    * Contains.
+    * Manipulating Stacks.
 
 ## Basic Concepts
 
@@ -45,17 +45,17 @@ There are three ways you can get inventories:
 * **Detached Inventories** - an inventory which is not attached to a node or player.
 
 <figure>
-	<img src="{{ page.root }}/static/inventories_lists.png" alt="The player inventory formspec, with annotated list names.">
-	<figcaption>
-		This image shows the two inventories visible when you press i.
-		The gray boxes are inventory lists.<br />
-		The creative inventory, left (in red) is detached and it made up of a
-		single list.<br />
-		The player inventory, right (in blue) is a player inventory
-		and is made up of three lists.<br />
-		Note that the trash can is a <a href="formspecs.html">formspec</a>
-		element, and is not part of the inventory.
-	</figcaption>
+    <img src="{{ page.root }}/static/inventories_lists.png" alt="The player inventory formspec, with annotated list names.">
+    <figcaption>
+        This image shows the two inventories visible when you press i.
+        The gray boxes are inventory lists.<br />
+        The creative inventory, left (in red) is detached and it made up of a
+        single list.<br />
+        The player inventory, right (in blue) is a player inventory
+        and is made up of three lists.<br />
+        Note that the trash can is a <a href="formspecs.html">formspec</a>
+        element, and is not part of the inventory.
+    </figcaption>
 </figure>
 
 
@@ -124,11 +124,11 @@ They also have a width, which is used to divide them into a grid.
 
 {% highlight lua %}
 if inv:set_size("main", 32) then
-	inv:set_width("main", 8)
-	print("size:  " .. inv.get_size("main"))
-	print("width: " .. inv:get_width("main"))
+    inv:set_width("main", 8)
+    print("size:  " .. inv.get_size("main"))
+    print("width: " .. inv:get_width("main"))
 else
-	print("Error!")
+    print("Error!")
 end
 {% endhighlight %}
 
@@ -140,7 +140,7 @@ a list doesn't have a width or height, only the maximum number of stacks/slots.-
 
 {% highlight lua %}
 if inv:is_empty("main") then
-	print("The list is empty!")
+    print("The list is empty!")
 end
 {% endhighlight %}
 
@@ -156,20 +156,20 @@ It will be in this form:
 
 {% highlight lua %}
 {
-	list_one = {
-		ItemStack,
-		ItemStack,
-		ItemStack,
-		ItemStack,
-		-- inv:get_size("list_one") elements
-	},
-	list_two = {
-		ItemStack,
-		ItemStack,
-		ItemStack,
-		ItemStack,
-		-- inv:get_size("list_two") elements
-	}
+    list_one = {
+        ItemStack,
+        ItemStack,
+        ItemStack,
+        ItemStack,
+        -- inv:get_size("list_one") elements
+    },
+    list_two = {
+        ItemStack,
+        ItemStack,
+        ItemStack,
+        ItemStack,
+        -- inv:get_size("list_two") elements
+    }
 }
 {% endhighlight %}
 
@@ -193,11 +193,11 @@ It will be in this form:
 
 {% highlight lua %}
 {
-	ItemStack,
-	ItemStack,
-	ItemStack,
-	ItemStack,
-	-- inv:get_size("list_one") elements
+    ItemStack,
+    ItemStack,
+    ItemStack,
+    ItemStack,
+    -- inv:get_size("list_one") elements
 }
 {% endhighlight %}
 
@@ -217,7 +217,7 @@ Please note that the sizes of lists will not change.
 local stack = ItemStack("default:stone 99")
 local leftover = inv:add_item("main", stack)
 if leftover:get_count() > 0 then
-	print("Inventory is full! " .. leftover:get_count() .. " items weren't added")
+    print("Inventory is full! " .. leftover:get_count() .. " items weren't added")
 end
 {% endhighlight %}
 
@@ -227,7 +227,7 @@ end
 
 {% highlight lua %}
 if not inv:room_for_item("main", stack) then
-	print("Not enough room!")
+    print("Not enough room!")
 end
 {% endhighlight %}
 
@@ -246,7 +246,7 @@ are stacks of 99 + 95 + 6.
 
 {% highlight lua %}
 if not inv:contains_item(listname, stack) then
-	print("Item not in inventory!")
+    print("Item not in inventory!")
 end
 {% endhighlight %}
 

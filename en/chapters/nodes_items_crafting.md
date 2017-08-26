@@ -23,7 +23,7 @@ Each item, whether that be a node, craftitem, tool, or entity, has an item strin
 This is sometimes referred to as registered name or just name.
 A string in programming terms is a piece of text.
 
-	modname:itemname
+    modname:itemname
 
 The modname is the name of the folder your mod is in.
 You may call the itemname anything you like; however, it should be relevant to
@@ -55,8 +55,8 @@ They are used in recipes to create other items, or they can be used by the playe
 
 {% highlight lua %}
 minetest.register_craftitem("mymod:diamond_fragments", {
-	description = "Alien Diamond Fragments",
-	inventory_image = "mymod_diamond_fragments.png"
+    description = "Alien Diamond Fragments",
+    inventory_image = "mymod_diamond_fragments.png"
 })
 {% endhighlight %}
 
@@ -70,9 +70,9 @@ Foods are items that cure health. To create a food item you need to define the o
 
 {% highlight lua %}
 minetest.register_craftitem("mymod:mudpie", {
-	description = "Alien Mud Pie",
-	inventory_image = "myfood_mudpie.png",
-	on_use = minetest.item_eat(20)
+    description = "Alien Mud Pie",
+    inventory_image = "myfood_mudpie.png",
+    on_use = minetest.item_eat(20)
 })
 {% endhighlight %}
 
@@ -83,7 +83,7 @@ Hitpoints don't have to be integers (whole numbers), they can be decimals.
 Sometimes you may want a food to be replaced with another item when being eaten,
 for example smaller pieces of cake or bones after eating meat. To do this, use:
 
-	minetest.item_eat(hp, replace_with_item)
+    minetest.item_eat(hp, replace_with_item)
 
 Where replace_with_item is an item string.
 
@@ -94,28 +94,28 @@ such as send a message to the player?
 
 {% highlight lua %}
 minetest.register_craftitem("mymod:mudpie", {
-	description = "Alien Mud Pie",
-	inventory_image = "myfood_mudpie.png",
-	on_use = function(itemstack, user, pointed_thing)
-		hp_change = 20
-		replace_with_item = nil
+    description = "Alien Mud Pie",
+    inventory_image = "myfood_mudpie.png",
+    on_use = function(itemstack, user, pointed_thing)
+        hp_change = 20
+        replace_with_item = nil
 
-		minetest.chat_send_player(user:get_player_name(), "You ate an alien mud pie!")
+        minetest.chat_send_player(user:get_player_name(), "You ate an alien mud pie!")
 
-		-- Support for hunger mods using minetest.register_on_item_eat
-		for _ , callback in pairs(minetest.registered_on_item_eats) do
-			local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing)
-			if result then
-				return result
-			end
-		end
+        -- Support for hunger mods using minetest.register_on_item_eat
+        for _ , callback in pairs(minetest.registered_on_item_eats) do
+            local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing)
+            if result then
+                return result
+            end
+        end
 
-		if itemstack:take_item() ~= nil then
-			user:set_hp(user:get_hp() + hp_change)
-		end
+        if itemstack:take_item() ~= nil then
+            user:set_hp(user:get_hp() + hp_change)
+        end
 
-		return itemstack
-	end
+        return itemstack
+    end
 })
 {% endhighlight %}
 
@@ -133,10 +133,10 @@ definition table; however, you need to set the textures for the faces of the cub
 
 {% highlight lua %}
 minetest.register_node("mymod:diamond", {
-	description = "Alien Diamond",
-	tiles = {"mymod_diamond.png"},
-	is_ground_content = true,
-	groups = {cracky=3, stone=1}
+    description = "Alien Diamond",
+    tiles = {"mymod_diamond.png"},
+    is_ground_content = true,
+    groups = {cracky=3, stone=1}
 })
 {% endhighlight %}
 
@@ -155,19 +155,19 @@ a negative direction means that it is facing negative co-ordinates.
 
 {% highlight lua %}
 minetest.register_node("mymod:diamond", {
-	description = "Alien Diamond",
-	tiles = {
-		"mymod_diamond_up.png",
-		"mymod_diamond_down.png",
-		"mymod_diamond_right.png",
-		"mymod_diamond_left.png",
-		"mymod_diamond_back.png",
-		"mymod_diamond_front.png"
-	},
-	is_ground_content = true,
-	groups = {cracky = 3},
-	drop = "mymod:diamond_fragments"
-	-- ^  Rather than dropping diamond, drop mymod:diamond_fragments
+    description = "Alien Diamond",
+    tiles = {
+        "mymod_diamond_up.png",
+        "mymod_diamond_down.png",
+        "mymod_diamond_right.png",
+        "mymod_diamond_left.png",
+        "mymod_diamond_back.png",
+        "mymod_diamond_front.png"
+    },
+    is_ground_content = true,
+    groups = {cracky = 3},
+    drop = "mymod:diamond_fragments"
+    -- ^  Rather than dropping diamond, drop mymod:diamond_fragments
 })
 {% endhighlight %}
 
@@ -182,7 +182,7 @@ identified by the ``type`` property.
 * shapeless - It doesn't matter where the ingredients are,
   just that there is the right amount.
 * cooking - Recipes for the furnace to use.
-	* fuel - Defines items which can be burned in furnaces.
+    * fuel - Defines items which can be burned in furnaces.
 * tool_repair - Used to allow the repairing of tools.
 
 Craft recipes do not use Item Strings to uniquely identify themselves.
@@ -196,12 +196,12 @@ right place for it to work.
 
 {% highlight lua %}
 minetest.register_craft({
-	output = "mymod:diamond_chair 99",
-	recipe = {
-		{"mymod:diamond_fragments", "", ""},
-		{"mymod:diamond_fragments", "mymod:diamond_fragments", ""},
-		{"mymod:diamond_fragments", "mymod:diamond_fragments",  ""}
-	}
+    output = "mymod:diamond_chair 99",
+    recipe = {
+        {"mymod:diamond_fragments", "", ""},
+        {"mymod:diamond_fragments", "mymod:diamond_fragments", ""},
+        {"mymod:diamond_fragments", "mymod:diamond_fragments",  ""}
+    }
 })
 {% endhighlight %}
 
@@ -219,12 +219,12 @@ allows the recipe to be crafted if it was all moved one place to the right.
 
 {% highlight lua %}
 minetest.register_craft({
-	output = "mymod:diamond_chair",
-	recipe = {
-		{"mymod:diamond_fragments", ""},
-		{"mymod:diamond_fragments", "mymod:diamond_fragments"},
-		{"mymod:diamond_fragments", "mymod:diamond_fragments"}
-	}
+    output = "mymod:diamond_chair",
+    recipe = {
+        {"mymod:diamond_fragments", ""},
+        {"mymod:diamond_fragments", "mymod:diamond_fragments"},
+        {"mymod:diamond_fragments", "mymod:diamond_fragments"}
+    }
 })
 {% endhighlight %}
 
@@ -237,9 +237,9 @@ need to be in any specific place for it to work.
 
 {% highlight lua %}
 minetest.register_craft({
-	type = "shapeless",
-	output = "mymod:diamond",
-	recipe = {"mymod:diamond_fragments", "mymod:diamond_fragments", "mymod:diamond_fragments"}
+    type = "shapeless",
+    output = "mymod:diamond",
+    recipe = {"mymod:diamond_fragments", "mymod:diamond_fragments", "mymod:diamond_fragments"}
 })
 {% endhighlight %}
 
@@ -256,10 +256,10 @@ For example, you use a cooking recipe to turn ores into bars.
 
 {% highlight lua %}
 minetest.register_craft({
-	type = "cooking",
-	output = "mymod:diamond_fragments",
-	recipe = "default:coalblock",
-	cooktime = 10,
+    type = "cooking",
+    output = "mymod:diamond_fragments",
+    recipe = "default:coalblock",
+    cooktime = 10,
 })
 {% endhighlight %}
 
@@ -279,9 +279,9 @@ what can be burned in furnaces and other cooking tools from mods.
 
 {% highlight lua %}
 minetest.register_craft({
-	type = "fuel",
-	recipe = "mymod:diamond",
-	burntime = 300,
+    type = "fuel",
+    recipe = "mymod:diamond",
+    burntime = 300,
 })
 {% endhighlight %}
 

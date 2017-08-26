@@ -42,29 +42,29 @@ You license your code under LGPL 2.1 and your art under CC-BY-SA.
 
 Add this copyright notice to your README.txt, or as a new file called LICENSE.txt
 
-	License for Code
-	----------------
+    License for Code
+    ----------------
 
-	Copyright (C) 2010-2013 Your Name <emailaddress>
+    Copyright (C) 2010-2013 Your Name <emailaddress>
 
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU Lesser General Public License as published by
-	the Free Software Foundation; either version 2.1 of the License, or
-	(at your option) any later version.
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU Lesser General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
 
-	You should have received a copy of the GNU Lesser General Public License along
-	with this program; if not, write to the Free Software Foundation, Inc.,
-	51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+    You should have received a copy of the GNU Lesser General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-	License for Textures, Models and Sounds
-	---------------------------------------
+    License for Textures, Models and Sounds
+    ---------------------------------------
 
-	CC-BY-SA 3.0 UNPORTED. Created by Your Name
+    CC-BY-SA 3.0 UNPORTED. Created by Your Name
 
 ### WTFPL or CC0
 
@@ -97,8 +97,8 @@ Be concise without being too vague. This is displayed in the mod store.
 
 For example:
 
-	GOOD: Adds soups, cakes, bakes and juices. The food mod which supports the most ingredients.
-	BAD:  The food mod for Minetest.
+    GOOD: Adds soups, cakes, bakes and juices. The food mod which supports the most ingredients.
+    BAD:  The food mod for Minetest.
 
 ### screenshot.png
 
@@ -152,10 +152,10 @@ On the create a topic page, see below, go to the "Upload Attachment" tab at the 
 Click browse and select the zipped file. I suggest that you enter the version of your mod in the comment field.
 
 <figure>
-	<img src="{{ page.root }}/static/releasing_attachments.png" alt="Upload Attachment">
-	<figcaption>
-		Upload Attachment tab.
-	</figcaption>
+    <img src="{{ page.root }}/static/releasing_attachments.png" alt="Upload Attachment">
+    <figcaption>
+        Upload Attachment tab.
+    </figcaption>
 </figure>
 
 ## Forum Topic
@@ -184,30 +184,30 @@ You should also include screenshots of your mod in action, if relevant.
 Here is an example. The Minetest forum uses bbcode for formating.
 
 
-	Adds magic, rainbows and other special things.
+    Adds magic, rainbows and other special things.
 
-	See download attached.
+    See download attached.
 
-	[b]Version:[/b] 1.1
-	[b]License:[/b] LGPL 2.1 or later
+    [b]Version:[/b] 1.1
+    [b]License:[/b] LGPL 2.1 or later
 
-	Dependencies: default mod (found in minetest_game)
+    Dependencies: default mod (found in minetest_game)
 
-	Report bugs or request help on the forum topic.
+    Report bugs or request help on the forum topic.
 
-	[h]Installation[/h]
+    [h]Installation[/h]
 
-	Unzip the archive, rename the folder to to modfoldername and
-	place it in minetest/mods/minetest/
+    Unzip the archive, rename the folder to to modfoldername and
+    place it in minetest/mods/minetest/
 
-	(  GNU/Linux: If you use a system-wide installation place
-		it in ~/.minetest/mods/minetest/.  )
+    (  GNU/Linux: If you use a system-wide installation place
+        it in ~/.minetest/mods/minetest/.  )
 
-	(  If you only want this to be used in a single world, place
-		the folder in worldmods/ in your worlddirectory.  )
+    (  If you only want this to be used in a single world, place
+        the folder in worldmods/ in your worlddirectory.  )
 
-	For further information or help see:
-	[url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
+    For further information or help see:
+    [url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
 
 If you modify the above example for your mod topic, remember to
 change "modfldername" to the name of the folder your mod should be
@@ -224,16 +224,16 @@ Subject of topic must be in one of these formats:
 ### Profit
 
 <figure>
-	<img src="{{ page.root }}/static/releasing_profit.png" alt="Profit">
-	<figcaption style="display:none;">
-		Profit
-	</figcaption>
+    <img src="{{ page.root }}/static/releasing_profit.png" alt="Profit">
+    <figcaption style="display:none;">
+        Profit
+    </figcaption>
 </figure>
 
 ## Appendix: Readme and Forum Generator
 
 <noscript>
-	<p>Javascript is required for this section!</p>
+    <p>Javascript is required for this section!</p>
 </noscript>
 
 Title: <input id="t_title" value="My Super Special Mod"><br />
@@ -264,10 +264,10 @@ Unzip the archive, rename the folder to mysuperspecial and
 place it in minetest/mods/
 
 (  GNU/Linux: If you use a system-wide installation place
-	it in ~/.minetest/mods/.  )
+    it in ~/.minetest/mods/.  )
 
 (  If you only want this to be used in a single world, place
-	the folder in worldmods/ in your worlddirectory.  )
+    the folder in worldmods/ in your worlddirectory.  )
 
 For further information or help see:
 http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
@@ -287,92 +287,92 @@ Unzip the archive, rename the folder to mysuperspecial and
 place it in minetest/mods/
 
 (  GNU/Linux: If you use a system-wide installation place
-	it in ~/.minetest/mods/.  )
+    it in ~/.minetest/mods/.  )
 
 (  If you only want this to be used in a single world, place
-	the folder in worldmods/ in your worlddirectory.  )
+    the folder in worldmods/ in your worlddirectory.  )
 
 For further information or help see:
 http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
 
 <script src="http://blog.rubenwardy.com/static/jquery.min.js"></script>
 <script>function regen() {
-	var title = $("#t_title").val();
-	var name = $("#t_name").val();
-	var desc = $("#t_desc").val();
-	var version = $("#t_version").val();
-	var license = $("#t_license").val();
-	var dep = $("#t_dep").val();
-	var add = $("#t_add").val();
+    var title = $("#t_title").val();
+    var name = $("#t_name").val();
+    var desc = $("#t_desc").val();
+    var version = $("#t_version").val();
+    var license = $("#t_license").val();
+    var dep = $("#t_dep").val();
+    var add = $("#t_add").val();
 
-	var download = $("#t_download").val();
+    var download = $("#t_download").val();
 
-	{
-		var res = ((title.length > 0) ? title : name) + "\n";
-		var header_count = res.length - 1;
-		for (var i = 0; i < header_count; i++) {
-			res += "=";
-		}
-		res += "\n\n";
+    {
+        var res = ((title.length > 0) ? title : name) + "\n";
+        var header_count = res.length - 1;
+        for (var i = 0; i < header_count; i++) {
+            res += "=";
+        }
+        res += "\n\n";
 
-		res += desc + "\n\n";
+        res += desc + "\n\n";
 
-		if (version != "") {
-			res += "Version: " + version + "\n";
-		}
+        if (version != "") {
+            res += "Version: " + version + "\n";
+        }
 
-		res += "License: " + license + "\n";
-		res += "Dependencies: " + dep + "\n\n";
+        res += "License: " + license + "\n";
+        res += "Dependencies: " + dep + "\n\n";
 
-		if (add != "") {
-			res += add + "\n\n";
-		}
+        if (add != "") {
+            res += add + "\n\n";
+        }
 
-		res += "Installation\n------------\n\nUnzip the archive, rename the folder to ";
-		res += name + " and\nplace it in minetest/mods/\n\n";
+        res += "Installation\n------------\n\nUnzip the archive, rename the folder to ";
+        res += name + " and\nplace it in minetest/mods/\n\n";
 
-		res += "(  GNU/Linux: If you use a system-wide installation place\n" +
-			"\tit in ~/.minetest/mods/.  )\n\n" +
-			"(  If you only want this to be used in a single world, place\n" +
-			"\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
-			"For further information or help see:\n" +
-			"http://wiki.minetest.com/wiki/Installing_Mods\n";
+        res += "(  GNU/Linux: If you use a system-wide installation place\n" +
+            "\tit in ~/.minetest/mods/.  )\n\n" +
+            "(  If you only want this to be used in a single world, place\n" +
+            "\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
+            "For further information or help see:\n" +
+            "http://wiki.minetest.com/wiki/Installing_Mods\n";
 
-		$("#readme").text(res);
-	}
+        $("#readme").text(res);
+    }
 
-	{
-		var res = desc + "\n\n";
+    {
+        var res = desc + "\n\n";
 
-		if (version != "") {
-			res += "[b]Version:[/b] " + version + "\n";
-		}
+        if (version != "") {
+            res += "[b]Version:[/b] " + version + "\n";
+        }
 
-		res += "[b]License:[/b] " + license + "\n";
-		res += "[b]Dependencies:[/b] " + dep + "\n";
+        res += "[b]License:[/b] " + license + "\n";
+        res += "[b]Dependencies:[/b] " + dep + "\n";
 
-		res += "[b]Download:[/b] " + download + "\n\n";
+        res += "[b]Download:[/b] " + download + "\n\n";
 
-		if (add != "") {
-			res += add + "\n\n";
-		}
+        if (add != "") {
+            res += add + "\n\n";
+        }
 
-		res += "[h]Installation[/h]\n\nUnzip the archive, rename the folder to ";
-		res += name + " and\nplace it in minetest/mods/\n\n";
+        res += "[h]Installation[/h]\n\nUnzip the archive, rename the folder to ";
+        res += name + " and\nplace it in minetest/mods/\n\n";
 
-		res += "(  GNU/Linux: If you use a system-wide installation place\n" +
-			"\tit in ~/.minetest/mods/.  )\n\n" +
-			"(  If you only want this to be used in a single world, place\n" +
-			"\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
-			"For further information or help see:\n" +
-			"http://wiki.minetest.com/wiki/Installing_Mods\n";
+        res += "(  GNU/Linux: If you use a system-wide installation place\n" +
+            "\tit in ~/.minetest/mods/.  )\n\n" +
+            "(  If you only want this to be used in a single world, place\n" +
+            "\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
+            "For further information or help see:\n" +
+            "http://wiki.minetest.com/wiki/Installing_Mods\n";
 
-		$("#forum").text(res);
-	}
+        $("#forum").text(res);
+    }
 }
 
 $(function() {
-	jQuery('input').on('input propertychange paste', regen);
-	jQuery('textarea').on('input propertychange paste', regen);
+    jQuery('input').on('input propertychange paste', regen);
+    jQuery('textarea').on('input propertychange paste', regen);
 });
 </script>

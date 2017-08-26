@@ -10,10 +10,10 @@ In this chapter we will talk about scripting in Lua, the tools required,
 and go over some techniques which you will probably find useful.
 
 * Tools
-	* Recommended Editors
-	* Integrated Programming Environments
+    * Recommended Editors
+    * Integrated Programming Environments
 * Coding in Lua
-	* Selection
+    * Selection
 * Programming
 * Local and Global
 * Including other Lua Scripts
@@ -26,17 +26,17 @@ depending on what they mean. This allows you to spot mistakes.
 
 {% highlight lua %}
 function ctf.post(team,msg)
-	if not ctf.team(team) then
-		return false
-	end
-	if not ctf.team(team).log then
-		ctf.team(team).log = {}
-	end
+    if not ctf.team(team) then
+        return false
+    end
+    if not ctf.team(team).log then
+        ctf.team(team).log = {}
+    end
 
-	table.insert(ctf.team(team).log,1,msg)
-	ctf.save()
+    table.insert(ctf.team(team).log,1,msg)
+    ctf.save()
 
-	return true
+    return true
 end
 {% endhighlight %}
 
@@ -69,7 +69,7 @@ One such IDE is Eclipse with the Koneki Lua plugin:
 ## Coding in Lua
 
 <div class="notice">
-	This section is a Work in Progress. May be unclear.
+    This section is a Work in Progress. May be unclear.
 </div>
 
 Programs are a series of commands that run one after another.
@@ -138,9 +138,9 @@ The most basic selection is the if statement. It looks like this:
 local random_number = math.random(1, 100) -- Between 1 and 100.
 
 if random_number > 50 then
-	print("Woohoo!")
+    print("Woohoo!")
 else
-	print("No!")
+    print("No!")
 end
 {% endhighlight %}
 
@@ -166,7 +166,7 @@ That doesn't contain every possible operator, and you can combine operators like
 
 {% highlight lua %}
 if not A and B then
-	print("Yay!")
+    print("Yay!")
 end
 {% endhighlight %}
 
@@ -180,7 +180,7 @@ local A = 5
 local is_equal = (A == 5)
 
 if is_equal then
-	print("Is equal!")
+    print("Is equal!")
 end
 {% endhighlight %}
 
@@ -211,13 +211,13 @@ A local variable is only accessible from where it is defined. Here are some exam
 local one = 1
 
 function myfunc()
-	-- Accessible from within this function
-	local two = one + one
+    -- Accessible from within this function
+    local two = one + one
 
-	if two == one then
-		-- Accessible from within this if statement
-		local three = one + two
-	end
+    if two == one then
+        -- Accessible from within this if statement
+        local three = one + two
+    end
 end
 {% endhighlight %}
 
@@ -227,7 +227,7 @@ Whereas global variables can be accessed from anywhere in the script file, and f
 my_global_variable = "blah"
 
 function one()
-	my_global_variable = "three"
+    my_global_variable = "three"
 end
 
 print(my_global_variable) -- Output: "blah"
@@ -243,11 +243,11 @@ Local variables must be identified as such.
 
 {% highlight lua %}
 function one()
-	foo = "bar"
+    foo = "bar"
 end
 
 function two()
-	print(dump(foo))  -- Output: "bar"
+    print(dump(foo))  -- Output: "bar"
 end
 
 one()
@@ -260,17 +260,17 @@ which show it is a string.
 
 This is sloppy coding, and Minetest will in fact warn you about this:
 
-	[WARNING] Assigment to undeclared global 'foo' inside function at init.lua:2
+    [WARNING] Assigment to undeclared global 'foo' inside function at init.lua:2
 
 To correct this, use "local":
 
 {% highlight lua %}
 function one()
-	local foo = "bar"
+    local foo = "bar"
 end
 
 function two()
-	print(dump(foo))  -- Output: nil
+    print(dump(foo))  -- Output: nil
 end
 
 one()
@@ -286,7 +286,7 @@ as other mods could have functions of the same name.
 
 {% highlight lua %}
 local function foo(bar)
-	return bar * 2
+    return bar * 2
 end
 {% endhighlight %}
 
@@ -297,7 +297,7 @@ you add them all into a table with the same name as the mod:
 mymod = {}
 
 function mymod.foo(bar)
-	return "foo" .. bar
+    return "foo" .. bar
 end
 
 -- In another mod, or script:

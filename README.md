@@ -41,19 +41,19 @@ fit my idea of quality.
 
 I use [Jekyll](http://jekyllrb.com/) 2.5.3
 
-	# For Linux based:
+    # For Linux based:
 
-	$ sudo apt-get install ruby-dev
-	$ gem install jekyll
-	$ gem install jekyll-sitemap
+    $ sudo apt-get install ruby-dev
+    $ gem install jekyll
+    $ gem install jekyll-sitemap
 
-	# You may need to use sudo on the above commands
+    # You may need to use sudo on the above commands
 
 ### Building as a website
 
 You can build it as a website using [Jekyll](http://jekyllrb.com/)
 
-	$ jekyll build
+    $ jekyll build
 
 Goes to _site/
 
@@ -62,7 +62,7 @@ Goes to _site/
 You can start a webserver on localhost which will automatically
 rebuild pages when you modify their markdown source.
 
-	$ jekyll serve
+    $ jekyll serve
 
 
 This serves at <http://localhost:4000> on my computer, but the port
@@ -89,107 +89,107 @@ Replace spaces with underscores ( _ )
 
 {% raw %}
 
-	---
-	title: Player Physics
-	layout: default
-	root: ../
-	---
+    ---
+    title: Player Physics
+    layout: default
+    root: ../
+    ---
 
-	Introduction
-	------------
+    Introduction
+    ------------
 
-	Write an paragraph or so explaining what will be covered in this chapter.
-	Explain why/how these concepts are useful in modding
+    Write an paragraph or so explaining what will be covered in this chapter.
+    Explain why/how these concepts are useful in modding
 
-	* List the
-	* Parts in
-	* This chapter
+    * List the
+    * Parts in
+    * This chapter
 
-	Section
-	-------
+    Section
+    -------
 
-	Explaining the concept of something.
+    Explaining the concept of something.
 
-	You can link to other chapters like this: [chapter title]({{ relative }}/chaptertitle/).//
-	Do it like Wikipedia, link words in a sentence but avoid explicitly telling the user to view it//
-	or click the link.
+    You can link to other chapters like this: [chapter title]({{ relative }}/chaptertitle/).//
+    Do it like Wikipedia, link words in a sentence but avoid explicitly telling the user to view it//
+    or click the link.
 
-		Mod Name
-		-	init.lua - the main scripting code file, which is run when the game loads.
-		-	(optional) depends.txt - a list of mod names that needs to be loaded before this mod.
-		-	(optional) textures/ - place images here, commonly in the format modname_itemname.png
-		-	(optional) sounds/ - place sounds in here
-		-	(optional) models/ - place 3d models in here
-		...and any other lua files to be included by init.lua
+        Mod Name
+        -    init.lua - the main scripting code file, which is run when the game loads.
+        -    (optional) depends.txt - a list of mod names that needs to be loaded before this mod.
+        -    (optional) textures/ - place images here, commonly in the format modname_itemname.png
+        -    (optional) sounds/ - place sounds in here
+        -    (optional) models/ - place 3d models in here
+        ...and any other lua files to be included by init.lua
 
-	Code snippets are tabbed one level in, except for lua snippets, which use a code highligter.
+    Code snippets are tabbed one level in, except for lua snippets, which use a code highligter.
 
-	Section 2
-	---------
+    Section 2
+    ---------
 
-	Explaining another concept
+    Explaining another concept
 
-	{% highlight lua %}
-	print("This file will be run at load time!")
+    {% highlight lua %}
+    print("This file will be run at load time!")
 
-	minetest.register_node("mymod:node",{
-		description = "This is a node",
-		tiles = {
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png"
-		},
-		groups = {cracky = 1}
-	})
-	{% endhighlight %}
+    minetest.register_node("mymod:node",{
+        description = "This is a node",
+        tiles = {
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png"
+        },
+        groups = {cracky = 1}
+    })
+    {% endhighlight %}
 
-	Use the highlight tags to highlight Lua code.
+    Use the highlight tags to highlight Lua code.
 
-	Section 3
-	---------
+    Section 3
+    ---------
 
-	You should include plenty of examples. Each example should
-	be able to be installed in a mod and used. Don't do the thing where
-	you make the reading create the mod line-by-line, it is rather annoying
-	and good code can explain itself. Explaining line-by-line is needed in earlier chapters,
-	and when introducing new concepts.
+    You should include plenty of examples. Each example should
+    be able to be installed in a mod and used. Don't do the thing where
+    you make the reading create the mod line-by-line, it is rather annoying
+    and good code can explain itself. Explaining line-by-line is needed in earlier chapters,
+    and when introducing new concepts.
 
-	### Mod Folder
-		mymod/
-		-	init.lua
-		-	depends.txt
+    ### Mod Folder
+        mymod/
+        -    init.lua
+        -    depends.txt
 
 
-		default
+        default
 
-	{% highlight lua %}
-	print("This file will be run at load time!")
+    {% highlight lua %}
+    print("This file will be run at load time!")
 
-	minetest.register_node("mymod:node",{
-		description = "This is a node",
-		tiles = {
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png",
-			"mymod_node.png"
-		},
-		groups = {cracky = 1}
-	})
-	{% endhighlight %}
+    minetest.register_node("mymod:node",{
+        description = "This is a node",
+        tiles = {
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png",
+            "mymod_node.png"
+        },
+        groups = {cracky = 1}
+    })
+    {% endhighlight %}
 
-	Explain the code here, but there is no need to explain every single line.
-	Use comments and indentation well.
+    Explain the code here, but there is no need to explain every single line.
+    Use comments and indentation well.
 
-	Your Turn
-	---------
+    Your Turn
+    ---------
 
-	* **Set Tasks:** Make tasks for the reader to do.
-	* **Start easy, get hard:** Start with easier ones, and work up to harder ones.
+    * **Set Tasks:** Make tasks for the reader to do.
+    * **Start easy, get hard:** Start with easier ones, and work up to harder ones.
 
 {% endraw %}
 

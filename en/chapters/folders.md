@@ -27,13 +27,13 @@ Mod names can be made up of letters, numbers, or underscores. The folder a mod i
 in needs to be called the same as the mod name.
 
 ### Mod Folder Structure
-	Mod name (eg: "mymod")
-	-	init.lua - the main scripting code file, which is run when the game loads.
-	-	(optional) depends.txt - a list of mod names that needs to be loaded before this mod.
-	-	(optional) textures/ - place images here, commonly in the format modname_itemname.png
-	-	(optional) sounds/ - place sounds in here
-	-	(optional) models/ - place 3d models in here
-	...and any other lua files to be included by init.lua
+    Mod name (eg: "mymod")
+    -    init.lua - the main scripting code file, which is run when the game loads.
+    -    (optional) depends.txt - a list of mod names that needs to be loaded before this mod.
+    -    (optional) textures/ - place images here, commonly in the format modname_itemname.png
+    -    (optional) sounds/ - place sounds in here
+    -    (optional) models/ - place 3d models in here
+    ...and any other lua files to be included by init.lua
 
 Only the init.lua file is required in a mod for it to run on game load; however,
 the other items are needed by some mods to perform their functionality.
@@ -45,9 +45,9 @@ needs to be loaded before this mod.
 
 **depends.txt**
 
-	modone
-	modtwo
-	modthree?
+    modone
+    modtwo
+    modthree?
 
 As you can see, each modname is on its own line.
 
@@ -64,43 +64,43 @@ They are useful if you want to supply multiple mods to a player but don't
 want to make them download each one individually.
 
 ### Mod Pack Folder Structure
-	modpackfolder/
-	-	modone/
-	-	modtwo/
-	-	modthree/
-	-	modfour/
-	-	modpack.txt – signals that this is a mod pack, content does not matter
+    modpackfolder/
+    -    modone/
+    -    modtwo/
+    -    modthree/
+    -    modfour/
+    -    modpack.txt – signals that this is a mod pack, content does not matter
 
 ## Example Time
 
 Are you confused? Don't worry, here is an example putting all of this together.
 
 ### Mod Folder
-	mymod/
-	-	textures/
-	-	-	mymod_node.png
-	-	init.lua
-	-	depends.txt
+    mymod/
+    -    textures/
+    -    -    mymod_node.png
+    -    init.lua
+    -    depends.txt
 
 
 ### depends.txt
-	default
+    default
 
 ### init.lua
 {% highlight lua %}
 print("This file will be run at load time!")
 
 minetest.register_node("mymod:node", {
-	description = "This is a node",
-	tiles = {
-		"mymod_node.png",
-		"mymod_node.png",
-		"mymod_node.png",
-		"mymod_node.png",
-		"mymod_node.png",
-		"mymod_node.png"
-	},
-	groups = {cracky = 1}
+    description = "This is a node",
+    tiles = {
+        "mymod_node.png",
+        "mymod_node.png",
+        "mymod_node.png",
+        "mymod_node.png",
+        "mymod_node.png",
+        "mymod_node.png"
+    },
+    groups = {cracky = 1}
 })
 {% endhighlight %}
 

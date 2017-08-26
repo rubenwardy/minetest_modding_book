@@ -45,12 +45,12 @@ Written by rubenwardy.\\
 License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 
 <!--<form class="leave_comment" action="http://pooleapp.com/stash/74bf2dfb-4c01-423c-b48a-e002ed70bbc1/" method="post">
-	<input type="hidden" name="redirect_to"
-			value="http://rubenwardy.com/minetest_modding_book/thank_you.html" />
-	Nickname (optional): <input class="name" name="name" placeholder="Your Name" type="text"><br />
-	Contact method (email or forum name, optional): <input name="contact" type="text"><br />
-	Feedback:
-	<textarea name="comment" required="" style="display:block;min-width: 90%;min-height:100px;"></textarea>
+    <input type="hidden" name="redirect_to"
+            value="http://rubenwardy.com/minetest_modding_book/thank_you.html" />
+    Nickname (optional): <input class="name" name="name" placeholder="Your Name" type="text"><br />
+    Contact method (email or forum name, optional): <input name="contact" type="text"><br />
+    Feedback:
+    <textarea name="comment" required="" style="display:block;min-width: 90%;min-height:100px;"></textarea>
 
-	<input value="Leave Feedback" type="submit">
+    <input value="Leave Feedback" type="submit">
 </form>-->

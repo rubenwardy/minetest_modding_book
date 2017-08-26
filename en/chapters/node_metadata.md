@@ -53,11 +53,11 @@ local meta = minetest.get_meta(pos)
 local value = meta:get_string("key")
 
 if value then
-	print(value)
+    print(value)
 else
-	-- value == nil
-	-- metadata of key "key" does not exist
-	print(value)
+    -- value == nil
+    -- metadata of key "key" does not exist
+    print(value)
 end
 {% endhighlight %}
 
@@ -75,9 +75,9 @@ In order to do booleans, you should use `get_string` and `minetest.is_yes`:
 local value = minetest.is_yes(meta:get_string("key"))
 
 if value then
-	print("is yes")
+    print("is yes")
 else
-	print("is no")
+    print("is no")
 end
 {% endhighlight %}
 
