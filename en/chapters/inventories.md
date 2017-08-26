@@ -1,7 +1,7 @@
 ---
 title: Inventories
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

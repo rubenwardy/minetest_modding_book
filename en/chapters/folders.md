@@ -1,7 +1,7 @@
 ---
 title: Folder Structure
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

@@ -1,7 +1,7 @@
 ---
 title: Node Metadata
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

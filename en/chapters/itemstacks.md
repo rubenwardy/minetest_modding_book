@@ -1,7 +1,7 @@
 ---
 title: ItemStacks
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

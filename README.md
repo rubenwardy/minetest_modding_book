@@ -21,12 +21,21 @@ fit my idea of quality.
 
 ## Finding your way around
 
-* _data/ - Contains the navigation bar file.
+* `_data/` - Contains the navigation bar file.
           (a list of links and link text for the navbar.)
-* _includes/ - Contains HTML templates.
-* _layouts/ - You can safely ignore this.
-* static/ - CSS, images, scripts.
-* chapters/ - Markdown files for each chapter.
+* `_includes/` - Contains HTML templates.
+* `_layouts/` - You can safely ignore this.
+* `static/` - CSS, images, scripts.
+* `<lang>/`
+    * `chapters/` - Markdown files for each chapter.
+
+## Adding a new language
+
+* Add entry to `_data/languages.yml`
+* Copy links_en, and customise it for your language
+* Add your language to the if else in `_includes/header.html`
+* Copy en/ to your language code
+* Translate your language code folder
 
 ## Using Jeykll
 

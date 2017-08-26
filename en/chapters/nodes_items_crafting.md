@@ -1,7 +1,7 @@
 ---
 title: Nodes, Items, and Crafting
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

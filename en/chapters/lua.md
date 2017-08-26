@@ -1,7 +1,7 @@
 ---
 title: Lua Scripts
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

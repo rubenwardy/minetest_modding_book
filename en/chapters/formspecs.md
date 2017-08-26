@@ -1,7 +1,7 @@
 ---
 title: Formspecs
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

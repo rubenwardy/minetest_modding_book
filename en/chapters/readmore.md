@@ -1,7 +1,7 @@
 ---
 title: Read More
 layout: default
-root: ../
+root: ../../
 ---
 
 ## List of Resources

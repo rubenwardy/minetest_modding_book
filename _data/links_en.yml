@@ -80,6 +80,3 @@
   link: chapters/readmore.html
 
 - hr: true
-
-- title: Lua Modding API Reference
-  link:  lua_api.html

@@ -1,7 +1,7 @@
 ---
 title: Node Drawtypes
 layout: default
-root: ../
+root: ../../
 ---
 
 <div class="notice">

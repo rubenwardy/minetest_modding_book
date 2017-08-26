@@ -1,0 +1,36 @@
+---
+layout: none
+---
+<html>
+<head>
+	<title>Redirecting...</title>
+</head>
+<body>
+	<script>
+	var languages = {{ site.data.languages | jsonify }};
+	function getLanguage() {
+		var userLang = navigator.language || navigator.userLanguage;
+
+		for (var i = 0; i < languages.length; i++) {
+			var lang = languages[i];
+			console.log(lang.code + " vs " + userLang);
+
+			if (userLang.indexOf(lang.code) == 0) {
+				return lang;
+			}
+		}
+
+		return null;
+	}
+
+	var language = getLanguage() || languages[0];
+	console.log('<a href="/' + language.code +
+			'/index.html">Redirecting to the ' + language.name +
+			' version...</a>')
+	document.write('<a href="/' + language.code +
+			'/index.html">Redirecting to the ' + language.name +
+			' version...</a>');
+
+	</script>
+</body>
+</html>

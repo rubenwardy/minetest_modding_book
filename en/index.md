@@ -1,14 +1,14 @@
 ---
 title: Introduction
-permalink: index.html
 layout: default
+root: ../
 ---
 
 Welcome
 -------
 
 Minetest uses Lua scripts to provide modding support.
-This online book aims to teach you how to create your own mods, 
+This online book aims to teach you how to create your own mods,
 starting from the basics.
 
 ### What you will need

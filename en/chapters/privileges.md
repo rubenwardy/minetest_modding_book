@@ -1,7 +1,7 @@
 ---
 title: Privileges
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

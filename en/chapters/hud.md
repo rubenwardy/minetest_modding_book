@@ -1,7 +1,7 @@
 ---
 title: HUD
 layout: default
-root: ../
+root: ../../
 ---
 
 <div class="notice">

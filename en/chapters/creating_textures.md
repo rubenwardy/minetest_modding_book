@@ -1,7 +1,7 @@
 ---
 title: Creating Textures
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

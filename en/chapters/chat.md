@@ -1,7 +1,7 @@
 ---
 title: Chat and Commands
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

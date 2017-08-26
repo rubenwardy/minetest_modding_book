@@ -1,7 +1,7 @@
 ---
 title: Complex Chat Commands
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

@@ -1,7 +1,7 @@
 ---
 title: Active Block Modifiers
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

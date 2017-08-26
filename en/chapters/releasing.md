@@ -1,7 +1,7 @@
 ---
 title: Releasing a Mod
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction

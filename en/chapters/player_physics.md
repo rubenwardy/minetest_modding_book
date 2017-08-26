@@ -1,7 +1,7 @@
 ---
 title: Player Physics
 layout: default
-root: ../
+root: ../../
 ---
 
 ## Introduction
