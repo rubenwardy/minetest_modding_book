@@ -39,7 +39,7 @@ Noticed a mistake, or want to give feedback? Tell us about it using one of these
 * Submit a report below.
 
 You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_modding_book).\\
-Read the [contribution README](README.html).
+Read the [contribution README]({{ page.root }}README.html).
 
 Written by rubenwardy.\\
 License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
