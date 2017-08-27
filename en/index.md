@@ -4,32 +4,31 @@ layout: default
 root: ../
 ---
 
-Welcome
--------
+## Introduction
 
 Minetest uses Lua scripts to provide modding support.
-This online book aims to teach you how to create your own mods,
-starting from the basics.
+This book aims to teach you how to create your own mods, starting from the basics.
 
-### What you will need
+As well as [reading this book online](https://rubenwardy.com/minetest_modding_book),
+you can also [download it in PDF or HTML form](https://github.com/rubenwardy/minetest_modding_book/releases).
+
+## What you will need
 
 * A Code Editor. Talked about in the [Lua Scripts](chapters/lua.html#tools) chapter.
 * A copy of Minetest in the 0.4 series. (eg: 0.4.13)
-* The ability to work independently, without pestering other developers to write your code for you.
-* Motivation to keep trying when things go wrong.
+* Motivation to keep trying when things go wrong. You learn more when you work
+  something out yourself.
 
+## So, go on then.
 
-### So, go on then.
-
-Start reading. Use the navigation bar on the left (or on the top on mobiles)
-to open a chapter.
+Start [learning about how to create a mod folder](chapters/folders.html), or use the navigation bar on
+the left (or on the top on mobiles) to open a chapter.
 
 * [GitHub](https://github.com/rubenwardy/minetest_modding_book).
 * [Download for offline use](https://github.com/rubenwardy/minetest_modding_book/releases).
 * [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
 
-About this Book
----------------
+## About this Book
 
 Noticed a mistake, or want to give feedback? Tell us about it using one of these methods:
 
