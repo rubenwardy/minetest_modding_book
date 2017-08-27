@@ -20,22 +20,23 @@
 			{% assign links = site.data.links_en %}
 		{% endif %}
 
-		<ul id="navbar">
-			{% for link in links %}
-				{% if link.hr %}
-					{% assign hr = true %}
-				{% else %}
-					<li><a href="{{ page.root }}{{ language }}/{{ link.link }}"
-						class="{% if page.title == link.title %}selected{% endif %}{% if hr %} hr {% endif %}">
-						{% if link.num %} {{ link.num }} - {% endif %}
-						{{ link.title }}</a></li>
-					{% assign hr = false %}
-				{% endif %}
-			{% endfor %}
+		<div id="container">
+			<ul id="navbar">
+				{% for link in links %}
+					{% if link.hr %}
+						{% assign hr = true %}
+					{% else %}
+						<li><a href="{{ page.root }}{{ language }}/{{ link.link }}"
+							class="{% if page.title == link.title %}selected{% endif %}{% if hr %} hr {% endif %}">
+							{% if link.num %} {{ link.num }} - {% endif %}
+							{{ link.title }}</a></li>
+						{% assign hr = false %}
+					{% endif %}
+				{% endfor %}
 
-			<li><a href="{{ page.root }}lua_api.html">Lua Modding API Reference</a></li>
-			<li><a href="https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip">Download Examples</a></li>
-		</ul>
+				<li><a href="{{ page.root }}lua_api.html" class="hr">Lua Modding API Reference</a></li>
+				<li><a href="https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip">Download Examples</a></li>
+			</ul>
 
-		<div id="page">
-			<h1>{{ page.title }}</h1>
+			<div id="page">
+				<h1>{{ page.title }}</h1>

@@ -229,8 +229,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     local context = land_formspec_context[player:get_player_name()]
 
     if context then
-        minetest.chat_send_player(player:get_player_name(), "Id " .. context.id .. " is now called " ..
-                fields.plot .. " and owned by " .. fields.owner)
+        minetest.chat_send_player(player:get_player_name(), "Id " ..
+                context.id .. " is now called " .. fields.plot ..
+                " and owned by " .. fields.owner)
 
         -- Delete context if it is no longer going to be used
         land_formspec_context[player:get_player_name()] = nil
@@ -238,7 +239,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         return true
     else
         -- Fail gracefully if the context does not exist.
-        minetest.chat_send_player(player:get_player_name(), "Something went wrong, try again.")
+        minetest.chat_send_player(player:get_player_name(),
+                "Something went wrong, try again.")
     end
 end)
 {% endhighlight %}

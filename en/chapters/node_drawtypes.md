@@ -116,7 +116,8 @@ using the flowing liquid drawtype.
 For each liquid node you should also have a flowing liquid node.
 
 {% highlight lua %}
--- Some properties have been removed as they are beyond the scope of this chapter.
+-- Some properties have been removed as they are beyond
+--  the scope of this chapter.
 minetest.register_node("default:water_source", {
     drawtype = "liquid",
     paramtype = "light",
@@ -140,7 +141,8 @@ minetest.register_node("default:water_source", {
         -- New-style water source material (mostly unused)
         {
             name      = "default_water_source_animated.png",
-            animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
+            animation = {type = "vertical_frames", aspect_w = 16,
+                aspect_h = 16, length = 2.0},
             backface_culling = false,
         }
     },
