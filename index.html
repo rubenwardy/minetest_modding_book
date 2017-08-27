@@ -6,6 +6,10 @@ layout: none
 	<title>Redirecting...</title>
 </head>
 <body>
+	Detecting and redirecting to the correct translation.<br><br>
+
+	<a href="en/index.html">View English Translation</a><br><br>
+
 	<script>
 	var languages = {{ site.data.languages | jsonify }};
 	function getLanguage() {
@@ -21,8 +25,6 @@ layout: none
 
 	var language = getLanguage() || languages[0];
 	var url = language.code + "/index.html";
-	console.log('<a href="' + url + '">Redirecting to the ' + language.name +
-			' version...</a>')
 	document.write('<a href="' + language.code +
 			'/index.html">Redirecting to the ' + language.name +
 			' version...</a>');
