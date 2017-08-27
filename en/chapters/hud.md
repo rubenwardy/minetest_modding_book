@@ -4,13 +4,6 @@ layout: default
 root: ../../
 ---
 
-<div class="notice">
-    <h2>Experimental Feature</h2>
-
-    The HUD feature will probably be rewritten in an upcoming Minetest release.
-    Be aware that you may need to update your mods if the API is changed.
-</div>
-
 ## Introduction
 
 Heads Up Display (HUD) elements allow you to show text, images, and other graphical elements.
