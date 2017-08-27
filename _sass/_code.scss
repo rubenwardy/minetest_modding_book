@@ -1,5 +1,23 @@
----
----
+code {
+	display: inline-block;
+	padding: 3px;
+	margin: 2px;
+	background: #f9f9f9;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+	white-space: pre;
+	max-width: 95%;
+	overflow-x: auto;
+	font-size: 14px;
+	vertical-align: middle;
+}
+
+pre code {
+	background: #f0f0f0;
+	padding: 5px 10px;
+	display: block;
+}
+
 /* https://raw.githubusercontent.com/richleland/pygments-css/master/friendly.css */
 
 .highlight .hll { background-color: #ffffcc }

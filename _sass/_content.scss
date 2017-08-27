@@ -1,0 +1,82 @@
+a {
+	color: blue;
+	text-decoration: underline;
+}
+
+img {
+	max-width: 100%;
+}
+
+figure {
+	padding: 0;
+	margin: 0;
+}
+
+.right_image {
+	float: right;
+	margin: 0 0 0 10px;
+	padding: 0;
+}
+
+.right_image img {
+	margin: 0;
+	padding: 0;
+}
+
+.right_image figcaption {
+	padding: 0 0 0 6px;
+}
+
+.notice {
+	margin: 10px;
+	display: block;
+	padding: 5px;
+	border: 1px solid orange;
+	border-radius: 5px;
+	background: #FFEEDD;
+
+}
+
+.notice h2 {
+	margin: 0 0 5px 0;
+	padding: 0 0 2px 0;
+}
+
+.header-link, .anchor {
+	text-decoration: none;
+	color: #bbb;
+	padding: 0 10px 0 0;
+}
+
+.header-link {
+	position: absolute;
+	right: 10px;
+}
+
+.header-link:hover {
+	color: #999;
+}
+
+
+h1 {
+	text-align: center;
+	margin: 10px 0 0 0;
+}
+
+h2 {
+	border-bottom: 1px solid black;
+	margin: 30px 0 10px 0;
+	display: block;
+	padding: 0 0 5px 0;
+	clear: both;
+}
+
+h3 {
+	font-size: 105%;
+	font-weight: bold;
+	margin: 30px 0 10px 0;
+}
+
+.toc > ul > li > ul > li > ul {
+	display: none;
+}
