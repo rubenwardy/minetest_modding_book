@@ -6,7 +6,7 @@ root: ../../
 
 ## Introduction
 
-An active **A**ctive **B**lock **M**odifier (**ABM**) allows you to run code on
+An **A**ctive **B**lock **M**odifier (**ABM**) allows you to run code on
 certain nodes at specific intervals.
 
 Please be warned, ABMs which are too frequent or act on a large number of nodes
