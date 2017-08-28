@@ -6,18 +6,21 @@ root: ../../
 
 ## Introduction
 
-An active *A**ctive **B**lock **M**odifier (**ABM**) allows you to run code on
+An active **A**ctive **B**lock **M**odifier (**ABM**) allows you to run code on
 certain nodes at specific intervals.
+
 Please be warned, ABMs which are too frequent or act on a large number of nodes
 cause massive amounts of lag. Use them sparingly.
 
-* Special Growing Grass
-* Your Turn
+* [Special Growing Grass](#example-growing-alien-grass)
+* [Your Turn](#your-turn)
 
-## Special Growing Grass
+## Example: Growing Alien Grass
 
-If you want to make a mod that adds a type of grass called alien grass
-- it grows near water on grassy blocks - you first register the grass, then
+Alien grass, for the purposes of this chapter, is a type of grass which
+has a chance to appear near water.
+
+To create it, you first need to register the grass, then
 write an ABM.
 
 {% highlight lua %}
@@ -50,7 +53,7 @@ Specifying a neighbor is optional. If you specify multiple neighbors, only one o
 needs to be present to meet the requirements.
 
 Specifying chance is also optional. If you don't specify the chance, the ABM will
-always run when the other conditions are met. 
+always run when the other conditions are met.
 
 ## Your Turn
 
