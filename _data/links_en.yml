@@ -59,24 +59,28 @@
   num:   13
   link:  chapters/hud.html
 
+- title: "SFINV: Inventory Formspec"
+  num:   14
+  link:  chapters/sfinv.html
+
 - hr: true
 
 - title: ItemStacks
-  num:   14
+  num:   15
   link:  chapters/itemstacks.html
 
 - title: Inventories
-  num:   15
+  num:   16
   link:  chapters/inventories.html
 
 - hr: true
 
 - title: Releasing a Mod
-  num: 16
+  num: 17
   link: chapters/releasing.html
 
 - title: Read More
-  num: 17
+  num: 18
   link: chapters/readmore.html
 
 - hr: true
