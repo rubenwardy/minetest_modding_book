@@ -22,26 +22,26 @@ A torch looks different to water, water looks different to stone.
 The string you use to determine the drawtype in the node definition is the same as
 the title of the sections, except in lower case.
 
-* Normal
-* Airlike
-* Liquid
-    * FlowingLiquid
-* Glasslike
-* Glasslike_Framed
-    * Glasslike_Framed_Optional
-* Allfaces
-    * Allfaces_Optional
-* Torchlike
-* Nodebox
+* [Normal](#normal)
+* [Airlike](#airlike)
+* [Liquid](#liquid)
+    * [FlowingLiquid](#flowingliquid)
+* [Glasslike](#glasslike)
+* [Glasslike_Framed](#glasslike_framed)
+    * [Glasslike_Framed_Optional](#glasslike_framed_optional)
+* [Allfaces](#allfaces)
+    * [Allfaces_Optional](#allfaces_optional)
+* [Torchlike](#torchlike)
+* [Nodebox](#nodebox)
+* [Mesh](#mesh)
 
-This article is not complete yet. These drawtypes are missing:
+This article is not complete yet. The following drawtypes are missing:
 
 * Signlike
 * Plantlike
 * Firelike
 * Fencelike
 * Raillike
-* Mesh
 
 ## Normal
 
@@ -350,6 +350,9 @@ The first three numbers are the co-ordinates, from -0.5 to 0.5 inclusive, of
 the bottom front left most corner, the last three numbers are the opposite corner.
 They are in the form X, Y, Z, where Y is up.
 
+`paramtype = "light"` allows light to propagate from or through the node
+with light value.
+
 You can use the [NodeBoxEditor](https://forum.minetest.net/viewtopic.php?f=14&t=2840) to
 create node boxes by dragging the edges, it is more visual than doing it by hand.
 
@@ -380,3 +383,35 @@ minetest.register_node("default:sign_wall", {
     },
 })
 {% endhighlight %}
+
+## Mesh
+
+Whilst node boxes are generally easier to make, they are limited in that
+they can only consist of cuboids. Node boxes are also unoptimised;
+Inner faces will still be rendered even when they're completely hidden.
+
+A face is a flat surface on a mesh. An inner face occurs when the faces of two
+different node boxes overlap, causing parts of the node box model to be
+invisible but still rendered.
+
+You can register a mesh node as so:
+
+{% highlight lua %}
+minetest.register_node("mymod:meshy", {
+    drawtype = "mesh",
+
+    -- Holds the texture for each "material"
+    tiles = {
+        "mymod_meshy.png"
+    },
+
+    -- Path to the mesh
+    mesh = "mymod_meshy.b3d",    
+})
+{% endhighlight %}
+
+Make sure that the mesh is available in a `meshes` directory.
+Most of the time the mesh should be in your mod's folder, however it's okay to
+share a mesh provided by another mod you depend on. For example, a mod that
+adds more types of furniture may want to share the model provided by a basic
+furniture mod.
