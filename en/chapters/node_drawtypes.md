@@ -35,11 +35,11 @@ the title of the sections, except in lower case.
 * [Nodebox](#nodebox)
 * [Mesh](#mesh)
 * [Signlike](#signlike)
+* [Plantlike](#plantlike)
 
 This article is not complete yet. The following drawtypes are missing:
 
-* Plantlike
-    * Plantlike_Rooted
+* Plantlike_Rooted
 * Firelike
 * Fencelike
 * Raillike
@@ -429,6 +429,8 @@ minetest.register_node("default:ladder_wood", {
     drawtype = "signlike",
 
     tiles = {"default_ladder_wood.png"},
+
+    -- Show the ladder flat in the inventory, rather than with a 3D effect
     inventory_image = "default_ladder_wood.png",
     wield_image = "default_ladder_wood.png",
 
@@ -441,5 +443,40 @@ minetest.register_node("default:ladder_wood", {
     selection_box = {
         type = "wallmounted",
     },
+})
+{% endhighlight %}
+
+## Plantlike
+
+<figure class="right_image">
+    <img src="{{ page.root }}/static/drawtype_plantlike.png" alt="Plantlike Drawtype">
+    <figcaption>
+        Plantlike Drawtype
+    </figcaption>
+</figure>
+
+
+Plantlike nodes draw their tiles in an X like pattern.
+
+{% highlight lua %}
+minetest.register_node("default:papyrus", {
+    description = "Papyrus",
+    drawtype = "plantlike",
+
+    tiles = {"default_papyrus.png"},
+
+    selection_box = {
+        type = "fixed",
+        fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
+    },
+
+    -- Show the papyrus flat in the inventory, rather than with a 3D effect
+    inventory_image = "default_papyrus.png",
+    wield_image = "default_papyrus.png",
+
+    -- Let light and objects go through
+    paramtype = "light",
+    sunlight_propagates = true,
+    walkable = false,
 })
 {% endhighlight %}
