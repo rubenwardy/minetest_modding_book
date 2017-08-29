@@ -127,32 +127,18 @@ minetest.set_player_privs(name, privs)
 
 ## Adding privileges to basic_privs
 
-<div class="notice">
-    <h2>Workaround / PR pending</h2>
+`basic_privs` is a privilege that allows a player to only grant certain privileges.
+It's common to give this privilege to moderators so they can grant and revoke
+interact and shout, but can't give themselves or other players any bigger
+privileges such as giveme and server.
 
-    This is a workaround for a missing feature.
-    I have submitted a
-    <a href="https://github.com/minetest/minetest/pull/3976">pull request / patch</a>
-    to make it so you don't need to edit builtin to add a priv to basic_privs.
-</div>
+To add a privilege to basic_privs, you need to change the basic_privs setting
+to include any privs you wish.
 
-To allow people with basic_privs to grant and revoke your priv, you'll
-need to edit [builtin/game/chatcommands.lua](https://github.com/minetest/minetest/blob/master/builtin/game/chatcommands.lua#L164-L252):
+By default basic_privs has the following value:
 
-In both grant and revoke, change the following if statement:
+    basic_privs = interact, shout
 
-{% highlight lua %}
-if priv ~= "interact" and priv ~= "shout" and
-        not core.check_player_privs(name, {privs=true}) then
-    return false, "Your privileges are insufficient."
-end
-{% endhighlight %}
+And then you can add vote as so:
 
-For example, to add vote:
-
-{% highlight lua %}
-if priv ~= "interact" and priv ~= "shout" and priv ~= "vote" and
-        not core.check_player_privs(name, {privs=true}) then
-    return false, "Your privileges are insufficient."
-end
-{% endhighlight %}
+    basic_privs = interact, shout, vote
