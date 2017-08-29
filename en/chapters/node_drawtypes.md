@@ -34,11 +34,12 @@ the title of the sections, except in lower case.
 * [Torchlike](#torchlike)
 * [Nodebox](#nodebox)
 * [Mesh](#mesh)
+* [Signlike](#signlike)
 
 This article is not complete yet. The following drawtypes are missing:
 
-* Signlike
 * Plantlike
+    * Plantlike_Rooted
 * Firelike
 * Fencelike
 * Raillike
@@ -414,3 +415,31 @@ Most of the time the mesh should be in your mod's folder, however it's okay to
 share a mesh provided by another mod you depend on. For example, a mod that
 adds more types of furniture may want to share the model provided by a basic
 furniture mod.
+
+## Signlike
+
+Signlike nodes are flat nodes with can be mounted on the sides of other nodes.
+
+Despite the name of this drawtype, signs don't actually tend to use signlike but
+instead use the `nodebox` drawtype to provide a 3D effect. The `signlike` drawtype
+is, however, commonly used by ladders.
+
+{% highlight lua %}
+minetest.register_node("default:ladder_wood", {    
+    drawtype = "signlike",
+
+    tiles = {"default_ladder_wood.png"},
+    inventory_image = "default_ladder_wood.png",
+    wield_image = "default_ladder_wood.png",
+
+    paramtype = "light",
+    sunlight_propagates = true,
+
+    -- Required: store the rotation in param2
+    paramtype2 = "wallmounted",
+
+    selection_box = {
+        type = "wallmounted",
+    },
+})
+{% endhighlight %}
