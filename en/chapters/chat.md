@@ -9,11 +9,11 @@ root: ../../
 Mods can interact with player chat, including
 sending messages, intercepting messages and registering chat commands.
 
-* [Sending messages to all players](Sending messages to all players)
-* [Sending messages to specific players](Sending messages to specific players)
-* [Chat commands](Chat commands)
-* [Complex subcommands](Complex subcommands)
-* [Intercepting messages](Intercepting messages)
+* [Sending messages to all players](#sending-messages-to-all-players)
+* [Sending messages to specific players](sending-messages-to-specific-players)
+* [Chat commands](#chat-commands)
+* [Complex subcommands](#complex-subcommands)
+* [Intercepting messages](#intercepting-messages)
 
 ## Sending messages to all players
 
