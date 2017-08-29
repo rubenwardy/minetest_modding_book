@@ -6,22 +6,25 @@ root: ../../
 
 ## Introduction
 
-Privileges allow server owners to grant or revoke the right to do certain
-actions.
+Privileges, often called privs for short, give players the ability to perform
+certain actions. Server owners can grant and revoke privileges to control
+which abilities each player has.
 
-* When should a priv be used?
-* Checking for privileges
-* Getting and Setting
+* [When to use Privileges](#when-to-use-privileges)
+* [Declaring Privileges](#declaring-privileges)
+* [Checking for Privileges](#checking-for-privileges)
+* [Getting and Setting Privileges](#getting-and-setting-privileges)
+* [Adding Privileges to basic_privs](#adding-privileges-to-basic-privs)
 
-## When should a priv be used?
+## When to use Privileges
 
-A privilege should give a player **the right to do something**.
-They are **not for indicating class or status**.
+A privilege should give a player **the ability to do something**.
+Privileges are **not for indicating class or status**.
 
-The main admin of a server (the name set by the `name` setting) has all privileges
-given to them.
+The main admin of a server (the name set by the `name` setting in the
+minetest.conf file) is automatically given all available privileges.
 
-**Good:**
+**Good Privileges:**
 
 * interact
 * shout
@@ -33,14 +36,16 @@ given to them.
 * worldedit
 * area_admin - admin functions of one mod is ok
 
-**Bad:**
+**Bad Privileges:**
 
 * moderator
 * admin
 * elf
 * dwarf
 
-## Declaring a privilege
+## Declaring Privileges
+
+Use `register_privilege` to declare a new privilege:
 
 {% highlight lua %}
 minetest.register_privilege("vote", {
@@ -49,8 +54,8 @@ minetest.register_privilege("vote", {
 })
 {% endhighlight %}
 
-If `give_to_singleplayer` is true, then you can remove it as that's the default
-value when not specified:
+If `give_to_singleplayer` is true, you can remove it, because true is the default
+when it is not specified. This simplifies the privilege registration to:
 
 {% highlight lua %}
 minetest.register_privilege("vote", {
@@ -58,9 +63,9 @@ minetest.register_privilege("vote", {
 })
 {% endhighlight %}
 
-## Checking for privileges
+## Checking for Privileges
 
-There is a quicker way of checking that a player has all the required privileges:
+To quickly check whether a player has all the required privileges:
 
 {% highlight lua %}
 local has, missing = minetest.check_player_privs(player_or_name,  {
@@ -68,9 +73,9 @@ local has, missing = minetest.check_player_privs(player_or_name,  {
     vote = true })
 {% endhighlight %}
 
-`has` is true if the player has all the privileges needed.\\
+In this example, `has` is true if the player has all the privileges needed.\\
 If `has` is false, then `missing` will contain a dictionary
-of missing privileges<sup>[checking needed]</sup>.
+of missing privileges.
 
 {% highlight lua %}
 if minetest.check_player_privs(name, {interact=true, vote=true}) then
@@ -89,17 +94,17 @@ else
 end
 {% endhighlight %}
 
-## Getting and Setting
+## Getting and Setting Privileges
 
-You can get a table containing a player's privileges using `minetest.get_player_privs`:
+To get a table containing a player's privileges, regardless of whether
+the player is logged in, use `minetest.get_player_privs`:
 
 {% highlight lua %}
 local privs = minetest.get_player_privs(name)
 print(dump(privs))
 {% endhighlight %}
 
-This works whether or not a player is logged in.\\
-Running that example may give the following:
+This example may give:
 
 {% highlight lua %}
 {
@@ -109,7 +114,7 @@ Running that example may give the following:
 }
 {% endhighlight %}
 
-To set a player's privs, you use `minetest.set_player_privs`:
+To set a player's privileges, use `minetest.set_player_privs`:
 
 {% highlight lua %}
 minetest.set_player_privs(name, {
@@ -117,7 +122,7 @@ minetest.set_player_privs(name, {
     shout = true })
 {% endhighlight %}
 
-To grant a player some privs, you would use a mixture of those two:
+To grant a player privileges, use a combination of the above two functions:
 
 {% highlight lua %}
 local privs = minetest.get_player_privs(name)
@@ -125,20 +130,23 @@ privs.vote = true
 minetest.set_player_privs(name, privs)
 {% endhighlight %}
 
-## Adding privileges to basic_privs
+## Adding Privileges to basic_privs
 
-`basic_privs` is a privilege that allows a player to only grant certain privileges.
-It's common to give this privilege to moderators so they can grant and revoke
-interact and shout, but can't give themselves or other players any bigger
-privileges such as giveme and server.
+Players with the `basic_privs` privilege are able to grant and revoke a limited
+set of privileges. It's common to give this privilege to moderators so they can
+grant and revoke `interact` and `shout`, but can't grant themselves or other
+players privileges such as `give` and `server`, which have greater potential for abuse.
 
-To add a privilege to basic_privs, you need to change the basic_privs setting
-to include any privs you wish.
+To add a privilege to `basic_privs` and adjust which privileges your moderators can
+grant and revoke from other players, you must change the `basic_privs` setting.
+To do this, you must edit the minetest.conf file. 
 
-By default basic_privs has the following value:
+By default `basic_privs` has the following value:
 
     basic_privs = interact, shout
 
-And then you can add vote as so:
+To add `vote`, update this to:
 
     basic_privs = interact, shout, vote
+
+This will allow players with `basic_privs` to grant and revoke the `vote` privilege.
