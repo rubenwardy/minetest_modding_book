@@ -259,10 +259,9 @@ minetest.register_node("default:glass", {
     </figcaption>
 </figure>
 
-Allfaces nodes are partially transparent nodes - they have holes on
-the faces - which show every single face of the cube, even if sides are
-up against another node (which would normally be hidden).
-Leaves in vanilla minetest_game use this drawtype.
+Allfaces are nodes which show all of their faces, even if they're against
+another node. This is mainly used by leaves as you don't want a gaping space when
+looking through the transparent holes, but instead a nice leaves effect.
 
 {% highlight lua %}
 minetest.register_node("default:leaves", {
