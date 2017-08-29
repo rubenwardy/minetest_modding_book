@@ -8,7 +8,7 @@ root: ../../
 
 Privileges, often called privs for short, give players the ability to perform
 certain actions. Server owners can grant and revoke privileges to control
-which players have which abilities.
+which abilities each player has.
 
 * [When to use Privileges](#when-to-use-privileges)
 * [Declaring Privileges](#declaring-privileges)
@@ -73,9 +73,9 @@ local has, missing = minetest.check_player_privs(player_or_name,  {
     vote = true })
 {% endhighlight %}
 
-In this example `has` is true if the player has all the privileges needed.\\
+In this example, `has` is true if the player has all the privileges needed.\\
 If `has` is false, then `missing` will contain a dictionary
-of missing privileges<sup>[checking needed]</sup>.
+of missing privileges.
 
 {% highlight lua %}
 if minetest.check_player_privs(name, {interact=true, vote=true}) then
@@ -122,7 +122,7 @@ minetest.set_player_privs(name, {
     shout = true })
 {% endhighlight %}
 
-To grant a player privileges, you use a combination of these:
+To grant a player privileges, use a combination of the above two functions:
 
 {% highlight lua %}
 local privs = minetest.get_player_privs(name)
