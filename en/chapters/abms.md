@@ -12,7 +12,7 @@ certain nodes at specific intervals.
 Please be warned, ABMs which are too frequent or act on a large number of nodes
 cause massive amounts of lag. Use them sparingly.
 
-* [Special Growing Grass](#example-growing-alien-grass)
+* [Example: Growing Alien Grass](#example-growing-alien-grass)
 * [Your Turn](#your-turn)
 
 ## Example: Growing Alien Grass
