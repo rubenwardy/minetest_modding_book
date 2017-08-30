@@ -39,7 +39,6 @@ the title of the sections, except in lower case.
 
 This article is not complete yet. The following drawtypes are missing:
 
-* Plantlike_Rooted
 * Firelike
 * Fencelike
 * Raillike
@@ -430,13 +429,6 @@ minetest.register_node("default:ladder_wood", {
 
     tiles = {"default_ladder_wood.png"},
 
-    -- Show the ladder flat in the inventory, rather than with a 3D effect
-    inventory_image = "default_ladder_wood.png",
-    wield_image = "default_ladder_wood.png",
-
-    paramtype = "light",
-    sunlight_propagates = true,
-
     -- Required: store the rotation in param2
     paramtype2 = "wallmounted",
 
@@ -455,12 +447,10 @@ minetest.register_node("default:ladder_wood", {
     </figcaption>
 </figure>
 
-
 Plantlike nodes draw their tiles in an X like pattern.
 
 {% highlight lua %}
 minetest.register_node("default:papyrus", {
-    description = "Papyrus",
     drawtype = "plantlike",
 
     tiles = {"default_papyrus.png"},
@@ -469,14 +459,35 @@ minetest.register_node("default:papyrus", {
         type = "fixed",
         fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
     },
+})
+{% endhighlight %}
 
-    -- Show the papyrus flat in the inventory, rather than with a 3D effect
-    inventory_image = "default_papyrus.png",
-    wield_image = "default_papyrus.png",
+## Firelike
 
-    -- Let light and objects go through
-    paramtype = "light",
-    sunlight_propagates = true,
-    walkable = false,
+Firelike is similar to plantlike, except that it is designed to "cling" to walls
+and ceilings.
+
+
+<figure>
+    <img src="{{ page.root }}/static/drawtype_firelike.png" alt="Firelike nodes">
+    <figcaption>
+        Firelike nodes
+    </figcaption>
+</figure>
+
+{% highlight lua %}
+minetest.register_node("fire:basic_flame", {
+	drawtype = "firelike",
+	tiles = {
+		{
+			name = "fire_basic_flame_animated.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 1
+			},
+		},
+	},
 })
 {% endhighlight %}
