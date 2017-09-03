@@ -34,7 +34,7 @@ needs to be given the same name as the mod name.
     -    (optional) textures/ - images used by the mod, commonly in the format modname_itemname.png.
     -    (optional) sounds/ - sounds used by the mod.
     -    (optional) models/ - 3d models used by the mod.
-    ...and any other Lua files to be included. These must be run from init.lua.
+    ...and any other Lua files to be included.
 
 Only the init.lua file is required in a mod for it to run on game load; however,
 the other items are needed by some mods to perform their functionality.
