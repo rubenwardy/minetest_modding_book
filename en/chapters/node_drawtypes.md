@@ -4,13 +4,6 @@ layout: default
 root: ../../
 ---
 
-<div class="notice">
-    <h2>This chapter is incomplete</h2>
-
-    Some drawtypes have not been explained yet,
-    and placeholder images are being used.
-</div>
-
 ## Introduction
 
 In this chapter we explain all the different types of node drawtypes there are.
@@ -36,11 +29,12 @@ the title of the sections, except in lower case.
 * [Mesh](#mesh)
 * [Signlike](#signlike)
 * [Plantlike](#plantlike)
+* [Firelike](#firelike)
 
 This article is not complete yet. The following drawtypes are missing:
 
-* Firelike
 * Fencelike
+* Plantlike rooted
 * Raillike
 
 ## Normal
