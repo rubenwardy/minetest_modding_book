@@ -71,16 +71,10 @@ When using GIMP, the pencil tool can be selected from the Toolbox:
 
 <figure>
     <img src="{{ page.root }}/static/pixel_art_gimp_pencil.png" alt="Pencil in GIMP">
-    <figcaption>
-        Pencil in GIMP
-    </figcaption>
 </figure>
 
 It's also advisable to select the Hard edge checkbox for the eraser tool:
 
 <figure>
     <img src="{{ page.root }}/static/pixel_art_gimp_rubber.png" alt="Eraser in GIMP">
-    <figcaption>
-        Rubber in GIMP
-    </figcaption>
 </figure>
