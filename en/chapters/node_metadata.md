@@ -8,13 +8,13 @@ root: ../../
 
 In this chapter you will learn how to manipulate a node's metadata.
 
-* What is Node Metadata?
-* Getting a Metadata Object
-* Reading Metadata
-* Setting Metadata
-* Lua Tables
-* Infotext
-* Your Turn
+* [What is Node Metadata?](#what-is-node-medadata)
+* [Getting a Metadata Object](#getting-a-metadata-object)
+* [Reading Metadata](#reading-metadata)
+* [Setting Metadata](#setting-metadata)
+* [Lua Tables](#lua-tables)
+* [Infotext](#infotext)
+* [Your Turn](#your-turn)
 
 ## What is Node Metadata?
 
@@ -22,15 +22,14 @@ Metadata is data about data. So Node Metadata is **data about a node**.
 
 You may use metadata to store:
 
-* an node's inventory (such as in a chest).
-* progress on crafting (such as in a furnace).
-* who owns the node (such as in a locked chest).
+* A node's inventory (such as in a chest).
+* Progress on crafting (such as in a furnace).
+* Who owns the node (such as the owner of a locked chest).
 
-The node's type, light levels,
-and orientation are not stored in the metadata, but rather are part
-of the data itself.
+The node's type, light levels, and orientation are not stored in the metadata.
+These are part of the data itself.
 
-Metadata is stored in a key value relationship.
+Metadata is stored in a key value relationship. For example:
 
 | Key     | Value   |
 |---------|---------|
@@ -40,7 +39,7 @@ Metadata is stored in a key value relationship.
 
 ## Getting a Metadata Object
 
-Once you have a position of a node, you can do this:
+If you know the position of a node, you can retrieve its metadata:
 
 {% highlight lua %}
 local meta = minetest.get_meta(pos)
@@ -48,6 +47,8 @@ local meta = minetest.get_meta(pos)
 {% endhighlight %}
 
 ## Reading Metadata
+
+After retrieving the metadata, you can read its values:
 
 {% highlight lua %}
 local value = meta:get_string("key")
@@ -61,15 +62,14 @@ else
 end
 {% endhighlight %}
 
-Here are all the get functions you can use, as of writing:
+The functions available include:
 
 * get_string
 * get_int
 * get_float
 * get_inventory
 
-In order to do booleans, you should use `get_string` and `minetest.is_yes`:
-
+To get booleans, you should use `get_string` and `minetest.is_yes`:
 
 {% highlight lua %}
 local value = minetest.is_yes(meta:get_string("key"))
@@ -83,7 +83,7 @@ end
 
 ## Setting Metadata
 
-Setting meta data works pretty much exactly the same way.
+You can set node metadata. For example:
 
 {% highlight lua %}
 local value = "one"
@@ -92,7 +92,7 @@ meta:set_string("key", value)
 meta:set_string("foo", "bar")
 {% endhighlight %}
 
-Here are all the set functions you can use, as of writing:
+This can be done using the following functions:
 
 * set_string
 * set_int
@@ -110,15 +110,15 @@ meta:from_table(tmp)
 
 ## Infotext
 
-The Minetest Engine reads the field `infotext` in order to make text
-appear on mouse-over. This is used by furnaces to show progress and signs
-to show their text.
+The Minetest engine reads the field `infotext` to make text
+appear on mouse-over. This is used by furnaces to show progress and by signs
+to show their text. For example:
 
 {% highlight lua %}
-meta:set_string("infotext", "Here is some text that will appear on mouse over!")
+meta:set_string("infotext", "Here is some text that will appear on mouse-over!")
 {% endhighlight %}
 
 ## Your Turn
 
-* Make a block which disappears after it has been punched 5 times.
-  (use on_punch in the node def and minetest.set_node)
+* Make a node which disappears after it has been punched five times.
+(Use `on_punch` in the node definition and `minetest.set_node`.)
