@@ -11,38 +11,40 @@ is a player inventory, a node inventory, or a detached inventory.
 This chapter assumes that you already know how to create and manipulate
 [ItemStacks](itemstacks.html).
 
-* Basic Concepts.
-* Types of Inventories.
-    * Player Inventories.
-    * Node Inventories.
-    * Detached Inventories.
-* InvRef and Lists.
-    * Type of inventory.
-    * List sizes.
-    * List is empty.
-    * Lua Tables.
-    * Lua Tables for Lists.
-* InvRef, Items and Stacks.
-    * Adding to a list.
-    * Checking for room.
-    * Taking items.
-    * Contains.
-    * Manipulating Stacks.
+* [Basic Concepts](#basic-concepts)
+* [Types of Inventories](#types-of-inventories)
+    * [Player Inventories](#player-inventories)
+    * [Node Inventories](#node-inventories)
+    * [Detached Inventories](#detached-inventories)
+* [InvRef and Lists](#invref-and-lists)
+    * [Inventory Location](#inventory-location)
+    * [List Sizes](#list-sizes)6
+    * [Empty Lists](#empty-lists)
+    * [Lua Tables](#lua-tables)
+    * [Lua Tables for Lists](#lua-tables-for-lists)
+* [InvRef, Items and Stacks](#invref-items-and-stacks)
+    * [Adding to a List](#adding-to-a-list)
+    * [Checking for Room](#checking-for-room)
+    * [Taking Items](#taking-items)
+    * [Checking Inventory Contents](#checking-inventory-contents)
+    * [Manipulating Stacks](#manipulating-stacks)
 
 ## Basic Concepts
 
 Components of an inventory:
 
-* An **Inventory** is a collection of **Inventory List**s (also called a **list** when in the context of inventories).
-* An **Inventory List** is an array of **slot**s. (By array, I mean a table indexed by numbers).
-* A **slot** is a place a stack can be - there may be a stack there or there may not.
+* An **inventory** is a collection of **inventory list**s, which are simply called **list**s in the context of inventories.
+* An **inventory list** is an array of **slot**s. (An array is a table indexed by numbers).
+* A **slot** will either contain a stack or be empty.
 * An **InvRef** is an object that represents an inventory, and has functions to manipulate it.
 
-There are three ways you can get inventories:
+## Types of Inventories
 
-* **Player Inventories** - an inventory attached to a player.
-* **Node Inventories** - an inventory attached to a node.
-* **Detached Inventories** - an inventory which is not attached to a node or player.
+There are three types of inventory:
+
+* **Player Inventories**: An inventory attached to a player.
+* **Node Inventories**: An inventory attached to a node.
+* **Detached Inventories**: An inventory which is not attached to a node or player.
 
 <figure>
     <img src="{{ page.root }}/static/inventories_lists.png" alt="The player inventory formspec, with annotated list names.">
@@ -58,15 +60,12 @@ There are three ways you can get inventories:
     </figcaption>
 </figure>
 
-
-## Types of Inventories
-
-There are three types of Inventories.
-
 ### Player Inventories.
 
-This is what you see when you press i.
-A player inventory usually has two grids, one for the main inventory, one for crafting.
+A player inventory usually has two grids, one for the main inventory and one for crafting.
+Press i in game to see your player inventory. 
+
+Use a player's name to get their inventory:
 
 {% highlight lua %}
 local inv = minetest.get_inventory({type="player", name="celeron55"})
@@ -74,8 +73,10 @@ local inv = minetest.get_inventory({type="player", name="celeron55"})
 
 ### Node Inventories.
 
-An inventory related to a position, such as a chest.
-The node must be loaded, as it's stored in [Node Metadata](node_metadata.html).
+A node inventory is related to the position of a specific node, such as a chest.
+The node must be loaded, because it is stored in [node metadata](node_metadata.html).
+
+Use its position to get a node inventory:
 
 {% highlight lua %}
 local inv = minetest.get_inventory({type="node", pos={x=, y=, z=}})
@@ -84,40 +85,40 @@ local inv = minetest.get_inventory({type="node", pos={x=, y=, z=}})
 ### Detached Inventories
 
 A detached inventory is independent of players and nodes.
-One example of a detached inventory is the creative inventory is detached,
-as all players see the same inventory.
-You may also use this if you want multiple chests to share the same inventory.
+One example of a detached inventory is the creative inventory. It is detached from
+any specific player because all players see the same creative inventory.
+A detached inventory would also allow multiple chests to share the same inventory.
 
-This is how you get a detached inventory:
+Use the inventory name to get a detached inventory:
 
 {% highlight lua %}
 local inv = minetest.get_inventory({type="detached", name="inventory_name"})
 {% endhighlight %}
 
-And this is how you can create one:
+You can create your own detached inventories:
 
 {% highlight lua %}
 minetest.create_detached_inventory("inventory_name", callbacks)
 {% endhighlight %}
 
-Creates a detached inventory. If it already exists, it is cleared.
-You can supply a [table of callbacks](../lua_api.html#detached-inventory-callbacks).
+This creates a detached inventory or, if the inventory already exists, it is cleared.
+You can also supply a [table of callbacks](../lua_api.html#detached-inventory-callbacks).
 
 ## InvRef and Lists
 
-### Type of Inventory
+### Inventory Location
 
-You can check where the inventory is from by doing:
+You can check where an inventory is located:
 
 {% highlight lua %}
 local location = inv:get_location()
 {% endhighlight %}
 
-It will return a table like the one passed to `minetest.get_inventory()`.
+This will return a table like the one passed to `minetest.get_inventory()`.
 
 If the location is unknown, `{type="undefined"}` is returned.
 
-### List sizes
+### List Sizes
 
 Inventory lists have a size, for example `main` has size of 32 slots by default.
 They also have a width, which is used to divide them into a grid.
@@ -136,7 +137,9 @@ end
 determined by the formspec element, not by the inventory. By that I mean
 a list doesn't have a width or height, only the maximum number of stacks/slots.-->
 
-### List is empty
+### Empty Lists
+
+You can use `list_is_empty` to check if a list is empty:
 
 {% highlight lua %}
 if inv:is_empty("main") then
@@ -146,13 +149,13 @@ end
 
 ### Lua Tables
 
-You can convert an inventory to a Lua table using:
+You can convert an inventory to a Lua table:
 
 {% highlight lua %}
 local lists = inv:get_lists()
 {% endhighlight %}
 
-It will be in this form:
+The table will be in this form:
 
 {% highlight lua %}
 {
@@ -173,7 +176,7 @@ It will be in this form:
 }
 {% endhighlight %}
 
-You can then set an inventory like this:
+You can then set the inventory:
 
 {% highlight lua %}
 inv:set_lists(lists)
@@ -183,7 +186,7 @@ Please note that the sizes of lists will not change.
 
 ### Lua Tables for Lists
 
-You can do the same as above, but for individual lists
+You can do the above for individual lists:
 
 {% highlight lua %}
 local list = inv:get_list("list_one")
@@ -201,7 +204,7 @@ It will be in this form:
 }
 {% endhighlight %}
 
-You can then set the list like this:
+You can then set the list:
 
 {% highlight lua %}
 inv:set_list("list_one", list)
@@ -209,9 +212,11 @@ inv:set_list("list_one", list)
 
 Please note that the sizes of lists will not change.
 
-## InvRef, Items and Items
+## InvRef, Items and Stacks
 
-### Adding to a list
+### Adding to a List
+
+To add items to a list named `"main"`:
 
 {% highlight lua %}
 local stack = ItemStack("default:stone 99")
@@ -221,9 +226,9 @@ if leftover:get_count() > 0 then
 end
 {% endhighlight %}
 
-`"main"` is the name of the list you're adding to.
+### Checking for Room
 
-### Checking for room
+To check whether a list has room for items:
 
 {% highlight lua %}
 if not inv:room_for_item("main", stack) then
@@ -231,18 +236,18 @@ if not inv:room_for_item("main", stack) then
 end
 {% endhighlight %}
 
-### Taking items
+### Taking Items
+
+To remove items from a list:
 
 {% highlight lua %}
 local taken = inv:remove_item("main", stack)
 print("Took " .. taken:get_count())
 {% endhighlight %}
 
-### Contains
+### Checking Inventory Contents
 
-This works if the item count is split up over multiple stacks,
-for example looking for "default:stone 200" will work if there
-are stacks of 99 + 95 + 6.
+To check whether an inventory contains a specific quantity of an item:
 
 {% highlight lua %}
 if not inv:contains_item(listname, stack) then
@@ -250,10 +255,13 @@ if not inv:contains_item(listname, stack) then
 end
 {% endhighlight %}
 
+This works if the item count is split up over multiple stacks.
+For example checking for "default:stone 200" will work if there
+are stacks of 99 + 95 + 6.
+
 ### Manipulating Stacks
 
-Finally, you can manipulate individual stacks like so:
-
+You can manipulate individual stacks:
 
 {% highlight lua %}
 local stack = inv:get_stack(listname, 0)
