@@ -35,7 +35,7 @@ Components of an inventory:
 
 * An **inventory** is a collection of **inventory list**s, which are simply called **list**s in the context of inventories.
 * An **inventory list** is an array of **slot**s. (An array is a table indexed by numbers).
-* A **slot** will either contain a stack or be empty.
+* A **slot** contains a stack which may or may not be empty.
 * An **InvRef** is an object that represents an inventory, and has functions to manipulate it.
 
 ## Types of Inventories
