@@ -2,6 +2,15 @@
 ---
 "use strict";
 
+Number.prototype.pad = function(size) {
+	size = size || 2;
+	var s = String(this)
+	while (s.length < size) {
+		s = "0" + s;
+	}
+	return s;
+}
+
 const puppeteer = require("puppeteer")
 const fs = require("fs")
 const os = require("os")
@@ -24,8 +33,9 @@ var links = {{ site.data.links_en | jsonify }};
 			// page.pdf() is currently supported only in headless mode.
 			// @see https://bugs.chromium.org/p/chromium/issues/detail?id=753118
 			const margin = "0.2in"
+			const file_seg = link.num ? link.num.pad() : ("0_" + link.title.replace(".", "_"))
 			await page.pdf({
-				path: "tmp/page_" + (link.num || ("0_" + link.title.replace(".", "_"))) + ".pdf",
+				path: "tmp/page_" + file_seg + ".pdf",
 				format: "A5",
 				margin: {
 					top: margin,
