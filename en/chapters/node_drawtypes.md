@@ -447,6 +447,7 @@ Plantlike nodes draw their tiles in an X like pattern.
 minetest.register_node("default:papyrus", {
     drawtype = "plantlike",
 
+    -- Only one texture used
     tiles = {"default_papyrus.png"},
 
     selection_box = {
@@ -461,7 +462,6 @@ minetest.register_node("default:papyrus", {
 Firelike is similar to plantlike, except that it is designed to "cling" to walls
 and ceilings.
 
-
 <figure>
     <img src="{{ page.root }}/static/drawtype_firelike.png" alt="Firelike nodes">
     <figcaption>
@@ -470,18 +470,10 @@ and ceilings.
 </figure>
 
 {% highlight lua %}
-minetest.register_node("fire:basic_flame", {
-	drawtype = "firelike",
-	tiles = {
-		{
-			name = "fire_basic_flame_animated.png",
-			animation = {
-				type = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length = 1
-			},
-		},
-	},
+minetest.register_node("mymod:clingere", {
+    drawtype = "firelike",
+
+    -- Only one texture used
+    tiles = { "mymod:clinger" },
 })
 {% endhighlight %}
