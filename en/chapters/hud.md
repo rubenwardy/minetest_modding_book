@@ -10,82 +10,100 @@ Heads Up Display (HUD) elements allow you to show text, images, and other graphi
 
 The HUD doesn't accept user input. For that, you should use a [Formspec](formspecs.html).
 
-* [Basic Interface](#basic-interface)
 * [Positioning](#positioning)
+* [Basic Interface](#basic-interface)
 * [Text Elements](#text-elements)
 * [Image Elements](#image-elements)
 * [Other Elements](#other-elements)
 
+## Positioning
+
+Screens come in a variety of different sizes and densities, and the HUD needs
+to work well on all screen types.
+
+Minetest's solution to this is to specify the location of an element using both
+a percentage position and an offset.
+The percentage position is relative to the screen size, so to place an element
+in the center of the screen you would need to provide a percentage position of half
+the screen, eg (50%, 50%), and an offset of (0, 0).
+
+<figure>
+    <img
+        width="300"
+        src="{{ page.root }}/static/hud_diagram_center.svg"
+        alt="The player inventory formspec, with annotated list names.">
+</figure>
+
+The offset is then used to move an element relative to the percentage position.
+
+For the purposes of this chapter, you will learn how to position and update a
+score panel like so:
+
+[image of panel needed]
+
+In the above screenshot all of the elements have the same percentage position -
+(100%, 50%) - but different offsets. This allows the whole thing to be anchored
+to the right of the window, but to resize without breaking.
+
 ## Basic Interface
 
-HUD elements are created using a player object.
-You can get the player object from a username:
+You can create a hud element once you have a copy of the player object:
 
 {% highlight lua %}
 local player = minetest.get_player_by_name("username")
-{% endhighlight %}
-
-Once you have the player object, you can create a HUD element:
-
-{% highlight lua %}
 local idx = player:hud_add({
-         hud_elem_type = "text",
-         position = {x = 1, y = 0},
-         offset = {x=-100, y = 20},
-         scale = {x = 100, y = 100},
-         text = "My Text"
+     hud_elem_type = "text",
+     position      = {x = 0.5, y = 0.5},
+     offset        = {x = 0,   y = 0},
+     text          = "Hello world!",
+     alignment     = 0,  -- center aligned
+     scale         = {x = 100, y = 100}, -- covered later
 })
 {% endhighlight %}
 
-The attributes in the HUD element table and what they do vary depending on
-the `hud_elem_type`.\\
-The `hud_add` function returns a number which is needed to identify the HUD element
-if you wanted to change or delete it.
+The element's type is given using the `hud_elem_type` property in the definition
+table. The meaning of other properties varies based on this type, and they will
+be explained in more detail later.
 
-You can change an attribute after creating a HUD element. For example, you can change
-the text:
+The `hud_add` function returns an element ID - this can be used later to modify
+or remove a HUD element:
 
 {% highlight lua %}
 player:hud_change(idx, "text", "New Text")
-{% endhighlight %}
-
-You can also delete the element:
-
-{% highlight lua %}
 player:hud_remove(idx)
 {% endhighlight %}
 
-## Positioning
+The `hud_change` method takes the element ID, the property to change, and the new
+value. The above call changes the `text` property from "Hello world!" to "New Text".
 
-Screens come in different sizes, and HUD elements need to work well on all screens.
-You locate an element using a combination of a position and an offset.
-
-The position is a co-ordinate between (0, 0) and (1, 1) which determines where,
-relative to the screen width and height, the element is located.
-For example, an element with a position of (0.5, 0.5) will be in the center of the screen.
-
-The offset applies a pixel offset to the position.\\
-For example, an element with a position of (0, 0) and an offset of (10, 10) will be at the screen
-co-ordinates (0 * width + 10, 0 * height + 10).
-
-Please note that offset scales to DPI and a user defined factor.
-
-## Text Elements
-
-A text element is the simplest type of HUD element.\\
-Here is the earlier example, but with comments to explain each part:
+This means that doing the `hud_change` immediately after the `hud_add` is
+functionally equivalent to the following:
 
 {% highlight lua %}
 local idx = player:hud_add({
-    hud_elem_type = "text",     -- This is a text element
-    position = {x = 1, y = 0},
-    offset = {x=-100, y = 20},
-    scale = {x = 100, y = 100}, -- Maximum size of text, text outside these bounds is cropped
-    text = "My Text"            -- The actual text shown
+     hud_elem_type = "text",
+     position      = {x = 0.5, y = 0.5},
+     offset        = {x = 0,   y = 0},
+     text          = "New Text",
+     alignment     = 0,
+     scale         = {x = 100, y = 100},
 })
 {% endhighlight %}
 
+## Text Elements
+
+A text element is the simplest type of HUD element.
+
+### Parameters
+
+* `scale` - Maximum size of text, text outside these bounds is cropped, eg: `{x=100, y=100}`
+* `text` - The text to show, eg: `"Hello world!"`
+* `alignment` - How the text is aligned in the bounds. Use `-1` for left, `0` for center, `1` for right.
+* `number` - The text's color in Hexadecimal, eg: `0xFF0000`
+
 ### Colors
+
+<!-- TODO: move this elsewhere? -->
 
 Use the `number` attribute to apply colors to the text.
 Colors are in [Hexadecimal form](http://www.colorpicker.com/).
