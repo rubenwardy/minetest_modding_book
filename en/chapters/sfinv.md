@@ -174,12 +174,15 @@ control when the page is shown:
 
 {% highlight lua %}
 is_in_nav = function(self, player, context)
-    local privs = player:get_privs()
+    local privs = minetest.get_player_privs(player:get_player_name())
     return privs.kick or privs.ban
 end,
 {% endhighlight %}
 
-Note the the `is_in_nav` is only called when the player's inventory formspec is
+If you only need to check one priv or want to perform an and, you should use
+`minetest.check_player_privs()` instead of `get_player_privs`.
+
+Note that the `is_in_nav` is only called when the player's inventory formspec is
 generated. This happens when a player joins the game, switches tabs, or a mod
 requests it using SFINV's API.
 
