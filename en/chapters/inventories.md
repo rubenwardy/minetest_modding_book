@@ -18,7 +18,7 @@ This chapter assumes that you already know how to create and manipulate
     * [Detached Inventories](#detached-inventories)
 * [InvRef and Lists](#invref-and-lists)
     * [Inventory Location](#inventory-location)
-    * [List Sizes](#list-sizes)6
+    * [List Sizes](#list-sizes)
     * [Empty Lists](#empty-lists)
     * [Lua Tables](#lua-tables)
     * [Lua Tables for Lists](#lua-tables-for-lists)
@@ -60,7 +60,7 @@ There are three types of inventory:
     </figcaption>
 </figure>
 
-### Player Inventories.
+### Player Inventories
 
 A player inventory usually has two grids, one for the main inventory and one for crafting.
 Press i in game to see your player inventory. 
@@ -71,7 +71,7 @@ Use a player's name to get their inventory:
 local inv = minetest.get_inventory({type="player", name="celeron55"})
 {% endhighlight %}
 
-### Node Inventories.
+### Node Inventories
 
 A node inventory is related to the position of a specific node, such as a chest.
 The node must be loaded, because it is stored in [node metadata](node_metadata.html).
