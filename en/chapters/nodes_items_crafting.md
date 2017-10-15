@@ -6,52 +6,69 @@ root: ../../
 
 ## Introduction
 
-In this chapter we will learn how to register a new node or craftitem,
-and create craft recipes.
+Registering new nodes and craftitems, and creating craft recipes, are
+basic requirements for many mods.
 
-* Item Strings
-* Textures
-* Registering a Craftitem
-* Foods
-* Registering a  basic Node
-* Crafting
-* Groups
+* [Item Strings](#item-strings)
+    * [Overriding](#overriding)
+* [Textures](#textures)
+* [Registering a Craftitem](#registering-a-craftitem)
+    * [Foods](#foods)
+    * [Foods, extended](#foods-extended)
+* [Registering a Basic Node](#registering-a-basic-node)
+* [Crafting](#crafting)
+    * [Shaped](#shaped)
+    * [Shapeless](#shapeless)
+    * [Cooking](#cooking)
+    * [Fuel](#fuel)
+* [Groups](#groups)
+    * [Dig Types](#dig-types)
 
 ## Item Strings
 
-Each item, whether that be a node, craftitem, tool, or entity, has an item string.\\
-This is sometimes referred to as registered name or just name.
 A string in programming terms is a piece of text.
+Each in-game item, whether a node, craftitem, tool, or entity, has an item string.
+This is sometimes referred to as its registered name or just its name. It takes the format:
 
     modname:itemname
 
-The modname is the name of the folder your mod is in.
-You may call the itemname anything you like; however, it should be relevant to
-what the item is and it can't already be registered.
+The modname is the name of the mod in which the item is registered, and the
+itemname is the name of the item itself.
+The itemname should be relevant to what the item is and can't already be registered.
 
 ### Overriding
 
 Overriding allows you to:
 
 * Redefine an existing item.
-* Use an item string with a different modname.
+* Use a different modname.
 
-To override, you prefix the item string with a colon, ``:``.
-Declaring an item as ``:default:dirt`` will override the default:dirt in the default mod.
+To override an item, prefix the item string with a colon, ``:``.
+For example, declaring an item as ``:default:dirt`` will override
+default:dirt in the default mod.
 
 ## Textures
 
-Textures are usually 16 by 16 pixels.
-They can be any resolution, but it is recommended that they are in the order of 2 (eg, 16, 32, 64, 128, etc),
-as other resolutions may not be supported correctly on older devices.
+Textures in Minetest are usually 16 by 16 pixels.
+They can be any resolution, but it is recommended that they are in the order of 2,
+for example 16, 32, 64, or 128,
+because other resolutions may not be supported correctly on older devices.
 
-Textures should be placed in textures/. Their name should match ``modname_itemname.png``.\\
-JPEGs are supported, but they do not support transparency and are generally bad quality at low resolutions.
+Textures should be placed in the textures/ folder with names in the format
+``modname_itemname.png``.\\
+JPEG textures are supported, but do not support transparency and are generally
+bad quality at low resolutions. It is often better to use the PNG format.
 
 ## Registering a Craftitem
 
-Craftitems are the simplest items in Minetest. Craftitems cannot be placed in the world.
-They are used in recipes to create other items, or they can be used by the player, such as food.
+Craftitems are the simplest items in Minetest. They cannot be placed in the world.
+They are used in recipes to create other items, or can be used by the player.
+Examples include food items which can be eaten and metal ingots which can be
+crafted into tools or placeable nodes.
+
+Item definitions usually include a unique
+[item string](#item-strings) and a definition table. The definition table
+contains attributes which affect the behaviour of the item. For example:
 
 {% highlight lua %}
 minetest.register_craftitem("mymod:diamond_fragments", {
@@ -60,13 +77,10 @@ minetest.register_craftitem("mymod:diamond_fragments", {
 })
 {% endhighlight %}
 
-Item definitions like the one seen above are usually made up of a unique
-[item string](#item-strings) and a definition table. The definition table
-contains attributes which affect the behaviour of the item.
-
 ### Foods
 
-Foods are items that cure health. To create a food item you need to define the on_use property like this:
+Foods are items which restore health. To create a food item you need to define
+the on_use property of the item:
 
 {% highlight lua %}
 minetest.register_craftitem("mymod:mudpie", {
@@ -76,16 +90,18 @@ minetest.register_craftitem("mymod:mudpie", {
 })
 {% endhighlight %}
 
-The number supplied to the minetest.item_eat function is the number of hit points that are healed by this food.
-Two hit points make one heart and because there are 10 hearts there are 20 hitpoints.
-Hitpoints don't have to be integers (whole numbers), they can be decimals.
+The number supplied to the minetest.item_eat function is the number of hit points
+healed when this food is consumed.
+Each heart icon the player has is worth two hitpoints. A player can usually have up to
+10 hearts, which is equal to 20 hitpoints.
+Hitpoints don't have to be integers (whole numbers); they can be decimals.
 
-Sometimes you may want a food to be replaced with another item when being eaten,
+Sometimes you may want a food item to be replaced with another item after it is eaten,
 for example smaller pieces of cake or bones after eating meat. To do this, use:
 
     minetest.item_eat(hp, replace_with_item)
 
-Where replace_with_item is an item string.
+In this example replace_with_item must be an item string.
 
 ### Foods, extended
 
