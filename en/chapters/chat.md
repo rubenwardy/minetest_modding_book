@@ -9,13 +9,13 @@ root: ../../
 Mods can interact with player chat, including
 sending messages, intercepting messages and registering chat commands.
 
-* [Sending messages to all players](#sending-messages-to-all-players)
-* [Sending messages to specific players](#sending-messages-to-specific-players)
-* [Chat commands](#chat-commands)
-* [Complex subcommands](#complex-subcommands)
-* [Intercepting messages](#intercepting-messages)
+* [Sending Messages to All Players](#sending-messages-to-all-players)
+* [Sending Messages to Specific Players](#sending-messages-to-specific-players)
+* [Chat Commands](#chat-commands)
+* [Complex Subcommands](#complex-subcommands)
+* [Intercepting Messages](#intercepting-messages)
 
-## Sending messages to all players
+## Sending Messages to All Players
 
 To send a message to every player in the game, call the chat_send_all function.
 
@@ -31,7 +31,7 @@ Here is an example of how this appears in-game:
 
 The message appears on a separate line to distinguish it from in-game player chat.
 
-## Sending messages to specific players
+## Sending Messages to Specific Players
 
 To send a message to a specific player, call the chat_send_player function:
 
@@ -42,7 +42,7 @@ minetest.chat_send_player("player1", "This is a chat message for player1")
 This message displays in the same manner as messages to all players, but is
 only visible to the named player, in this case player1.
 
-### Older mods
+### Older Mods
 
 Occasionally you'll see mods where the chat_send_player function includes a
 boolean:
@@ -56,7 +56,7 @@ The boolean is no longer used, and has no affect
 <sup>[[commit]](https://github.com/minetest/minetest/commit/9a3b7715e2c2390a3a549d4e105ed8c18defb228)</sup>.
 
 
-## Chat commands
+## Chat Commands
 
 To register a chat command, for example /foo, use register_chatcommand:
 
@@ -102,7 +102,7 @@ function that requires an in-game player, will work in a chat command call back.
 should provide a text only version. For example, the email mod allows both `/inbox`
 to show a formspec, and `/inbox text` to send information to chat.
 
-## Complex subcommands
+## Complex Subcommands
 
 It is often required to make complex chat commands, such as:
 
@@ -116,7 +116,7 @@ approach is to use a mod library. See rubenwardy's
 [Complex Chat Commands](chat_complex.html).
 
 
-## Intercepting messages
+## Intercepting Messages
 
 To intercept a message, use register_on_chat_message:
 
