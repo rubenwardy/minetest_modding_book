@@ -26,7 +26,7 @@ buttons and fields to allow you to enter information.
 
 Note that if you do not need to get user input, for example when you only need
 to provide information to the player, you should consider using Heads Up Display
-(HUD) elements instead of forms, because unexpected windows tend to disrupt game play.
+(HUD) elements instead of forms, because unexpected windows tend to disrupt gameplay.
 
 ## Formspec Syntax
 
@@ -38,7 +38,7 @@ They consist of a series of tags which are in the following form:
 Firstly the element type is declared, and then the attributes are given
 in square brackets.
 
-Elements are items such as a text box or button, or can be metadata such
+Elements are items such as text boxes or buttons, or can be metadata such
 as size or background.
 
 Here are two elements, of types foo and bar.
@@ -47,8 +47,8 @@ Here are two elements, of types foo and bar.
 
 ### Size[w, h]
 
-Nearly all forms have a size tag. This declares the size of the form. Note that
-**forms don't use pixels as co-ordinates, they use a grid based on inventories**.
+Nearly all forms have a size tag. This declares the size of the form window. Note that
+**forms don't use pixels as co-ordinates; they use a grid based on inventories**.
 A size of (1, 1) means the form is big enough to host a 1x1 inventory.
 This means the size of the form is independent of screen resolution and it should work
 just as well on large screens as small screens.
@@ -84,14 +84,14 @@ Here is a generalized way to show a formspec:
 
 Formnames should be itemnames; however, this is not enforced.
 There is no need to override a formspec, because formspecs are not registered like
-nodes and items are. Instead the formspec code is sent to the player's client for them
+nodes and items are. The formspec code is sent to the player's client for them
 to see, along with the formname.
 Formnames are used in callbacks to identify which form has been submitted,
 and to see if the callback is relevant.
 
 ### Example
 
-The example shows a formspec to a player when they use the /formspec command.
+This example shows a formspec to a player when they use the /formspec command.
 
 <figure class="right_image">
     <img src="{{ page.root }}/static/formspec_name.png" alt="Name Formspec">
@@ -185,8 +185,8 @@ for a clicked button.
 
 ## Contexts
 
-In many cases you want your minetest.show_formspec to give information
-to the callback which you don't want to send to the client. This might included
+In many cases you want minetest.show_formspec to give information
+to the callback which you don't want to send to the client. This might include
 what a chat command was called with, or what the dialog is about.
 
 For example, you might make a form to handle land protection information:
