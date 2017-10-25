@@ -15,21 +15,22 @@ root: ../../
 
 In this chapter we will learn how to create a formspec and display it to the user.
 A formspec is the specification code for a form.
-In Minetest, forms are windows like the Inventory which allow you to move your mouse
-and enter information.
-You should consider using Heads Up Display (HUD) elements if you do
-not need to get user input - notifications, for example - as unexpected windows
-tend to disrupt game play.
+In Minetest, forms are windows such as the player inventory, which can contain labels,
+buttons and fields to allow you to enter information.
 
-* Formspec syntax
-* Displaying Forms
-* Callbacks
-* Contexts
-* Node Meta Formspecs
+* [Formspec Syntax](#formspec-syntax)
+* [Displaying Forms](#displaying-forms)
+* [Callbacks](#callbacks)
+* [Contexts](#contexts)
+* [Node Meta Formspecs](#node-meta-formspecs)
+
+Note that if you do not need to get user input, for example when you only need
+to provide information to the player, you should consider using Heads Up Display
+(HUD) elements instead of forms, because unexpected windows tend to disrupt gameplay.
 
 ## Formspec Syntax
 
-Formspecs have a rather weird syntax.
+Formspecs have an unusual syntax.
 They consist of a series of tags which are in the following form:
 
     element_type[param1;param2;...]
@@ -37,8 +38,8 @@ They consist of a series of tags which are in the following form:
 Firstly the element type is declared, and then the attributes are given
 in square brackets.
 
-(An element is an item such as a text box or button, or it is meta data such
-as size or background).
+Elements are items such as text boxes or buttons, or can be metadata such
+as size or background.
 
 Here are two elements, of types foo and bar.
 
@@ -46,11 +47,11 @@ Here are two elements, of types foo and bar.
 
 ### Size[w, h]
 
-Nearly all forms have a size tag. They are used to declare the size of the window required.
-**Forms don't use pixels as co-ordinates, they use a grid**, based on inventories.
+Nearly all forms have a size tag. This declares the size of the form window. Note that
+**forms don't use pixels as co-ordinates; they use a grid based on inventories**.
 A size of (1, 1) means the form is big enough to host a 1x1 inventory.
-The reason this is used is because it is independent on screen resolution -
-The form should work just as well on large screens as small screens.
+This means the size of the form is independent of screen resolution and it should work
+just as well on large screens as small screens.
 You can use decimals in sizes and co-ordinates.
 
     size[5,2]
@@ -61,33 +62,36 @@ The x and y values are separated by a comma, as you can see above.
 ### Field[x, y; w, h; name; label; default]
 
 This is a textbox element. Most other elements have a similar style of attributes.
-The "name" attribute is used in callbacks to get the submitted information.
-The others are pretty self-explaintary.
+The name attribute is used in callbacks to get the submitted information.
+The x and y attributes determine the position of the element, and
+the w and h attributes provide the size.
 
     field[1,1;3,1;firstname;Firstname;]
 
-It is perfectly valid to not define an attribute, like above.
+It is perfectly valid to not define an attribute.
 
 ### Other Elements
 
-You should look in [lua_api.txt](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt#L1019)
-for a list of all possible elements, just search for "Formspec".
-It is near line 1019, at time of writing.
+You should refer to [lua_api.txt](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt#L1019)
+for a list of all possible elements. Search for "Formspec" to locate the correct part of the document.
+At the time of writing, formspec information begins on line 1765.
 
 ## Displaying Formspecs
 
-Here is a generalized way to show a formspec
+Here is a generalized way to show a formspec:
 
     minetest.show_formspec(playername, formname, formspec)
 
-Formnames should be itemnames, however that is not enforced.
-There is no need to override a formspec here, formspecs are not registered like
-nodes and items are, instead the formspec code is sent to the player's client for them
+Formnames should be itemnames; however, this is not enforced.
+There is no need to override a formspec, because formspecs are not registered like
+nodes and items are. The formspec code is sent to the player's client for them
 to see, along with the formname.
 Formnames are used in callbacks to identify which form has been submitted,
-and see if the callback is relevant.
+and to see if the callback is relevant.
 
 ### Example
+
+This example shows a formspec to a player when they use the /formspec command.
 
 <figure class="right_image">
     <img src="{{ page.root }}/static/formspec_name.png" alt="Name Formspec">
@@ -110,8 +114,6 @@ minetest.register_chatcommand("formspec", {
 })
 {% endhighlight %}
 
-The above example shows a formspec to a player when they use the /formspec command.
-
 Note: the .. is used to join two strings together. The following two lines are equivalent:
 
 {% highlight lua %}
@@ -121,7 +123,7 @@ Note: the .. is used to join two strings together. The following two lines are e
 
 ## Callbacks
 
-Let's expand on the above example.
+It's possible to expand the previous example with a callback:
 
 {% highlight lua %}
 -- Show form when the /formspec command is used.
@@ -153,23 +155,23 @@ end)
 {% endhighlight %}
 
 The function given in minetest.register_on_player_receive_fields is called
-everytime a user submits a form. Most callbacks will check the formname given
-to the function, and exit if it is not the right form. However, some callbacks
+every time a user submits a form. Most callbacks will check the formname given
+to the function, and exit if it is not the right form; however, some callbacks
 may need to work on multiple forms, or all forms - it depends on what you
 want to do.
 
 ### Fields
 
 The fields parameter to the function is a table, index by string, of the values
-submitted by the user. You can access values in the table by doing fields.name,
+submitted by the user. You can access values in the table via fields.name,
 where 'name' is the name of the element.
 
-As well as having the values of each element, you can also get which button
+As well as retrieving the values of each element, you can also get which button
 was clicked. In this case, the button called 'exit' was clicked, so fields.exit
 will be true.
 
-Some elements can submit the form without the user having to click a button,
-such as a check box. You can detect for these cases by looking
+Some elements can submit the form without the user clicking a button,
+such as a check box. You can detect these cases by looking
 for a clicked button.
 
 {% highlight lua %}
@@ -183,11 +185,11 @@ for a clicked button.
 
 ## Contexts
 
-In quite a lot of cases you want your minetest.show_formspec to give information
-to the callback which you don't want to have to send to the client. Information
-such as what a chat command was called with, or what the dialog is about.
+In many cases you want minetest.show_formspec to give information
+to the callback which you don't want to send to the client. This might include
+what a chat command was called with, or what the dialog is about.
 
-Let's say you are making a form to handle land protection information.
+For example, you might make a form to handle land protection information:
 
 {% highlight lua %}
 --
@@ -247,10 +249,10 @@ end)
 
 ## Node Meta Formspecs
 
-minetest.show_formspec is not the only way to show a formspec, you can also
-add formspecs to a [node's meta data](node_metadata.html). This is used on nodes such as chests to
-allow for faster opening times - you don't need to wait for the server to send
-the player the chest formspec.
+minetest.show_formspec is not the only way to show a formspec; you can also
+add formspecs to a [node's meta data](node_metadata.html). For example,
+this is used with chests to allow for faster opening times -
+you don't need to wait for the server to send the player the chest formspec.
 
 {% highlight lua %}
 minetest.register_node("mymod:rightclick", {
@@ -279,7 +281,7 @@ Formspecs set this way do not trigger the same callback. In order to
 receive form input for meta formspecs, you must include an
 `on_receive_fields` entry when registering the node.
 
-This style of callback can trigger the callback when you press enter
-in a field, which is impossible with `minetest.show_formspec`,
+This style of callback triggers when you press enter
+in a field, which is impossible with `minetest.show_formspec`;
 however, this kind of form can only be shown by right-clicking on a
 node. It cannot be triggered programmatically.
