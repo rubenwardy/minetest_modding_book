@@ -11,6 +11,9 @@ Heads Up Display (HUD) elements allow you to show text, images, and other graphi
 The HUD doesn't accept user input. For that, you should use a [Formspec](formspecs.html).
 
 * [Positioning](#positioning)
+    * [Position and Offset](#position-and-offset)
+    * [Alignment](#alignment)
+    * [Scoreboard](#scoreboard)
 * [Text Elements](#text-elements)
     * [Parameters](#parameters)
     * [Our Example](#our-example)
@@ -22,6 +25,8 @@ The HUD doesn't accept user input. For that, you should use a [Formspec](formspe
 * [Other Elements](#other-elements)
 
 ## Positioning
+
+### Position and Offset
 
 Screens come in a variety of different sizes and densities, and the HUD needs
 to work well on all screen types.
@@ -40,6 +45,22 @@ the screen, eg (50%, 50%), and an offset of (0, 0).
 </figure>
 
 The offset is then used to move an element relative to the percentage position.
+
+### Alignment
+
+Alignment is where the result of position and offset is on the element -
+for example, `{x = -1.0, y = 0.0}` will make the result of position and offset point
+to the left of the element's bounds. This is particularly useful when you want to
+make a text element left, center, or right justified.
+
+<figure>
+    <img
+        width="400"
+        src="{{ page.root }}/static/hud_diagram_alignment.svg"
+        alt="Diagram showing alightment">
+</figure>
+
+### Scoreboard
 
 For the purposes of this chapter, you will learn how to position and update a
 score panel like so:
@@ -79,10 +100,6 @@ The element's type is given using the `hud_elem_type` property in the definition
 table. The meaning of other properties varies based on this type.
 
 `scale` is the maximum bounds of text, text outside these bounds is cropped, eg: `{x=100, y=100}`.
-
-`alignment` is where the result of position and offset is on the text - for example,
-`{x=-1,y=0}` will make the result of position and offset point to the left of the
-text's bounds. This is used to make the text element left, center, or right justified.
 
 The text's color in [Hexadecimal form](http://www.colorpicker.com/), eg: `0xFF0000`,
 and stored in
