@@ -63,7 +63,8 @@ make a text element left, center, or right justified.
 </figure>
 
 The above diagram shows 3 windows (blue), each with a single HUD element (yellow)
-with a different alignment each time.
+with a different alignment each time. The arrow is the result of the position
+and offset calculation.
 
 ### Scoreboard
 
