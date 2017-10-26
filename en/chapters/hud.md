@@ -28,8 +28,15 @@ The HUD doesn't accept user input. For that, you should use a [Formspec](formspe
 
 ### Position and Offset
 
-Screens come in a variety of different sizes and densities, and the HUD needs
-to work well on all screen types.
+<figure class="right_image">
+    <img
+        width="300"
+        src="{{ page.root }}/static/hud_diagram_center.svg"
+        alt="Diagram showing a centered text element">
+</figure>
+
+Screens come in a variety of different physical sizes and resolutions, and
+the HUD needs to work well on all screen types.
 
 Minetest's solution to this is to specify the location of an element using both
 a percentage position and an offset.
@@ -37,14 +44,9 @@ The percentage position is relative to the screen size, so to place an element
 in the center of the screen you would need to provide a percentage position of half
 the screen, eg (50%, 50%), and an offset of (0, 0).
 
-<figure>
-    <img
-        width="300"
-        src="{{ page.root }}/static/hud_diagram_center.svg"
-        alt="Diagram showing a centered text element">
-</figure>
-
 The offset is then used to move an element relative to the percentage position.
+
+<div style="clear:both;"></div>
 
 ### Alignment
 
@@ -55,10 +57,13 @@ make a text element left, center, or right justified.
 
 <figure>
     <img
-        width="400"
+        width="500"
         src="{{ page.root }}/static/hud_diagram_alignment.svg"
-        alt="Diagram showing alightment">
+        alt="Diagram showing alignment">
 </figure>
+
+The above diagram shows 3 windows (blue), each with a single HUD element (yellow)
+with a different alignment each time.
 
 ### Scoreboard
 
