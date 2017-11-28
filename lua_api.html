@@ -4,11 +4,10 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 08/August/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 28/November/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
-<li><a href="#minetest-lua-modding-api-reference-0416">Minetest Lua Modding API Reference 0.4.16</a><ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#programming-in-lua">Programming in Lua</a></li>
 <li><a href="#startup">Startup</a></li>
@@ -29,11 +28,17 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 <li><a href="#initlua">init.lua</a></li>
 <li><a href="#models">models</a></li>
 <li><a href="#textures-sounds-media">textures, sounds, media</a></li>
+<li><a href="#locale">locale</a></li>
 </ul>
 </li>
 <li><a href="#naming-convention-for-registered-textual-names">Naming convention for registered textual names</a><ul>
 <li><a href="#example">Example</a></li>
+</ul>
+</li>
 <li><a href="#aliases">Aliases</a></li>
+<li><a href="#mapgen-aliases">Mapgen aliases</a><ul>
+<li><a href="#aliases-needed-for-all-mapgens-except-mapgen-v6">Aliases needed for all mapgens except Mapgen v6</a></li>
+<li><a href="#aliases-needed-for-mapgen-v6">Aliases needed for Mapgen v6</a></li>
 </ul>
 </li>
 <li><a href="#textures">Textures</a></li>
@@ -42,7 +47,7 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 <li><a href="#texture-grouping">Texture grouping</a></li>
 <li><a href="#escaping">Escaping</a></li>
 <li><a href="#advanced-texture-modifiers">Advanced texture modifiers</a><ul>
-<li><a href="#cracknp">[crack:&lt;n&gt;:&lt;p&gt;</a></li>
+<li><a href="#crack">Crack</a></li>
 <li><a href="#combinewxhx1y1file1x2y2file2">[combine:&lt;w&gt;x&lt;h&gt;:&lt;x1&gt;,&lt;y1&gt;=&lt;file1&gt;:&lt;x2&gt;,&lt;y2&gt;=&lt;file2&gt;:...</a></li>
 <li><a href="#resizewxh">[resize:&lt;w&gt;x&lt;h&gt;</a></li>
 <li><a href="#opacityr">[opacity:&lt;r&gt;</a></li>
@@ -88,6 +93,7 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 <li><a href="#node-drawtypes">Node drawtypes</a></li>
 <li><a href="#node-boxes">Node boxes</a></li>
 <li><a href="#meshes">Meshes</a></li>
+<li><a href="#rooted-plantlike-drawtype">Rooted plantlike drawtype</a></li>
 <li><a href="#noise-parameters">Noise Parameters</a><ul>
 <li><a href="#offset">offset</a></li>
 <li><a href="#scale">scale</a></li>
@@ -110,6 +116,7 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 <li><a href="#puff">puff</a></li>
 <li><a href="#blob">blob</a></li>
 <li><a href="#vein">vein</a></li>
+<li><a href="#stratum">stratum</a></li>
 </ul>
 </li>
 <li><a href="#ore-attributes">Ore attributes</a><ul>
@@ -235,6 +242,13 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 <li><a href="#escape-sequences">Escape sequences</a></li>
 <li><a href="#spatial-vectors">Spatial Vectors</a></li>
 <li><a href="#helper-functions">Helper functions</a></li>
+<li><a href="#translations">Translations</a><ul>
+<li><a href="#translating-a-string">Translating a string</a></li>
+<li><a href="#operations-on-translated-strings">Operations on translated strings</a></li>
+<li><a href="#translation-file-format">Translation file format</a></li>
+<li><a href="#escapes">Escapes</a></li>
+</ul>
+</li>
 <li><a href="#minetest-namespace-reference">minetest namespace reference</a><ul>
 <li><a href="#utilities">Utilities</a></li>
 <li><a href="#logging">Logging</a></li>
@@ -245,6 +259,7 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 <li><a href="#authentication">Authentication</a></li>
 <li><a href="#chat">Chat</a></li>
 <li><a href="#environment-access">Environment access</a></li>
+<li><a href="#mod-channels">Mod channels</a></li>
 <li><a href="#inventory_1">Inventory</a></li>
 <li><a href="#formspec_1">Formspec</a></li>
 <li><a href="#item-handling">Item handling</a></li>
@@ -265,28 +280,32 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 </ul>
 </li>
 <li><a href="#class-reference">Class reference</a><ul>
-<li><a href="#metadataref">MetaDataRef</a><ul>
+<li><a href="#modchannel">ModChannel</a><ul>
 <li><a href="#methods">Methods</a></li>
 </ul>
 </li>
-<li><a href="#nodemetaref">NodeMetaRef</a><ul>
+<li><a href="#metadataref">MetaDataRef</a><ul>
 <li><a href="#methods_1">Methods</a></li>
 </ul>
 </li>
-<li><a href="#itemstackmetaref">ItemStackMetaRef</a><ul>
+<li><a href="#nodemetaref">NodeMetaRef</a><ul>
 <li><a href="#methods_2">Methods</a></li>
 </ul>
 </li>
-<li><a href="#storageref">StorageRef</a><ul>
+<li><a href="#itemstackmetaref">ItemStackMetaRef</a><ul>
 <li><a href="#methods_3">Methods</a></li>
 </ul>
 </li>
-<li><a href="#nodetimerref">NodeTimerRef</a><ul>
+<li><a href="#storageref">StorageRef</a><ul>
 <li><a href="#methods_4">Methods</a></li>
 </ul>
 </li>
+<li><a href="#nodetimerref">NodeTimerRef</a><ul>
+<li><a href="#methods_5">Methods</a></li>
+</ul>
+</li>
 <li><a href="#objectref">ObjectRef</a><ul>
-<li><a href="#methods_5">Methods</a><ul>
+<li><a href="#methods_6">Methods</a><ul>
 <li><a href="#luaentitysao-only-no-op-for-other-objects">LuaEntitySAO-only (no-op for other objects)</a></li>
 <li><a href="#player-only-no-op-for-other-objects">Player-only (no-op for other objects)</a></li>
 </ul>
@@ -294,35 +313,35 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 </ul>
 </li>
 <li><a href="#invref">InvRef</a><ul>
-<li><a href="#methods_6">Methods</a></li>
-</ul>
-</li>
-<li><a href="#areastore">AreaStore</a><ul>
 <li><a href="#methods_7">Methods</a></li>
 </ul>
 </li>
-<li><a href="#itemstack_1">ItemStack</a><ul>
+<li><a href="#areastore">AreaStore</a><ul>
 <li><a href="#methods_8">Methods</a></li>
 </ul>
 </li>
-<li><a href="#pseudorandom">PseudoRandom</a><ul>
+<li><a href="#itemstack_1">ItemStack</a><ul>
 <li><a href="#methods_9">Methods</a></li>
 </ul>
 </li>
-<li><a href="#pcgrandom">PcgRandom</a><ul>
+<li><a href="#pseudorandom">PseudoRandom</a><ul>
 <li><a href="#methods_10">Methods</a></li>
 </ul>
 </li>
-<li><a href="#securerandom">SecureRandom</a><ul>
+<li><a href="#pcgrandom">PcgRandom</a><ul>
 <li><a href="#methods_11">Methods</a></li>
 </ul>
 </li>
-<li><a href="#perlinnoise">PerlinNoise</a><ul>
+<li><a href="#securerandom">SecureRandom</a><ul>
 <li><a href="#methods_12">Methods</a></li>
 </ul>
 </li>
-<li><a href="#perlinnoisemap">PerlinNoiseMap</a><ul>
+<li><a href="#perlinnoise">PerlinNoise</a><ul>
 <li><a href="#methods_13">Methods</a></li>
+</ul>
+</li>
+<li><a href="#perlinnoisemap">PerlinNoiseMap</a><ul>
+<li><a href="#methods_14">Methods</a></li>
 </ul>
 </li>
 <li><a href="#voxelmanip">VoxelManip</a><ul>
@@ -335,19 +354,19 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 <li><a href="#notes">Notes</a></li>
 </ul>
 </li>
-<li><a href="#methods_14">Methods</a></li>
-</ul>
-</li>
-<li><a href="#voxelarea">VoxelArea</a><ul>
 <li><a href="#methods_15">Methods</a></li>
 </ul>
 </li>
-<li><a href="#settings">Settings</a><ul>
+<li><a href="#voxelarea">VoxelArea</a><ul>
 <li><a href="#methods_16">Methods</a></li>
 </ul>
 </li>
-<li><a href="#raycast">Raycast</a><ul>
+<li><a href="#settings">Settings</a><ul>
 <li><a href="#methods_17">Methods</a></li>
+</ul>
+</li>
+<li><a href="#raycast">Raycast</a><ul>
+<li><a href="#methods_18">Methods</a></li>
 </ul>
 </li>
 </ul>
@@ -395,10 +414,8 @@ This page was last updated 08/August/2017.<br />See <a href="https://github.com/
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 </div>
-<h1 id="minetest-lua-modding-api-reference-0416">Minetest Lua Modding API Reference 0.4.16</h1>
+
 <h2 id="introduction">Introduction</h2>
 <p>Content and functionality can be added to Minetest 0.4 by using Lua
 scripting in run-time loaded mods.</p>
@@ -407,12 +424,11 @@ things that is loaded by and interfaces with Minetest.</p>
 <p>Mods are contained and ran solely on the server side. Definitions and media
 files are automatically transferred to the client.</p>
 <p>If you see a deficiency in the API, feel free to attempt to add the
-functionality in the engine and API. You can send such improvements as
-source code patches to <a href="mailto:celeron55@gmail.com">celeron55@gmail.com</a>.</p>
+functionality in the engine and API.</p>
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 08/August/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 28/November/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -522,6 +538,7 @@ empty, except for lines starting with <code>#</code>, which are comments.</p>
 |   |   `-- modname_something_else.png
 |   |-- sounds
 |   |-- media
+|   |-- locale
 |   `-- &lt;custom data&gt;
 `-- another
 </code></pre>
@@ -553,6 +570,8 @@ time, if necessary. (See <code>Settings</code>)</p>
 <h3 id="textures-sounds-media"><code>textures</code>, <code>sounds</code>, <code>media</code></h3>
 <p>Media files (textures, sounds, whatever) that will be transferred to the
 client and will be available for use by the mod.</p>
+<h3 id="locale"><code>locale</code></h3>
+<p>Translation files for the clients. (See <code>Translations</code>)</p>
 <h2 id="naming-convention-for-registered-textual-names">Naming convention for registered textual names</h2>
 <p>Registered names should generally be in this format:</p>
 <pre><code>`modname:&lt;whatever&gt;`
@@ -573,7 +592,7 @@ be used for overriding the registrations of some other mod.</p>
 <p>when registering it.
 (also that mod is required to have <code>experimental</code> as a dependency)</p>
 <p>The <code>:</code> prefix can also be used for maintaining backwards compatibility.</p>
-<h3 id="aliases">Aliases</h3>
+<h2 id="aliases">Aliases</h2>
 <p>Aliases can be added by using <code>minetest.register_alias(name, convert_to)</code> or
 <code>minetest.register_alias_force(name, convert_to)</code>.</p>
 <p>This will make Minetest to convert things called name to things called
@@ -588,6 +607,59 @@ you have an item called <code>epiclylongmodname:stuff</code>, you could do</p>
 <pre><code>minetest.register_alias("stuff", "epiclylongmodname:stuff")
 </code></pre>
 <p>and be able to use <code>/giveme stuff</code>.</p>
+<h2 id="mapgen-aliases">Mapgen aliases</h2>
+<p>In a game, a certain number of these must be set to tell core mapgens which
+of the game's nodes are to be used by the core mapgens. For example:</p>
+<pre><code>minetest.register_alias("mapgen_stone", "default:stone")
+</code></pre>
+<h3 id="aliases-needed-for-all-mapgens-except-mapgen-v6">Aliases needed for all mapgens except Mapgen v6</h3>
+<p>Base terrain:</p>
+<p>"mapgen_stone"
+"mapgen_water_source"
+"mapgen_river_water_source"</p>
+<p>Caves:</p>
+<p>"mapgen_lava_source"</p>
+<p>Dungeons:</p>
+<p>Only needed for registered biomes where 'node_stone' is stone:
+"mapgen_cobble"
+"mapgen_stair_cobble"
+"mapgen_mossycobble"
+Only needed for registered biomes where 'node_stone' is desert stone:
+"mapgen_desert_stone"
+"mapgen_stair_desert_stone"
+Only needed for registered biomes where 'node_stone' is sandstone:
+"mapgen_sandstone"
+"mapgen_sandstonebrick"
+"mapgen_stair_sandstone_block"</p>
+<h3 id="aliases-needed-for-mapgen-v6">Aliases needed for Mapgen v6</h3>
+<p>Terrain and biomes:</p>
+<p>"mapgen_stone"
+"mapgen_water_source"
+"mapgen_lava_source"
+"mapgen_dirt"
+"mapgen_dirt_with_grass"
+"mapgen_sand"
+"mapgen_gravel"
+"mapgen_desert_stone"
+"mapgen_desert_sand"
+"mapgen_dirt_with_snow"
+"mapgen_snowblock"
+"mapgen_snow"
+"mapgen_ice"</p>
+<p>Flora:</p>
+<p>"mapgen_tree"
+"mapgen_leaves"
+"mapgen_apple"
+"mapgen_jungletree"
+"mapgen_jungleleaves"
+"mapgen_junglegrass"
+"mapgen_pine_tree"
+"mapgen_pine_needles"</p>
+<p>Dungeons:</p>
+<p>"mapgen_cobble"
+"mapgen_stair_cobble"
+"mapgen_mossycobble"
+"mapgen_stair_desert_stone"</p>
 <h2 id="textures">Textures</h2>
 <p>Mods should generally prefix their textures with <code>modname_</code>, e.g. given
 the mod name <code>foomod</code>, a texture could be called:</p>
@@ -623,12 +695,19 @@ is required for <code>^</code> and <code>:</code>.</p>
 <p>The lower 50 percent of <code>color.png^[mask:trans.png</code> are overlaid
 on top of <code>cobble.png</code>.</p>
 <h3 id="advanced-texture-modifiers">Advanced texture modifiers</h3>
-<h4 id="cracknp"><code>[crack:&lt;n&gt;:&lt;p&gt;</code></h4>
+<h4 id="crack">Crack</h4>
 <ul>
-<li><a class="anchor" href="#n" name="n">#</a><code>&lt;n&gt;</code> = animation frame count</li>
-<li><a class="anchor" href="#p" name="p">#</a><code>&lt;p&gt;</code> = current animation frame</li>
+<li><a class="anchor" href="#cracknp" name="cracknp">#</a><code>[crack:&lt;n&gt;:&lt;p&gt;</code></li>
+<li><a class="anchor" href="#crackonp" name="crackonp">#</a><code>[cracko:&lt;n&gt;:&lt;p&gt;</code></li>
+<li><a class="anchor" href="#cracktnp" name="cracktnp">#</a><code>[crack:&lt;t&gt;:&lt;n&gt;:&lt;p&gt;</code></li>
+<li><a class="anchor" href="#crackotnp" name="crackotnp">#</a><code>[cracko:&lt;t&gt;:&lt;n&gt;:&lt;p&gt;</code></li>
 </ul>
-<p>Draw a step of the crack animation on the texture.</p>
+<p>Parameters:
+<em> <code>&lt;t&gt;</code> = tile count (in each direction)
+</em> <code>&lt;n&gt;</code> = animation frame count
+* <code>&lt;p&gt;</code> = current animation frame</p>
+<p>Draw a step of the crack animation on the texture.
+<code>crack</code> draws it normally, while <code>cracko</code> lays it over, keeping transparent pixels intact.</p>
 <p>Example:</p>
 <pre><code>default_cobble.png^[crack:10:1
 </code></pre>
@@ -714,7 +793,7 @@ Rotations are counter-clockwise.</p>
 <h4 id="verticalframetn"><code>[verticalframe:&lt;t&gt;:&lt;n&gt;</code></h4>
 <ul>
 <li><a class="anchor" href="#t_1" name="t_1">#</a><code>&lt;t&gt;</code> = animation frame count</li>
-<li><a class="anchor" href="#n_1" name="n_1">#</a><code>&lt;n&gt;</code> = current animation frame</li>
+<li><a class="anchor" href="#n" name="n">#</a><code>&lt;n&gt;</code> = current animation frame</li>
 </ul>
 <p>Crops the texture to a frame of a vertical animation.</p>
 <p>Example:</p>
@@ -832,7 +911,22 @@ lost on placement, because nodes on the map can only use palettes.</p>
 automatically transferred between node and item forms by the engine,
 when a player digs or places a colored node.
 You can disable this feature by setting the <code>drop</code> field of the node
-to itself (without metadata).</p>
+to itself (without metadata).
+To transfer the color to a special drop, you need a drop table.
+Example:</p>
+<pre><code>minetest.register_node("mod:stone", {
+    description = "Stone",
+    tiles = {"default_stone.png"},
+    paramtype2 = "color",
+    palette = "palette.png",
+    drop = {
+        items = {
+            -- assume that mod:cobblestone also has the same palette
+            {items = {"mod:cobblestone"}, inherit_color = true },
+        }
+    }
+})
+</code></pre>
 <h3 id="colored-items-in-craft-recipes">Colored items in craft recipes</h3>
 <p>Craft recipes only support item strings, but fortunately item strings
 can also contain metadata. Example craft recipe registration:</p>
@@ -859,7 +953,10 @@ are not merged in the memory, but they are simply drawn on top of each
 other. This allows different hardware coloring, but also means that
 tiles with overlays are drawn slower. Using too much overlays might
 cause FPS loss.</p>
-<p>To define an overlay, simply set the <code>overlay_tiles</code> field of the node
+<p>For inventory and wield images you can specify overlays which
+hardware coloring does not modify. You have to set <code>inventory_overlay</code>
+and <code>wield_overlay</code> fields to an image name.</p>
+<p>To define a node overlay, simply set the <code>overlay_tiles</code> field of the node
 definition. These tiles are defined in the same way as plain tiles:
 they can have a texture name, color etc.
 To skip one face, set that overlay tile to an empty string.</p>
@@ -991,6 +1088,13 @@ the global <code>minetest.registered_*</code> tables.</p>
 <li><a class="anchor" href="#biomename" name="biomename">#</a>if <code>biome.name</code> is nil, the key is the returned ID</li>
 </ul>
 </li>
+<li><a class="anchor" href="#minetestunregister_biomename" name="minetestunregister_biomename">#</a>
+<p><code>minetest.unregister_biome(name)</code></p>
+<ul>
+<li>Unregisters the biome name from engine, and deletes the entry with key</li>
+<li><a class="anchor" href="#name_1" name="name_1">#</a><code>name</code> from <code>minetest.registered_biome</code></li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestregister_oreoredefinition" name="minetestregister_oreoredefinition">#</a>
 <p><code>minetest.register_ore(ore definition)</code></p>
 <ul>
@@ -1106,6 +1210,15 @@ paramtype2 == "facedir"
   0 = y+    1 = z+    2 = z-    3 = x+    4 = x-    5 = y-
   facedir modulo 4 = rotation around that axis
 paramtype2 == "leveled"
+^ Only valid for "nodebox" with 'type = "leveled"', and "plantlike_rooted".
+  Leveled nodebox:
+    The level of the top face of the nodebox is stored in param2.
+    The other faces are defined by 'fixed = {}' like 'type = "fixed"' nodeboxes.
+    The nodebox height is (param2 / 64) nodes.
+    The maximum accepted value of param2 is 127.
+  Rooted plantlike:
+    The height of the 'plantlike' section is stored in param2.
+    The height is (param2 / 16) nodes.
 paramtype2 == "degrotate"
 ^ The rotation of this node is stored in param2. Plants are rotated this way.
   Values range 0 - 179. The value stored in param2 is multiplied by two to
@@ -1141,7 +1254,8 @@ paramtype2 == "colorwallmounted"
   The palette should have 32 pixels.
 paramtype2 == "glasslikeliquidlevel"
 ^ Only valid for "glasslike_framed" or "glasslike_framed_optional" drawtypes.
-  param2 defines 64 levels of internal liquid.
+  param2 values 0-63 define 64 levels of internal liquid, 0 being empty and
+  63 being full.
   Liquid texture is defined using `special_tiles = {"modname_tilename.png"},`
 </code></pre>
 <p>Nodes can also contain extra data. See "Node Metadata".</p>
@@ -1164,26 +1278,31 @@ paramtype2 == "glasslikeliquidlevel"
 <li><a class="anchor" href="#firelike" name="firelike">#</a><code>firelike</code></li>
 <li><a class="anchor" href="#fencelike" name="fencelike">#</a><code>fencelike</code></li>
 <li><a class="anchor" href="#raillike" name="raillike">#</a><code>raillike</code></li>
-<li><a class="anchor" href="#nodebox" name="nodebox">#</a><code>nodebox</code> -- See below. (<strong>Experimental!</strong>)</li>
-<li><a class="anchor" href="#mesh" name="mesh">#</a><code>mesh</code> -- use models for nodes</li>
-<li><a class="anchor" href="#plantlike_rooted" name="plantlike_rooted">#</a><code>plantlike_rooted</code></li>
+<li><a class="anchor" href="#nodebox" name="nodebox">#</a><code>nodebox</code> -- See below</li>
+<li><a class="anchor" href="#mesh" name="mesh">#</a><code>mesh</code> -- Use models for nodes, see below</li>
+<li><a class="anchor" href="#plantlike_rooted" name="plantlike_rooted">#</a><code>plantlike_rooted</code> -- See below</li>
 </ul>
 <p><code>*_optional</code> drawtypes need less rendering time if deactivated (always client side).</p>
 <h2 id="node-boxes">Node boxes</h2>
 <p>Node selection boxes are defined using "node boxes"</p>
-<p>The <code>nodebox</code> node drawtype allows defining visual of nodes consisting of
-arbitrary number of boxes. It allows defining stuff like stairs. Only the
-<code>fixed</code> and <code>leveled</code> box type is supported for these.</p>
-<p>Please note that this is still experimental, and may be incompatibly
-changed in the future.</p>
+<p>The <code>nodebox</code> node drawtype allows defining nodes consisting of an arbitrary
+number of boxes. It allows defining stuff like stairs and slabs.</p>
 <p>A nodebox is defined as any of:</p>
 <pre><code>{
     -- A normal cube; the default in most things
     type = "regular"
 }
 {
-    -- A fixed box (facedir param2 is used, if applicable)
+    -- A fixed box (or boxes) (facedir param2 is used, if applicable)
     type = "fixed",
+    fixed = box OR {box1, box2, ...}
+}
+{
+    -- A variable height box (or boxes) with the top face position defined by
+    -- the node parameter 'leveled = ', or if 'paramtype2 == "leveled"' by
+    -- param2.
+    -- Other faces are defined by 'fixed = {}' as with 'type = "fixed"'.
+    type = "leveled",
     fixed = box OR {box1, box2, ...}
 }
 {
@@ -1213,12 +1332,21 @@ changed in the future.</p>
 <p>A box of a regular node would look like:</p>
 <pre><code>{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 </code></pre>
-<p><code>type = "leveled"</code> is same as <code>type = "fixed"</code>, but <code>y2</code> will be automatically
-set to level from <code>param2</code>.</p>
 <h2 id="meshes">Meshes</h2>
 <p>If drawtype <code>mesh</code> is used, tiles should hold model materials textures.
 Only static meshes are implemented.
 For supported model formats see Irrlicht engine documentation.</p>
+<h2 id="rooted-plantlike-drawtype">Rooted plantlike drawtype</h2>
+<p>The <code>plantlike_rooted</code> drawtype was developed to enable underwater plants
+without air bubbles around the plants.
+It consists of a base cube at the co-ordinates of the node (the seabed /
+lakebed / riverbed node) plus a 'plantlike' extension above with a height
+defined by param2 (maximum height 16 nodes). This extension visually passes
+through any nodes above the base cube without affecting them.
+The node is dug by digging the base cube.
+The base cube texture tiles are defined as normal, the plantlike extension
+uses the defined 'special tile', for example:
+<code>special_tiles = { {name = "default_papyrus.png", tileable_vertical = true}},</code></p>
 <h2 id="noise-parameters">Noise Parameters</h2>
 <p>Noise Parameters, or commonly called "<code>NoiseParams</code>", define the properties of
 perlin noise.</p>
@@ -1307,13 +1435,15 @@ parameters <code>np_puff_top</code> and <code>np_puff_bottom</code>, respectivel
 <code>clust_scarcity</code> has the same meaning as with the <code>scatter</code> type.</p>
 <h3 id="vein"><code>vein</code></h3>
 <p>Creates veins of ore varying in density by according to the intersection of two
-instances of 3d perlin noise with diffferent seeds, both described by
-<code>noise_params</code>.  <code>random_factor</code> varies the influence random chance has on
-placement of an ore inside the vein, which is <code>1</code> by default. Note that
-modifying this parameter may require adjusting <code>noise_threshold</code>.
-The parameters <code>clust_scarcity</code>, <code>clust_num_ores</code>, and <code>clust_size</code> are ignored
-by this ore type.  This ore type is difficult to control since it is sensitive
-to small changes.  The following is a decent set of parameters to work from:</p>
+instances of 3d perlin noise with different seeds, both described by
+<code>noise_params</code>.</p>
+<p><code>random_factor</code> varies the influence random chance has on placement of an ore
+inside the vein, which is <code>1</code> by default. Note that modifying this parameter may
+require adjusting <code>noise_threshold</code>.</p>
+<p>The parameters <code>clust_scarcity</code>, <code>clust_num_ores</code>, and <code>clust_size</code> are ignored
+by this ore type.</p>
+<p>This ore type is difficult to control since it is sensitive to small changes.
+The following is a decent set of parameters to work from:</p>
 <pre><code>noise_params = {
     offset  = 0,
     scale   = 3,
@@ -1327,6 +1457,27 @@ noise_threshold = 1.6
 </code></pre>
 <p><strong>WARNING</strong>: Use this ore type <em>very</em> sparingly since it is ~200x more
 computationally expensive than any other ore.</p>
+<h3 id="stratum"><code>stratum</code></h3>
+<p>Creates a single undulating ore stratum that is continuous across mapchunk
+borders and horizontally spans the world.</p>
+<p>The 2D perlin noise described by <code>noise_params</code> defines the Y co-ordinate of the
+stratum midpoint. The 2D perlin noise described by <code>np_stratum_thickness</code>
+defines the stratum's vertical thickness (in units of nodes). Due to being
+continuous across mapchunk borders the stratum's vertical thickness is
+unlimited.</p>
+<p>If the noise parameter <code>noise_params</code> is omitted the ore will occur from y_min
+to y_max in a simple horizontal stratum.</p>
+<p>A parameter <code>stratum_thickness</code> can be provided instead of the noise parameter
+<code>np_stratum_thickness</code>, to create a constant thickness.</p>
+<p>Leaving out one or both noise parameters makes the ore generation less intensive,
+useful when adding multiple strata.</p>
+<p><code>y_min</code> and <code>y_max</code> define the limits of the ore generation and for performance
+reasons should be set as close together as possible but without clipping the
+stratum's Y variation.</p>
+<p>Each node in the stratum has a 1-in-<code>clust_scarcity</code> chance of being ore, so a
+solid-ore stratum would require a <code>clust_scarcity</code> of 1.</p>
+<p>The parameters <code>clust_num_ores</code>, <code>clust_size</code>, <code>noise_threshold</code> and
+<code>random_factor</code> are ignored by this ore type.</p>
 <h2 id="ore-attributes">Ore attributes</h2>
 <p>See section "Flag Specifier Format".</p>
 <p>Currently supported flags:
@@ -1361,11 +1512,11 @@ in the form of a table.  This table specifies the following fields:</p>
 <ul>
 <li><a class="anchor" href="#size" name="size">#</a>The <code>size</code> field is a 3D vector containing the dimensions of the provided schematic. (required)</li>
 <li><a class="anchor" href="#yslice_prob" name="yslice_prob">#</a>The <code>yslice_prob</code> field is a table of {ypos, prob} which sets the <code>ypos</code>th vertical slice
-  of the schematic to have a <code>prob / 256 * 100</code> chance of occuring. (default: 255)</li>
+  of the schematic to have a <code>prob / 256 * 100</code> chance of occurring. (default: 255)</li>
 <li><a class="anchor" href="#data" name="data">#</a>The <code>data</code> field is a flat table of MapNode tables making up the schematic,
   in the order of <code>[z [y [x]]]</code>. (required)
   Each MapNode table contains:</li>
-<li><a class="anchor" href="#name_1" name="name_1">#</a><code>name</code>: the name of the map node to place (required)</li>
+<li><a class="anchor" href="#name_2" name="name_2">#</a><code>name</code>: the name of the map node to place (required)</li>
 <li><a class="anchor" href="#prob" name="prob">#</a><code>prob</code> (alias <code>param1</code>): the probability of this node being placed (default: 255)</li>
 <li><a class="anchor" href="#param2" name="param2">#</a><code>param2</code>: the raw param2 value of the node being placed onto the map (default: 0)</li>
 <li><a class="anchor" href="#force_place" name="force_place">#</a><code>force_place</code>: boolean representing if the node should forcibly overwrite any
@@ -1375,7 +1526,7 @@ in the form of a table.  This table specifies the following fields:</p>
 <ul>
 <li><a class="anchor" href="#0" name="0">#</a>A probability value of <code>0</code> or <code>1</code> means that node will never appear (0% chance).</li>
 <li><a class="anchor" href="#254" name="254">#</a>A probability value of <code>254</code> or <code>255</code> means the node will always appear (100% chance).</li>
-<li><a class="anchor" href="#p_1" name="p_1">#</a>If the probability value <code>p</code> is greater than <code>1</code>, then there is a
+<li><a class="anchor" href="#p" name="p">#</a>If the probability value <code>p</code> is greater than <code>1</code>, then there is a
   <code>(p / 256 * 100)</code> percent chance that node will appear when the schematic is
   placed on the map.</li>
 </ul>
@@ -1451,7 +1602,7 @@ in the experimental stages.</p>
 <h3 id="waypoint"><code>waypoint</code></h3>
 <p>Displays distance to selected world position.</p>
 <ul>
-<li><a class="anchor" href="#name_2" name="name_2">#</a><code>name</code>: The name of the waypoint.</li>
+<li><a class="anchor" href="#name_3" name="name_3">#</a><code>name</code>: The name of the waypoint.</li>
 <li><a class="anchor" href="#text_5" name="text_5">#</a><code>text</code>: Distance suffix. Can be blank.</li>
 <li><a class="anchor" href="#number_3" name="number_3">#</a><code>number:</code> An integer containing the RGB value of the color used to draw the text.</li>
 <li><a class="anchor" href="#world_pos" name="world_pos">#</a><code>world_pos</code>: World position of the waypoint.</li>
@@ -1623,6 +1774,8 @@ effective towards.</p>
 <li><a class="anchor" href="#soil" name="soil">#</a><code>soil</code>: saplings will grow on nodes in this group</li>
 <li><a class="anchor" href="#connect_to_raillike" name="connect_to_raillike">#</a><code>connect_to_raillike</code>: makes nodes of raillike drawtype with same group value
   connect to each other</li>
+<li><a class="anchor" href="#slippery" name="slippery">#</a><code>slippery</code>: Players and items will slide on the node.
+  Slipperiness rises steadily with <code>slippery</code> value, starting at 1.</li>
 </ul>
 <h3 id="known-damage-and-digging-time-defining-groups">Known damage and digging time defining groups</h3>
 <ul>
@@ -1783,7 +1936,7 @@ the entity itself.</p>
 <li><a class="anchor" href="#direction_2" name="direction_2">#</a><code>direction</code> is a unit vector, pointing from the source of the punch to
    the punched object.</li>
 <li><a class="anchor" href="#damage" name="damage">#</a><code>damage</code> damage that will be done to entity
-Return value of this function will determin if damage is done by this function
+Return value of this function will determine if damage is done by this function
 (retval true) or shall be done by engine (retval false)</li>
 </ul>
 <p>To punch an entity/object in Lua, call:</p>
@@ -1992,7 +2145,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><a class="anchor" href="#w_1" name="w_1">#</a><code>w</code> and <code>h</code> are the size of the field</li>
 <li><a class="anchor" href="#h_1" name="h_1">#</a>Fields are a set height, but will be vertically centred on <code>h</code></li>
 <li>Position and size units are inventory slots</li>
-<li><a class="anchor" href="#name_3" name="name_3">#</a><code>name</code> is the name of the field as returned in fields to <code>on_receive_fields</code></li>
+<li><a class="anchor" href="#name_4" name="name_4">#</a><code>name</code> is the name of the field as returned in fields to <code>on_receive_fields</code></li>
 <li><a class="anchor" href="#label" name="label">#</a><code>label</code>, if not blank, will be text printed on the top left above the field</li>
 <li>See field_close_on_enter to stop enter closing the formspec</li>
 </ul>
@@ -2005,7 +2158,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><a class="anchor" href="#w_2" name="w_2">#</a><code>w</code> and <code>h</code> are the size of the field</li>
 <li><a class="anchor" href="#h_2" name="h_2">#</a>Fields are a set height, but will be vertically centred on <code>h</code></li>
 <li>Position and size units are inventory slots</li>
-<li><a class="anchor" href="#name_4" name="name_4">#</a><code>name</code> is the name of the field as returned in fields to <code>on_receive_fields</code></li>
+<li><a class="anchor" href="#name_5" name="name_5">#</a><code>name</code> is the name of the field as returned in fields to <code>on_receive_fields</code></li>
 <li><a class="anchor" href="#label_1" name="label_1">#</a><code>label</code>, if not blank, will be text printed on the top left above the field</li>
 <li><a class="anchor" href="#default" name="default">#</a><code>default</code> is the default value of the field<ul>
 <li><a class="anchor" href="#default_1" name="default_1">#</a><code>default</code> may contain variable references such as <code>${text}'</code> which
@@ -2034,6 +2187,8 @@ list[current_player;craftpreview;7,1;1,1;]
 <h4 id="textareaxywhnamelabeldefault"><code>textarea[&lt;X&gt;,&lt;Y&gt;;&lt;W&gt;,&lt;H&gt;;&lt;name&gt;;&lt;label&gt;;&lt;default&gt;]</code></h4>
 <ul>
 <li>Same as fields above, but with multi-line input</li>
+<li>if the text overflows a vertical scrollbar is added</li>
+<li>if the name is empty the textarea is readonly. The label is not displayed then</li>
 </ul>
 <h4 id="labelxylabel"><code>label[&lt;X&gt;,&lt;Y&gt;;&lt;label&gt;]</code></h4>
 <ul>
@@ -2093,7 +2248,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>Scrollable item list showing arbitrary text elements</li>
 <li><a class="anchor" href="#x_9" name="x_9">#</a><code>x</code> and <code>y</code> position the itemlist relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_4" name="w_4">#</a><code>w</code> and <code>h</code> are the size of the itemlist</li>
-<li><a class="anchor" href="#name_5" name="name_5">#</a><code>name</code> fieldname sent to server on doubleclick value is current selected element</li>
+<li><a class="anchor" href="#name_6" name="name_6">#</a><code>name</code> fieldname sent to server on doubleclick value is current selected element</li>
 <li><a class="anchor" href="#listelements" name="listelements">#</a><code>listelements</code> can be prepended by #color in hexadecimal format RRGGBB (only),<ul>
 <li>if you want a listelement to start with "#" write "##".</li>
 </ul>
@@ -2104,7 +2259,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li>Scrollable itemlist showing arbitrary text elements</li>
 <li><a class="anchor" href="#x_10" name="x_10">#</a><code>x</code> and <code>y</code> position the item list relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_5" name="w_5">#</a><code>w</code> and <code>h</code> are the size of the item list</li>
-<li><a class="anchor" href="#name_6" name="name_6">#</a><code>name</code> fieldname sent to server on doubleclick value is current selected element</li>
+<li><a class="anchor" href="#name_7" name="name_7">#</a><code>name</code> fieldname sent to server on doubleclick value is current selected element</li>
 <li><a class="anchor" href="#listelements_1" name="listelements_1">#</a><code>listelements</code> can be prepended by #RRGGBB (only) in hexadecimal format<ul>
 <li>if you want a listelement to start with "#" write "##"</li>
 </ul>
@@ -2117,7 +2272,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <ul>
 <li>Show a tab<strong>header</strong> at specific position (ignores formsize)</li>
 <li><a class="anchor" href="#x_11" name="x_11">#</a><code>x</code> and <code>y</code> position the itemlist relative to the top left of the menu</li>
-<li><a class="anchor" href="#name_7" name="name_7">#</a><code>name</code> fieldname data is transferred to Lua</li>
+<li><a class="anchor" href="#name_8" name="name_8">#</a><code>name</code> fieldname data is transferred to Lua</li>
 <li><a class="anchor" href="#caption1" name="caption1">#</a><code>caption 1</code>...: name shown on top of tab</li>
 <li><a class="anchor" href="#current_tab" name="current_tab">#</a><code>current_tab</code>: index of selected tab 1...</li>
 <li><a class="anchor" href="#transparent" name="transparent">#</a><code>transparent</code> (optional): show transparent</li>
@@ -2148,7 +2303,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <ul>
 <li>Show a checkbox</li>
 <li><a class="anchor" href="#x_14" name="x_14">#</a><code>x</code> and <code>y</code>: position of checkbox</li>
-<li><a class="anchor" href="#name_8" name="name_8">#</a><code>name</code> fieldname data is transferred to Lua</li>
+<li><a class="anchor" href="#name_9" name="name_9">#</a><code>name</code> fieldname data is transferred to Lua</li>
 <li><a class="anchor" href="#label_5" name="label_5">#</a><code>label</code> to be shown left of checkbox</li>
 <li><a class="anchor" href="#selected" name="selected">#</a><code>selected</code> (optional): <code>true</code>/<code>false</code></li>
 </ul>
@@ -2173,7 +2328,7 @@ list[current_player;craftpreview;7,1;1,1;]
 <li><a class="anchor" href="#tablecolumns" name="tablecolumns">#</a>Displays cells as defined by the previous <code>tablecolumns[]</code></li>
 <li><a class="anchor" href="#x_16" name="x_16">#</a><code>x</code> and <code>y</code>: position the itemlist relative to the top left of the menu</li>
 <li><a class="anchor" href="#w_8" name="w_8">#</a><code>w</code> and <code>h</code> are the size of the itemlist</li>
-<li><a class="anchor" href="#name_9" name="name_9">#</a><code>name</code>: fieldname sent to server on row select or doubleclick</li>
+<li><a class="anchor" href="#name_10" name="name_10">#</a><code>name</code>: fieldname sent to server on row select or doubleclick</li>
 <li><a class="anchor" href="#cell1" name="cell1">#</a><code>cell 1</code>...<code>cell n</code>: cell contents given in row-major order</li>
 <li><a class="anchor" href="#selectedidx" name="selectedidx">#</a><code>selected idx</code>: index of row to be selected within table (first row = <code>1</code>)</li>
 <li><a class="anchor" href="#minetestexplode_table_event" name="minetestexplode_table_event">#</a>See also <code>minetest.explode_table_event</code> (main menu: <code>engine.explode_table_event</code>)</li>
@@ -2344,12 +2499,16 @@ The following functions provide escape sequences:</p>
 </ul>
 <h2 id="helper-functions">Helper functions</h2>
 <ul>
-<li><a class="anchor" href="#dump2objname_dumped" name="dump2objname_dumped">#</a><code>dump2(obj, name="_", dumped={})</code><ul>
-<li>Return object serialized as a string, handles reference loops</li>
+<li><a class="anchor" href="#dump2objnamedumped" name="dump2objnamedumped">#</a><code>dump2(obj, name, dumped)</code>: returns a string which makes <code>obj</code> human readable,
+        handles reference loops<ul>
+<li><a class="anchor" href="#obj" name="obj">#</a><code>obj</code>: arbitrary variable</li>
+<li><a class="anchor" href="#name_11" name="name_11">#</a><code>name</code>: string, default: <code>"_"</code></li>
+<li><a class="anchor" href="#dumped" name="dumped">#</a><code>dumped</code>: table, default: <code>{}</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#dumpobjdumped" name="dumpobjdumped">#</a><code>dump(obj, dumped={})</code><ul>
-<li>Return object serialized as a string</li>
+<li><a class="anchor" href="#dumpobjdumped" name="dumpobjdumped">#</a><code>dump(obj, dumped)</code>: returns a string which makes <code>obj</code> human readable<ul>
+<li><a class="anchor" href="#obj_1" name="obj_1">#</a><code>obj</code>: arbitrary variable</li>
+<li><a class="anchor" href="#dumped_1" name="dumped_1">#</a><code>dumped</code>: table, default: <code>{}</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#mathhypotxy" name="mathhypotxy">#</a><code>math.hypot(x, y)</code><ul>
@@ -2357,33 +2516,47 @@ The following functions provide escape sequences:</p>
   Useful for distance calculation.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#mathsignxtolerance" name="mathsignxtolerance">#</a><code>math.sign(x, tolerance)</code><ul>
-<li><a class="anchor" href="#0_7" name="0_7">#</a>Get the sign of a number.
-  Optional: Also returns <code>0</code> when the absolute value is within the tolerance (default: <code>0</code>)</li>
+<li><a class="anchor" href="#mathsignxtolerance" name="mathsignxtolerance">#</a><code>math.sign(x, tolerance)</code>: returns <code>-1</code>, <code>0</code> or <code>1</code><ul>
+<li>Get the sign of a number.</li>
+<li><a class="anchor" href="#00" name="00">#</a>tolerance: number, default: <code>0.0</code></li>
+<li><a class="anchor" href="#x_17" name="x_17">#</a>If the absolute value of <code>x</code> is within the <code>tolerance</code> or <code>x</code> is NaN,
+  <code>0</code> is returned.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#stringsplitstrseparatorinclude_emptyfalsemax_splits1sep_is_patternfalse" name="stringsplitstrseparatorinclude_emptyfalsemax_splits1sep_is_patternfalse">#</a><code>string.split(str, separator=",", include_empty=false, max_splits=-1, sep_is_pattern=false)</code><ul>
-<li><a class="anchor" href="#max_splits" name="max_splits">#</a>If <code>max_splits</code> is negative, do not limit splits.</li>
-<li><a class="anchor" href="#sep_is_pattern" name="sep_is_pattern">#</a><code>sep_is_pattern</code> specifies if separator is a plain string or a pattern (regex).</li>
-<li><a class="anchor" href="#stringsplitabab" name="stringsplitabab">#</a>e.g. <code>string:split("a,b", ",") == {"a","b"}</code></li>
+<li><a class="anchor" href="#stringsplitstrseparatorinclude_emptymax_splitssep_is_pattern" name="stringsplitstrseparatorinclude_emptymax_splitssep_is_pattern">#</a><code>string.split(str, separator, include_empty, max_splits, sep_is_pattern)</code><ul>
+<li><a class="anchor" href="#separator" name="separator">#</a><code>separator</code>: string, default: <code>","</code></li>
+<li><a class="anchor" href="#include_empty" name="include_empty">#</a><code>include_empty</code>: boolean, default: <code>false</code></li>
+<li><a class="anchor" href="#max_splits" name="max_splits">#</a><code>max_splits</code>: number, if it's positive, splits aren't limited,
+  default: <code>-1</code></li>
+<li><a class="anchor" href="#sep_is_pattern" name="sep_is_pattern">#</a><code>sep_is_pattern</code>: boolean, it specifies whether separator is a plain
+  string or a pattern (regex), default: <code>false</code></li>
+<li><a class="anchor" href="#absplit" name="absplit">#</a>e.g. <code>"a,b":split","</code> returns <code>{"a","b"}</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#stringtrim" name="stringtrim">#</a><code>string:trim()</code><ul>
-<li><a class="anchor" href="#stringtrimnttfoobartfoobar" name="stringtrimnttfoobartfoobar">#</a>e.g. <code>string.trim("\n \t\tfoo bar\t ") == "foo bar"</code></li>
+<li><a class="anchor" href="#stringtrim" name="stringtrim">#</a><code>string:trim()</code>: returns the string whithout whitespace pre- and suffixes<ul>
+<li><a class="anchor" href="#nttfoobarttrim" name="nttfoobarttrim">#</a>e.g. <code>"\n \t\tfoo bar\t ":trim()</code> returns <code>"foo bar"</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestwrap_textstrlimit" name="minetestwrap_textstrlimit">#</a><code>minetest.wrap_text(str, limit)</code>: returns a string<ul>
-<li>Adds new lines to the string to keep it within the specified character limit</li>
-<li>limit: Maximal amount of characters in one line</li>
+<li><a class="anchor" href="#minetestwrap_textstrlimitas_table" name="minetestwrap_textstrlimitas_table">#</a><code>minetest.wrap_text(str, limit, as_table)</code>: returns a string or table<ul>
+<li>Adds newlines to the string to keep it within the specified character
+  limit</li>
+<li>Note that the returned lines may be longer than the limit since it only
+  splits at word borders.</li>
+<li><a class="anchor" href="#limit" name="limit">#</a><code>limit</code>: number, maximal amount of characters in one line</li>
+<li><a class="anchor" href="#as_table" name="as_table">#</a><code>as_table</code>: boolean, if set to true, a table of lines instead of a string
+  is returned, default: <code>false</code></li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestpos_to_stringxXyYzZdecimal_places" name="minetestpos_to_stringxXyYzZdecimal_places">#</a><code>minetest.pos_to_string({x=X,y=Y,z=Z}, decimal_places))</code>: returns string <code>"(X,Y,Z)"</code><ul>
-<li>Convert position to a printable string
-  Optional: 'decimal_places' will round the x, y and z of the pos to the given decimal place.</li>
+<li><a class="anchor" href="#minetestpos_to_stringposdecimal_places" name="minetestpos_to_stringposdecimal_places">#</a><code>minetest.pos_to_string(pos, decimal_places)</code>: returns string <code>"(X,Y,Z)"</code><ul>
+<li><a class="anchor" href="#pos" name="pos">#</a><code>pos</code>: table {x=X, y=Y, z=Z}</li>
+<li><a class="anchor" href="#pos_1" name="pos_1">#</a>Converts the position <code>pos</code> to a human-readable, printable string</li>
+<li><a class="anchor" href="#decimal_places" name="decimal_places">#</a><code>decimal_places</code>: number, if specified, the x, y and z values of
+  the position are rounded to the given decimal place.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#mineteststring_to_posstring" name="mineteststring_to_posstring">#</a><code>minetest.string_to_pos(string)</code>: returns a position<ul>
-<li><a class="anchor" href="#nil" name="nil">#</a>Same but in reverse. Returns <code>nil</code> if the string can't be parsed to a position.</li>
+<li><a class="anchor" href="#mineteststring_to_posstring" name="mineteststring_to_posstring">#</a><code>minetest.string_to_pos(string)</code>: returns a position or <code>nil</code><ul>
+<li>Same but in reverse.</li>
+<li>If the string can't be parsed to a position, nothing is returned.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#mineteststring_to_areaX1Y1Z1X2Y2Z2" name="mineteststring_to_areaX1Y1Z1X2Y2Z2">#</a><code>minetest.string_to_area("(X1, Y1, Z1) (X2, Y2, Z2)")</code>: returns two positions<ul>
@@ -2411,6 +2584,70 @@ The following functions provide escape sequences:</p>
 </ul>
 </li>
 </ul>
+<h2 id="translations">Translations</h2>
+<p>Texts can be translated client-side with the help of <code>minetest.translate</code> and translation files.</p>
+<h3 id="translating-a-string">Translating a string</h3>
+<p>Two functions are provided to translate strings: <code>minetest.translate</code> and <code>minetest.get_translator</code>.</p>
+<ul>
+<li><a class="anchor" href="#minetestget_translatortextdomain" name="minetestget_translatortextdomain">#</a>
+<p><code>minetest.get_translator(textdomain)</code> is a simple wrapper around <code>minetest.translate</code>, and
+  <code>minetest.get_translator(textdomain)(str, ...)</code> is equivalent to <code>minetest.translate(textdomain, str, ...)</code>.
+  It is intended to be used in the following way, so that it avoids verbose repetitions of <code>minetest.translate</code>:</p>
+<p>local S = minetest.get_translator(textdomain)
+S(str, ...)</p>
+</li>
+</ul>
+<p>As an extra commodity, if <code>textdomain</code> is nil, it is assumed to be "" instead.</p>
+<ul>
+<li><a class="anchor" href="#minetesttranslatetextdomainstr" name="minetesttranslatetextdomainstr">#</a><code>minetest.translate(textdomain, str, ...)</code> translates the string <code>str</code> with the given <code>textdomain</code>
+  for disambiguation. The textdomain must match the textdomain specified in the translation file in order
+  to get the string translated. This can be used so that a string is translated differently in different contexts.
+  It is advised to use the name of the mod as textdomain whenever possible, to avoid clashes with other mods.
+  This function must be given a number of arguments equal to the number of arguments the translated string expects.
+  Arguments are literal strings -- they will not be translated, so if you want them to be, they need to come as
+  outputs of <code>minetest.translate</code> as well.</li>
+</ul>
+<p>For instance, suppose we want to translate "@1 Wool" with "@1" being replaced by the translation of "Red".
+  We can do the following:</p>
+<pre><code>local S = minetest.get_translator()
+S("@1 Wool", S("Red"))
+</code></pre>
+<p>This will be displayed as "Red Wool" on old clients and on clients that do not have localization enabled.
+  However, if we have for instance a translation file named <code>wool.fr.tr</code> containing the following:</p>
+<pre><code>@1 Wool=Laine @1
+Red=Rouge
+</code></pre>
+<p>this will be displayed as "Laine Rouge" on clients with a French locale.</p>
+<h3 id="operations-on-translated-strings">Operations on translated strings</h3>
+<p>The output of <code>minetest.translate</code> is a string, with escape sequences adding additional information to that string
+so that it can be translated on the different clients. In particular, you can't expect operations like string.length
+to work on them like you would expect them to, or string.gsub to work in the expected manner. However, string
+concatenation will still work as expected (note that you should only use this for things like formspecs; do not
+translate sentences by breaking them into parts; arguments should be used instead), and operations such as
+<code>minetest.colorize</code> which are only concatenation under the hood as well.</p>
+<h3 id="translation-file-format">Translation file format</h3>
+<p>A translation file has the suffix <code>.[lang].tr</code>, where <code>[lang]</code> is the language it corresponds to.
+The file should be a text file, with the following format:</p>
+<ul>
+<li><a class="anchor" href="#textdomain" name="textdomain">#</a>Lines beginning with <code># textdomain:</code> (the space is significant) can be used to specify the text
+  domain of all following translations in the file.</li>
+<li>All other empty lines or lines beginning with <code>#</code> are ignored.</li>
+<li><a class="anchor" href="#originaltranslated" name="originaltranslated">#</a>Other lines should be in the format <code>original=translated</code>. Both <code>original</code> and <code>translated</code> can
+  contain escape sequences beginning with <code>@</code> to insert arguments, literal <code>@</code>, <code>=</code> or newline
+  (See ### Escapes below). There must be no extraneous whitespace around the <code>=</code> or at the beginning
+  or the end of the line.</li>
+</ul>
+<h3 id="escapes">Escapes</h3>
+<p>Strings that need to be translated can contain several escapes, preceded by <code>@</code>.
+<em> <code>@@</code> acts as a literal <code>@</code>.
+</em> <code>@n</code>, where <code>n</code> is a digit between 1 and 9, is an argument for the translated string that will be inlined
+  when translation. Due to how translations are implemented, the original translation string <strong>must</strong> have
+  its arguments in increasing order, without gaps or repetitions, starting from 1.
+<em> <code>@=</code> acts as a literal <code>=</code>. It is not required in strings given to <code>minetest.translate</code>, but is in translation
+  files to avoid begin confused with the <code>=</code> separating the original from the translation.
+</em> <code>@\n</code> (where the <code>\n</code> is a literal newline) acts as a literal newline. As with <code>@=</code>, this escape is not required
+  in strings given to <code>minetest.translate</code>, but is in translation files.
+* <code>@n</code> acts as a literal newline as well.</p>
 <h2 id="minetest-namespace-reference"><code>minetest</code> namespace reference</h2>
 <h3 id="utilities">Utilities</h3>
 <ul>
@@ -2452,7 +2689,7 @@ The following functions provide escape sequences:</p>
 <li><a class="anchor" href="#arg" name="arg">#</a><code>arg</code>: string or table in format <code>{foo=true, bar=true}</code></li>
 <li><a class="anchor" href="#missing_features" name="missing_features">#</a><code>missing_features</code>: <code>{foo=true, bar=true}</code></li>
 <li><a class="anchor" href="#minetestget_player_informationplayer_name" name="minetestget_player_informationplayer_name">#</a><code>minetest.get_player_information(player_name)</code>:</li>
-<li><a class="anchor" href="#address127001IPaddressofclientip_version4IPv4IPv6min_rtt001minimumroundtriptimemax_rtt02maximumroundtriptimeavg_rtt002averageroundtriptimemin_jitter001minimumpackettimejittermax_jitter05maximumpackettimejitteravg_jitter003averagepackettimejitterconnection_uptime200secondssinceclientconnectedprot_vers31protocolversionusedbyclientfollowinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate" name="address127001IPaddressofclientip_version4IPv4IPv6min_rtt001minimumroundtriptimemax_rtt02maximumroundtriptimeavg_rtt002averageroundtriptimemin_jitter001minimumpackettimejittermax_jitter05maximumpackettimejitteravg_jitter003averagepackettimejitterconnection_uptime200secondssinceclientconnectedprot_vers31protocolversionusedbyclientfollowinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate">#</a>Returns a table containing information about a player. Example return value:<pre><code>{
+<li><a class="anchor" href="#address127001IPaddressofclientip_version4IPv4IPv6min_rtt001minimumroundtriptimemax_rtt02maximumroundtriptimeavg_rtt002averageroundtriptimemin_jitter001minimumpackettimejittermax_jitter05maximumpackettimejitteravg_jitter003averagepackettimejitterconnection_uptime200secondssinceclientconnectedprotocol_version32protocolversionusedbyclientfollowinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate" name="address127001IPaddressofclientip_version4IPv4IPv6min_rtt001minimumroundtriptimemax_rtt02maximumroundtriptimeavg_rtt002averageroundtriptimemin_jitter001minimumpackettimejittermax_jitter05maximumpackettimejitteravg_jitter003averagepackettimejitterconnection_uptime200secondssinceclientconnectedprotocol_version32protocolversionusedbyclientfollowinginformationisavailableondebugbuildonlyDONOTUSEINMODSser_vers26serializationversionusedbyclientmajor0majorversionnumberminor4minorversionnumberpatch10patchversionnumbervers_string049gitfullversionstringstateActivecurrentclientstate">#</a>Returns a table containing information about a player. Example return value:<pre><code>{
     address = "127.0.0.1",     -- IP address of client
     ip_version = 4,            -- IPv4 / IPv6
     min_rtt = 0.01,            -- minimum round trip time
@@ -2462,7 +2699,7 @@ The following functions provide escape sequences:</p>
     max_jitter = 0.5,          -- maximum packet time jitter
     avg_jitter = 0.03,         -- average packet time jitter
     connection_uptime = 200,   -- seconds since client connected
-    prot_vers = 31,            -- protocol version used by client
+    protocol_version = 32,     -- protocol version used by client
     -- following information is available on debug build only!!!
     -- DO NOT USE IN MODS
     --ser_vers = 26,             -- serialization version used by client
@@ -2486,6 +2723,12 @@ The following functions provide escape sequences:</p>
 <li>false: return only file names.</li>
 </ul>
 </li>
+<li><a class="anchor" href="#minetestsafe_file_writepathcontent" name="minetestsafe_file_writepathcontent">#</a><code>minetest.safe_file_write(path, content)</code>: returns boolean indicating success<ul>
+<li><a class="anchor" href="#localfioopenpathwbfwritecontentfclose" name="localfioopenpathwbfwritecontentfclose">#</a>Replaces contents of file at path with new contents in a safe (atomic) way.
+  Use this instead of below code when writing e.g. database files:
+  <code>local f = io.open(path, "wb"); f:write(content); f:close()</code></li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestget_version" name="minetestget_version">#</a><code>minetest.get_version()</code>: returns a table containing components of the
    engine version.  Components:<ul>
 <li><a class="anchor" href="#project" name="project">#</a><code>project</code>: Name of the project, eg, "Minetest"</li>
@@ -2496,7 +2739,12 @@ The following functions provide escape sequences:</p>
   reliable or verifyable. Compatible forks will have a different name and
   version entirely. To check for the presence of engine features, test
   whether the functions exported by the wanted features exist. For example:
-  <code>if minetest.nodeupdate then ... end</code>.</li>
+  <code>if minetest.check_for_falling then ... end</code>.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestsha1dataraw" name="minetestsha1dataraw">#</a><code>minetest.sha1(data, [raw])</code>: returns the sha1 hash of data<ul>
+<li><a class="anchor" href="#data_1" name="data_1">#</a><code>data</code>: string of data to hash</li>
+<li><a class="anchor" href="#raw" name="raw">#</a><code>raw</code>: return raw bytes instead of hex digits, default: false</li>
 </ul>
 </li>
 </ul>
@@ -2526,7 +2774,11 @@ The following functions provide escape sequences:</p>
 <li><a class="anchor" href="#minetestregister_toolnameitemdefinition_1" name="minetestregister_toolnameitemdefinition_1">#</a><code>minetest.register_tool(name, item definition)</code></li>
 <li><a class="anchor" href="#minetestregister_craftitemnameitemdefinition_1" name="minetestregister_craftitemnameitemdefinition_1">#</a><code>minetest.register_craftitem(name, item definition)</code></li>
 <li><a class="anchor" href="#minetestunregister_itemname_1" name="minetestunregister_itemname_1">#</a><code>minetest.unregister_item(name)</code></li>
-<li><a class="anchor" href="#minetestregister_aliasnameconvert_to" name="minetestregister_aliasnameconvert_to">#</a><code>minetest.register_alias(name, convert_to)</code></li>
+<li><a class="anchor" href="#minetestregister_aliasnameconvert_to" name="minetestregister_aliasnameconvert_to">#</a><code>minetest.register_alias(name, convert_to)</code><ul>
+<li>Also use this to set the 'mapgen aliases' needed in a game for the core</li>
+<li>mapgens. See 'Mapgen aliases' section above.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#minetestregister_alias_forcenameconvert_to" name="minetestregister_alias_forcenameconvert_to">#</a><code>minetest.register_alias_force(name, convert_to)</code></li>
 <li><a class="anchor" href="#minetestregister_craftrecipe" name="minetestregister_craftrecipe">#</a><code>minetest.register_craft(recipe)</code><ul>
 <li>Check recipe table syntax for different types below.</li>
@@ -2571,6 +2823,7 @@ The following functions provide escape sequences:</p>
 <li><a class="anchor" href="#minetestregister_on_placenodefuncposnewnodeplaceroldnodeitemstackpointed_thing" name="minetestregister_on_placenodefuncposnewnodeplaceroldnodeitemstackpointed_thing">#</a><code>minetest.register_on_placenode(func(pos, newnode, placer, oldnode, itemstack, pointed_thing))</code><ul>
 <li>Called when a node has been placed</li>
 <li><a class="anchor" href="#true_4" name="true_4">#</a>If return <code>true</code> no item is taken from <code>itemstack</code></li>
+<li><a class="anchor" href="#placer" name="placer">#</a><code>placer</code> may be any valid ObjectRef or nil.</li>
 <li><a class="anchor" href="#on_construct" name="on_construct">#</a><strong>Not recommended</strong>; use <code>on_construct</code> or <code>after_place_node</code> in node definition
   whenever possible</li>
 </ul>
@@ -2691,6 +2944,29 @@ The following functions provide escape sequences:</p>
 <li><a class="anchor" href="#true_8" name="true_8">#</a>Return <code>true</code> or <code>itemstack</code> to cancel the default item eat response (i.e.: hp increase)</li>
 </ul>
 </li>
+<li><a class="anchor" href="#minetestregister_on_priv_grantfunctionnamegranterpriv" name="minetestregister_on_priv_grantfunctionnamegranterpriv">#</a><code>minetest.register_on_priv_grant(function(name, granter, priv))</code><ul>
+<li><a class="anchor" href="#granter" name="granter">#</a>Called when <code>granter</code> grants the priv <code>priv</code> to <code>name</code>.</li>
+<li>Note that the callback will be called twice if it's done by a player, once with granter being the player name,
+  and again with granter being nil.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestregister_on_priv_revokefunctionnamerevokerpriv" name="minetestregister_on_priv_revokefunctionnamerevokerpriv">#</a><code>minetest.register_on_priv_revoke(function(name, revoker, priv))</code><ul>
+<li><a class="anchor" href="#revoker" name="revoker">#</a>Called when <code>revoker</code> revokes the priv <code>priv</code> from <code>name</code>.</li>
+<li>Note that the callback will be called twice if it's done by a player, once with revoker being the player name,
+  and again with revoker being nil.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestregister_can_bypass_userlimitfunctionnameip" name="minetestregister_can_bypass_userlimitfunctionnameip">#</a><code>minetest.register_can_bypass_userlimit(function(name, ip))</code><ul>
+<li><a class="anchor" href="#name_12" name="name_12">#</a>Called when <code>name</code> user connects with <code>ip</code>.</li>
+<li><a class="anchor" href="#true_9" name="true_9">#</a>Return <code>true</code> to by pass the player limit</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestregister_on_modchannel_messagefuncchannel_namesendermessage" name="minetestregister_on_modchannel_messagefuncchannel_namesendermessage">#</a><code>minetest.register_on_modchannel_message(func(channel_name, sender, message))</code><ul>
+<li>Called when an incoming mod channel message is received</li>
+<li>You should have joined  some channels to receive events.</li>
+<li><a class="anchor" href="#sender" name="sender">#</a>If message comes from a server mod, <code>sender</code> field is an empty string.</li>
+</ul>
+</li>
 </ul>
 <h3 id="other-registration-functions">Other registration functions</h3>
 <ul>
@@ -2711,6 +2987,13 @@ The following functions provide escape sequences:</p>
 <li><a class="anchor" href="#definition_1" name="definition_1">#</a><code>definition</code>: <code>{ description = "description text", give_to_singleplayer = boolean}</code>
   the default of <code>give_to_singleplayer</code> is true</li>
 <li><a class="anchor" href="#basic_privs" name="basic_privs">#</a>To allow players with <code>basic_privs</code> to grant, see <code>basic_privs</code> minetest.conf setting.</li>
+<li><a class="anchor" href="#on_grantnamegranter_name" name="on_grantnamegranter_name">#</a><code>on_grant(name, granter_name)</code>: Called when given to player <code>name</code> by <code>granter_name</code>.
+     <code>granter_name</code> will be nil if the priv was granted by a mod.</li>
+<li><a class="anchor" href="#on_revokenamerevoker_name" name="on_revokenamerevoker_name">#</a><code>on_revoke(name, revoker_name)</code>: Called when taken from player <code>name</code> by <code>revoker_name</code>.
+     <code>revoker_name</code> will be nil if the priv was revoked by a mod</li>
+<li>Note that the above two callbacks will be called twice if a player is responsible -
+  once with the player name, and then with a nil player name.</li>
+<li>Return true in the above callbacks to stop register_on_priv_grant or revoke being called.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_authentication_handlerhandler" name="minetestregister_authentication_handlerhandler">#</a><code>minetest.register_authentication_handler(handler)</code><ul>
@@ -2729,7 +3012,7 @@ The following functions provide escape sequences:</p>
 <ul>
 <li><a class="anchor" href="#minetestnotify_authentication_modifiedname" name="minetestnotify_authentication_modifiedname">#</a><code>minetest.notify_authentication_modified(name)</code><ul>
 <li>Should be called by the authentication handler if privileges changes.</li>
-<li><a class="anchor" href="#namenil" name="namenil">#</a>To report everybody, set <code>name=nil</code>.</li>
+<li><a class="anchor" href="#name_13" name="name_13">#</a><code>name</code>: string, if omitted, everybody is reported</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestcheck_password_entrynameentrypassword" name="minetestcheck_password_entrynameentrypassword">#</a><code>minetest.check_password_entry(name, entry, password)</code><ul>
@@ -2770,7 +3053,7 @@ The following functions provide escape sequences:</p>
 <li><a class="anchor" href="#minetestget_player_ipname" name="minetestget_player_ipname">#</a><code>minetest.get_player_ip(name)</code>: returns an IP address string</li>
 </ul>
 <p><code>minetest.set_player_password</code>, <code>minetest_set_player_privs</code>, <code>minetest_get_player_privs</code>
-and <code>minetest.auth_reload</code> call the authetification handler.</p>
+and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <h3 id="chat">Chat</h3>
 <ul>
 <li><a class="anchor" href="#minetestchat_send_alltext" name="minetestchat_send_alltext">#</a><code>minetest.chat_send_all(text)</code></li>
@@ -2779,8 +3062,11 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <h3 id="environment-access">Environment access</h3>
 <ul>
 <li><a class="anchor" href="#minetestset_nodeposnode" name="minetestset_nodeposnode">#</a><code>minetest.set_node(pos, node)</code></li>
-<li><a class="anchor" href="#minetestadd_nodeposnodealiasset_nodeposnode" name="minetestadd_nodeposnodealiasset_nodeposnode">#</a><code>minetest.add_node(pos, node): alias set_node(pos, node)</code><ul>
-<li><a class="anchor" href="#nodenamefooparam10param20" name="nodenamefooparam10param20">#</a>Set node at position (<code>node = {name="foo", param1=0, param2=0}</code>)</li>
+<li><a class="anchor" href="#minetestadd_nodeposnodealiasto" name="minetestadd_nodeposnodealiasto">#</a><code>minetest.add_node(pos, node): alias to</code>minetest.set_node`<ul>
+<li><a class="anchor" href="#pos_2" name="pos_2">#</a>Set node at position <code>pos</code></li>
+<li><a class="anchor" href="#node" name="node">#</a><code>node</code>: table <code>{name=string, param1=number, param2=number}</code></li>
+<li><a class="anchor" href="#0_7" name="0_7">#</a>If param1 or param2 is omitted, it's set to <code>0</code>.</li>
+<li><a class="anchor" href="#minetestset_nodex0y10z0namedefaultwood" name="minetestset_nodex0y10z0namedefaultwood">#</a>e.g. <code>minetest.set_node({x=0, y=10, z=0}, {name="default:wood"})</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestswap_nodeposnode" name="minetestswap_nodeposnode">#</a><code>minetest.swap_node(pos, node)</code><ul>
@@ -2788,7 +3074,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestremove_nodepos" name="minetestremove_nodepos">#</a><code>minetest.remove_node(pos)</code><ul>
-<li><a class="anchor" href="#set_nodeposair" name="set_nodeposair">#</a>Equivalent to <code>set_node(pos, "air")</code></li>
+<li><a class="anchor" href="#minetestset_nodeposnameair" name="minetestset_nodeposnameair">#</a>By default it does the same as <code>minetest.set_node(pos, {name="air"})</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_nodepos" name="minetestget_nodepos">#</a><code>minetest.get_node(pos)</code><ul>
@@ -2805,7 +3091,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Gets the light value at the given position. Note that the light value
   "inside" the node at the given position is returned, so you usually want
   to get the light value of a neighbor.</li>
-<li><a class="anchor" href="#pos" name="pos">#</a><code>pos</code>: The position where to measure the light.</li>
+<li><a class="anchor" href="#pos_3" name="pos_3">#</a><code>pos</code>: The position where to measure the light.</li>
 <li><a class="anchor" href="#timeofday" name="timeofday">#</a><code>timeofday</code>: <code>nil</code> for current time, <code>0</code> for night, <code>0.5</code> for day</li>
 <li><a class="anchor" href="#0_8" name="0_8">#</a>Returns a number between <code>0</code> and <code>15</code> or <code>nil</code></li>
 </ul>
@@ -2816,7 +3102,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestdig_nodepos" name="minetestdig_nodepos">#</a><code>minetest.dig_node(pos)</code><ul>
 <li>Dig node with the same effects that a player would cause</li>
-<li><a class="anchor" href="#true_9" name="true_9">#</a>Returns <code>true</code> if successful, <code>false</code> on failure (e.g. protected location)</li>
+<li><a class="anchor" href="#true_10" name="true_10">#</a>Returns <code>true</code> if successful, <code>false</code> on failure (e.g. protected location)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestpunch_nodepos" name="minetestpunch_nodepos">#</a><code>minetest.punch_node(pos)</code><ul>
@@ -2827,7 +3113,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <p><code>minetest.spawn_falling_node(pos)</code></p>
 <ul>
 <li>Change node into falling node</li>
-<li><a class="anchor" href="#true_10" name="true_10">#</a>Returns <code>true</code> if successful, <code>false</code> on failure</li>
+<li><a class="anchor" href="#true_11" name="true_11">#</a>Returns <code>true</code> if successful, <code>false</code> on failure</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestfind_nodes_with_metapos1pos2" name="minetestfind_nodes_with_metapos1pos2">#</a>
@@ -2857,7 +3143,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_player_by_namename" name="minetestget_player_by_namename">#</a><code>minetest.get_player_by_name(name)</code>: Get an <code>ObjectRef</code> to a player</li>
-<li><a class="anchor" href="#minetestget_objects_inside_radiusposradius" name="minetestget_objects_inside_radiusposradius">#</a><code>minetest.get_objects_inside_radius(pos, radius)</code><ul>
+<li><a class="anchor" href="#minetestget_objects_inside_radiusposradius" name="minetestget_objects_inside_radiusposradius">#</a><code>minetest.get_objects_inside_radius(pos, radius)</code>: returns a list of ObjectRefs<ul>
 <li><a class="anchor" href="#radius" name="radius">#</a><code>radius</code>: using an euclidean metric</li>
 </ul>
 </li>
@@ -2944,7 +3230,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_mapgen_setting_noiseparamsname" name="minetestget_mapgen_setting_noiseparamsname">#</a><code>minetest.get_mapgen_setting_noiseparams(name)</code><ul>
-<li><a class="anchor" href="#name_10" name="name_10">#</a>Same as above, but returns the value as a NoiseParams table if the setting <code>name</code> exists
+<li><a class="anchor" href="#name_14" name="name_14">#</a>Same as above, but returns the value as a NoiseParams table if the setting <code>name</code> exists
   and is a valid NoiseParams</li>
 </ul>
 </li>
@@ -2957,7 +3243,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestset_mapgen_setting_noiseparamsnamevalueoverride_meta" name="minetestset_mapgen_setting_noiseparamsnamevalueoverride_meta">#</a><code>minetest.set_mapgen_setting_noiseparams(name, value, [override_meta])</code></li>
 <li>Same as above, except value is a NoiseParams table.</li>
 <li><a class="anchor" href="#minetestset_noiseparamsnamenoiseparamsset_default" name="minetestset_noiseparamsnamenoiseparamsset_default">#</a><code>minetest.set_noiseparams(name, noiseparams, set_default)</code><ul>
-<li><a class="anchor" href="#name_11" name="name_11">#</a>Sets the noiseparams setting of <code>name</code> to the noiseparams table specified in <code>noiseparams</code>.</li>
+<li><a class="anchor" href="#name_15" name="name_15">#</a>Sets the noiseparams setting of <code>name</code> to the noiseparams table specified in <code>noiseparams</code>.</li>
 <li><a class="anchor" href="#set_default" name="set_default">#</a><code>set_default</code> is an optional boolean (default: <code>true</code>) that specifies whether the setting
   should be applied to the default config or current active config</li>
 </ul>
@@ -3047,7 +3333,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestspawn_treepostreedef" name="minetestspawn_treepostreedef">#</a><code>minetest.spawn_tree (pos, {treedef})</code><ul>
-<li><a class="anchor" href="#pos_1" name="pos_1">#</a>spawns L-system tree at given <code>pos</code> with definition in <code>treedef</code> table</li>
+<li><a class="anchor" href="#pos_4" name="pos_4">#</a>spawns L-system tree at given <code>pos</code> with definition in <code>treedef</code> table</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetesttransforming_liquid_addpos" name="minetesttransforming_liquid_addpos">#</a><code>minetest.transforming_liquid_add(pos)</code><ul>
@@ -3102,6 +3388,16 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   unattached <code>group:attached_node</code> node to fall.</li>
 <li>spread these updates to neighbours and can cause a cascade
   of nodes to fall.</li>
+</ul>
+</li>
+</ul>
+<h3 id="mod-channels">Mod channels</h3>
+<p>You can find mod channels communication scheme in <code>docs/mod_channels.png</code>.</p>
+<ul>
+<li><a class="anchor" href="#minetestmod_channel_joinchannel_name" name="minetestmod_channel_joinchannel_name">#</a><code>minetest.mod_channel_join(channel_name)</code><ul>
+<li><a class="anchor" href="#channel_name" name="channel_name">#</a>Server joins channel <code>channel_name</code>, and creates it if necessary. You
+  should listen from incoming messages with <code>minetest.register_on_modchannel_message</code>
+  call to receive incoming messages</li>
 </ul>
 </li>
 </ul>
@@ -3193,7 +3489,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestdir_to_facedirdiris6d" name="minetestdir_to_facedirdiris6d">#</a><code>minetest.dir_to_facedir(dir, is6d)</code><ul>
 <li><a class="anchor" href="#param2_1" name="param2_1">#</a>Convert a vector to a facedir value, used in <code>param2</code> for <code>paramtype2="facedir"</code>;</li>
-<li><a class="anchor" href="#nil_1" name="nil_1">#</a>passing something non-<code>nil</code>/<code>false</code> for the optional second parameter causes it to
+<li><a class="anchor" href="#nil" name="nil">#</a>passing something non-<code>nil</code>/<code>false</code> for the optional second parameter causes it to
   take the y component into account</li>
 </ul>
 </li>
@@ -3215,6 +3511,17 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </li>
 <li><a class="anchor" href="#minetestyaw_to_diryaw" name="minetestyaw_to_diryaw">#</a><code>minetest.yaw_to_dir(yaw)</code><ul>
 <li>Convert yaw (angle) to a vector</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestis_colored_paramtypeptype" name="minetestis_colored_paramtypeptype">#</a><code>minetest.is_colored_paramtype(ptype)</code><ul>
+<li><a class="anchor" href="#true_12" name="true_12">#</a>Returns a boolean. Returns <code>true</code> if the given <code>paramtype2</code> contains color
+  information (<code>color</code>, <code>colorwallmounted</code> or <code>colorfacedir</code>).</li>
+</ul>
+</li>
+<li><a class="anchor" href="#mineteststrip_param2_colorparam2paramtype2" name="mineteststrip_param2_colorparam2paramtype2">#</a><code>minetest.strip_param2_color(param2, paramtype2)</code><ul>
+<li><a class="anchor" href="#param2_2" name="param2_2">#</a>Removes everything but the color information from the
+  given <code>param2</code> value.</li>
+<li><a class="anchor" href="#nil_1" name="nil_1">#</a>Returns <code>nil</code> if the given <code>paramtype2</code> does not contain color information</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_node_dropsnodenametoolname" name="minetestget_node_dropsnodenametoolname">#</a><code>minetest.get_node_drops(nodename, toolname)</code><ul>
@@ -3314,7 +3621,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <ul>
 <li><a class="anchor" href="#minetestitem_place_nodeitemstackplacerpointed_thingparam2" name="minetestitem_place_nodeitemstackplacerpointed_thingparam2">#</a><code>minetest.item_place_node(itemstack, placer, pointed_thing, param2)</code><ul>
 <li>Place item as a node</li>
-<li><a class="anchor" href="#param2_2" name="param2_2">#</a><code>param2</code> overrides <code>facedir</code> and wallmounted <code>param2</code></li>
+<li><a class="anchor" href="#param2_3" name="param2_3">#</a><code>param2</code> overrides <code>facedir</code> and wallmounted <code>param2</code></li>
 <li><a class="anchor" href="#itemstacksuccess" name="itemstacksuccess">#</a>returns <code>itemstack, success</code></li>
 </ul>
 </li>
@@ -3326,7 +3633,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li>Use one of the above based on what the item is.</li>
 <li><a class="anchor" href="#on_rightclick" name="on_rightclick">#</a>Calls <code>on_rightclick</code> of <code>pointed_thing.under</code> if defined instead</li>
 <li><a class="anchor" href="#on_place" name="on_place">#</a><strong>Note</strong>: is not called when wielded item overrides <code>on_place</code></li>
-<li><a class="anchor" href="#param2_3" name="param2_3">#</a><code>param2</code> overrides <code>facedir</code> and wallmounted <code>param2</code></li>
+<li><a class="anchor" href="#param2_4" name="param2_4">#</a><code>param2</code> overrides <code>facedir</code> and wallmounted <code>param2</code></li>
 <li><a class="anchor" href="#itemstacksuccess_1" name="itemstacksuccess_1">#</a>returns <code>itemstack, success</code></li>
 </ul>
 </li>
@@ -3444,7 +3751,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#probability_list" name="probability_list">#</a>Apply the specified probability and per-node force-place to the specified nodes
   according to the <code>probability_list</code>.<ul>
 <li><a class="anchor" href="#probability_list_1" name="probability_list_1">#</a><code>probability_list</code> is an array of tables containing two fields, <code>pos</code> and <code>prob</code>.<ul>
-<li><a class="anchor" href="#pos_2" name="pos_2">#</a><code>pos</code> is the 3D vector specifying the absolute coordinates of the
+<li><a class="anchor" href="#pos_5" name="pos_5">#</a><code>pos</code> is the 3D vector specifying the absolute coordinates of the
   node being modified,</li>
 <li><a class="anchor" href="#prob_1" name="prob_1">#</a><code>prob</code> is an integer value from <code>0</code> to <code>255</code> that encodes probability and
   per-node force-place. Probability has levels 0-127, then 128 is added to
@@ -3453,7 +3760,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
   0-127, then add 128 to apply per-node force-place.</li>
 <li>If there are two or more entries with the same pos value, the
   last entry is used.</li>
-<li><a class="anchor" href="#pos_3" name="pos_3">#</a>If <code>pos</code> is not inside the box formed by <code>p1</code> and <code>p2</code>, it is ignored.</li>
+<li><a class="anchor" href="#pos_6" name="pos_6">#</a>If <code>pos</code> is not inside the box formed by <code>p1</code> and <code>p2</code>, it is ignored.</li>
 <li><a class="anchor" href="#probability_list_2" name="probability_list_2">#</a>If <code>probability_list</code> equals <code>nil</code>, no probabilities are applied.</li>
 </ul>
 </li>
@@ -3475,7 +3782,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestplace_schematicposschematicrotationreplacementsforce_placement" name="minetestplace_schematicposschematicrotationreplacementsforce_placement">#</a>
 <p><code>minetest.place_schematic(pos, schematic, rotation, replacements, force_placement)</code></p>
 <ul>
-<li><a class="anchor" href="#pos_4" name="pos_4">#</a>Place the schematic specified by schematic (see: Schematic specifier) at <code>pos</code>.</li>
+<li><a class="anchor" href="#pos_7" name="pos_7">#</a>Place the schematic specified by schematic (see: Schematic specifier) at <code>pos</code>.</li>
 <li><a class="anchor" href="#rotation" name="rotation">#</a><code>rotation</code> can equal <code>"0"</code>, <code>"90"</code>, <code>"180"</code>, <code>"270"</code>, or <code>"random"</code>.</li>
 <li><a class="anchor" href="#rotation_1" name="rotation_1">#</a>If the <code>rotation</code> parameter is omitted, the schematic is not rotated.</li>
 <li><a class="anchor" href="#replacements" name="replacements">#</a><code>replacements</code> = <code>{["old_name"] = "convert_to", ...}</code></li>
@@ -3553,11 +3860,20 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestplayer_existsname" name="minetestplayer_existsname">#</a><code>minetest.player_exists(name)</code>: boolean, whether player exists (regardless of online status)</li>
 <li><a class="anchor" href="#minetesthud_replace_builtinnamehud_definition" name="minetesthud_replace_builtinnamehud_definition">#</a><code>minetest.hud_replace_builtin(name, hud_definition)</code><ul>
 <li>Replaces definition of a builtin hud element</li>
-<li><a class="anchor" href="#name_12" name="name_12">#</a><code>name</code>: <code>"breath"</code> or <code>"health"</code></li>
+<li><a class="anchor" href="#name_16" name="name_16">#</a><code>name</code>: <code>"breath"</code> or <code>"health"</code></li>
 <li><a class="anchor" href="#hud_definition" name="hud_definition">#</a><code>hud_definition</code>: definition to replace builtin definition</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetesthash_node_positionxyz" name="minetesthash_node_positionxyz">#</a><code>minetest.hash_node_position({x=,y=,z=})</code>: returns an 48-bit integer<ul>
+<li><a class="anchor" href="#minetestsend_join_messageplayer_name" name="minetestsend_join_messageplayer_name">#</a><code>minetest.send_join_message(player_name)</code><ul>
+<li>This function can be overridden by mods to change the join message.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestsend_leave_messageplayer_nametimed_out" name="minetestsend_leave_messageplayer_nametimed_out">#</a><code>minetest.send_leave_message(player_name, timed_out)</code><ul>
+<li>This function can be overridden by mods to change the leave message.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetesthash_node_positionpos" name="minetesthash_node_positionpos">#</a><code>minetest.hash_node_position(pos)</code>: returns an 48-bit integer<ul>
+<li><a class="anchor" href="#pos_8" name="pos_8">#</a><code>pos</code>: table {x=number, y=number, z=number},</li>
 <li>Gives a unique hash number for a node position (16+16+16=48bit)</li>
 </ul>
 </li>
@@ -3580,7 +3896,7 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_content_idname" name="minetestget_content_idname">#</a><code>minetest.get_content_id(name)</code>: returns an integer<ul>
-<li><a class="anchor" href="#name_13" name="name_13">#</a>Gets the internal content ID of <code>name</code></li>
+<li><a class="anchor" href="#name_17" name="name_17">#</a>Gets the internal content ID of <code>name</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestget_name_from_content_idcontent_id" name="minetestget_name_from_content_idcontent_id">#</a><code>minetest.get_name_from_content_id(content_id)</code>: returns a string<ul>
@@ -3658,9 +3974,10 @@ and <code>minetest.auth_reload</code> call the authetification handler.</p>
 <li><a class="anchor" href="#minetestis_protectedposname" name="minetestis_protectedposname">#</a>
 <p><code>minetest.is_protected(pos, name)</code>: returns boolean</p>
 <ul>
-<li><a class="anchor" href="#name_14" name="name_14">#</a>Returns true, if player <code>name</code> shouldn't be abled to dig at <code>pos</code> or do other
+<li><a class="anchor" href="#name_18" name="name_18">#</a>Returns true, if player <code>name</code> shouldn't be abled to dig at <code>pos</code> or do other
   actions, defineable by mods, due to some mod-defined ownership-like concept.
   Returns false or nil, if the player is allowed to do such actions.</li>
+<li><a class="anchor" href="#name_19" name="name_19">#</a><code>name</code> will be "" for non-players or unknown players.</li>
 <li>This function should be overridden by protection mods and should be used to
   check if a player can interact at a position.</li>
 <li>This function should call the old version of itself if the position is not
@@ -3709,8 +4026,8 @@ end
 <li><a class="anchor" href="#minetestforceload_blockpostransient" name="minetestforceload_blockpostransient">#</a>
 <p><code>minetest.forceload_block(pos[, transient])</code></p>
 <ul>
-<li><a class="anchor" href="#pos_5" name="pos_5">#</a>forceloads the position <code>pos</code>.</li>
-<li><a class="anchor" href="#true_11" name="true_11">#</a>returns <code>true</code> if area could be forceloaded</li>
+<li><a class="anchor" href="#pos_9" name="pos_9">#</a>forceloads the position <code>pos</code>.</li>
+<li><a class="anchor" href="#true_13" name="true_13">#</a>returns <code>true</code> if area could be forceloaded</li>
 <li><a class="anchor" href="#transient" name="transient">#</a>If <code>transient</code> is <code>false</code> or absent, the forceload will be persistent
   (saved between server runs). If <code>true</code>, the forceload will be transient
   (not saved between server runs).</li>
@@ -3719,7 +4036,7 @@ end
 <li><a class="anchor" href="#minetestforceload_free_blockpostransient" name="minetestforceload_free_blockpostransient">#</a>
 <p><code>minetest.forceload_free_block(pos[, transient])</code></p>
 <ul>
-<li><a class="anchor" href="#pos_6" name="pos_6">#</a>stops forceloading the position <code>pos</code></li>
+<li><a class="anchor" href="#pos_10" name="pos_10">#</a>stops forceloading the position <code>pos</code></li>
 <li><a class="anchor" href="#transient_1" name="transient_1">#</a>If <code>transient</code> is <code>false</code> or absent, frees a persistent forceload.
   If <code>true</code>, frees a transient forceload.</li>
 </ul>
@@ -3799,9 +4116,27 @@ end
 </li>
 </ul>
 <h2 id="class-reference">Class reference</h2>
+<h3 id="modchannel">ModChannel</h3>
+<p>An interface to use mod channels on client and server</p>
+<h4 id="methods">Methods</h4>
+<ul>
+<li><a class="anchor" href="#leave" name="leave">#</a><code>leave()</code>: leave the mod channel.<ul>
+<li><a class="anchor" href="#channel_name_1" name="channel_name_1">#</a>Server leaves channel <code>channel_name</code>.</li>
+<li>No more incoming or outgoing messages can be sent to this channel from server mods.</li>
+<li>This invalidate all future object usage</li>
+<li>Ensure your set mod_channel to nil after that to free Lua resources</li>
+</ul>
+</li>
+<li><a class="anchor" href="#is_writeable" name="is_writeable">#</a><code>is_writeable()</code>: returns true if channel is writeable and mod can send over it.</li>
+<li><a class="anchor" href="#send_allmessage" name="send_allmessage">#</a><code>send_all(message)</code>: Send <code>message</code> though the mod channel.<ul>
+<li>If mod channel is not writeable or invalid, message will be dropped.</li>
+<li>Message size is limited to 65535 characters by protocol.</li>
+</ul>
+</li>
+</ul>
 <h3 id="metadataref"><code>MetaDataRef</code></h3>
 <p>See <code>StorageRef</code>, <code>NodeMetaRef</code> and <code>ItemStackMetaRef</code>.</p>
-<h4 id="methods">Methods</h4>
+<h4 id="methods_1">Methods</h4>
 <ul>
 <li><a class="anchor" href="#set_stringnamevalue" name="set_stringnamevalue">#</a><code>set_string(name, value)</code></li>
 <li><a class="anchor" href="#get_stringname" name="get_stringname">#</a><code>get_string(name)</code></li>
@@ -3817,18 +4152,18 @@ end
 <li><a class="anchor" href="#from_tablenilor" name="from_tablenilor">#</a><code>from_table(nil or {})</code><ul>
 <li>Any non-table value will clear the metadata</li>
 <li>See "Node Metadata" for an example</li>
-<li><a class="anchor" href="#true_12" name="true_12">#</a>returns <code>true</code> on success</li>
+<li><a class="anchor" href="#true_14" name="true_14">#</a>returns <code>true</code> on success</li>
 </ul>
 </li>
 <li><a class="anchor" href="#equalsother" name="equalsother">#</a><code>equals(other)</code><ul>
-<li><a class="anchor" href="#true_13" name="true_13">#</a>returns <code>true</code> if this metadata has the same key-value pairs as <code>other</code></li>
+<li><a class="anchor" href="#true_15" name="true_15">#</a>returns <code>true</code> if this metadata has the same key-value pairs as <code>other</code></li>
 </ul>
 </li>
 </ul>
 <h3 id="nodemetaref"><code>NodeMetaRef</code></h3>
 <p>Node metadata: reference extra data and functionality stored in a node.
 Can be obtained via <code>minetest.get_meta(pos)</code>.</p>
-<h4 id="methods_1">Methods</h4>
+<h4 id="methods_2">Methods</h4>
 <ul>
 <li>All methods in MetaDataRef</li>
 <li><a class="anchor" href="#get_inventory" name="get_inventory">#</a><code>get_inventory()</code>: returns <code>InvRef</code></li>
@@ -3840,21 +4175,26 @@ Can be obtained via <code>minetest.get_meta(pos)</code>.</p>
 <h3 id="itemstackmetaref"><code>ItemStackMetaRef</code></h3>
 <p>ItemStack metadata: reference extra data and functionality stored in a stack.
 Can be obtained via <code>item:get_meta()</code>.</p>
-<h4 id="methods_2">Methods</h4>
+<h4 id="methods_3">Methods</h4>
 <ul>
 <li>All methods in MetaDataRef</li>
+<li><a class="anchor" href="#set_tool_capabilitiestool_capabilities" name="set_tool_capabilitiestool_capabilities">#</a><code>set_tool_capabilities([tool_capabilities])</code><ul>
+<li>overrides the item's tool capabilities</li>
+<li>a nil value will clear the override data and restore the original behavior</li>
+</ul>
+</li>
 </ul>
 <h3 id="storageref"><code>StorageRef</code></h3>
 <p>Mod metadata: per mod metadata, saved automatically.
 Can be obtained via <code>minetest.get_mod_storage()</code> during load time.</p>
-<h4 id="methods_3">Methods</h4>
+<h4 id="methods_4">Methods</h4>
 <ul>
 <li>All methods in MetaDataRef</li>
 </ul>
 <h3 id="nodetimerref"><code>NodeTimerRef</code></h3>
 <p>Node Timers: a high resolution persistent per-node timer.
 Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
-<h4 id="methods_4">Methods</h4>
+<h4 id="methods_5">Methods</h4>
 <ul>
 <li><a class="anchor" href="#settimeoutelapsed" name="settimeoutelapsed">#</a><code>set(timeout,elapsed)</code><ul>
 <li>set a timer's state</li>
@@ -3881,14 +4221,14 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#is_started" name="is_started">#</a><code>is_started()</code>: returns boolean state of timer<ul>
-<li><a class="anchor" href="#true_14" name="true_14">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
+<li><a class="anchor" href="#true_16" name="true_16">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
 </ul>
 </li>
 </ul>
 <h3 id="objectref"><code>ObjectRef</code></h3>
 <p>Moving things in the game are generally these.</p>
 <p>This is basically a reference to a C++ <code>ServerActiveObject</code></p>
-<h4 id="methods_5">Methods</h4>
+<h4 id="methods_6">Methods</h4>
 <ul>
 <li><a class="anchor" href="#remove" name="remove">#</a><code>remove()</code>: remove object (after returning from Lua)<ul>
 <li><a class="anchor" href="#minetestkick_player" name="minetestkick_player">#</a>Note: Doesn't work on players, use <code>minetest.kick_player</code> instead</li>
@@ -3913,12 +4253,18 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#set_wielded_itemitem" name="set_wielded_itemitem">#</a><code>set_wielded_item(item)</code>: replaces the wielded item, returns <code>true</code> if successful</li>
 <li><a class="anchor" href="#set_armor_groupsgroup1ratinggroup2rating" name="set_armor_groupsgroup1ratinggroup2rating">#</a><code>set_armor_groups({group1=rating, group2=rating, ...})</code></li>
 <li><a class="anchor" href="#get_armor_groups" name="get_armor_groups">#</a><code>get_armor_groups()</code>: returns a table with the armor group ratings</li>
-<li><a class="anchor" href="#set_animationx1y1frame_speed15frame_blend0frame_looptrue" name="set_animationx1y1frame_speed15frame_blend0frame_looptrue">#</a><code>set_animation({x=1,y=1}, frame_speed=15, frame_blend=0, frame_loop=true)</code></li>
+<li><a class="anchor" href="#set_animationframe_rangeframe_speedframe_blendframe_loop" name="set_animationframe_rangeframe_speedframe_blendframe_loop">#</a><code>set_animation(frame_range, frame_speed, frame_blend, frame_loop)</code></li>
+<li><a class="anchor" href="#frame_range" name="frame_range">#</a><code>frame_range</code>: table {x=num, y=num}, default: <code>{x=1, y=1}</code></li>
+<li><a class="anchor" href="#frame_speed" name="frame_speed">#</a><code>frame_speed</code>: number, default: <code>15.0</code></li>
+<li><a class="anchor" href="#frame_blend" name="frame_blend">#</a><code>frame_blend</code>: number, default: <code>0.0</code></li>
+<li><a class="anchor" href="#frame_loop" name="frame_loop">#</a><code>frame_loop</code>: boolean, default: <code>true</code></li>
 <li><a class="anchor" href="#get_animation" name="get_animation">#</a><code>get_animation()</code>: returns <code>range</code>, <code>frame_speed</code>, <code>frame_blend</code> and <code>frame_loop</code></li>
+<li><a class="anchor" href="#set_animation_frame_speedframe_speed" name="set_animation_frame_speedframe_speed">#</a><code>set_animation_frame_speed(frame_speed)</code></li>
+<li><a class="anchor" href="#frame_speed_1" name="frame_speed_1">#</a><code>frame_speed</code>: number, default: <code>15.0</code></li>
 <li><a class="anchor" href="#set_attachparentbonepositionrotation" name="set_attachparentbonepositionrotation">#</a><code>set_attach(parent, bone, position, rotation)</code><ul>
 <li><a class="anchor" href="#bone" name="bone">#</a><code>bone</code>: string</li>
 <li><a class="anchor" href="#position" name="position">#</a><code>position</code>: <code>{x=num, y=num, z=num}</code> (relative)</li>
-<li><a class="anchor" href="#rotation_2" name="rotation_2">#</a><code>rotation</code>: <code>{x=num, y=num, z=num}</code></li>
+<li><a class="anchor" href="#rotation_2" name="rotation_2">#</a><code>rotation</code>: <code>{x=num, y=num, z=num}</code> = Rotation on each axis, in degrees</li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_attach" name="get_attach">#</a><code>get_attach()</code>: returns parent, bone, position, rotation or nil if it isn't attached</li>
@@ -3953,18 +4299,29 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 <h5 id="luaentitysao-only-no-op-for-other-objects">LuaEntitySAO-only (no-op for other objects)</h5>
 <ul>
-<li><a class="anchor" href="#set_velocityxnumynumznum" name="set_velocityxnumynumznum">#</a><code>set_velocity({x=num, y=num, z=num})</code></li>
-<li><a class="anchor" href="#get_velocity" name="get_velocity">#</a><code>get_velocity()</code>: returns <code>{x=num, y=num, z=num}</code></li>
-<li><a class="anchor" href="#set_accelerationxnumynumznum" name="set_accelerationxnumynumznum">#</a><code>set_acceleration({x=num, y=num, z=num})</code></li>
-<li><a class="anchor" href="#get_acceleration" name="get_acceleration">#</a><code>get_acceleration()</code>: returns <code>{x=num, y=num, z=num}</code></li>
+<li><a class="anchor" href="#set_velocityvel" name="set_velocityvel">#</a><code>set_velocity(vel)</code><ul>
+<li><a class="anchor" href="#vel" name="vel">#</a><code>vel</code> is a vector, e.g. <code>{x=0.0, y=2.3, z=1.0}</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#get_velocity" name="get_velocity">#</a><code>get_velocity()</code>: returns the velocity, a vector</li>
+<li><a class="anchor" href="#set_accelerationacc" name="set_accelerationacc">#</a><code>set_acceleration(acc)</code><ul>
+<li><a class="anchor" href="#acc" name="acc">#</a><code>acc</code> is a vector</li>
+</ul>
+</li>
+<li><a class="anchor" href="#get_acceleration" name="get_acceleration">#</a><code>get_acceleration()</code>: returns the acceleration, a vector</li>
 <li><a class="anchor" href="#set_yawradians" name="set_yawradians">#</a><code>set_yaw(radians)</code></li>
 <li><a class="anchor" href="#get_yaw" name="get_yaw">#</a><code>get_yaw()</code>: returns number in radians</li>
 <li><a class="anchor" href="#set_texture_modmod" name="set_texture_modmod">#</a><code>set_texture_mod(mod)</code></li>
 <li><a class="anchor" href="#get_texture_mod" name="get_texture_mod">#</a><code>get_texture_mod()</code> returns current texture modifier</li>
-<li><a class="anchor" href="#set_spritepx0y0num_frames1framelength02select_horiz_by_yawpitchfalse" name="set_spritepx0y0num_frames1framelength02select_horiz_by_yawpitchfalse">#</a><code>set_sprite(p={x=0,y=0}, num_frames=1, framelength=0.2,
-  select_horiz_by_yawpitch=false)</code><ul>
-<li>Select sprite from spritesheet with optional animation and DM-style
-  texture selection based on yaw relative to camera</li>
+<li><a class="anchor" href="#set_spritepnum_framesframelengthselect_horiz_by_yawpitch" name="set_spritepnum_framesframelengthselect_horiz_by_yawpitch">#</a><code>set_sprite(p, num_frames, framelength, select_horiz_by_yawpitch)</code><ul>
+<li>Select sprite from spritesheet with optional animation and Dungeon Master
+  style texture selection based on yaw relative to camera</li>
+<li><a class="anchor" href="#p_1" name="p_1">#</a><code>p</code>: {x=number, y=number}, the coordinate of the first frame
+  (x: column, y: row), default: <code>{x=0, y=0}</code></li>
+<li><a class="anchor" href="#num_frames" name="num_frames">#</a><code>num_frames</code>: number, default: <code>1</code></li>
+<li><a class="anchor" href="#framelength" name="framelength">#</a><code>framelength</code>: number, default: <code>0.2</code></li>
+<li><a class="anchor" href="#select_horiz_by_yawpitch" name="select_horiz_by_yawpitch">#</a><code>select_horiz_by_yawpitch</code>: boolean, this was once used for the Dungeon
+  Master mob, default: <code>false</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_entity_name" name="get_entity_name">#</a><code>get_entity_name()</code> (<strong>Deprecated</strong>: Will be removed in a future version)</li>
@@ -4005,16 +4362,16 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#get_breath" name="get_breath">#</a><code>get_breath()</code>: returns players breath</li>
 <li><a class="anchor" href="#set_breathvalue" name="set_breathvalue">#</a><code>set_breath(value)</code>: sets players breath<ul>
 <li><a class="anchor" href="#0_10" name="0_10">#</a>values:<ul>
-<li><a class="anchor" href="#0_11" name="0_11">#</a><code>0</code>: player is drowning,</li>
-<li><a class="anchor" href="#1" name="1">#</a><code>1</code>-<code>10</code>: remaining number of bubbles</li>
-<li><a class="anchor" href="#11" name="11">#</a><code>11</code>: bubbles bar is not shown</li>
+<li><a class="anchor" href="#0_11" name="0_11">#</a><code>0</code>: player is drowning</li>
+<li>max: bubbles bar is not shown</li>
+<li>See Object Properties for more information</li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a class="anchor" href="#set_attributeattributevalue" name="set_attributeattributevalue">#</a><code>set_attribute(attribute, value)</code>:<ul>
 <li>Sets an extra attribute with value on player.</li>
-<li><a class="anchor" href="#value_1" name="value_1">#</a><code>value</code> must be a string.</li>
+<li><a class="anchor" href="#value_1" name="value_1">#</a><code>value</code> must be a string, or a number which will be converted to a string.</li>
 <li><a class="anchor" href="#value_2" name="value_2">#</a>If <code>value</code> is <code>nil</code>, remove attribute from player.</li>
 </ul>
 </li>
@@ -4030,11 +4387,15 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </li>
 <li><a class="anchor" href="#get_inventory_formspec" name="get_inventory_formspec">#</a><code>get_inventory_formspec()</code>: returns a formspec string</li>
 <li><a class="anchor" href="#get_player_control" name="get_player_control">#</a><code>get_player_control()</code>: returns table with player pressed keys<ul>
-<li><a class="anchor" href="#jumpboolrightboolleftboolLMBboolRMBboolsneakboolaux1booldownboolupbool" name="jumpboolrightboolleftboolLMBboolRMBboolsneakboolaux1booldownboolupbool">#</a><code>{jump=bool,right=bool,left=bool,LMB=bool,RMB=bool,sneak=bool,aux1=bool,down=bool,up=bool}</code></li>
+<li>The table consists of fields with boolean value representing the pressed
+  keys, the fields are jump, right, left, LMB, RMB, sneak, aux1, down and up</li>
+<li><a class="anchor" href="#jumpfalserighttrueleftfalseLMBfalseRMBfalsesneaktrueaux1falsedownfalseupfalse" name="jumpfalserighttrueleftfalseLMBfalseRMBfalsesneaktrueaux1falsedownfalseupfalse">#</a>example: <code>{jump=false, right=true, left=false, LMB=false, RMB=false,
+  sneak=true, aux1=false, down=false, up=false}</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#get_player_control_bits" name="get_player_control_bits">#</a><code>get_player_control_bits()</code>: returns integer with bit packed player pressed keys<ul>
-<li>bit nr/meaning: 0/up ,1/down ,2/left ,3/right ,4/jump ,5/aux1 ,6/sneak ,7/LMB ,8/RMB</li>
+<li>bit nr/meaning: 0/up, 1/down, 2/left, 3/right, 4/jump, 5/aux1, 6/sneak,
+  7/LMB, 8/RMB</li>
 </ul>
 </li>
 <li><a class="anchor" href="#set_physics_overrideoverride_table" name="set_physics_overrideoverride_table">#</a><code>set_physics_override(override_table)</code><ul>
@@ -4062,15 +4423,18 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </li>
 <li><a class="anchor" href="#hud_getid" name="hud_getid">#</a><code>hud_get(id)</code>: gets the HUD element definition structure of the specified ID</li>
 <li><a class="anchor" href="#hud_set_flagsflags" name="hud_set_flagsflags">#</a><code>hud_set_flags(flags)</code>: sets specified HUD flags to <code>true</code>/<code>false</code><ul>
-<li><a class="anchor" href="#flags_4" name="flags_4">#</a><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>minimap</code></li>
-<li><a class="anchor" href="#true_15" name="true_15">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
+<li><a class="anchor" href="#flags_4" name="flags_4">#</a><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>breathbar</code>,
+  <code>minimap</code>, <code>minimap_radar</code></li>
+<li><a class="anchor" href="#true_17" name="true_17">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
 <li><a class="anchor" href="#nil_7" name="nil_7">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
 <li><a class="anchor" href="#minimap" name="minimap">#</a>note that setting <code>minimap</code> modifies the client's permission to view the minimap -</li>
 <li>the client may locally elect to not view the minimap</li>
+<li><a class="anchor" href="#radar" name="radar">#</a>minimap <code>radar</code> is only usable when <code>minimap</code> is true</li>
 </ul>
 </li>
 <li><a class="anchor" href="#hud_get_flags" name="hud_get_flags">#</a><code>hud_get_flags()</code>: returns a table containing status of hud flags<ul>
-<li><a class="anchor" href="#hotbartruehealthbartruecrosshairtruewielditemtruebreathbartrueminimaptrue" name="hotbartruehealthbartruecrosshairtruewielditemtruebreathbartrueminimaptrue">#</a>returns <code>{ hotbar=true, healthbar=true, crosshair=true, wielditem=true, breathbar=true, minimap=true }</code></li>
+<li><a class="anchor" href="#hotbartruehealthbartruecrosshairtruewielditemtruebreathbartrueminimaptrueminimap_radartrue" name="hotbartruehealthbartruecrosshairtruewielditemtruebreathbartrueminimaptrueminimap_radartrue">#</a>returns <code>{hotbar=true, healthbar=true, crosshair=true, wielditem=true,
+  breathbar=true, minimap=true, minimap_radar=true}</code></li>
 </ul>
 </li>
 <li><a class="anchor" href="#hud_set_hotbar_itemcountcount" name="hud_set_hotbar_itemcountcount">#</a><code>hud_set_hotbar_itemcount(count)</code>: sets number of items in builtin hotbar<ul>
@@ -4141,7 +4505,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 <h3 id="invref"><code>InvRef</code></h3>
 <p>An <code>InvRef</code> is a reference to an inventory.</p>
-<h4 id="methods_6">Methods</h4>
+<h4 id="methods_7">Methods</h4>
 <ul>
 <li><a class="anchor" href="#is_emptylistname" name="is_emptylistname">#</a><code>is_empty(listname)</code>: return <code>true</code> if list is empty</li>
 <li><a class="anchor" href="#get_sizelistname" name="get_sizelistname">#</a><code>get_size(listname)</code>: get size of a list</li>
@@ -4179,7 +4543,7 @@ Every area has a <code>data</code> string attribute to store additional informat
 You can create an empty <code>AreaStore</code> by calling <code>AreaStore()</code>, or <code>AreaStore(type_name)</code>.
 If you chose the parameter-less constructor, a fast implementation will be automatically
 chosen for you.</p>
-<h4 id="methods_7">Methods</h4>
+<h4 id="methods_8">Methods</h4>
 <ul>
 <li><a class="anchor" href="#get_areaidinclude_bordersinclude_data" name="get_areaidinclude_bordersinclude_data">#</a><code>get_area(id, include_borders, include_data)</code>: returns the area with the id <code>id</code>.
   (optional) Boolean values <code>include_borders</code> and <code>include_data</code> control what's copied.
@@ -4220,16 +4584,22 @@ chosen for you.</p>
 <p>An <code>ItemStack</code> is a stack of items.</p>
 <p>It can be created via <code>ItemStack(x)</code>, where x is an <code>ItemStack</code>,
 an itemstring, a table or <code>nil</code>.</p>
-<h4 id="methods_8">Methods</h4>
+<h4 id="methods_9">Methods</h4>
 <ul>
-<li><a class="anchor" href="#is_empty" name="is_empty">#</a><code>is_empty()</code>: Returns <code>true</code> if stack is empty.</li>
-<li><a class="anchor" href="#get_name" name="get_name">#</a><code>get_name()</code>: Returns item name (e.g. <code>"default:stone"</code>).</li>
-<li><a class="anchor" href="#set_nameitem_name" name="set_nameitem_name">#</a><code>set_name(item_name)</code>: Returns boolean whether item was cleared</li>
+<li><a class="anchor" href="#is_empty" name="is_empty">#</a><code>is_empty()</code>: returns <code>true</code> if stack is empty.</li>
+<li><a class="anchor" href="#get_name" name="get_name">#</a><code>get_name()</code>: returns item name (e.g. <code>"default:stone"</code>).</li>
+<li><a class="anchor" href="#set_nameitem_name" name="set_nameitem_name">#</a><code>set_name(item_name)</code>: returns a boolean indicating whether the item was cleared</li>
 <li><a class="anchor" href="#get_count" name="get_count">#</a><code>get_count()</code>: Returns number of items on the stack.</li>
-<li><a class="anchor" href="#set_countcount" name="set_countcount">#</a><code>set_count(count)</code>: Returns boolean whether item was cleared</li>
-<li><a class="anchor" href="#get_wear" name="get_wear">#</a><code>get_wear()</code>: Returns tool wear (<code>0</code>-<code>65535</code>), <code>0</code> for non-tools.</li>
-<li><a class="anchor" href="#set_wearwear" name="set_wearwear">#</a><code>set_wear(wear)</code>: Returns boolean whether item was cleared</li>
-<li><a class="anchor" href="#get_meta" name="get_meta">#</a><code>get_meta()</code>: Returns ItemStackMetaRef. See section for more details</li>
+<li><a class="anchor" href="#set_countcount" name="set_countcount">#</a><code>set_count(count)</code>: returns a boolean indicating whether the item was cleared<ul>
+<li><a class="anchor" href="#count_1" name="count_1">#</a><code>count</code>: number, unsigned 16 bit integer</li>
+</ul>
+</li>
+<li><a class="anchor" href="#get_wear" name="get_wear">#</a><code>get_wear()</code>: returns tool wear (<code>0</code>-<code>65535</code>), <code>0</code> for non-tools.</li>
+<li><a class="anchor" href="#set_wearwear" name="set_wearwear">#</a><code>set_wear(wear)</code>: returns boolean indicating whether item was cleared<ul>
+<li><a class="anchor" href="#wear" name="wear">#</a><code>wear</code>: number, unsigned 16 bit integer</li>
+</ul>
+</li>
+<li><a class="anchor" href="#get_meta" name="get_meta">#</a><code>get_meta()</code>: returns ItemStackMetaRef. See section for more details</li>
 <li><a class="anchor" href="#get_metadata" name="get_metadata">#</a><code>get_metadata()</code>: (DEPRECATED) Returns metadata (a string attached to an item stack).</li>
 <li><a class="anchor" href="#set_metadatametadata" name="set_metadatametadata">#</a><code>set_metadata(metadata)</code>: (DEPRECATED) Returns true.</li>
 <li><a class="anchor" href="#clear" name="clear">#</a><code>clear()</code>: removes all items from the stack, making it empty.</li>
@@ -4237,29 +4607,41 @@ an itemstring, a table or <code>nil</code>.</p>
 <li><a class="anchor" href="#item_3" name="item_3">#</a><code>item</code> can also be an itemstring or table.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#to_string_1" name="to_string_1">#</a><code>to_string()</code>: Returns the stack in itemstring form.</li>
-<li><a class="anchor" href="#to_table_1" name="to_table_1">#</a><code>to_table()</code>: Returns the stack in Lua table form.</li>
-<li><a class="anchor" href="#get_stack_max" name="get_stack_max">#</a><code>get_stack_max()</code>: Returns the maximum size of the stack (depends on the item).</li>
-<li><a class="anchor" href="#get_free_space" name="get_free_space">#</a><code>get_free_space()</code>: Returns <code>get_stack_max() - get_count()</code>.</li>
-<li><a class="anchor" href="#is_known" name="is_known">#</a><code>is_known()</code>: Returns <code>true</code> if the item name refers to a defined item type.</li>
-<li><a class="anchor" href="#get_definition" name="get_definition">#</a><code>get_definition()</code>: Returns the item definition table.</li>
-<li><a class="anchor" href="#get_tool_capabilities" name="get_tool_capabilities">#</a><code>get_tool_capabilities()</code>: Returns the digging properties of the item,
-  or those of the hand if none are defined for this item type</li>
-<li><a class="anchor" href="#add_wearamount" name="add_wearamount">#</a><code>add_wear(amount)</code>: Increases wear by <code>amount</code> if the item is a tool.</li>
-<li><a class="anchor" href="#add_itemitem" name="add_itemitem">#</a><code>add_item(item)</code>: Put some item or stack onto this stack.
-   Returns leftover <code>ItemStack</code>.</li>
-<li><a class="anchor" href="#item_fitsitem" name="item_fitsitem">#</a><code>item_fits(item)</code>: Returns <code>true</code> if item or stack can be fully added to
-  this one.</li>
-<li><a class="anchor" href="#take_itemn1" name="take_itemn1">#</a><code>take_item(n=1)</code>: Take (and remove) up to <code>n</code> items from this stack.
-  Returns taken <code>ItemStack</code>.</li>
-<li><a class="anchor" href="#peek_itemn1" name="peek_itemn1">#</a><code>peek_item(n=1)</code>: copy (don't remove) up to <code>n</code> items from this stack.
-  Returns taken <code>ItemStack</code>.</li>
+<li><a class="anchor" href="#to_string_1" name="to_string_1">#</a><code>to_string()</code>: returns the stack in itemstring form.</li>
+<li><a class="anchor" href="#to_table_1" name="to_table_1">#</a><code>to_table()</code>: returns the stack in Lua table form.</li>
+<li><a class="anchor" href="#get_stack_max" name="get_stack_max">#</a><code>get_stack_max()</code>: returns the maximum size of the stack (depends on the item).</li>
+<li><a class="anchor" href="#get_free_space" name="get_free_space">#</a><code>get_free_space()</code>: returns <code>get_stack_max() - get_count()</code>.</li>
+<li><a class="anchor" href="#is_known" name="is_known">#</a><code>is_known()</code>: returns <code>true</code> if the item name refers to a defined item type.</li>
+<li><a class="anchor" href="#get_definition" name="get_definition">#</a><code>get_definition()</code>: returns the item definition table.</li>
+<li><a class="anchor" href="#get_tool_capabilities" name="get_tool_capabilities">#</a><code>get_tool_capabilities()</code>: returns the digging properties of the item,
+        or those of the hand if none are defined for this item type</li>
+<li><a class="anchor" href="#add_wearamount" name="add_wearamount">#</a><code>add_wear(amount)</code><ul>
+<li><a class="anchor" href="#amount" name="amount">#</a>Increases wear by <code>amount</code> if the item is a tool</li>
+<li><a class="anchor" href="#amount_1" name="amount_1">#</a><code>amount</code>: number, integer</li>
+</ul>
+</li>
+<li><a class="anchor" href="#add_itemitem" name="add_itemitem">#</a><code>add_item(item)</code>: returns leftover <code>ItemStack</code><ul>
+<li>Put some item or stack onto this stack</li>
+</ul>
+</li>
+<li><a class="anchor" href="#item_fitsitem" name="item_fitsitem">#</a><code>item_fits(item)</code>: returns <code>true</code> if item or stack can be fully added to
+        this one.</li>
+<li><a class="anchor" href="#take_itemn" name="take_itemn">#</a><code>take_item(n)</code>: returns taken <code>ItemStack</code><ul>
+<li><a class="anchor" href="#n_1" name="n_1">#</a>Take (and remove) up to <code>n</code> items from this stack</li>
+<li><a class="anchor" href="#n_2" name="n_2">#</a><code>n</code>: number, default: <code>1</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#peek_itemn" name="peek_itemn">#</a><code>peek_item(n)</code>: returns taken <code>ItemStack</code><ul>
+<li><a class="anchor" href="#n_3" name="n_3">#</a>Copy (don't remove) up to <code>n</code> items from this stack</li>
+<li><a class="anchor" href="#n_4" name="n_4">#</a><code>n</code>: number, default: <code>1</code></li>
+</ul>
+</li>
 </ul>
 <h3 id="pseudorandom"><code>PseudoRandom</code></h3>
 <p>A 16-bit pseudorandom number generator.
 Uses a well-known LCG algorithm introduced by K&amp;R.</p>
 <p>It can be created via <code>PseudoRandom(seed)</code>.</p>
-<h4 id="methods_9">Methods</h4>
+<h4 id="methods_10">Methods</h4>
 <ul>
 <li><a class="anchor" href="#next" name="next">#</a><code>next()</code>: return next integer random number [<code>0</code>...<code>32767</code>]</li>
 <li><a class="anchor" href="#nextminmax" name="nextminmax">#</a><code>next(min, max)</code>: return next integer random number [<code>min</code>...<code>max</code>]<ul>
@@ -4272,7 +4654,7 @@ Uses a well-known LCG algorithm introduced by K&amp;R.</p>
 <p>A 32-bit pseudorandom number generator.
 Uses PCG32, an algorithm of the permuted congruential generator family, offering very strong randomness.</p>
 <p>It can be created via <code>PcgRandom(seed)</code> or <code>PcgRandom(seed, sequence)</code>.</p>
-<h4 id="methods_10">Methods</h4>
+<h4 id="methods_11">Methods</h4>
 <ul>
 <li><a class="anchor" href="#next_1" name="next_1">#</a><code>next()</code>: return next integer random number [<code>-2147483648</code>...<code>2147483647</code>]</li>
 <li><a class="anchor" href="#nextminmax_1" name="nextminmax_1">#</a><code>next(min, max)</code>: return next integer random number [<code>min</code>...<code>max</code>]</li>
@@ -4288,7 +4670,7 @@ Uses PCG32, an algorithm of the permuted congruential generator family, offering
 <p>Interface for the operating system's crypto-secure PRNG.</p>
 <p>It can be created via <code>SecureRandom()</code>.  The constructor returns nil if a secure random device cannot be
 be found on the system.</p>
-<h4 id="methods_11">Methods</h4>
+<h4 id="methods_12">Methods</h4>
 <ul>
 <li><a class="anchor" href="#next_bytescount" name="next_bytescount">#</a><code>next_bytes([count])</code>: return next <code>count</code> (default 1, capped at 2048) many random bytes, as a string.</li>
 </ul>
@@ -4298,7 +4680,7 @@ It can be created via <code>PerlinNoise(seed, octaves, persistence, scale)</code
 or <code>PerlinNoise(noiseparams)</code>.
 Alternatively with <code>minetest.get_perlin(seeddiff, octaves, persistence, scale)</code>
 or <code>minetest.get_perlin(noiseparams)</code>.</p>
-<h4 id="methods_12">Methods</h4>
+<h4 id="methods_13">Methods</h4>
 <ul>
 <li><a class="anchor" href="#get2dpos" name="get2dpos">#</a><code>get2d(pos)</code>: returns 2D noise value at <code>pos={x=,y=}</code></li>
 <li><a class="anchor" href="#get3dpos" name="get3dpos">#</a><code>get3d(pos)</code>: returns 3D noise value at <code>pos={x=,y=,z=}</code></li>
@@ -4307,12 +4689,12 @@ or <code>minetest.get_perlin(noiseparams)</code>.</p>
 <p>A fast, bulk perlin noise generator.</p>
 <p>It can be created via <code>PerlinNoiseMap(noiseparams, size)</code> or
 <code>minetest.get_perlin_map(noiseparams, size)</code>.</p>
-<p>Format of <code>size</code> is <code>{x=dimx, y=dimy, z=dimz}</code>.  The <code>z</code> conponent is ommitted
+<p>Format of <code>size</code> is <code>{x=dimx, y=dimy, z=dimz}</code>.  The <code>z</code> component is omitted
 for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
 <code>nil</code> is returned).</p>
 <p>For each of the functions with an optional <code>buffer</code> parameter:  If <code>buffer</code> is not
 nil, this table will be used to store the result instead of creating a new table.</p>
-<h4 id="methods_13">Methods</h4>
+<h4 id="methods_14">Methods</h4>
 <ul>
 <li><a class="anchor" href="#get2dMappos" name="get2dMappos">#</a><code>get2dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> 2D array of 2D noise
   with values starting at <code>pos={x=,y=}</code></li>
@@ -4459,7 +4841,7 @@ will place the schematic inside of the VoxelManip.</p>
   buffer the function can use to write map data to instead of returning a new table each call.  This
   greatly enhances performance by avoiding unnecessary memory allocations.</li>
 </ul>
-<h4 id="methods_14">Methods</h4>
+<h4 id="methods_15">Methods</h4>
 <ul>
 <li><a class="anchor" href="#read_from_mapp1p2" name="read_from_mapp1p2">#</a><code>read_from_map(p1, p2)</code>:  Loads a chunk of map into the VoxelManip object containing
   the region formed by <code>p1</code> and <code>p2</code>.<ul>
@@ -4528,7 +4910,7 @@ will place the schematic inside of the VoxelManip.</p>
 <p>A helper class for voxel areas.
 It can be created via <code>VoxelArea:new{MinEdge=pmin, MaxEdge=pmax}</code>.
 The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
-<h4 id="methods_15">Methods</h4>
+<h4 id="methods_16">Methods</h4>
 <ul>
 <li><a class="anchor" href="#getExtent" name="getExtent">#</a><code>getExtent()</code>: returns a 3D vector containing the size of the area formed by
   <code>MinEdge</code> and <code>MaxEdge</code></li>
@@ -4552,18 +4934,24 @@ The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
 <h3 id="settings"><code>Settings</code></h3>
 <p>An interface to read config files in the format of <code>minetest.conf</code>.</p>
 <p>It can be created via <code>Settings(filename)</code>.</p>
-<h4 id="methods_16">Methods</h4>
+<h4 id="methods_17">Methods</h4>
 <ul>
 <li><a class="anchor" href="#getkey" name="getkey">#</a><code>get(key)</code>: returns a value</li>
 <li><a class="anchor" href="#get_boolkey" name="get_boolkey">#</a><code>get_bool(key)</code>: returns a boolean</li>
+<li><a class="anchor" href="#get_np_groupkey" name="get_np_groupkey">#</a><code>get_np_group(key)</code>: returns a NoiseParams table</li>
 <li><a class="anchor" href="#setkeyvalue" name="setkeyvalue">#</a><code>set(key, value)</code><ul>
 <li>Setting names can't contain whitespace or any of <code>="{}#</code>.</li>
-<li><a class="anchor" href="#n_2" name="n_2">#</a>Setting values can't contain the sequence <code>\n"""</code>.</li>
+<li><a class="anchor" href="#n_5" name="n_5">#</a>Setting values can't contain the sequence <code>\n"""</code>.</li>
 <li><a class="anchor" href="#minetestsettings_1" name="minetestsettings_1">#</a>Setting names starting with "secure." can't be set on the main settings object (<code>minetest.settings</code>).</li>
 </ul>
 </li>
 <li><a class="anchor" href="#set_boolkeyvalue" name="set_boolkeyvalue">#</a><code>set_bool(key, value)</code><ul>
 <li>See documentation for set() above.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#set_np_groupkeyvalue" name="set_np_groupkeyvalue">#</a><code>set_np_group(key, value)</code><ul>
+<li><a class="anchor" href="#value_3" name="value_3">#</a><code>value</code> is a NoiseParams table.</li>
+<li>Also, see documentation for set() above.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#removekey" name="removekey">#</a><code>remove(key)</code>: returns a boolean (<code>true</code> for success)</li>
@@ -4587,7 +4975,7 @@ the object.</p>
     * <code>pos2</code>: end of the ray
     * <code>objects</code> : if false, only nodes will be returned. Default is true.
     * `liquids' : if false, liquid nodes won't be returned. Default is false.</p>
-<h4 id="methods_17">Methods</h4>
+<h4 id="methods_18">Methods</h4>
 <ul>
 <li><a class="anchor" href="#next_2" name="next_2">#</a><code>next()</code>: returns a <code>pointed_thing</code><ul>
 <li>Returns the next thing pointed by the ray or nil.</li>
@@ -4636,7 +5024,7 @@ numeric unique decoration ID.</p>
 <h2 id="registered-entities">Registered entities</h2>
 <ul>
 <li><a class="anchor" href="#self" name="self">#</a>Functions receive a "luaentity" as <code>self</code>:<ul>
-<li><a class="anchor" href="#name_15" name="name_15">#</a>It has the member <code>.name</code>, which is the registered name <code>("mod:thing")</code></li>
+<li><a class="anchor" href="#name_20" name="name_20">#</a>It has the member <code>.name</code>, which is the registered name <code>("mod:thing")</code></li>
 <li><a class="anchor" href="#object" name="object">#</a>It has the member <code>.object</code>, which is an <code>ObjectRef</code> pointing to the object</li>
 <li>The original prototype stuff is visible directly via a metatable</li>
 </ul>
@@ -4662,8 +5050,10 @@ numeric unique decoration ID.</p>
 <li><a class="anchor" href="#time_from_last_punch_3" name="time_from_last_punch_3">#</a><code>time_from_last_punch</code>: Meant for disallowing spamming of clicks (can be <code>nil</code>)</li>
 <li><a class="anchor" href="#tool_capabilities_2" name="tool_capabilities_2">#</a><code>tool_capabilities</code>: capability table of used tool (can be <code>nil</code>)</li>
 <li><a class="anchor" href="#dir_1" name="dir_1">#</a><code>dir</code>: unit vector of direction of punch. Always defined. Points from
-    the puncher to the punched.
-<code>on_death(self, killer)</code></li>
+    the puncher to the punched.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#on_deathselfkiller" name="on_deathselfkiller">#</a><code>on_death(self, killer)</code><ul>
 <li>Called when the object dies.</li>
 <li><a class="anchor" href="#killer" name="killer">#</a><code>killer</code>: an <code>ObjectRef</code> (can be <code>nil</code>)</li>
 </ul>
@@ -4750,10 +5140,20 @@ minetest.spawn_tree(pos,apple_tree)
 <h3 id="object-properties">Object Properties</h3>
 <pre><code>{
     hp_max = 1,
+--  ^ For players: Defaults to `minetest.PLAYER_MAX_HP_DEFAULT`
+    breath_max = 0,
+--  ^ For players only. Defaults to `minetest.PLAYER_MAX_BREATH_DEFAULT`
+    can_zoom = true,
+--  ^ For players only. Enables the zoom feature. Defaults to true
+    eye_height = 1.625,
+--  ^ For players only. Camera height above feet position in nodes. Defaults to 1.625
     physical = true,
     collide_with_objects = true, -- collide with other objects if physical = true
     weight = 5,
     collisionbox = {-0.5, 0.0, -0.5, 0.5, 1.0, 0.5},
+    selectionbox = {-0.5, 0.0, -0.5, 0.5, 1.0, 0.5},
+--  ^ Default, uses collision box dimensions when not set
+    pointable = true, -- overrides selection box when false
     visual = "cube" / "sprite" / "upright_sprite" / "mesh" / "wielditem",
     visual_size = {x = 1, y = 1},
     mesh = "model",
@@ -4772,9 +5172,18 @@ minetest.spawn_tree(pos,apple_tree)
 --  ^ Limit automatic rotation to this value in degrees per second,
 --    value &lt; 0 no limit.
     backface_culling = true, -- false to disable backface_culling for model
+    glow = 0,
+--  ^ Add this much extra lighting when calculating texture color.
+--    Value &lt; 0 disables light's effect on texture color.
+--    For faking self-lighting, UI style entities, or programmatic coloring in mods.
     nametag = "", -- by default empty, for players their name is shown if empty
     nametag_color = &lt;color&gt;, -- sets color of nametag as ColorSpec
     infotext = "", -- by default empty, text to be shown when pointed at object
+    static_save = true,
+--  ^ If false, never save this object statically. It will simply be deleted when the
+--    block gets unloaded.
+--    The get_staticdata() callback is never called then.
+--    Defaults to 'true'
 }
 </code></pre>
 <h3 id="entity-definition-register_entity">Entity definition (<code>register_entity</code>)</h3>
@@ -4841,7 +5250,9 @@ minetest.spawn_tree(pos,apple_tree)
                         {bendy = 2, snappy = 1},
                         {hard = 1, metal = 1, spikes = 1}
     inventory_image = "default_tool_steelaxe.png",
+    inventory_overlay = "overlay.png", -- an overlay which does not get colorized
     wield_image = "",
+    wield_overlay = "",
     palette = "",
     --[[
     ^ An image file containing the palette of a node.
@@ -4876,6 +5287,13 @@ minetest.spawn_tree(pos,apple_tree)
     ^ Otherwise should be name of node which the client immediately places
       on ground when the player places the item. Server will always update
       actual result to client in a short moment.
+    ]]
+    node_dig_prediction = "air",
+    --[[
+    ^ if "", no prediction is made
+    ^ if "air", node is removed
+    ^ Otherwise should be name of node which the client immediately places
+      upon digging. Server will always update actual result shortly.
     ]]
     sound = {
         breaks = "default_tool_break", -- tools only
@@ -4932,13 +5350,22 @@ minetest.spawn_tree(pos,apple_tree)
 <ul>
 <li><a class="anchor" href="#imagepng" name="imagepng">#</a><code>"image.png"</code></li>
 <li><a class="anchor" href="#nameimagepnganimationTileAnimationdefinition" name="nameimagepnganimationTileAnimationdefinition">#</a><code>{name="image.png", animation={Tile Animation definition}}</code></li>
-<li><a class="anchor" href="#nameimagepngbackface_cullingbooltileable_verticalbooltileable_horizontalbool" name="nameimagepngbackface_cullingbooltileable_verticalbooltileable_horizontalbool">#</a><code>{name="image.png", backface_culling=bool, tileable_vertical=bool,
-    tileable_horizontal=bool}</code><ul>
+<li><a class="anchor" href="#nameimagepngbackface_cullingbooltileable_verticalbooltileable_horizontalboolalign_stylenodeworlduserscaleint" name="nameimagepngbackface_cullingbooltileable_verticalbooltileable_horizontalboolalign_stylenodeworlduserscaleint">#</a><code>{name="image.png", backface_culling=bool, tileable_vertical=bool,
+    tileable_horizontal=bool, align_style="node"/"world"/"user", scale=int}</code><ul>
 <li>backface culling enabled by default for most nodes</li>
 <li>tileable flags are info for shaders, how they should treat texture
   when displacement mapping is used
   Directions are from the point of view of the tile texture,
   not the node it's on</li>
+<li><a class="anchor" href="#glasslike_framed_optional_1" name="glasslike_framed_optional_1">#</a>align style determines whether the texture will be rotated with the node
+      or kept aligned with its surroundings. "user" means that client
+      setting will be used, similar to <code>glasslike_framed_optional</code>.
+      Note: supported by solid nodes and nodeboxes only.</li>
+<li><a class="anchor" href="#scale_3" name="scale_3">#</a>scale is used to make texture span several (exactly <code>scale</code>) nodes,
+      instead of just one, in each direction. Works for world-aligned
+      textures only.
+      Note that as the effect is applied on per-mapblock basis, <code>16</code> should
+      be equally divisible by <code>scale</code> or you may get wrong results.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#nameimagepngcolorColorSpec" name="nameimagepngcolorColorSpec">#</a><code>{name="image.png", color=ColorSpec}</code><ul>
@@ -4991,7 +5418,7 @@ minetest.spawn_tree(pos,apple_tree)
     ^ base tiles. You can use this to colorize only specific parts of
     ^ your texture. If the texture name is an empty string, that
     ^ overlay is not drawn. Since such tiles are drawn twice, it
-    ^ is not recommended to use overlays on very common nodes.
+    ^ is not recommended to use overlays on very common nodes. ]]
     special_tiles = {tile definition 1, Tile definition 2}, --[[
     ^ Special textures of node; used rarely (old field name: special_materials)
     ^ List can be shortened to needed length ]]
@@ -5028,9 +5455,11 @@ minetest.spawn_tree(pos,apple_tree)
     liquid_viscosity = 0, -- Higher viscosity = slower flow (max. 7)
     liquid_renewable = true, --[[
     ^ If true, a new liquid source can be created by placing two or more sources nearby ]]
-    leveled = 0, --[[
-    ^ Block contains level in param2. Value is default level, used for snow.
-    ^ Don't forget to use "leveled" type nodebox. ]]
+    leveled = 16, --[[
+    ^ Only valid for "nodebox" drawtype with 'type = "leveled"'.
+    ^ Allows defining the nodebox height without using param2.
+    ^ The nodebox height is 'leveled' / 64 nodes.
+    ^ The maximum value of 'leveled' is 127. ]]
     liquid_range = 8, -- number of flowing nodes around source (max. 8)
     drowning = 0, -- Player will take this amount of damage if no bubbles are left
     light_source = 0, --[[
@@ -5071,6 +5500,7 @@ minetest.spawn_tree(pos,apple_tree)
             {
                 items = {"foo:bar", "baz:frob"},  -- Items to drop.
                 rarity = 1,  -- Probability of dropping is 1 / rarity.
+                inherit_color = true, -- To inherit palette color from the node
             },
         },
     },
@@ -5101,6 +5531,7 @@ minetest.spawn_tree(pos,apple_tree)
     ^ Called after constructing node when node was placed using
       minetest.item_place_node / minetest.place_node
     ^ If return true no item is taken from itemstack
+^ `placer` may be any valid ObjectRef or nil
     ^ default: nil ]]
     after_dig_node = func(pos, oldnode, oldmetadata, digger), --[[
     ^ oldmetadata is in table format
@@ -5116,9 +5547,11 @@ minetest.spawn_tree(pos,apple_tree)
     ^ By default: Calls minetest.register_on_punchnode callbacks ]]
     on_rightclick = func(pos, node, clicker, itemstack, pointed_thing), --[[
     ^ default: nil
-    ^ if defined, itemstack will hold clicker's wielded item
+    ^ itemstack will hold clicker's wielded item
     ^ Shall return the leftover itemstack
-    ^ Note: pointed_thing can be nil, if a mod calls this function ]]
+    ^ Note: pointed_thing can be nil, if a mod calls this function
+      This function does not get triggered by clients &lt;=0.4.16 if the
+      "formspec" node metadata field is set ]]
 
     on_dig = func(pos, node, digger), --[[
     ^ default: minetest.node_dig
@@ -5210,44 +5643,90 @@ minetest.spawn_tree(pos,apple_tree)
 }
 </code></pre>
 <h3 id="ore-definition-register_ore">Ore definition (<code>register_ore</code>)</h3>
-<pre><code>{
-    ore_type = "scatter", -- See "Ore types"
+<pre><code>See 'Ore types' section above for essential information.
+
+{
+    ore_type = "scatter",
     ore = "default:stone_with_coal",
+    ore_param2 = 3,
+--  ^ Facedir rotation. Default is 0 (unchanged rotation)
     wherein = "default:stone",
 --  ^ a list of nodenames is supported too
-    clust_scarcity = 8*8*8,
+    clust_scarcity = 8 * 8 * 8,
 --  ^ Ore has a 1 out of clust_scarcity chance of spawning in a node
---  ^ This value should be *MUCH* higher than your intuition might tell you!
+--  ^ If the desired average distance between ores is 'd', set this to d * d * d.
     clust_num_ores = 8,
 --  ^ Number of ores in a cluster
     clust_size = 3,
 --  ^ Size of the bounding box of the cluster
---  ^ In this example, there is a 3x3x3 cluster where 8 out of the 27 nodes are coal ore
+--  ^ In this example, there is a 3 * 3 * 3 cluster where 8 out of the 27 nodes
+--  ^ are coal ore.
     y_min = -31000,
     y_max = 64,
 --  ^ Lower and upper limits for ore.
---  ^ Limits are relative to y = water_level - 1 for core mapgen, or
---  ^ relative to y = 0 for minetest.generate_ores().
     flags = "",
---  ^ Attributes for this ore generation
+--  ^ Attributes for this ore generation, see 'Ore attributes' section above.
     noise_threshold = 0.5,
---  ^ If noise is above this threshold, ore is placed.  Not needed for a uniform distribution
-    noise_params = {offset=0, scale=1, spread={x=100, y=100, z=100}, seed=23, octaves=3, persist=0.70}
---  ^ NoiseParams structure describing the perlin noise used for ore distribution.
---  ^ Needed for sheet ore_type.  Omit from scatter ore_type for a uniform ore distribution
-    random_factor = 1.0,
---  ^ Multiplier of the randomness contribution to the noise value at any
---  ^ given point to decide if ore should be placed.  Set to 0 for solid veins.
---  ^ This parameter is only valid for ore_type == "vein".
+--  ^ If noise is above this threshold, ore is placed. Not needed for a
+--  ^ uniform distribution.
+    noise_params = {
+        offset = 0,
+        scale = 1,
+        spread = {x = 100, y = 100, z = 100},
+        seed = 23,
+        octaves = 3,
+        persist = 0.7
+    },
+--  ^ NoiseParams structure describing one of the perlin noises used for ore
+--  ^ distribution.
+--  ^ Needed by "sheet", "puff", "blob" and "vein" ores.
+--  ^ Omit from "scatter" ore for a uniform ore distribution.
+--  ^ Omit from "stratum ore for a simple horizontal strata from y_min to y_max.
     biomes = {"desert", "rainforest"}
---  ^ List of biomes in which this decoration occurs.  Occurs in all biomes if this is omitted,
---  ^ and ignored if the Mapgen being used does not support biomes.
+--  ^ List of biomes in which this decoration occurs.
+--  ^ Occurs in all biomes if this is omitted, and ignored if the Mapgen being
+--  ^ used does not support biomes.
 --  ^ Can be a list of (or a single) biome names, IDs, or definitions.
+    column_height_min = 1,
+    column_height_max = 16,
+    column_midpoint_factor = 0.5,
+--  ^ See 'Ore types' section above.
+--  ^ The above 3 parameters are only valid for "sheet" ore.
+    np_puff_top = {
+        offset = 4,
+        scale = 2,
+        spread = {x = 100, y = 100, z = 100},
+        seed = 47,
+        octaves = 3,
+        persist = 0.7
+    },
+    np_puff_bottom = {
+        offset = 4,
+        scale = 2,
+        spread = {x = 100, y = 100, z = 100},
+        seed = 11,
+        octaves = 3,
+        persist = 0.7
+    },
+--  ^ See 'Ore types' section above.
+--  ^ The above 2 parameters are only valid for "puff" ore.
+    random_factor = 1.0,
+--  ^ See 'Ore types' section above.
+--  ^ Only valid for "vein" ore.
+    np_stratum_thickness = {
+        offset = 8,
+        scale = 4,
+        spread = {x = 100, y = 100, z = 100},
+        seed = 17,
+        octaves = 3,
+        persist = 0.7
+    },
+    stratum_thickness = 8,
+--  ^ See 'Ore types' section above.
+--  ^ The above 2 parameters are only valid for "stratum" ore.
 }
 </code></pre>
 <h3 id="biome-definition-register_biome">Biome definition (<code>register_biome</code>)</h3>
-<p><strong>Note</strong>
-The Biome API is still in an experimental phase and subject to change.</p>
 <pre><code>{
     name = "tundra",
     node_dust = "default:snow",
@@ -5273,14 +5752,6 @@ The Biome API is still in an experimental phase and subject to change.</p>
     y_min = 1,
     y_max = 31000,
 --  ^ Lower and upper limits for biome.
---  ^ Limits are relative to y = water_level - 1.
---  ^ Because biome is not recalculated for every node in a node column
---  ^ some biome materials can exceed their limits, especially stone.
---  ^ For each node column in a mapchunk, biome is only recalculated at column
---  ^ top and at each of these surfaces:
---  ^ Ground below air, water below air, ground below water.
---  ^ The selected biome then stays in effect for all nodes below until
---  ^ column base or the next biome recalculation.
     heat_point = 0,
     humidity_point = 50,
 --  ^ Characteristic average temperature and humidity for the biome.
@@ -5292,7 +5763,7 @@ The Biome API is still in an experimental phase and subject to change.</p>
 --  ^ diagram to result in roughly equal size biomes.
 --  ^ Heat and humidity have average values of 50, vary mostly between
 --  ^ 0 and 100 but also often exceed these values.
---  ^ Heat is not in degrees celcius, both values are abstract.
+--  ^ Heat is not in degrees Celsius, both values are abstract.
 }
 </code></pre>
 <h3 id="decoration-definition-register_decoration">Decoration definition (<code>register_decoration</code>)</h3>
@@ -5316,36 +5787,54 @@ The Biome API is still in an experimental phase and subject to change.</p>
     y_min = -31000
     y_max = 31000
 --  ^ Lower and upper limits for decoration.
---  ^ Limits are relative to y = water_level - 1 for core mapgen, or
---  ^ relative to y = 0 for minetest.generate_decorations().
---  ^ This parameter refers to the `y` position of the decoration base, so
---    the actual maximum height would be `height_max + size.Y`.
+--  ^ These parameters refer to the Y co-ordinate of the 'place_on' node.
     spawn_by = "default:water",
 --  ^ Node (or list of nodes) that the decoration only spawns next to.
 --  ^ Checks two horizontal planes of neighbouring nodes (including diagonal neighbours),
---  ^ one plane at Y = surface and one plane at Y = surface = + 1.
+--  ^ one plane level with the 'place_on' node and a plane one node above that.
     num_spawn_by = 1,
 --  ^ Number of spawn_by nodes that must be surrounding the decoration position to occur.
 --  ^ If absent or -1, decorations occur next to any nodes.
-    flags = "liquid_surface, force_placement",
+    flags = "liquid_surface, force_placement, all_floors, all_ceilings",
 --  ^ Flags for all decoration types.
 --  ^ "liquid_surface": Instead of placement on the highest solid surface
---  ^ in a mapchunk column, placement is on the highest liquid surface.
---  ^ Placement is disabled if solid nodes are found above the liquid surface.
---  ^ "force_placement": Nodes other than "air" and "ignore" are replaced by the decoration.
+--  ^   in a mapchunk column, placement is on the highest liquid surface.
+--  ^   Placement is disabled if solid nodes are found above the liquid
+--  ^   surface.
+--  ^ "force_placement": Nodes other than "air" and "ignore" are replaced
+--  ^   by the decoration.
+--  ^ "all_floors", "all_ceilings": Instead of placement on the highest
+--  ^   surface in a mapchunk the decoration is placed on all floor and/or
+--  ^   ceiling surfaces, for example in caves.
+--  ^   Ceiling decorations act as an inversion of floor decorations so the
+--  ^   effect of 'place_offset_y' is inverted.
+--  ^   If a single decoration registration has both flags the floor and
+--  ^   ceiling decorations will be aligned vertically and may sometimes
+--  ^   meet to form a column.
 
     ----- Simple-type parameters
     decoration = "default:grass",
 --  ^ The node name used as the decoration.
 --  ^ If instead a list of strings, a randomly selected node from the list is placed as the decoration.
     height = 1,
---  ^ Number of nodes high the decoration is made.
---  ^ If height_max is not 0, this is the lower bound of the randomly selected height.
+--  ^ Decoration height in nodes.
+--  ^ If height_max is not 0, this is the lower limit of a randomly selected height.
     height_max = 0,
---  ^ Number of nodes the decoration can be at maximum.
+--  ^ Upper limit of the randomly selected height.
 --  ^ If absent, the parameter 'height' is used as a constant.
     param2 = 0,
---  ^ Param2 value of placed decoration node.
+--  ^ Param2 value of decoration nodes.
+--  ^ If param2_max is not 0, this is the lower limit of a randomly selected param2.
+    param2_max = 0,
+--  ^ Upper limit of the randomly selected param2.
+--  ^ If absent, the parameter 'param2' is used as a constant.
+    place_offset_y = 0,
+--  ^ Y offset of the decoration base node relative to the standard base
+--  ^ node position.
+--  ^ Can be positive or negative. Default is 0.
+--  ^ Effect is inverted for "all_ceilings" decorations.
+--  ^ Ignored by 'y_min', 'y_max' and 'spawn_by' checks, which always refer
+--  ^ to the 'place_on' node.
 
     ----- Schematic-type parameters
     schematic = "foobar.mts",
@@ -5375,6 +5864,14 @@ The Biome API is still in an experimental phase and subject to change.</p>
 --  ^ Flags for schematic decorations.  See 'Schematic attributes'.
     rotation = "90" -- rotate schematic 90 degrees on placement
 --  ^ Rotation can be "0", "90", "180", "270", or "random".
+    place_offset_y = 0,
+--  ^ If the flag 'place_center_y' is set this parameter is ignored.
+--  ^ Y offset of the schematic base node layer relative to the 'place_on'
+--  ^ node.
+--  ^ Can be positive or negative. Default is 0.
+--  ^ Effect is inverted for "all_ceilings" decorations.
+--  ^ Ignored by 'y_min', 'y_max' and 'spawn_by' checks, which always refer
+--  ^ to the 'place_on' node.
 }
 </code></pre>
 <h3 id="chat-command-definition-register_chatcommand">Chat command definition (<code>register_chatcommand</code>)</h3>
@@ -5515,7 +6012,7 @@ The Biome API is still in an experimental phase and subject to change.</p>
     completed = true,
  -- ^ If true, the request has finished (either succeeded, failed or timed out)
     succeeded = true,
- -- ^ If true, the request was succesful
+ -- ^ If true, the request was successful
     timeout = false,
  -- ^ If true, the request timed out
     code = 200,
