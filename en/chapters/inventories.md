@@ -102,7 +102,7 @@ minetest.create_detached_inventory("inventory_name", callbacks)
 {% endhighlight %}
 
 This creates a detached inventory or, if the inventory already exists, it is cleared.
-You can also supply a [table of callbacks](../lua_api.html#detached-inventory-callbacks).
+You can also supply a [table of callbacks]({{ page.root }}lua_api.html#detached-inventory-callbacks).
 
 ## InvRef and Lists
 

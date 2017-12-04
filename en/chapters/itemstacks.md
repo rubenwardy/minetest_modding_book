@@ -134,5 +134,5 @@ items:set_metadata(meta)
 ## More Methods
 
 Have a look at the
-[list of methods for an ItemStack](http://rubenwardy.com/minetest_modding_book/lua_api.html#methods_5).
+[list of methods for an ItemStack]({{ page.root }}lua_api.html#methods_5).
 There are a lot more available than talked about here.
