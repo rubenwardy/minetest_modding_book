@@ -25,6 +25,8 @@
   num:   5
   link:  chapters/node_drawtypes.html
 
+- hr: true
+
 - title: Node Metadata
   num:   6
   link:  chapters/node_metadata.html

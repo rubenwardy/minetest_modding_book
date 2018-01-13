@@ -4,7 +4,7 @@ layout: default
 ---
 <div class='notice'>
 <h2>This is lua_api.txt nicely formated: I did not write this</h2>
-This page was last updated 28/November/2017.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
+This page was last updated 13/January/2018.<br />See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br />Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.</div>
 <h2 id="table-of-contents">Table of Contents</h2>
 <div class="toc">
 <ul>
@@ -411,24 +411,25 @@ This page was last updated 28/November/2017.<br />See <a href="https://github.co
 <li><a href="#particlespawner-definition-add_particlespawner">ParticleSpawner definition (add_particlespawner)</a></li>
 <li><a href="#httprequest-definition-httpapitablefetch_async-httpapitablefetch_async">HTTPRequest definition (HTTPApiTable.fetch_async, HTTPApiTable.fetch_async)</a></li>
 <li><a href="#httprequestresult-definition-httpapitablefetch-callback-httpapitablefetch_async_get">HTTPRequestResult definition (HTTPApiTable.fetch callback, HTTPApiTable.fetch_async_get)</a></li>
+<li><a href="#authentication-handler-definition">Authentication handler definition</a></li>
 </ul>
 </li>
 </ul>
 </div>
 
 <h2 id="introduction">Introduction</h2>
-<p>Content and functionality can be added to Minetest 0.4 by using Lua
-scripting in run-time loaded mods.</p>
+<p>Content and functionality can be added to Minetest using Lua scripting
+in run-time loaded mods.</p>
 <p>A mod is a self-contained bunch of scripts, textures and other related
-things that is loaded by and interfaces with Minetest.</p>
+things, which is loaded by and interfaces with Minetest.</p>
 <p>Mods are contained and ran solely on the server side. Definitions and media
 files are automatically transferred to the client.</p>
 <p>If you see a deficiency in the API, feel free to attempt to add the
-functionality in the engine and API.</p>
+functionality in the engine and API, and to document it here.</p>
 <ul>
 <li>More information at <a href="http://www.minetest.net/">http://www.minetest.net/</a></li>
 <li>Developer Wiki: <a href="http://dev.minetest.net/">http://dev.minetest.net/</a></li>
-</ul>This page was last updated 28/November/2017.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
+</ul>This page was last updated 13/January/2018.<br/>See <a href="https://github.com/minetest/minetest/blob/master/doc/lua_api.txt">doc/lua_api.txt</a> for the latest version (in plaintext).<br/>Generated using <a href="https://github.com/rubenwardy/minetest_modding_book/blob/gh-pages/update_lua_api.py">a Python script</a>.<h2 id="programming-in-lua">Programming in Lua</h2>
 <p>If you have any difficulty in understanding this, please read
 <a href="http://www.lua.org/pil/">Programming in Lua</a>.</p>
 <h2 id="startup">Startup</h2>
@@ -470,12 +471,19 @@ the <code>init.lua</code> scripts in a shared environment.</p>
 <li><a class="anchor" href="#path_usergamesgameid" name="path_usergamesgameid">#</a><code>$path_user/games/gameid/</code></li>
 </ul>
 <p>where <code>gameid</code> is unique to each game.</p>
-<p>The game directory contains the file <code>game.conf</code>, which contains these fields:</p>
+<p>The game directory contains the file <code>game.conf</code>, which contains:</p>
 <pre><code>name = &lt;Human-readable full name of the game&gt;
 </code></pre>
 <p>e.g.</p>
 <pre><code>name = Minetest
 </code></pre>
+<p>Optionally, game.conf can also contain:</p>
+<pre><code>disallowed_mapgens = &lt;comma-separated mapgens&gt;
+</code></pre>
+<p>e.g.</p>
+<pre><code>disallowed_mapgens = v5,v6,flat
+</code></pre>
+<p>These mapgens are removed from the list of mapgens for the game.</p>
 <p>The game directory can contain the file minetest.conf, which will be used
 to set default settings when running the particular game.
 It can also contain a settingtypes.txt in the same format as the one in builtin.
@@ -549,13 +557,13 @@ empty, except for lines starting with <code>#</code>, which are comments.</p>
 <p>List of mods that have to be loaded before loading this mod.</p>
 <p>A single line contains a single modname.</p>
 <p>Optional dependencies can be defined by appending a question mark
-to a single modname. Their meaning is that if the specified mod
-is missing, that does not prevent this mod from being loaded.</p>
+to a single modname. This means that if the specified mod
+is missing, it does not prevent this mod from being loaded.</p>
 <h3 id="screenshotpng"><code>screenshot.png</code></h3>
 <p>A screenshot shown in the mod manager within the main menu. It should
 have an aspect ratio of 3:2 and a minimum size of 300×200 pixels.</p>
 <h3 id="descriptiontxt"><code>description.txt</code></h3>
-<p>A File containing description to be shown within mainmenu.</p>
+<p>A file containing a description to be shown in the Mods tab of the mainmenu.</p>
 <h3 id="settingtypestxt"><code>settingtypes.txt</code></h3>
 <p>A file in the same format as the one in builtin. It will be parsed by the
 settings menu and the settings will be displayed in the "Mods" category.</p>
@@ -595,14 +603,13 @@ be used for overriding the registrations of some other mod.</p>
 <h2 id="aliases">Aliases</h2>
 <p>Aliases can be added by using <code>minetest.register_alias(name, convert_to)</code> or
 <code>minetest.register_alias_force(name, convert_to)</code>.</p>
-<p>This will make Minetest to convert things called name to things called
-<code>convert_to</code>.</p>
+<p>This converts anything called <code>name</code> to <code>convert_to</code>.</p>
 <p>The only difference between <code>minetest.register_alias</code> and
 <code>minetest.register_alias_force</code> is that if an item called <code>name</code> exists,
 <code>minetest.register_alias</code> will do nothing while
 <code>minetest.register_alias_force</code> will unregister it.</p>
 <p>This can be used for maintaining backwards compatibility.</p>
-<p>This can be also used for setting quick access names for things, e.g. if
+<p>This can also set quick access names for things, e.g. if
 you have an item called <code>epiclylongmodname:stuff</code>, you could do</p>
 <pre><code>minetest.register_alias("stuff", "epiclylongmodname:stuff")
 </code></pre>
@@ -679,7 +686,7 @@ to generate textures on-the-fly.</p>
 <p>Example:</p>
 <pre><code>default_dirt.png^default_grass_side.png
 </code></pre>
-<p><code>default_grass_side.png</code> is overlayed over <code>default_dirt.png</code>.
+<p><code>default_grass_side.png</code> is overlaid over <code>default_dirt.png</code>.
 The texture with the lower resolution will be automatically upscaled to
 the higher resolution texture.</p>
 <h3 id="texture-grouping">Texture grouping</h3>
@@ -1324,6 +1331,17 @@ number of boxes. It allows defining stuff like stairs and slabs.</p>
     connect_left = box OR {box1, box2, ...}
     connect_back = box OR {box1, box2, ...}
     connect_right = box OR {box1, box2, ...}
+    -- The following `disconnected_*` boxes are the opposites of the
+    -- `connect_*` ones above, i.e. when a node has no suitable neighbour
+    -- on the respective side, the corresponding disconnected box is drawn.
+    disconnected_top = box OR {box1, box2, ...}
+    disconnected_bottom = box OR {box1, box2, ...}
+    disconnected_front = box OR {box1, box2, ...}
+    disconnected_left = box OR {box1, box2, ...}
+    disconnected_back = box OR {box1, box2, ...}
+    disconnected_right = box OR {box1, box2, ...}
+    disconnected = box OR {box1, box2, ...} -- when there is *no* neighbour
+    disconnected_sides = box OR {box1, box2, ...} -- when there are *no* neighbours to the sides
 }
 </code></pre>
 <p>A <code>box</code> is defined as:</p>
@@ -1417,7 +1435,7 @@ If <code>column_height_min</code> is not specified, this parameter defaults to 1
 If <code>column_height_max</code> is not specified, this parameter defaults to <code>clust_size</code>
 for reverse compatibility.  New code should prefer <code>column_height_max</code>.</p>
 <p>The <code>column_midpoint_factor</code> parameter controls the position of the column at which
-ore eminates from.  If 1, columns grow upward.  If 0, columns grow downward.  If 0.5,
+ore emanates from.  If 1, columns grow upward.  If 0, columns grow downward.  If 0.5,
 columns grow equally starting from each direction.  <code>column_midpoint_factor</code> is a
 decimal number ranging in value from 0 to 1.  If this parameter is not specified,
 the default is 0.5.</p>
@@ -2474,28 +2492,71 @@ The following functions provide escape sequences:</p>
 </li>
 </ul>
 <h2 id="spatial-vectors">Spatial Vectors</h2>
+<p>For the following functions, <code>v</code>, <code>v1</code>, <code>v2</code> are vectors, <code>p1</code>, <code>p2</code> are positions:</p>
 <ul>
-<li><a class="anchor" href="#vectornewabc" name="vectornewabc">#</a><code>vector.new(a[, b, c])</code>: returns a vector:<ul>
+<li><a class="anchor" href="#vectornewabc" name="vectornewabc">#</a><code>vector.new(a[, b, c])</code>:<ul>
+<li>Returns a vector.</li>
 <li><a class="anchor" href="#a" name="a">#</a>A copy of <code>a</code> if <code>a</code> is a vector.</li>
-<li><a class="anchor" href="#xaybzc" name="xaybzc">#</a><code>{x = a, y = b, z = c}</code>, if all <code>a, b, c</code> are defined</li>
+<li><a class="anchor" href="#xaybzc" name="xaybzc">#</a><code>{x = a, y = b, z = c}</code>, if all of <code>a</code>, <code>b</code>, <code>c</code> are defined numbers.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#vectordirectionp1p2" name="vectordirectionp1p2">#</a><code>vector.direction(p1, p2)</code>: returns a vector</li>
-<li><a class="anchor" href="#vectordistancep1p2" name="vectordistancep1p2">#</a><code>vector.distance(p1, p2)</code>: returns a number</li>
-<li><a class="anchor" href="#vectorlengthv" name="vectorlengthv">#</a><code>vector.length(v)</code>: returns a number</li>
-<li><a class="anchor" href="#vectornormalizev" name="vectornormalizev">#</a><code>vector.normalize(v)</code>: returns a vector</li>
-<li><a class="anchor" href="#vectorfloorv" name="vectorfloorv">#</a><code>vector.floor(v)</code>: returns a vector, each dimension rounded down</li>
-<li><a class="anchor" href="#vectorroundv" name="vectorroundv">#</a><code>vector.round(v)</code>: returns a vector, each dimension rounded to nearest int</li>
-<li><a class="anchor" href="#vectorapplyvfunc" name="vectorapplyvfunc">#</a><code>vector.apply(v, func)</code>: returns a vector</li>
-<li><a class="anchor" href="#vectorequalsv1v2" name="vectorequalsv1v2">#</a><code>vector.equals(v1, v2)</code>: returns a boolean</li>
-<li><a class="anchor" href="#vectorsortv1v2" name="vectorsortv1v2">#</a><code>vector.sort(v1, v2)</code>: returns minp, maxp vectors of the cuboid defined by v1 and v2</li>
+<li><a class="anchor" href="#vectordirectionp1p2" name="vectordirectionp1p2">#</a><code>vector.direction(p1, p2)</code>:<ul>
+<li><a class="anchor" href="#p1" name="p1">#</a>Returns a vector of length 1 with direction <code>p1</code> to <code>p2</code>.</li>
+<li><a class="anchor" href="#p1_1" name="p1_1">#</a>If <code>p1</code> and <code>p2</code> are identical, returns <code>{x = 0, y = 0, z = 0}</code>.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectordistancep1p2" name="vectordistancep1p2">#</a><code>vector.distance(p1, p2)</code>:<ul>
+<li><a class="anchor" href="#p1_2" name="p1_2">#</a>Returns zero or a positive number, the distance between <code>p1</code> and <code>p2</code>.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectorlengthv" name="vectorlengthv">#</a><code>vector.length(v)</code>:<ul>
+<li><a class="anchor" href="#v" name="v">#</a>Returns zero or a positive number, the length of vector <code>v</code>.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectornormalizev" name="vectornormalizev">#</a><code>vector.normalize(v)</code>:<ul>
+<li><a class="anchor" href="#v_1" name="v_1">#</a>Returns a vector of length 1 with direction of vector <code>v</code>.</li>
+<li><a class="anchor" href="#v_2" name="v_2">#</a>If <code>v</code> has zero length, returns <code>{x = 0, y = 0, z = 0}</code>.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectorfloorv" name="vectorfloorv">#</a><code>vector.floor(v)</code>:<ul>
+<li>Returns a vector, each dimension rounded down.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectorroundv" name="vectorroundv">#</a><code>vector.round(v)</code>:<ul>
+<li>Returns a vector, each dimension rounded to nearest integer.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectorapplyvfunc" name="vectorapplyvfunc">#</a><code>vector.apply(v, func)</code>:<ul>
+<li><a class="anchor" href="#func" name="func">#</a>Returns a vector where the function <code>func</code> has been applied to each component.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectorequalsv1v2" name="vectorequalsv1v2">#</a><code>vector.equals(v1, v2)</code>:<ul>
+<li><a class="anchor" href="#true_4" name="true_4">#</a>Returns a boolean, <code>true</code> if the vectors are identical.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectorsortv1v2" name="vectorsortv1v2">#</a><code>vector.sort(v1, v2)</code>:<ul>
+<li><a class="anchor" href="#v1" name="v1">#</a>Returns in order minp, maxp vectors of the cuboid defined by <code>v1</code>, <code>v2</code>.</li>
+</ul>
+</li>
 </ul>
 <p>For the following functions <code>x</code> can be either a vector or a number:</p>
 <ul>
-<li><a class="anchor" href="#vectoraddvx" name="vectoraddvx">#</a><code>vector.add(v, x)</code>: returns a vector</li>
-<li><a class="anchor" href="#vectorsubtractvx" name="vectorsubtractvx">#</a><code>vector.subtract(v, x)</code>: returns a vector</li>
-<li><a class="anchor" href="#vectormultiplyvx" name="vectormultiplyvx">#</a><code>vector.multiply(v, x)</code>: returns a scaled vector or Schur product</li>
-<li><a class="anchor" href="#vectordividevx" name="vectordividevx">#</a><code>vector.divide(v, x)</code>: returns a scaled vector or Schur quotient</li>
+<li><a class="anchor" href="#vectoraddvx" name="vectoraddvx">#</a><code>vector.add(v, x)</code>:<ul>
+<li>Returns a vector.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectorsubtractvx" name="vectorsubtractvx">#</a><code>vector.subtract(v, x)</code>:<ul>
+<li>Returns a vector.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectormultiplyvx" name="vectormultiplyvx">#</a><code>vector.multiply(v, x)</code>:<ul>
+<li>Returns a scaled vector or Schur product.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#vectordividevx" name="vectordividevx">#</a><code>vector.divide(v, x)</code>:<ul>
+<li>Returns a scaled vector or Schur quotient.</li>
+</ul>
+</li>
 </ul>
 <h2 id="helper-functions">Helper functions</h2>
 <ul>
@@ -2644,7 +2705,7 @@ The file should be a text file, with the following format:</p>
   when translation. Due to how translations are implemented, the original translation string <strong>must</strong> have
   its arguments in increasing order, without gaps or repetitions, starting from 1.
 <em> <code>@=</code> acts as a literal <code>=</code>. It is not required in strings given to <code>minetest.translate</code>, but is in translation
-  files to avoid begin confused with the <code>=</code> separating the original from the translation.
+  files to avoid being confused with the <code>=</code> separating the original from the translation.
 </em> <code>@\n</code> (where the <code>\n</code> is a literal newline) acts as a literal newline. As with <code>@=</code>, this escape is not required
   in strings given to <code>minetest.translate</code>, but is in translation files.
 * <code>@n</code> acts as a literal newline as well.</p>
@@ -2736,7 +2797,7 @@ The file should be a text file, with the following format:</p>
 <li><a class="anchor" href="#hash" name="hash">#</a><code>hash</code>: Full git version (only set if available), eg, "1.2.3-dev-01234567-dirty"
   Use this for informational purposes only. The information in the returned
   table does not represent the capabilities of the engine, nor is it
-  reliable or verifyable. Compatible forks will have a different name and
+  reliable or verifiable. Compatible forks will have a different name and
   version entirely. To check for the presence of engine features, test
   whether the functions exported by the wanted features exist. For example:
   <code>if minetest.check_for_falling then ... end</code>.</li>
@@ -2822,7 +2883,7 @@ The file should be a text file, with the following format:</p>
 </li>
 <li><a class="anchor" href="#minetestregister_on_placenodefuncposnewnodeplaceroldnodeitemstackpointed_thing" name="minetestregister_on_placenodefuncposnewnodeplaceroldnodeitemstackpointed_thing">#</a><code>minetest.register_on_placenode(func(pos, newnode, placer, oldnode, itemstack, pointed_thing))</code><ul>
 <li>Called when a node has been placed</li>
-<li><a class="anchor" href="#true_4" name="true_4">#</a>If return <code>true</code> no item is taken from <code>itemstack</code></li>
+<li><a class="anchor" href="#true_5" name="true_5">#</a>If return <code>true</code> no item is taken from <code>itemstack</code></li>
 <li><a class="anchor" href="#placer" name="placer">#</a><code>placer</code> may be any valid ObjectRef or nil.</li>
 <li><a class="anchor" href="#on_construct" name="on_construct">#</a><strong>Not recommended</strong>; use <code>on_construct</code> or <code>after_place_node</code> in node definition
   whenever possible</li>
@@ -2860,7 +2921,7 @@ The file should be a text file, with the following format:</p>
 <li><a class="anchor" href="#dir" name="dir">#</a><code>dir</code>: unit vector of direction of punch. Always defined. Points from
    the puncher to the punched.</li>
 <li><a class="anchor" href="#damage_1" name="damage_1">#</a><code>damage</code> - number that represents the damage calculated by the engine</li>
-<li><a class="anchor" href="#true_5" name="true_5">#</a>should return <code>true</code> to prevent the default damage mechanism</li>
+<li><a class="anchor" href="#true_6" name="true_6">#</a>should return <code>true</code> to prevent the default damage mechanism</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_on_player_hpchangefuncplayerhp_changemodifier" name="minetestregister_on_player_hpchangefuncplayerhp_changemodifier">#</a><code>minetest.register_on_player_hpchange(func(player, hp_change), modifier)</code><ul>
@@ -2908,13 +2969,13 @@ The file should be a text file, with the following format:</p>
 </li>
 <li><a class="anchor" href="#minetestregister_on_chat_messagefuncnamemessage" name="minetestregister_on_chat_messagefuncnamemessage">#</a><code>minetest.register_on_chat_message(func(name, message))</code><ul>
 <li>Called always when a player says something</li>
-<li><a class="anchor" href="#true_6" name="true_6">#</a>Return <code>true</code> to mark the message as handled, which means that it will not be sent to other players</li>
+<li><a class="anchor" href="#true_7" name="true_7">#</a>Return <code>true</code> to mark the message as handled, which means that it will not be sent to other players</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_on_player_receive_fieldsfuncplayerformnamefields" name="minetestregister_on_player_receive_fieldsfuncplayerformnamefields">#</a><code>minetest.register_on_player_receive_fields(func(player, formname, fields))</code><ul>
 <li>Called when a button is pressed in player's inventory form</li>
 <li>Newest functions are called first</li>
-<li><a class="anchor" href="#true_7" name="true_7">#</a>If function returns <code>true</code>, remaining functions are not called</li>
+<li><a class="anchor" href="#true_8" name="true_8">#</a>If function returns <code>true</code>, remaining functions are not called</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_on_craftfuncitemstackplayerold_craft_gridcraft_inv" name="minetestregister_on_craftfuncitemstackplayerold_craft_gridcraft_inv">#</a><code>minetest.register_on_craft(func(itemstack, player, old_craft_grid, craft_inv))</code><ul>
@@ -2941,7 +3002,7 @@ The file should be a text file, with the following format:</p>
 </li>
 <li><a class="anchor" href="#minetestregister_on_item_eatfunchp_changereplace_with_itemitemstackuserpointed_thing" name="minetestregister_on_item_eatfunchp_changereplace_with_itemitemstackuserpointed_thing">#</a><code>minetest.register_on_item_eat(func(hp_change, replace_with_item, itemstack, user, pointed_thing))</code><ul>
 <li><a class="anchor" href="#minetestitem_eat" name="minetestitem_eat">#</a>Called when an item is eaten, by <code>minetest.item_eat</code></li>
-<li><a class="anchor" href="#true_8" name="true_8">#</a>Return <code>true</code> or <code>itemstack</code> to cancel the default item eat response (i.e.: hp increase)</li>
+<li><a class="anchor" href="#true_9" name="true_9">#</a>Return <code>true</code> or <code>itemstack</code> to cancel the default item eat response (i.e.: hp increase)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_on_priv_grantfunctionnamegranterpriv" name="minetestregister_on_priv_grantfunctionnamegranterpriv">#</a><code>minetest.register_on_priv_grant(function(name, granter, priv))</code><ul>
@@ -2958,7 +3019,7 @@ The file should be a text file, with the following format:</p>
 </li>
 <li><a class="anchor" href="#minetestregister_can_bypass_userlimitfunctionnameip" name="minetestregister_can_bypass_userlimitfunctionnameip">#</a><code>minetest.register_can_bypass_userlimit(function(name, ip))</code><ul>
 <li><a class="anchor" href="#name_12" name="name_12">#</a>Called when <code>name</code> user connects with <code>ip</code>.</li>
-<li><a class="anchor" href="#true_9" name="true_9">#</a>Return <code>true</code> to by pass the player limit</li>
+<li><a class="anchor" href="#true_10" name="true_10">#</a>Return <code>true</code> to by pass the player limit</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestregister_on_modchannel_messagefuncchannel_namesendermessage" name="minetestregister_on_modchannel_messagefuncchannel_namesendermessage">#</a><code>minetest.register_on_modchannel_message(func(channel_name, sender, message))</code><ul>
@@ -2996,8 +3057,9 @@ The file should be a text file, with the following format:</p>
 <li>Return true in the above callbacks to stop register_on_priv_grant or revoke being called.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestregister_authentication_handlerhandler" name="minetestregister_authentication_handlerhandler">#</a><code>minetest.register_authentication_handler(handler)</code><ul>
-<li><a class="anchor" href="#minetestbuiltin_auth_handler" name="minetestbuiltin_auth_handler">#</a>See <code>minetest.builtin_auth_handler</code> in <code>builtin.lua</code> for reference</li>
+<li><a class="anchor" href="#minetestregister_authentication_handlerauthenticationhandlerdefinition" name="minetestregister_authentication_handlerauthenticationhandlerdefinition">#</a><code>minetest.register_authentication_handler(authentication handler definition)</code><ul>
+<li>Registers an auth handler that overrides the builtin one</li>
+<li>This function can be called by a single mod once only.</li>
 </ul>
 </li>
 </ul>
@@ -3010,47 +3072,66 @@ The file should be a text file, with the following format:</p>
 </ul>
 <h3 id="authentication">Authentication</h3>
 <ul>
-<li><a class="anchor" href="#minetestnotify_authentication_modifiedname" name="minetestnotify_authentication_modifiedname">#</a><code>minetest.notify_authentication_modified(name)</code><ul>
-<li>Should be called by the authentication handler if privileges changes.</li>
-<li><a class="anchor" href="#name_13" name="name_13">#</a><code>name</code>: string, if omitted, everybody is reported</li>
-</ul>
-</li>
-<li><a class="anchor" href="#minetestcheck_password_entrynameentrypassword" name="minetestcheck_password_entrynameentrypassword">#</a><code>minetest.check_password_entry(name, entry, password)</code><ul>
-<li>Returns true if the "db entry" for a player with name matches given</li>
-<li>password, false otherwise.</li>
-<li>The "db entry" is the usually player-individual value that is derived</li>
-<li>from the player's chosen password and stored on the server in order to allow</li>
-<li>authentication whenever the player desires to log in.</li>
-<li>Only use this function for making it possible to log in via the password from</li>
-<li>via protocols like IRC, other uses for inside the game are frowned upon.</li>
-</ul>
-</li>
-<li><a class="anchor" href="#minetestget_password_hashnameraw_password" name="minetestget_password_hashnameraw_password">#</a><code>minetest.get_password_hash(name, raw_password)</code><ul>
-<li>Convert a name-password pair to a password hash that Minetest can use.</li>
-<li>The returned value alone is not a good basis for password checks based</li>
-<li>on comparing the password hash in the database with the password hash</li>
-<li>from the function, with an externally provided password, as the hash</li>
-<li>in the db might use the new SRP verifier format.</li>
-<li><a class="anchor" href="#minetestcheck_password_entry" name="minetestcheck_password_entry">#</a>For this purpose, use <code>minetest.check_password_entry</code> instead.</li>
-</ul>
-</li>
 <li><a class="anchor" href="#mineteststring_to_privsstr" name="mineteststring_to_privsstr">#</a><code>minetest.string_to_privs(str)</code>: returns <code>{priv1=true,...}</code></li>
 <li><a class="anchor" href="#minetestprivs_to_stringprivs" name="minetestprivs_to_stringprivs">#</a><code>minetest.privs_to_string(privs)</code>: returns <code>"priv1,priv2,..."</code><ul>
 <li>Convert between two privilege representations</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestset_player_passwordnamepassword_hash" name="minetestset_player_passwordnamepassword_hash">#</a><code>minetest.set_player_password(name, password_hash)</code></li>
-<li><a class="anchor" href="#minetestset_player_privsnamepriv1true" name="minetestset_player_privsnamepriv1true">#</a><code>minetest.set_player_privs(name, {priv1=true,...})</code></li>
 <li><a class="anchor" href="#minetestget_player_privsnamepriv1true" name="minetestget_player_privsnamepriv1true">#</a><code>minetest.get_player_privs(name) -&gt; {priv1=true,...}</code></li>
-<li><a class="anchor" href="#minetestauth_reload" name="minetestauth_reload">#</a><code>minetest.auth_reload()</code></li>
-<li><a class="anchor" href="#minetestcheck_player_privsplayer_or_name" name="minetestcheck_player_privsplayer_or_name">#</a><code>minetest.check_player_privs(player_or_name, ...)</code>: returns <code>bool, missing_privs</code><ul>
+<li><a class="anchor" href="#minetestcheck_player_privsplayer_or_name" name="minetestcheck_player_privsplayer_or_name">#</a>
+<p><code>minetest.check_player_privs(player_or_name, ...)</code>: returns <code>bool, missing_privs</code></p>
+<ul>
 <li>A quickhand for checking privileges.</li>
 <li><a class="anchor" href="#player_or_name" name="player_or_name">#</a><code>player_or_name</code>: Either a Player object or the name of a player.</li>
 <li><code>...</code> is either a list of strings, e.g. <code>"priva", "privb"</code> or
   a table, e.g. <code>{ priva = true, privb = true }</code>.</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestget_player_ipname" name="minetestget_player_ipname">#</a><code>minetest.get_player_ip(name)</code>: returns an IP address string</li>
+<li><a class="anchor" href="#minetestcheck_password_entrynameentrypassword" name="minetestcheck_password_entrynameentrypassword">#</a>
+<p><code>minetest.check_password_entry(name, entry, password)</code></p>
+<ul>
+<li>Returns true if the "password entry" for a player with name matches given
+  password, false otherwise.</li>
+<li><a class="anchor" href="#get_auth" name="get_auth">#</a>The "password entry" is the password representation generated by the engine
+  as returned as part of a <code>get_auth()</code> call on the auth handler.</li>
+<li>Only use this function for making it possible to log in via password from
+  external protocols such as IRC, other uses are frowned upon.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestget_password_hashnameraw_password" name="minetestget_password_hashnameraw_password">#</a><code>minetest.get_password_hash(name, raw_password)</code><ul>
+<li>Convert a name-password pair to a password hash that Minetest can use.</li>
+<li>The returned value alone is not a good basis for password checks based
+  on comparing the password hash in the database with the password hash
+  from the function, with an externally provided password, as the hash
+  in the db might use the new SRP verifier format.</li>
+<li><a class="anchor" href="#minetestcheck_password_entry" name="minetestcheck_password_entry">#</a>For this purpose, use <code>minetest.check_password_entry</code> instead.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestget_player_ipname" name="minetestget_player_ipname">#</a>
+<p><code>minetest.get_player_ip(name)</code>: returns an IP address string for the player <code>name</code></p>
+<ul>
+<li>The player needs to be online for this to be successful.</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestget_auth_handler" name="minetestget_auth_handler">#</a>
+<p><code>minetest.get_auth_handler()</code>: Return the currently active auth handler</p>
+<ul>
+<li><a class="anchor" href="#Authenticationhandlerdefinition" name="Authenticationhandlerdefinition">#</a>See the <code>Authentication handler definition</code></li>
+<li><a class="anchor" href="#localauth_dataminetestget_auth_handlerget_authplayername" name="localauth_dataminetestget_auth_handlerget_authplayername">#</a>Use this to e.g. get the authentication data for a player:
+  <code>local auth_data = minetest.get_auth_handler().get_auth(playername)</code></li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestnotify_authentication_modifiedname" name="minetestnotify_authentication_modifiedname">#</a><code>minetest.notify_authentication_modified(name)</code><ul>
+<li>Must be called by the authentication handler for privilege changes.</li>
+<li><a class="anchor" href="#name_13" name="name_13">#</a><code>name</code>: string; if omitted, all auth data should be considered modified</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestset_player_passwordnamepassword_hash" name="minetestset_player_passwordnamepassword_hash">#</a><code>minetest.set_player_password(name, password_hash)</code>: Set password hash of player <code>name</code></li>
+<li><a class="anchor" href="#minetestset_player_privsnamepriv1true" name="minetestset_player_privsnamepriv1true">#</a><code>minetest.set_player_privs(name, {priv1=true,...})</code>: Set privileges of player <code>name</code></li>
+<li><a class="anchor" href="#minetestauth_reload" name="minetestauth_reload">#</a><code>minetest.auth_reload()</code><ul>
+<li><a class="anchor" href="#reload" name="reload">#</a>See <code>reload()</code> in authentication handler definition</li>
+</ul>
+</li>
 </ul>
 <p><code>minetest.set_player_password</code>, <code>minetest_set_player_privs</code>, <code>minetest_get_player_privs</code>
 and <code>minetest.auth_reload</code> call the authentication handler.</p>
@@ -3102,7 +3183,7 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 </li>
 <li><a class="anchor" href="#minetestdig_nodepos" name="minetestdig_nodepos">#</a><code>minetest.dig_node(pos)</code><ul>
 <li>Dig node with the same effects that a player would cause</li>
-<li><a class="anchor" href="#true_10" name="true_10">#</a>Returns <code>true</code> if successful, <code>false</code> on failure (e.g. protected location)</li>
+<li><a class="anchor" href="#true_11" name="true_11">#</a>Returns <code>true</code> if successful, <code>false</code> on failure (e.g. protected location)</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestpunch_nodepos" name="minetestpunch_nodepos">#</a><code>minetest.punch_node(pos)</code><ul>
@@ -3113,7 +3194,7 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <p><code>minetest.spawn_falling_node(pos)</code></p>
 <ul>
 <li>Change node into falling node</li>
-<li><a class="anchor" href="#true_11" name="true_11">#</a>Returns <code>true</code> if successful, <code>false</code> on failure</li>
+<li><a class="anchor" href="#true_12" name="true_12">#</a>Returns <code>true</code> if successful, <code>false</code> on failure</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestfind_nodes_with_metapos1pos2" name="minetestfind_nodes_with_metapos1pos2">#</a>
@@ -3304,18 +3385,17 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <li>delete all mapblocks in the area from pos1 to pos2, inclusive</li>
 </ul>
 </li>
-<li><a class="anchor" href="#minetestline_of_sightpos1pos2stepsize" name="minetestline_of_sightpos1pos2stepsize">#</a><code>minetest.line_of_sight(pos1, pos2, stepsize)</code>: returns <code>boolean, pos</code><ul>
-<li><a class="anchor" href="#pos1_3" name="pos1_3">#</a>Check if there is a direct line of sight between <code>pos1</code> and <code>pos2</code></li>
+<li><a class="anchor" href="#minetestline_of_sightpos1pos2" name="minetestline_of_sightpos1pos2">#</a><code>minetest.line_of_sight(pos1, pos2)</code>: returns <code>boolean, pos</code><ul>
+<li>Checks if there is anything other than air between pos1 and pos2.</li>
+<li>Returns false if something is blocking the sight.</li>
 <li><a class="anchor" href="#false" name="false">#</a>Returns the position of the blocking node when <code>false</code></li>
-<li><a class="anchor" href="#pos1_4" name="pos1_4">#</a><code>pos1</code>: First position</li>
+<li><a class="anchor" href="#pos1_3" name="pos1_3">#</a><code>pos1</code>: First position</li>
 <li><a class="anchor" href="#pos2" name="pos2">#</a><code>pos2</code>: Second position</li>
-<li><a class="anchor" href="#stepsize" name="stepsize">#</a><code>stepsize</code>: smaller gives more accurate results but requires more computing
-  time. Default is <code>1</code>.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestraycastpos1pos2objectsliquids" name="minetestraycastpos1pos2objectsliquids">#</a><code>minetest.raycast(pos1, pos2, objects, liquids)</code>: returns <code>Raycast</code><ul>
 <li><a class="anchor" href="#Raycast" name="Raycast">#</a>Creates a <code>Raycast</code> object.</li>
-<li><a class="anchor" href="#pos1_5" name="pos1_5">#</a><code>pos1</code>: start of the ray</li>
+<li><a class="anchor" href="#pos1_4" name="pos1_4">#</a><code>pos1</code>: start of the ray</li>
 <li><a class="anchor" href="#pos2_1" name="pos2_1">#</a><code>pos2</code>: end of the ray</li>
 <li><a class="anchor" href="#objects" name="objects">#</a><code>objects</code> : if false, only nodes will be returned. Default is <code>true</code>.</li>
 <li><a class="anchor" href="#liquidsiffalseliquidnodeswontbereturnedDefaultis" name="liquidsiffalseliquidnodeswontbereturnedDefaultis">#</a><code>liquids' : if false, liquid nodes won't be returned. Default is</code>false`.</li>
@@ -3323,8 +3403,8 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 </li>
 <li><a class="anchor" href="#minetestfind_pathpos1pos2searchdistancemax_jumpmax_dropalgorithm" name="minetestfind_pathpos1pos2searchdistancemax_jumpmax_dropalgorithm">#</a><code>minetest.find_path(pos1,pos2,searchdistance,max_jump,max_drop,algorithm)</code><ul>
 <li>returns table containing path</li>
-<li><a class="anchor" href="#pos1_6" name="pos1_6">#</a>returns a table of 3D points representing a path from <code>pos1</code> to <code>pos2</code> or <code>nil</code></li>
-<li><a class="anchor" href="#pos1_7" name="pos1_7">#</a><code>pos1</code>: start position</li>
+<li><a class="anchor" href="#pos1_5" name="pos1_5">#</a>returns a table of 3D points representing a path from <code>pos1</code> to <code>pos2</code> or <code>nil</code></li>
+<li><a class="anchor" href="#pos1_6" name="pos1_6">#</a><code>pos1</code>: start position</li>
 <li><a class="anchor" href="#pos2_2" name="pos2_2">#</a><code>pos2</code>: end position</li>
 <li><a class="anchor" href="#searchdistance" name="searchdistance">#</a><code>searchdistance</code>: number of blocks to search in each direction using a maximum metric</li>
 <li><a class="anchor" href="#max_jump" name="max_jump">#</a><code>max_jump</code>: maximum height difference to consider walkable</li>
@@ -3363,7 +3443,7 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <li>resets the light in a cuboid-shaped part of
   the map and removes lighting bugs.</li>
 <li>Loads the area if it is not loaded.</li>
-<li><a class="anchor" href="#pos1_8" name="pos1_8">#</a><code>pos1</code> is the corner of the cuboid with the least coordinates
+<li><a class="anchor" href="#pos1_7" name="pos1_7">#</a><code>pos1</code> is the corner of the cuboid with the least coordinates
   (in node coordinates), inclusive.</li>
 <li><a class="anchor" href="#pos2_3" name="pos2_3">#</a><code>pos2</code> is the opposite corner of the cuboid, inclusive.</li>
 <li>The actual updated cuboid might be larger than the specified one,
@@ -3514,7 +3594,7 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestis_colored_paramtypeptype" name="minetestis_colored_paramtypeptype">#</a><code>minetest.is_colored_paramtype(ptype)</code><ul>
-<li><a class="anchor" href="#true_12" name="true_12">#</a>Returns a boolean. Returns <code>true</code> if the given <code>paramtype2</code> contains color
+<li><a class="anchor" href="#true_13" name="true_13">#</a>Returns a boolean. Returns <code>true</code> if the given <code>paramtype2</code> contains color
   information (<code>color</code>, <code>colorwallmounted</code> or <code>colorfacedir</code>).</li>
 </ul>
 </li>
@@ -3681,8 +3761,8 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <h3 id="timing">Timing</h3>
 <ul>
 <li><a class="anchor" href="#minetestaftertimefunc" name="minetestaftertimefunc">#</a><code>minetest.after(time, func, ...)</code><ul>
-<li><a class="anchor" href="#func" name="func">#</a>Call the function <code>func</code> after <code>time</code> seconds, may be fractional</li>
-<li><a class="anchor" href="#func_1" name="func_1">#</a>Optional: Variable number of arguments that are passed to <code>func</code></li>
+<li><a class="anchor" href="#func_1" name="func_1">#</a>Call the function <code>func</code> after <code>time</code> seconds, may be fractional</li>
+<li><a class="anchor" href="#func_2" name="func_2">#</a>Optional: Variable number of arguments that are passed to <code>func</code></li>
 </ul>
 </li>
 </ul>
@@ -3697,8 +3777,13 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <li><a class="anchor" href="#minetestget_server_status" name="minetestget_server_status">#</a><code>minetest.get_server_status()</code>: returns server status string</li>
 <li><a class="anchor" href="#minetestget_server_uptime" name="minetestget_server_uptime">#</a><code>minetest.get_server_uptime()</code>: returns the server uptime in seconds</li>
 <li><a class="anchor" href="#minetestremove_playername" name="minetestremove_playername">#</a><code>minetest.remove_player(name)</code>: remove player from database (if he is not connected).<ul>
-<li>Does not remove player authentication data, minetest.player_exists will continue to return true.</li>
+<li>As auth data is not removed, minetest.player_exists will continue to return true.
+  Call the below method as well if you want to remove auth data too.</li>
 <li>Returns a code (0: successful, 1: no such player, 2: player is connected)</li>
+</ul>
+</li>
+<li><a class="anchor" href="#minetestremove_player_authname" name="minetestremove_player_authname">#</a><code>minetest.remove_player_auth(name)</code>: remove player authentication data<ul>
+<li>Returns boolean indicating success (false if player nonexistant)</li>
 </ul>
 </li>
 </ul>
@@ -3789,12 +3874,16 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <li><a class="anchor" href="#force_placement_1" name="force_placement_1">#</a><code>force_placement</code> is a boolean indicating whether nodes other than <code>air</code> and
   <code>ignore</code> are replaced by the schematic</li>
 <li>Returns nil if the schematic could not be loaded.</li>
+<li><strong>Warning</strong>: Once you have loaded a schematic from a file, it will be cached. Future calls
+  will always use the cached version and the replacement list defined for it,
+  regardless of whether the file or the replacement list parameter have changed.
+  The only way to load the file anew is to restart the server.</li>
 </ul>
 </li>
 <li><a class="anchor" href="#minetestplace_schematic_on_vmanipvmanipposschematicrotationreplacementforce_placement" name="minetestplace_schematic_on_vmanipvmanipposschematicrotationreplacementforce_placement">#</a>
 <p><code>minetest.place_schematic_on_vmanip(vmanip, pos, schematic, rotation, replacement, force_placement)</code>:</p>
 <ul>
-<li><a class="anchor" href="#vmanip" name="vmanip">#</a>This function is analagous to minetest.place_schematic, but places a schematic onto the
+<li><a class="anchor" href="#vmanip" name="vmanip">#</a>This function is analogous to minetest.place_schematic, but places a schematic onto the
   specified VoxelManip object <code>vmanip</code> instead of the whole map.</li>
 <li>Returns false if any part of the schematic was cut-off due to the VoxelManip not
   containing the full area required, and true if the whole schematic was able to fit.</li>
@@ -3975,7 +4064,7 @@ and <code>minetest.auth_reload</code> call the authentication handler.</p>
 <p><code>minetest.is_protected(pos, name)</code>: returns boolean</p>
 <ul>
 <li><a class="anchor" href="#name_18" name="name_18">#</a>Returns true, if player <code>name</code> shouldn't be abled to dig at <code>pos</code> or do other
-  actions, defineable by mods, due to some mod-defined ownership-like concept.
+  actions, definable by mods, due to some mod-defined ownership-like concept.
   Returns false or nil, if the player is allowed to do such actions.</li>
 <li><a class="anchor" href="#name_19" name="name_19">#</a><code>name</code> will be "" for non-players or unknown players.</li>
 <li>This function should be overridden by protection mods and should be used to
@@ -4027,7 +4116,7 @@ end
 <p><code>minetest.forceload_block(pos[, transient])</code></p>
 <ul>
 <li><a class="anchor" href="#pos_9" name="pos_9">#</a>forceloads the position <code>pos</code>.</li>
-<li><a class="anchor" href="#true_13" name="true_13">#</a>returns <code>true</code> if area could be forceloaded</li>
+<li><a class="anchor" href="#true_14" name="true_14">#</a>returns <code>true</code> if area could be forceloaded</li>
 <li><a class="anchor" href="#transient" name="transient">#</a>If <code>transient</code> is <code>false</code> or absent, the forceload will be persistent
   (saved between server runs). If <code>true</code>, the forceload will be transient
   (not saved between server runs).</li>
@@ -4152,11 +4241,11 @@ end
 <li><a class="anchor" href="#from_tablenilor" name="from_tablenilor">#</a><code>from_table(nil or {})</code><ul>
 <li>Any non-table value will clear the metadata</li>
 <li>See "Node Metadata" for an example</li>
-<li><a class="anchor" href="#true_14" name="true_14">#</a>returns <code>true</code> on success</li>
+<li><a class="anchor" href="#true_15" name="true_15">#</a>returns <code>true</code> on success</li>
 </ul>
 </li>
 <li><a class="anchor" href="#equalsother" name="equalsother">#</a><code>equals(other)</code><ul>
-<li><a class="anchor" href="#true_15" name="true_15">#</a>returns <code>true</code> if this metadata has the same key-value pairs as <code>other</code></li>
+<li><a class="anchor" href="#true_16" name="true_16">#</a>returns <code>true</code> if this metadata has the same key-value pairs as <code>other</code></li>
 </ul>
 </li>
 </ul>
@@ -4221,7 +4310,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#is_started" name="is_started">#</a><code>is_started()</code>: returns boolean state of timer<ul>
-<li><a class="anchor" href="#true_16" name="true_16">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
+<li><a class="anchor" href="#true_17" name="true_17">#</a>returns <code>true</code> if timer is started, otherwise <code>false</code></li>
 </ul>
 </li>
 </ul>
@@ -4425,7 +4514,7 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 <li><a class="anchor" href="#hud_set_flagsflags" name="hud_set_flagsflags">#</a><code>hud_set_flags(flags)</code>: sets specified HUD flags to <code>true</code>/<code>false</code><ul>
 <li><a class="anchor" href="#flags_4" name="flags_4">#</a><code>flags</code>: (is visible) <code>hotbar</code>, <code>healthbar</code>, <code>crosshair</code>, <code>wielditem</code>, <code>breathbar</code>,
   <code>minimap</code>, <code>minimap_radar</code></li>
-<li><a class="anchor" href="#true_17" name="true_17">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
+<li><a class="anchor" href="#true_18" name="true_18">#</a>pass a table containing a <code>true</code>/<code>false</code> value of each flag to be set or unset</li>
 <li><a class="anchor" href="#nil_7" name="nil_7">#</a>if a flag equals <code>nil</code>, the flag is not modified</li>
 <li><a class="anchor" href="#minimap" name="minimap">#</a>note that setting <code>minimap</code> modifies the client's permission to view the minimap -</li>
 <li>the client may locally elect to not view the minimap</li>
@@ -4485,10 +4574,8 @@ Can be gotten via <code>minetest.get_node_timer(pos)</code>.</p>
 </ul>
 </li>
 <li><a class="anchor" href="#get_day_night_ratio" name="get_day_night_ratio">#</a><code>get_day_night_ratio()</code>: returns the ratio or nil if it isn't overridden</li>
-<li><a class="anchor" href="#set_local_animationstandidlewalkdigwalkdigframe_speedframe_speed" name="set_local_animationstandidlewalkdigwalkdigframe_speedframe_speed">#</a>
-<p><code>set_local_animation(stand/idle, walk, dig, walk+dig, frame_speed=frame_speed)</code></p>
-<p>set animation for player model in third person view</p>
-<pre><code>set_local_animation({x=0, y=79}, -- &lt; stand/idle animation key frames
+<li><a class="anchor" href="#set_local_animationstandidlewalkdigwalkdigframe_speedframe_speed" name="set_local_animationstandidlewalkdigwalkdigframe_speedframe_speed">#</a><code>set_local_animation(stand/idle, walk, dig, walk+dig, frame_speed=frame_speed)</code>:
+  set animation for player model in third person view<pre><code>set_local_animation({x=0, y=79}, -- &lt; stand/idle animation key frames
     {x=168, y=187}, -- &lt; walk animation key frames
     {x=189, y=198}, -- &lt;  dig animation key frames
     {x=200, y=219}, -- &lt;  walk+dig animation key frames
@@ -4682,8 +4769,8 @@ Alternatively with <code>minetest.get_perlin(seeddiff, octaves, persistence, sca
 or <code>minetest.get_perlin(noiseparams)</code>.</p>
 <h4 id="methods_13">Methods</h4>
 <ul>
-<li><a class="anchor" href="#get2dpos" name="get2dpos">#</a><code>get2d(pos)</code>: returns 2D noise value at <code>pos={x=,y=}</code></li>
-<li><a class="anchor" href="#get3dpos" name="get3dpos">#</a><code>get3d(pos)</code>: returns 3D noise value at <code>pos={x=,y=,z=}</code></li>
+<li><a class="anchor" href="#get_2dpos" name="get_2dpos">#</a><code>get_2d(pos)</code>: returns 2D noise value at <code>pos={x=,y=}</code></li>
+<li><a class="anchor" href="#get_3dpos" name="get_3dpos">#</a><code>get_3d(pos)</code>: returns 3D noise value at <code>pos={x=,y=,z=}</code></li>
 </ul>
 <h3 id="perlinnoisemap"><code>PerlinNoiseMap</code></h3>
 <p>A fast, bulk perlin noise generator.</p>
@@ -4696,25 +4783,25 @@ for 2D noise, and it must be must be larger than 1 for 3D noise (otherwise
 nil, this table will be used to store the result instead of creating a new table.</p>
 <h4 id="methods_14">Methods</h4>
 <ul>
-<li><a class="anchor" href="#get2dMappos" name="get2dMappos">#</a><code>get2dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> 2D array of 2D noise
+<li><a class="anchor" href="#get_2d_mappos" name="get_2d_mappos">#</a><code>get_2d_map(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> 2D array of 2D noise
   with values starting at <code>pos={x=,y=}</code></li>
-<li><a class="anchor" href="#get3dMappos" name="get3dMappos">#</a><code>get3dMap(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> times <code>&lt;size.z&gt;</code> 3D array
+<li><a class="anchor" href="#get_3d_mappos" name="get_3d_mappos">#</a><code>get_3d_map(pos)</code>: returns a <code>&lt;size.x&gt;</code> times <code>&lt;size.y&gt;</code> times <code>&lt;size.z&gt;</code> 3D array
   of 3D noise with values starting at <code>pos={x=,y=,z=}</code></li>
-<li><a class="anchor" href="#get2dMap_flatposbuffer" name="get2dMap_flatposbuffer">#</a><code>get2dMap_flat(pos, buffer)</code>: returns a flat <code>&lt;size.x * size.y&gt;</code> element array of 2D noise
+<li><a class="anchor" href="#get_2d_map_flatposbuffer" name="get_2d_map_flatposbuffer">#</a><code>get_2d_map_flat(pos, buffer)</code>: returns a flat <code>&lt;size.x * size.y&gt;</code> element array of 2D noise
   with values starting at <code>pos={x=,y=}</code></li>
-<li><a class="anchor" href="#get3dMap_flatposbuffer" name="get3dMap_flatposbuffer">#</a><code>get3dMap_flat(pos, buffer)</code>: Same as <code>get2dMap_flat</code>, but 3D noise</li>
-<li><a class="anchor" href="#calc2dMappos" name="calc2dMappos">#</a><code>calc2dMap(pos)</code>: Calculates the 2d noise map starting at <code>pos</code>.  The result is stored internally.</li>
-<li><a class="anchor" href="#calc3dMappos" name="calc3dMappos">#</a><code>calc3dMap(pos)</code>: Calculates the 3d noise map starting at <code>pos</code>.  The result is stored internally.</li>
-<li><a class="anchor" href="#getMapSliceslice_offsetslice_sizebuffer" name="getMapSliceslice_offsetslice_sizebuffer">#</a><code>getMapSlice(slice_offset, slice_size, buffer)</code>: In the form of an array, returns a slice of the
+<li><a class="anchor" href="#get_3d_map_flatposbuffer" name="get_3d_map_flatposbuffer">#</a><code>get_3d_map_flat(pos, buffer)</code>: Same as <code>get2dMap_flat</code>, but 3D noise</li>
+<li><a class="anchor" href="#calc_2d_mappos" name="calc_2d_mappos">#</a><code>calc_2d_map(pos)</code>: Calculates the 2d noise map starting at <code>pos</code>.  The result is stored internally.</li>
+<li><a class="anchor" href="#calc_3d_mappos" name="calc_3d_mappos">#</a><code>calc_3d_map(pos)</code>: Calculates the 3d noise map starting at <code>pos</code>.  The result is stored internally.</li>
+<li><a class="anchor" href="#get_map_sliceslice_offsetslice_sizebuffer" name="get_map_sliceslice_offsetslice_sizebuffer">#</a><code>get_map_slice(slice_offset, slice_size, buffer)</code>: In the form of an array, returns a slice of the
   most recently computed noise results.  The result slice begins at coordinates <code>slice_offset</code> and
   takes a chunk of <code>slice_size</code>.
   E.g. to grab a 2-slice high horizontal 2d plane of noise starting at buffer offset y = 20:
-  <code>noisevals = noise:getMapSlice({y=20}, {y=2})</code>
+  <code>noisevals = noise:get_map_slice({y=20}, {y=2})</code>
   It is important to note that <code>slice_offset</code> offset coordinates begin at 1, and are relative to
   the starting position of the most recently calculated noise.
   To grab a single vertical column of noise starting at map coordinates x = 1023, y=1000, z = 1000:
-  <code>noise:calc3dMap({x=1000, y=1000, z=1000})</code>
-<code>noisevals = noise:getMapSlice({x=24, z=1}, {x=1, z=1})</code></li>
+  <code>noise:calc_3d_map({x=1000, y=1000, z=1000})</code>
+<code>noisevals = noise:get_map_slice({x=24, z=1}, {x=1, z=1})</code></li>
 </ul>
 <h3 id="voxelmanip"><code>VoxelManip</code></h3>
 <h4 id="about-voxelmanip">About VoxelManip</h4>
@@ -4871,7 +4958,7 @@ will place the schematic inside of the VoxelManip.</p>
 <li><a class="anchor" href="#set_lightinglightp1p2" name="set_lightinglightp1p2">#</a><code>set_lighting(light, [p1, p2])</code>: Set the lighting within the <code>VoxelManip</code> to a uniform value<ul>
 <li><a class="anchor" href="#light_1" name="light_1">#</a><code>light</code> is a table, <code>{day=&lt;0...15&gt;, night=&lt;0...15&gt;}</code></li>
 <li><a class="anchor" href="#VoxelManip" name="VoxelManip">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
-<li><a class="anchor" href="#p1" name="p1">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set;
+<li><a class="anchor" href="#p1_3" name="p1_3">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set;
   defaults to the whole area if left out</li>
 </ul>
 </li>
@@ -4894,7 +4981,7 @@ will place the schematic inside of the VoxelManip.</p>
 <li><a class="anchor" href="#set_param2_dataparam2_data" name="set_param2_dataparam2_data">#</a><code>set_param2_data(param2_data)</code>: Sets the <code>param2</code> contents of each node in the <code>VoxelManip</code></li>
 <li><a class="anchor" href="#calc_lightingp1p2propagate_shadow" name="calc_lightingp1p2propagate_shadow">#</a><code>calc_lighting([p1, p2], [propagate_shadow])</code>:  Calculate lighting within the <code>VoxelManip</code><ul>
 <li><a class="anchor" href="#VoxelManip_1" name="VoxelManip_1">#</a>To be used only by a <code>VoxelManip</code> object from <code>minetest.get_mapgen_object</code></li>
-<li><a class="anchor" href="#p1_1" name="p1_1">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set; defaults to the whole area
+<li><a class="anchor" href="#p1_4" name="p1_4">#</a>(<code>p1</code>, <code>p2</code>) is the area in which lighting is set; defaults to the whole area
   if left out or nil</li>
 <li><a class="anchor" href="#propagate_shadow" name="propagate_shadow">#</a><code>propagate_shadow</code> is an optional boolean deciding whether shadows in a generated
   mapchunk above are propagated down into the mapchunk; defaults to <code>true</code> if left out</li>
@@ -4937,7 +5024,11 @@ The coordinates are <em>inclusive</em>, like most other things in Minetest.</p>
 <h4 id="methods_17">Methods</h4>
 <ul>
 <li><a class="anchor" href="#getkey" name="getkey">#</a><code>get(key)</code>: returns a value</li>
-<li><a class="anchor" href="#get_boolkey" name="get_boolkey">#</a><code>get_bool(key)</code>: returns a boolean</li>
+<li><a class="anchor" href="#get_boolkeydefault" name="get_boolkeydefault">#</a><code>get_bool(key, [default])</code>: returns a boolean<ul>
+<li><a class="anchor" href="#default_2" name="default_2">#</a><code>default</code> is the value returned if <code>key</code> is not found.</li>
+<li><a class="anchor" href="#nil_9" name="nil_9">#</a>Returns <code>nil</code> if <code>key</code> is not found and <code>default</code> not specified.</li>
+</ul>
+</li>
 <li><a class="anchor" href="#get_np_groupkey" name="get_np_groupkey">#</a><code>get_np_group(key)</code>: returns a NoiseParams table</li>
 <li><a class="anchor" href="#setkeyvalue" name="setkeyvalue">#</a><code>set(key, value)</code><ul>
 <li>Setting names can't contain whitespace or any of <code>="{}#</code>.</li>
@@ -5143,8 +5234,13 @@ minetest.spawn_tree(pos,apple_tree)
 --  ^ For players: Defaults to `minetest.PLAYER_MAX_HP_DEFAULT`
     breath_max = 0,
 --  ^ For players only. Defaults to `minetest.PLAYER_MAX_BREATH_DEFAULT`
-    can_zoom = true,
---  ^ For players only. Enables the zoom feature. Defaults to true
+    zoom_fov = 0.0,
+--  ^ For players only. Zoom FOV in degrees.
+--    Note that zoom loads and/or generates world beyond the server's maximum
+--    send and generate distances, so acts like a telescope.
+--    Smaller zoomFOV values increase the distance loaded and/or generated.
+--    Defaults to 15 in creative mode, 0 in survival mode.
+--    zoom_fov = 0 disables zooming for the player.
     eye_height = 1.625,
 --  ^ For players only. Camera height above feet position in nodes. Defaults to 1.625
     physical = true,
@@ -5152,18 +5248,37 @@ minetest.spawn_tree(pos,apple_tree)
     weight = 5,
     collisionbox = {-0.5, 0.0, -0.5, 0.5, 1.0, 0.5},
     selectionbox = {-0.5, 0.0, -0.5, 0.5, 1.0, 0.5},
---  ^ Default, uses collision box dimensions when not set
+--  ^ Default, uses collision box dimensions when not set.
+--  ^ For both boxes: {xmin, ymin, zmin, xmax, ymax, zmax} in nodes from
+--    object position.
     pointable = true, -- overrides selection box when false
     visual = "cube" / "sprite" / "upright_sprite" / "mesh" / "wielditem",
+--  ^ "cube" is a node-sized cube.
+--  ^ "sprite" is a flat texture always facing the player.
+--  ^ "upright_sprite" is a vertical flat texture.
+--  ^ "mesh" uses the defined mesh model.
     visual_size = {x = 1, y = 1},
+--  ^ `x` multiplies horizontal (X and Z) visual size.
+--  ^ `y` multiplies vertical (Y) visual size.
     mesh = "model",
     textures = {}, -- number of required textures depends on visual
+--  ^ "cube" uses 6 textures in the way a node does.
+--  ^ "sprite" uses 1 texture.
+--  ^ "upright_sprite" uses 2 textures: {front, back}.
     colors = {}, -- number of required colors depends on visual
     spritediv = {x = 1, y = 1},
+--  ^ Used with spritesheet textures for animation and/or frame selection according
+--    to position relative to player.
+--  ^ Defines the number of columns and rows in the spritesheet: {columns, rows}.
     initial_sprite_basepos = {x = 0, y = 0},
+--  ^ Used with spritesheet textures.
+--  ^ Defines the {column, row} position of the initially used frame in the
+--    spritesheet.
     is_visible = true,
     makes_footstep_sound = false,
-    automatic_rotate = false,
+    automatic_rotate = 0,
+--  ^ Set constant rotation in radians per second, positive or negative.
+--  ^ Set to 0 to disable constant rotation.
     stepheight = 0,
     automatic_face_movement_dir = 0.0,
 --  ^ Automatically set yaw to movement direction, offset in degrees,
@@ -5208,19 +5323,30 @@ minetest.spawn_tree(pos,apple_tree)
 <h3 id="abm-activeblockmodifier-definition-register_abm">ABM (ActiveBlockModifier) definition (<code>register_abm</code>)</h3>
 <pre><code>{
     label = "Lava cooling",
---  ^ Descriptive label for profiling purposes (optional).
---    Definitions with identical labels will be listed as one.
---  In the following two fields, also group:groupname will work.
+    ^ Descriptive label for profiling purposes (optional).
+      Definitions with identical labels will be listed as one.
     nodenames = {"default:lava_source"},
-    neighbors = {"default:water_source", "default:water_flowing"}, -- Any of these --[[
-    ^ If left out or empty, any neighbor will do ]]
-    interval = 1.0, -- Operation interval in seconds
-    chance = 1, -- Chance of trigger per-node per-interval is 1.0 / this
-    catch_up = true, -- If true, catch-up behaviour is enabled --[[
-    ^ The chance value is temporarily reduced when returning to
-      an area to simulate time lost by the area being unattended.
-    ^ Note chance value can often be reduced to 1 ]]
-    action = func(pos, node, active_object_count, active_object_count_wider),
+    ^ Apply `action` function to these nodes.
+    ^ `group:groupname` can also be used here.
+    neighbors = {"default:water_source", "default:water_flowing"},
+    ^ Only apply `action` to nodes that have one of, or any
+      combination of, these neighbors.
+    ^ If left out or empty, any neighbor will do.
+    ^ `group:groupname` can also be used here.
+    interval = 1.0,
+    ^ Operation interval in seconds.
+    chance = 1,
+    ^ Chance of triggering `action` per-node per-interval is 1.0 / this value.
+    catch_up = true,
+    ^ If true, catch-up behaviour is enabled: The `chance` value is temporarily
+      reduced when returning to an area to simulate time lost by the area being
+      unattended. Note that the `chance` value can often be reduced to 1.
+    action = function(pos, node, active_object_count, active_object_count_wider),
+    ^ Function triggered for each qualifying node.
+    ^ `active_object_count` is number of active objects in the node's mapblock.
+    ^ `active_object_count_wider` is number of active objects in the node's
+      mapblock plus all 26 neighboring mapblocks. If any neighboring mapblocks
+      are unloaded an estmate is calculated for them based on loaded mapblocks.
 }
 </code></pre>
 <h3 id="lbm-loadingblockmodifier-definition-register_lbm">LBM (LoadingBlockModifier) definition (<code>register_lbm</code>)</h3>
@@ -5527,11 +5653,18 @@ minetest.spawn_tree(pos,apple_tree)
     ^ interval. Default: nil.
     ^ Warning: making a liquid node 'floodable' does not work and may cause problems. ]]
 
+preserve_metadata = func(pos, oldnode, oldmeta, drops) --[[
+^ Called when oldnode is about be converted to an item, but before the
+  node is deleted from the world or the drops are added.  This is generally
+  the result of either the node being dug or an attached node becoming detached.
+^ drops is a table of ItemStacks, so any metadata to be preserved can be
+  added directly to one or more of the dropped items.  See "ItemStackMetaRef".
+^ default: nil ]]
     after_place_node = func(pos, placer, itemstack, pointed_thing) --[[
     ^ Called after constructing node when node was placed using
       minetest.item_place_node / minetest.place_node
     ^ If return true no item is taken from itemstack
-^ `placer` may be any valid ObjectRef or nil
+    ^ `placer` may be any valid ObjectRef or nil
     ^ default: nil ]]
     after_dig_node = func(pos, oldnode, oldmetadata, digger), --[[
     ^ oldmetadata is in table format
@@ -5752,18 +5885,18 @@ minetest.spawn_tree(pos,apple_tree)
     y_min = 1,
     y_max = 31000,
 --  ^ Lower and upper limits for biome.
+    vertical_blend = 8,
+--  ^ Vertical distance in nodes above 'y_max' over which the biome will
+--  ^ blend with the biome above.
+--  ^ Set to 0 for no vertical blend. Defaults to 0.
     heat_point = 0,
     humidity_point = 50,
---  ^ Characteristic average temperature and humidity for the biome.
---  ^ These values create 'biome points' on a voronoi diagram that has heat
---  ^ and humidity as axes. The resulting voronoi cells determine which
---  ^ heat/humidity points belong to which biome, and therefore determine
---  ^ the area and location of each biome in the world.
---  ^ The biome points need to be carefully and evenly spaced on the voronoi
---  ^ diagram to result in roughly equal size biomes.
+--  ^ Characteristic temperature and humidity for the biome.
+--  ^ These values create 'biome points' on a voronoi diagram with heat and
+--  ^ humidity as axes. The resulting voronoi cells determine the
+--  ^ distribution of the biomes.
 --  ^ Heat and humidity have average values of 50, vary mostly between
---  ^ 0 and 100 but also often exceed these values.
---  ^ Heat is not in degrees Celsius, both values are abstract.
+--  ^ 0 and 100 but can exceed these values.
 }
 </code></pre>
 <h3 id="decoration-definition-register_decoration">Decoration definition (<code>register_decoration</code>)</h3>
@@ -6018,5 +6151,30 @@ minetest.spawn_tree(pos,apple_tree)
     code = 200,
  -- ^ HTTP status code
     data = "response"
+}
+</code></pre>
+<h3 id="authentication-handler-definition">Authentication handler definition</h3>
+<pre><code>{
+    get_auth = func(name),
+--  ^ Get authentication data for existing player `name` (`nil` if player doesn't exist)
+--  ^ returns following structure `{password=&lt;string&gt;, privileges=&lt;table&gt;, last_login=&lt;number or nil&gt;}`
+    create_auth = func(name, password),
+--  ^ Create new auth data for player `name`
+--  ^ Note that `password` is not plain-text but an arbitrary representation decided by the engine
+    delete_auth = func(name),
+--  ^ Delete auth data of player `name`, returns boolean indicating success (false if player nonexistant)
+    set_password = func(name, password),
+--  ^ Set password of player `name` to `password`
+       Auth data should be created if not present
+    set_privileges = func(name, privileges),
+--  ^ Set privileges of player `name`
+--  ^ `privileges` is in table form, auth data should be created if not present
+    reload = func(),
+--  ^ Reload authentication data from the storage location
+--  ^ Returns boolean indicating success
+    record_login = func(name),
+--  ^ Called when player joins, used for keeping track of last_login
+    iterate = func(),
+--  ^ Returns an iterator (use with `for` loops) for all player names currently in the auth database
 }
 </code></pre>
