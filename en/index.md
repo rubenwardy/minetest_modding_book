@@ -26,9 +26,8 @@ you can also [download it in PDF or HTML form](https://github.com/rubenwardy/min
 ### Feedback and Contributions
 
 Noticed a mistake, or want to give feedback? Make sure to tell me about it.
-I'd accept contributions.
 
 * Create a [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
 * Post in the [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
 * Send me a [PM](https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=2051) on the forums.
-* [Read the contribution README](../README.html).
+* Fancy contributing? [Read the README](../README.html).
