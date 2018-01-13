@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
 	<head>
-		<title>{% if page.title != "Introduction" %}{{ page.title }} - {% endif %}Minetest Modding Book</title>
+		<title>{% if page.homepage %}{% else %}{{ page.title }} - {% endif %}Minetest Modding Book</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
 		<meta name="description" content="An easy guide to learn how to create mods for Minetest">
 		<meta name="keywords" content="Minetest, modding, book, tutorial, guide, easy">
 		<meta name="author" content="rubenwardy">
-		<style>#navbar,#page{position:absolute;top:0}#navbar,#navbar li{margin:0;padding:0;display:block}body,html{background:#333;font-family:Arial,sans-serif}#container{width:100%;max-width:1100px;margin:auto;position:relative}#page{background:#fff;margin:0;padding:0 20px 20px;left:250px;right:0}#navbar{left:0;width:250px;list-style:none;background:#333;color:#fff}#navbar li a{display:block;padding:5px;color:#ccc;text-decoration:none;cursor:pointer}</style>
+		<style>body,html,nav{background:#333}nav,nav li,nav li a{display:block}body,html,main,nav li{margin:0;padding:0}main,nav{position:absolute;top:0}body,html{font-size:17px;color:#000}#container{width:100%;max-width:1100px;margin:auto;position:relative}nav{left:0;width:280px;list-style:none;color:#fff}nav li a{padding:5px;color:#ccc;text-decoration:none}main{left:280px;right:0}article{background:#fff;padding:0 20px 20px}</style>
 	</head>
 	<body>
 		{% assign pathsplit = page.dir | split: '/' %}
@@ -22,7 +22,7 @@
 		{% endif %}
 
 		<div id="container">
-			<ul id="navbar">
+			<nav>
 				{% for link in links %}
 					{% if link.hr %}
 						{% assign hr = true %}
@@ -37,7 +37,8 @@
 
 				<li><a href="{{ page.root }}lua_api.html" class="hr">Lua Modding API Reference</a></li>
 				<li><a href="https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip">Download Examples</a></li>
-			</ul>
+			</nav>
 
-			<div id="page">
-				<h1>{{ page.title }}</h1>
+			<main>
+				<article {% if page.homepage %}class="homepage"{% endif %}>
+					{% if page.no_header %}{% else %}<h1>{{ page.title }}</h1>{% endif %}

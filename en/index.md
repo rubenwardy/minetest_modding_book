@@ -1,55 +1,34 @@
 ---
 title: Introduction
 layout: default
+homepage: true
+no_header: true
 root: ../
 ---
+
+<div id="header">
+    <h1>Minetest Modding Book</h1>
+
+    <span>by <a href="https://rubenwardy.com" rel="author">rubenwardy</a></span>
+    <span>with editing by <a href="http://rc.minetest.tv/">Shara</a></span>
+</div>
 
 ## Introduction
 
 Minetest uses Lua scripts to provide modding support.
 This book aims to teach you how to create your own mods, starting from the basics.
+Each chapter focuses on a particular part of the API, and will soon get you making
+your own mods.
 
 As well as [reading this book online](https://rubenwardy.com/minetest_modding_book),
 you can also [download it in PDF or HTML form](https://github.com/rubenwardy/minetest_modding_book/releases).
 
-## What you will need
+### Feedback and Contributions
 
-* A Code Editor. Talked about in the [Lua Scripts](chapters/lua.html#tools) chapter.
-* A copy of Minetest in the 0.4 series. (eg: 0.4.13)
-* Motivation to keep trying when things go wrong. You learn more when you work
-  something out yourself.
+Noticed a mistake, or want to give feedback? Make sure to tell me about it.
+I'd accept contributions.
 
-## So, go on then.
-
-Start [learning about how to create a mod folder](chapters/folders.html), or use the navigation bar on
-the left (or on the top on mobiles) to open a chapter.
-
-* [GitHub](https://github.com/rubenwardy/minetest_modding_book).
-* [Download for offline use](https://github.com/rubenwardy/minetest_modding_book/releases).
-* [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
-
-## About this Book
-
-Noticed a mistake, or want to give feedback? Tell us about it using one of these methods:
-
-* [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
+* Create a [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
 * Post in the [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
-* Send me a [PM](https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=2051) on the Forum.
-* Submit a report below.
-
-You can contribute to this project on [GitHub](https://github.com/rubenwardy/minetest_modding_book).\\
-Read the [contribution README]({{ page.root }}README.html).
-
-Written by rubenwardy.\\
-License: [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-
-<!--<form class="leave_comment" action="http://pooleapp.com/stash/74bf2dfb-4c01-423c-b48a-e002ed70bbc1/" method="post">
-    <input type="hidden" name="redirect_to"
-            value="http://rubenwardy.com/minetest_modding_book/thank_you.html" />
-    Nickname (optional): <input class="name" name="name" placeholder="Your Name" type="text"><br />
-    Contact method (email or forum name, optional): <input name="contact" type="text"><br />
-    Feedback:
-    <textarea name="comment" required="" style="display:block;min-width: 90%;min-height:100px;"></textarea>
-
-    <input value="Leave Feedback" type="submit">
-</form>-->
+* Send me a [PM](https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=2051) on the forums.
+* [Read the contribution README](../README.html).

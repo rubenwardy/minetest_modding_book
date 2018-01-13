@@ -7,7 +7,6 @@ html, body {
 	color: black;
 }
 
-
 #container {
 	width: 100%;
 	max-width: 1100px;
@@ -15,17 +14,7 @@ html, body {
 	position: relative;
 }
 
-#page {
-	background: white;
-	margin: 0;
-	padding: 0 20px 20px 20px;
-	position: absolute;
-	left: 280px;
-	right: 0;
-	top: 0;
-}
-
-#navbar {
+nav {
 	position: absolute;
 	left: 0;
 	width: 280px;
@@ -38,26 +27,26 @@ html, body {
 	color: white;
 }
 
-#navbar li {
+nav li {
 	display: block;
 	margin: 0;
 	padding: 0;
 }
 
-#navbar li a.hr {
+nav li a.hr {
 	border-top: 2px solid #666;
 }
 
-#navbar li a.selected {
+nav li a.selected {
 	background: #363 !important;
 	color: white !important;
 }
 
-#navbar li a.selected:hover {
+nav li a.selected:hover {
 	background: #474 !important;
 }
 
-#navbar li a {
+nav li a {
 	display: block;
 	padding: 5px;
 	color: #ccc;
@@ -65,33 +54,82 @@ html, body {
 	cursor: pointer;
 }
 
-#navbar li:nth-child(odd) a {
+nav li:nth-child(odd) a {
 	background: #3c3c3c;
 }
 
-#navbar li a:hover {
+nav li a:hover {
 	background: #444;
 }
 
+main {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	left: 280px;
+	right: 0;
+	top: 0;
+}
+
+article {
+	background: white;
+	padding: 0 20px 20px 20px;
+}
+
+footer {
+	margin: 0 0 20px 0;
+	padding: 1em 1.5em;
+	background: #444;
+	color: #fff;
+	border-radius: 0 0 10px 10px;
+}
+
+footer a {
+	color: #0be;
+	text-decoration: none;
+}
+
+footer a:hover {
+	color: #0df;
+	text-decoration: underline;
+}
+
+#header {
+	text-align: center;
+	padding: 100px 0;
+}
+
+#header h1 {
+	padding-bottom: 20px;
+}
+
+#header span {
+	display: block;
+	padding: 6px;
+}
+
+.homepage h1 {
+	font-size: 200%;
+}
 
 @media all and (max-height: 568px) {
-	#navbar {
+	nav {
 		position: absolute;
 	}
 }
 
 @media all and (max-width: 780px) {
-	#navbar {
+	nav {
 		position: static;
 		margin: 0;
 		width: 100%;
 	}
 
-	#navbar li a {
+	nav li a {
 		padding: 10px;
 	}
 
-	#page {
+	main {
 		position: static;
 		margin: 0;
 		padding-top: 20px;
@@ -99,11 +137,11 @@ html, body {
 }
 
 @media print {
-	#navbar{
+	nav{
 		display: none !important;
 	}
 
-	#page {
+	main {
 		left: 0 !important;
 	}
 
