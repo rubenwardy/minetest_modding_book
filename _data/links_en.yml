@@ -27,62 +27,66 @@
 
 - hr: true
 
-- title: Node Metadata
+- title: Basic Map Operations
   num:   6
-  link:  chapters/node_metadata.html
+  link:  chapters/environment.html
 
 - title: Active Block Modifiers
   num:   7
   link:  chapters/abms.html
 
+- title: Node Metadata
+  num:   8
+  link:  chapters/node_metadata.html
+
 - hr: true
 
 - title: Privileges
-  num:   8
+  num:   9
   link:  chapters/privileges.html
 
 - title: Chat and Commands
-  num:   9
+  num:   10
   link:  chapters/chat.html
 
 - title: Complex Chat Commands
-  num:   10
+  num:   11
   link:  chapters/chat_complex.html
 
 - title: Player Physics
-  num:   11
+  num:   12
   link:  chapters/player_physics.html
 
 - title: Formspecs
-  num:   12
+  num:   13
   link:  chapters/formspecs.html
 
 - title: HUD
-  num:   13
+  num:   14
   link:  chapters/hud.html
 
 - title: "SFINV: Inventory Formspec"
-  num:   14
+  num:   15
   link:  chapters/sfinv.html
 
 - hr: true
 
 - title: ItemStacks
-  num:   15
+  num:   16
   link:  chapters/itemstacks.html
 
 - title: Inventories
-  num:   16
+  num:   17
   link:  chapters/inventories.html
 
 - hr: true
 
 - title: Releasing a Mod
-  num: 17
+  num: 18
   link: chapters/releasing.html
 
 - title: Read More
-  num: 18
+  num: 19
   link: chapters/readmore.html
 
 - hr: true
