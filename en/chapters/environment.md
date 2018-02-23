@@ -223,5 +223,5 @@ minetest.delete_area(pos1, pos2)
 {% endhighlight %}
 
 This will delete all map blocks in that area, *inclusive*. This means that some
-nodes will be deleted outside the are as they will be on a mapblock which overlaps
+nodes will be deleted outside the area as they will be on a mapblock which overlaps
 the area bounds.
