@@ -167,7 +167,7 @@ In fact, remove_node will call set_node with name being air.
 
 ## Loading Blocks
 
-You can use `minetest.emerge_area` load map blocks. Emerge area is asynchronous,
+You can use `minetest.emerge_area` to load map blocks. Emerge area is asynchronous,
 meaning the the blocks won't be loaded instantly. Instead they will be loaded
 soon in the future, and the callback will be called each time.
 
@@ -223,5 +223,5 @@ minetest.delete_area(pos1, pos2)
 {% endhighlight %}
 
 This will delete all map blocks in that area, *inclusive*. This means that some
-nodes will be deleted outside the are as they will be on a mapblock which overlaps
+nodes will be deleted outside the area as they will be on a mapblock which overlaps
 the area bounds.
