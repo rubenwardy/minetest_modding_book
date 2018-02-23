@@ -10,10 +10,13 @@ In this chapter you will learn how to perform basic actions on the map.
 
 * [Map Structure](#map-structure)
 * [Reading](#reading)
-	* [Reading nodes](#reading-nodes)
-	* [Finding nodes](#finding-nodes)
+    * [Reading Nodes](#reading-nodes)
+    * [Finding Nodes](#finding-nodes)
 * [Writing](#writing)
-* [Loading and Deleting](#loading-and-deleting)
+    * [Writing Nodes](#writing-nodes)
+    * [Removing Nodes](#removing-nodes)
+* [Loading Blocks](#loading-blocks)
+* [Deleting Blocks](#deleting-blocks)
 
 ## Map Structure
 
@@ -42,7 +45,7 @@ be a cube. -->
 
 ## Reading
 
-### Reading nodes
+### Reading Nodes
 
 You can read from the map once you have a position:
 
@@ -67,7 +70,7 @@ This may still return `ignore` if a block actually contains ignore.
 This will happen near the edge of the map as defined by the map generation
 limit (`mapgen_limit`).
 
-### Finding nodes
+### Finding Nodes
 
 Minetest offers a number of helper functions to speed up common map actions.
 The most commonly used of these are for finding nodes.
@@ -123,7 +126,7 @@ similar way and are useful in other circumstances.
 
 ## Writing
 
-### Writing nodes
+### Writing Nodes
 
 You can use `set_node` to write to the map. Each call to set_node will cause
 lighting to be recalculated, which means that set_node is fairly slow for large
@@ -136,32 +139,19 @@ local node = minetest.get_node({ x = 1, y = 3, z = 4 })
 print(node.name) --> default:mese
 {% endhighlight %}
 
+set_node will remove any associated meta data or inventory from that position.
+This isn't desirable in all circumstances, especially if you're using multiple
+node definitions to represent one conceptual node. An example of this is the
+furnace node - whilst you think conceptually of it as one node, it's actually
+two.
 
-### Moving and swapping nodes
-
-Moving a node is the same as swapping a node, except that one of the nodes
-becomes air.
-Here is a naive example to move a node:
-
-{% highlight lua %}
--- DO NOT ACTUALLY USE THIS
-local pos1  = { x = 1, y = 3, z = 4 }
-local pos2  = vector.add(pos, { x = 1, y = 0, z = 0 })
-local node1 = minetest.get_node(pos1)
-local node2 = minetest.get_node(pos2)
-minetest.set_node(pos1, node2)
-minetest.set_node(pos2, node1)
--- DO NOT ACTUALLY USE THIS
-{% endhighlight %}
-
-This won't copy any node meta data to the new position, or delete the old meta
-data. Luckily Minetest has a function which you can use instead of the above:
+You can set a node without deleting meta data or the inventory like so:
 
 {% highlight lua %}
-minetest.swap_node(pos, vector.add(pos, { x = 1, y = 0, z = 0 }))
+minetest.swap_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
 {% endhighlight %}
 
-### Removing nodes
+### Removing Nodes
 
 A node must always be present. When someone says to remove a node, what
 is usually meant is they want to set the node to `air`.
@@ -173,24 +163,65 @@ minetest.remove_node(pos)
 minetest.set_node(pos, { name = "air" })
 {% endhighlight %}
 
-## Loading and Deleting
+In fact, remove_node will call set_node with name being air.
 
-You can use `minetest.emerge_area` and `minetest.delete_area` to load
-and delete map blocks.
+## Loading Blocks
 
-<div class="notice">
-    <h2>To Do</h2>
+You can use `minetest.emerge_area` load map blocks. Emerge area is asynchronous,
+meaning the the blocks won't be loaded instantly. Instead they will be loaded
+soon in the future, and the callback will be called each time.
 
-    This section will be added soon&trade;.
-</div>
+{% highlight lua %}
+-- Load a 20x20x20 area
+local halfsize = { x = 10, y = 10, z = 10 }
+local pos1 = vector.subtract(pos, halfsize)
+local pos2 = vector.add     (pos, halfsize)
 
-<!--
-## Efficient Bulk Operations
-## To Do
+local context = {} -- persist data between callback calls
+minetest.emerge_area(pos1, pos2, emerge_callback, context)
+{% endhighlight %}
 
-* line_of_sight
-* raycast
-* dig_node
-* place_node
-* punch_node
--->
+Minetest will call `emerge_callback` whenever it loads a block, with some
+progress information.
+
+{% highlight lua %}
+local function emerge_callback(pos, action, num_calls_remaining, context)
+    -- On first call, record number of blocks
+    if not context.total_blocks then
+        context.total_blocks  = num_calls_remaining + 1
+        context.loaded_blocks = 0
+    end
+
+    -- Increment number of blocks loaded
+    context.loaded_blocks = context.loaded_blocks + 1
+
+    -- Send progress message
+    if context.total_blocks == context.loaded_blocks then
+        minetest.chat_send_all("Finished loading blocks!")
+    end
+        local perc = 100 * context.loaded_blocks / context.total_blocks
+        minetest.chat_send_all(string.format("Loading blocks %d/%d (%.2f%%)",
+            context.loaded_blocks, context.total_blocks, perc)
+    end
+end
+{% endhighlight %}
+
+This is not the only way of loading blocks; Using a LVM will also cause the
+encompassed blocks to be loaded synchronously.
+
+## Deleting Blocks
+
+You can use delete_blocks to delete a range of map blocks:
+
+{% highlight lua %}
+-- Delete a 20x20x20 area
+local halfsize = { x = 10, y = 10, z = 10 }
+local pos1 = vector.subtract(pos, halfsize)
+local pos2 = vector.add     (pos, halfsize)
+
+minetest.delete_area(pos1, pos2)
+{% endhighlight %}
+
+This will delete all map blocks in that area, *inclusive*. This means that some
+nodes will be deleted outside the are as they will be on a mapblock which overlaps
+the area bounds.
