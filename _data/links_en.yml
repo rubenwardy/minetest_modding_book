@@ -81,12 +81,16 @@
 
 - hr: true
 
-- title: Releasing a Mod
+- title: Automatic Error Checking
   num: 18
+  link: chapters/luacheck.html
+
+- title: Releasing a Mod
+  num: 19
   link: chapters/releasing.html
 
 - title: Read More
-  num: 19
+  num: 20
   link: chapters/readmore.html
 
 - hr: true
