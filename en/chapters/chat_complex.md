@@ -1,13 +1,17 @@
 ---
-title: Complex Chat Commands
+title: Chat Command Builder
 layout: default
 root: ../../
 ---
 
 ## Introduction
 
-This chapter will show you how to make complex chat commands, such as
-`/msg <name> <message>`, `/team join <teamname>` or `/team leave <teamname>`.
+This chapter will show you how to make complex chat commands with ChatCmdBuilder,
+such as `/msg <name> <message>`, `/team join <teamname>` or `/team leave <teamname>`.
+
+Note that ChatCmdBuilder is a library created by the author of this book, and most
+modders tend to use the method outlined in the
+[chat commnds](chat.html#complex-subcommands) chapter.
 
 * Why ChatCmdBuilder?
 * Routes.
@@ -99,6 +103,9 @@ end)
 {% endhighlight %}
 
 ## Installing ChatCmdBuilder
+
+The source code can be found and downloaded on
+[Github](https://github.com/rubenwardy/ChatCmdBuilder/).
 
 There are two ways to install:
 

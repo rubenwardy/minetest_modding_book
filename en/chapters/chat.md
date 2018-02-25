@@ -106,14 +106,42 @@ to show a formspec, and `/inbox text` to send information to chat.
 
 It is often required to make complex chat commands, such as:
 
-* /msg <name> <message>
-* /team join <teamname>
-* /team leave <teamname>
-* /team list
+* `/msg <to> <message>`
+* `/team join <teamname>`
+* `/team leave <teamname>`
+* `/team list`
 
-Many mods implement this using Lua patterns; however, a much easier
-approach is to use a mod library. See rubenwardy's
-[Complex Chat Commands](chat_complex.html).
+This is usually done using [Lua patterns](https://www.lua.org/pil/20.2.html).
+Patterns are a way of extracting stuff from text using rules.
+
+{% highlight lua %}
+local to, msg = string.match(param, "^([%a%d_-]+) (*+)$")
+{% endhighlight %}
+
+The above implements `/msg <to> <message>`. Lets go through left to right:
+
+* `^` means match the start of the string.
+* `()` is a matching group - anything that matches stuff in here will be
+  returned from string.match.
+* `[]` means accept characters in this list.
+* `%a` means accept any letter and `%d` means any digit.
+* `[%d%a_-]` means accept any letter or digit or `_` or `-`.
+* `+` means match the last thing one or more times.
+* `*` means match any character in this context.
+* `$` means match the end of the string.
+
+Put simply, this matches the name (a word with only letters/numbers/-/_),
+then a space, then the message (one of more of any character). The name and
+message are returned, as they're surrounded in parentheses.
+
+That's how most mods implement complex chat commands. A better guide to Lua
+Patterns would probably be the
+[lua-users.org tutorial](http://lua-users.org/wiki/PatternsTutorial)
+or the [PIL documentation](https://www.lua.org/pil/20.2.html).
+
+There is also a library written by the author of this book which can be used
+to make complex chat commands without Patterns called
+[ChatCmdBuilder](chat_complex.html).
 
 
 ## Intercepting Messages
