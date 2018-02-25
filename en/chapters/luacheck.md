@@ -44,7 +44,7 @@ Check that it's installed with the following command:
 The first time you run LuaCheck, it will probably pick up a lot of false
 errors. This is because it still needs to be configured.
 
-On Windows, drag the root project folder onto the luacheck.exe executable.
+On Windows, open powershell or bash in the root folder and run `path/to/luacheck.exe .`
 
 On Linux, run `luacheck .` whilst in the root folder of your project.
 
