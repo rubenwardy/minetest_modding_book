@@ -44,7 +44,7 @@ Check that it's installed with the following command:
 The first time you run LuaCheck, it will probably pick up a lot of false
 errors. This is because it still needs to be configured.
 
-On Windows, the root project folder onto the luacheck.exe executable.
+On Windows, drag the root project folder onto the luacheck.exe executable.
 
 On Linux, run `luacheck .` whilst in the root folder of your project.
 
@@ -73,16 +73,16 @@ read_globals = {
 Next you'll need to test that it works by running LuaCheck. You should get a lot
 less errors this time. Starting at the first error you get, either modify the
 configuration to take it into account, or if there's a bug then fix it - take
-a look at the below list.
+a look at the list below.
 
 ### Troubleshooting
 
-* **accessing undefined variable foobar** - If foobar is meant to be a global,
-  then add it to read_globals. Otherwise add any missing `local`s to the mod.
-* **setting non-standard global variable foobar** - If foobar is meant to be a global,
+* **accessing undefined variable foobar** - If `foobar` is meant to be a global,
+  then add it to `read_globals`. Otherwise add any missing `local`s to the mod.
+* **setting non-standard global variable foobar** - If `foobar` is meant to be a global,
   then add it to `globals`. Remove from `read_globals` if present there.
   Otherwise add any missing `local`s to the mod.
-* **mutating read-only global variable 'foobar'** - Move foobar from `read_globals` to
+* **mutating read-only global variable 'foobar'** - Move `foobar` from `read_globals` to
   `globals`.
 
 ## Checking commits with Travis
@@ -91,7 +91,7 @@ If your project is public and is on Github, you can use TravisCI - a free servic
 to run jobs on commits to check them. This means that every commit you push will
 be checked against LuaCheck, and a green tick or red cross displayed next to them
 depending on whether LuaCheck finds any mistakes. This is especially helpful for
-when you project receives a pull-request - you'll be able to see the LuaCheck output
+when your project receives a pull request - you'll be able to see the LuaCheck output
 without downloading the code.
 
 First you should visit [travis-ci.org](https://travis-ci.org/) and sign in with
