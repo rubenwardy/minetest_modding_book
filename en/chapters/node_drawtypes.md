@@ -403,7 +403,7 @@ minetest.register_node("mymod:meshy", {
 })
 {% endhighlight %}
 
-Make sure that the mesh is available in a `meshes` directory.
+Make sure that the mesh is available in a `models` directory.
 Most of the time the mesh should be in your mod's folder, however it's okay to
 share a mesh provided by another mod you depend on. For example, a mod that
 adds more types of furniture may want to share the model provided by a basic
