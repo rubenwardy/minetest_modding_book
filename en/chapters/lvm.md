@@ -36,7 +36,7 @@ an LVM like so:
 {% highlight lua %}
 local vm         = minetest.get_voxel_manip()
 local emin, emax = vm:read_from_map(pos1, pos2)
-local data       = vm:get_data()
+local data       = vm:get_data() -- node type
 {% endhighlight %}
 
 An LVM may not read exactly the area you tell it to, for performance reasons.
@@ -44,6 +44,11 @@ Instead it may read a larger area. The larger area is given by `emin` and `emax`
 which stand for *emerged min pos* and *emerged max pos*. An LVM will load the area
 it contains for you - whether that involves loading from memory, from disk, or
 calling the map generator.
+
+`get_data()` returns a flat array where each entry represents the type of a
+particular node. You can get param2 and lighting data using the methods
+`get_light_data()` and `get_param2_data()`. The index for the flat arrays
+returned are exactly the same.
 
 ## Reading Nodes
 
@@ -137,6 +142,9 @@ vm:set_data(data)
 vm:write_to_map(data)
 {% endhighlight %}
 
+For setting lighting and param2 data, there are the appropriately named
+`set_light_data()` and `set_param2_data()` methods
+
 You then need to update lighting and other things:
 
 {% highlight lua %}
@@ -185,6 +193,8 @@ end
 
 * Create `replace_in_area(from, to, pos1, pos2)` which replaces all instances of
   `from` with `to` in the area given, where from and to are node names.
-* Make an LVM which causes mossy cobble to spread to nearby stone and cobble nodes.
+* Make a function which rotates all chest nodes by 90&deg;.
+* Make a function which uses an LVM to cause mossy cobble to spread to nearby
+  stone and cobble nodes.
   Does your implementation cause mossy cobble to spread more than a distance of one each
   time? How could you stop this?
