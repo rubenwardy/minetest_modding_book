@@ -13,7 +13,7 @@ In this chapter you will learn how to use ItemStacks.
 * Adding and Taking Items
 * Wear
 * Lua Tables
-* Metadata
+* Meta data
 * More Methods
 
 ## Creating ItemStacks
@@ -118,16 +118,15 @@ local data = items:to_table()
 local items2 = ItemStack(data)
 {% endhighlight %}
 
-## Metadata
+## Meta data
 
-ItemStacks can also have a single field of metadata attached to
-them.
+ItemStacks can have meta data, and use the same API as [Node Metadata](node_metadata.html).
 
 {% highlight lua %}
-local meta = items:get_metadata()
-print(dump(meta))
-meta = meta .. " ha!"
-items:set_metadata(meta)
+local meta = items:get_meta()
+meta:set_string("foo", meta:get_string("foo") .. " ha!")
+
+print(dump(meta:get_string("foo")))
 -- if ran multiple times, would give " ha! ha! ha!"
 {% endhighlight %}
 
