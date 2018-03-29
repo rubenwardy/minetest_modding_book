@@ -36,7 +36,6 @@ an LVM like so:
 {% highlight lua %}
 local vm         = minetest.get_voxel_manip()
 local emin, emax = vm:read_from_map(pos1, pos2)
-local data       = vm:get_data() -- node type
 {% endhighlight %}
 
 An LVM may not read exactly the area you tell it to, for performance reasons.
@@ -45,16 +44,21 @@ which stand for *emerged min pos* and *emerged max pos*. An LVM will load the ar
 it contains for you - whether that involves loading from memory, from disk, or
 calling the map generator.
 
-`get_data()` returns a flat array where each entry represents the type of a
-particular node. You can get param2 and lighting data using the methods
-`get_light_data()` and `get_param2_data()`. The index for the flat arrays
-returned are exactly the same.
-
 ## Reading Nodes
 
-You'll need to use `emin` and `emax` to work out where a node is in the data of
-an LVM. There's a helper class called `VoxelArea` which handles the calculation
-for you:
+To read the types of nodes at particular positions, you'll need to use `get_data()`.
+`get_data()` returns a flat array where each entry represents the type of a
+particular node.
+
+{% highlight lua %}
+local data = vm:get_data()
+{% endhighlight %}
+
+You can get param2 and lighting data using the methods `get_light_data()` and `get_param2_data()`.
+
+You'll need to use `emin` and `emax` to work out where a node is in the flat arrays
+given by the above methods. There's a helper class called `VoxelArea` which handles
+the calculation for you:
 
 {% highlight lua %}
 local a = VoxelArea:new{
