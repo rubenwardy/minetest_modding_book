@@ -6,7 +6,8 @@ root: ../../
 
 ## Introduction
 
-In this chapter we will find out how to publish a mod so that other users can use it.
+Releasing, or publishing, a mod allows other people to make use of it. Once a mod has been
+released it might be used in singleplayer games or on servers, including public servers.
 
 * License Choices
 * Packaging
@@ -23,24 +24,25 @@ In this chapter we will find out how to publish a mod so that other users can us
 You need to specify a license for your mod.
 **Public domain is not a valid licence**, as the definition varies in different countries.
 
-First thing you need to note is that your code and your art need different things from
-the license they use. Creative Commons licenses shouldn't be used with source code,
-but rather with artistic works such as images, text and meshes.
+Your code and your art need different things from the licenses they use. For example,
+Creative Commons licenses shouldn't be used with source code,
+but can be suitable choices for artistic works such as images, text and meshes.
 
-You are allowed any license, however mods which disallow derivatives are banned from the forum.
-(Other developers must be able to take your mod, modify it, and release it again.)
+You are allowed any license; however, mods which disallow derivatives are banned from the
+official Minetest forum. (Other developers must be able to take your mod, modify it,
+and release it again.)
 
 ### LGPL and CC-BY-SA
 
-This is a common license combination in the Minetest community, as it is what
+This is a common license combination in the Minetest community, and is what
 Minetest and minetest_game use.
-You license your code under LGPL 2.1 and your art under CC-BY-SA.
+You license your code under LGPL 2.1 and your art under CC-BY-SA. This means:
 
 * Anyone can modify, redistribute and sell modified or unmodified versions.
 * If someone modifies your mod, they must give their version the same license.
 * Your copyright notice must be kept.
 
-Add this copyright notice to your README.txt, or as a new file called LICENSE.txt
+Add this copyright notice to your README.txt, or as a new file called LICENSE.txt:
 
     License for Code
     ----------------
@@ -69,8 +71,40 @@ Add this copyright notice to your README.txt, or as a new file called LICENSE.tx
 ### WTFPL or CC0
 
 These licenses allows anyone to do what they want with your mod.
-Modify, redistribute, sell, leave out attribution.
-They can be used for both code and art.
+This means they can modify, redistribute, sell, or leave out attribution.
+These licenses can be used for both code and art.
+
+It is important to note that WTFPL is strongly discouraged and people may
+choose not to use your mod if it has this license.
+
+### MIT
+
+This is a common license for mod code. The only restriction it places on users
+of your mod is that they must include the same copyright notice and license
+in any copies of the mod or of substantial parts of the mod.
+
+To use this license, include the following in your readme or license file:
+
+    Copyright (c) <year> <your name> <emailaddress>
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
 
 ## Packaging
 
@@ -88,12 +122,13 @@ You should provide a readme file. This should state:
 * What dependencies there are / what the user needs to install.
 * Where to report problems/bugs or get help.
 
-See appendix for an example and a generator
+See appendix for an example and a generator.
 
 ### description.txt
 
-Write a sentence or two explaining what your mod does.
-Be concise without being too vague. This is displayed in the mod store.
+This should explain what your mod does.
+Be concise without being vague. It should be short in length
+because it will be displayed in the mod store.
 
 For example:
 
@@ -111,45 +146,50 @@ This is displayed in the mod store.
 Uploading
 ---------
 
-In order for a potential user to download your mod, you need to upload it to somewhere
-which is publicly accessible.\\
-I will outline several methods you can use, but really you should use the one that works
-best for you, as long as it mets these requirements:\\
+So that a potential user can download your mod, you need to upload it to somewhere
+publicly accessible.\\
+There are several methods you can use, but you should use the one that works
+best for you, as long as it meets these requirements:\\
 (and any other requirements which may be added by forum moderators)
 
-* **Stable**      - the hosting website should not just shutdown randomly.
-* **Direct link** - you should be able to click a link on the forum and download the file,
+* **Stable**      - The hosting website should be unlikely to shutdown without warning.
+* **Direct link** - You should be able to click a link on the forum and download the file
                    without having to view another page.
-* **Virus Free**  - pretty obvious.
+* **Virus Free**  - Mods with malicious content are not wanted. 
 
 ### Github, or another VCS
 
-It is recommended that you use a Version Control System for the following reasons:
+It is recommended that you use a Version Control System because this:
 
-* Allows other developers to submit changes (easily).
+* Allows other developers to easily submit changes.
 * Allows the code to be previewed before downloading.
 * Allows users to submit bug reports.
 
-However, such systems may be hard to understand when you first start out.
+However, such systems may be hard to understand when you first use them.
 
 The majority of Minetest developers use GitHub as a website to host their code,
-however that doesn't matter that much.
+but other alternatives are possible. For information on how to use GitHub,
+please see:
 
 * [Using Git](http://git-scm.com/book/en/v1/Getting-Started) - Basic concepts. Using the command line.
-* [GitHub for Windows](https://help.github.com/articles/getting-started-with-github-for-windows/) - Use a graphical interface on Windows to upload your code.
+* [GitHub for Windows](https://help.github.com/articles/getting-started-with-github-for-windows/) -
+Using a graphical interface on Windows to upload your code.
 
 ### Forum Attachments
 
-You could use forum attachments instead.
-This is done when creating a mod's topic - covered below.
+You can use forum attachments instead.
+This is done when creating a mod's forum topic (covered below).
 
-First, you need to zip the files into a single file. This varies from operating system to operating system.
+First, you need to zip the files into a single file. How to do this varies from
+operating system to operating system.
 
-On Windows, go to the mod's folder. Select all the files. Right click, Send To > Compressed (zipped) folder.
-Rename the resulting zip file to the name of your modfolder.
+On Windows, go to the mod's folder. Select all the files.
+Right click, Send To > Compressed (zipped) folder.
+Rename the resulting zip file to the name of your mod's folder.
 
-On the create a topic page, see below, go to the "Upload Attachment" tab at the bottom.
-Click browse and select the zipped file. I suggest that you enter the version of your mod in the comment field.
+On the Create a Topic page (see below), go to the "Upload Attachment" tab at the bottom.
+Click browse and select the zipped file. It is recommended that you
+enter the version of your mod in the comment field.
 
 <figure>
     <img src="{{ page.root }}/static/releasing_attachments.png" alt="Upload Attachment">
@@ -169,7 +209,8 @@ to "Mod Releases."
 
 ### Content
 
-The requirements of a forum topic are mostly the same as what is recommended for a README.txt
+The requirements of a forum topic are mostly the same as the recommendations for
+a README.txt file:
 
 * What the mod does.
 * What the license is.
@@ -210,12 +251,12 @@ Here is an example. The Minetest forum uses bbcode for formating.
     [url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
 
 If you modify the above example for your mod topic, remember to
-change "modfldername" to the name of the folder your mod should be
+change "modfoldername" to the name of the folder your mod should be
 in.
 
 ### Title
 
-Subject of topic must be in one of these formats:
+The subject of topic must be in one of these formats:
 
 * [Mod] Mod Title [modname]
 * [Mod] Mod Title [version number] [modname]
