@@ -85,16 +85,20 @@
 
 - hr: true
 
-- title: Automatic Error Checking
+- title: Common Mistakes
   num: 19
+  link: chapters/common_mistakes.html
+
+- title: Automatic Error Checking
+  num: 20
   link: chapters/luacheck.html
 
 - title: Releasing a Mod
-  num: 20
+  num: 21
   link: chapters/releasing.html
 
 - title: Read More
-  num: 21
+  num: 22
   link: chapters/readmore.html
 
 - hr: true
