@@ -51,7 +51,7 @@ On Linux, run `luacheck .` whilst in the root folder of your project.
 
 ## Configuring LuaCheck
 
-Create a file called .luacheck in the root of your project. This could be the
+Create a file called .luacheckrc in the root of your project. This could be the
 root of your game, modpack, or mod.
 
 Put the following contents in it:
@@ -61,13 +61,19 @@ unused_args = false
 allow_defined_top = true
 
 globals = {
-	"minetest",
+    "minetest",
 }
 
 read_globals = {
-	string = {fields = {"split"}},
-	table = {fields = {"copy", "getn"}},
-	"vector", "default", "ItemStack",
+    string = {fields = {"split"}},
+    table = {fields = {"copy", "getn"}},
+
+    -- Builtin
+    "vector", , "ItemStack",
+    "dump", "DIR_DELIM", "VoxelArea", "Settings",
+
+    -- MTG
+    "default", "sfinv", "creative",
 }
 {% endhighlight %}
 
