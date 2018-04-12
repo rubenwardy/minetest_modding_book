@@ -103,9 +103,10 @@ end)
 
 ## Set ItemStacks After Changing Them
 
-Unlike most of the rest of the API, stacks work on a copy of the data rather than
-the stack in the inventory. This means that modifying a stacks won't actually that
-stack in the inventory.
+Notice how it's simply called an `ItemStack` in the API, not an `ItemStackRef`,
+similar to `InvRef`. This is because an `ItemStack` isn't a reference - it's a
+copy. Stacks work on a copy of the data rather than the stack in the inventory.
+This means that modifying a stack won't actually modify that stack in the inventory.
 
 Don't do this:
 
