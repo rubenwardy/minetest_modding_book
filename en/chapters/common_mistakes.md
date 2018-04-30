@@ -154,4 +154,4 @@ end)
 If the callbacks cancel or the callback runner doesn't set the stack,
 then our update will still be set.
 If the callbacks or the callback runner does set the stack, then our
-set_stack doesn't matter
+set_stack doesn't matter.
