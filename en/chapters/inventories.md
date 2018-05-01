@@ -6,8 +6,8 @@ root: ../../
 
 ## Introduction
 
-In this chapter you will learn how to use manipulate inventories, whether that
-is a player inventory, a node inventory, or a detached inventory.
+In this chapter you will learn how to use and manipulate inventories, whether
+that is a player inventory, a node inventory, or a detached inventory.
 This chapter assumes that you already know how to create and manipulate
 [ItemStacks](itemstacks.html).
 
@@ -51,7 +51,7 @@ There are three types of inventory:
     <figcaption>
         This image shows the two inventories visible when you press i.
         The gray boxes are inventory lists.<br />
-        The creative inventory, left (in red) is detached and it made up of a
+        The creative inventory, left (in red) is detached and is made up of a
         single list.<br />
         The player inventory, right (in blue) is a player inventory
         and is made up of three lists.<br />
