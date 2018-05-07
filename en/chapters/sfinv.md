@@ -193,7 +193,7 @@ we need to do that whenever kick or ban is granted or revoked to a player:
 {% highlight lua %}
 local function on_grant_revoke(grantee, granter, priv)
     if priv == "kick" or priv == "ban" then
-        local player = mientest.get_player_by_name(grantee)
+        local player = minetest.get_player_by_name(grantee)
         if player then
             sfinv.set_player_inventory_formspec(player)
         end
