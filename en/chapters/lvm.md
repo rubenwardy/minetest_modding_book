@@ -143,19 +143,15 @@ array to the engine:
 
 {% highlight lua %}
 vm:set_data(data)
-vm:write_to_map(data)
+vm:write_to_map(true)
 {% endhighlight %}
 
 For setting lighting and param2 data, there are the appropriately named
-`set_light_data()` and `set_param2_data()` methods
+`set_light_data()` and `set_param2_data()` methods.
 
-You then need to update lighting and other things:
-
-{% highlight lua %}
-vm:update_map()
-{% endhighlight %}
-
-and that's it!
+`write_to_map()` takes a boolean which is true if you want lighting to be
+calculated. If you pass false, you need to recalculate lighting at some future
+date using `minetest.fix_light`.
 
 ## Example
 
@@ -175,9 +171,9 @@ local function grass_to_dirt(pos1, pos2)
     local data = vm:get_data()
 
     -- Modify data
-    for z = min.z, max.z do
-        for y = min.y, max.y do
-            for x = min.x, max.x do
+    for z = pos1.z, pos2.z do
+        for y = pos1.y, pos2.y do
+            for x = pos1.x, pos2.x do
                 local vi = a:index(x, y, z)
                 if data[vi] == c_grass then
                     data[vi] = c_dirt
@@ -188,8 +184,7 @@ local function grass_to_dirt(pos1, pos2)
 
     -- Write data
     vm:set_data(data)
-    vm:write_to_map(data)
-    vm:update_map()
+    vm:write_to_map(true)
 end
 {% endhighlight %}
 
