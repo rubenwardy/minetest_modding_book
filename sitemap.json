@@ -1,0 +1,27 @@
+---
+---
+
+[
+{% for link in site.data.links_en %}
+{% if link.hr != true %}
+	{
+		"title": "{{ link.title }}",
+		"loc": "https://rubenwardy.com/minetest_modding_book/en/{{ link.link }}",
+		"priority": 1
+		{% if link.num %}, "chapter_number": {{ link.num }}{% endif %}
+	},
+{% endif %}
+{% endfor %}
+
+	{
+		"title": "Lua Modding API Reference",
+		"loc": "https://rubenwardy.com/minetest_modding_book/lua_api.html",
+		"priority": 0.75
+	},
+
+	{
+		"title": "Download Examples",
+		"loc": "https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip",
+		"priority": 0.5
+	}
+]
