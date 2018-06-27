@@ -7,6 +7,9 @@
 	{
 		"title": "{{ link.title }}",
 		"loc": "https://rubenwardy.com/minetest_modding_book/en/{{ link.link }}",
+		{% if link.description %}
+		"description": "{{ link.description }}",
+		{% endif %}
 		"priority": 1
 		{% if link.num %}, "chapter_number": {{ link.num }}{% endif %}
 	},
@@ -16,6 +19,7 @@
 	{
 		"title": "Lua Modding API Reference",
 		"loc": "https://rubenwardy.com/minetest_modding_book/lua_api.html",
+		"description": "lua_api.html is an HTML version of lua_api.txt",
 		"priority": 0.75
 	},
 
