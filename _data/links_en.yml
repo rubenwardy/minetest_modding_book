@@ -38,7 +38,7 @@
   link:  chapters/environment.html
 
 - title: Active Block Modifiers
-  description: Learn how to make an ABM to change blocks.
+  description: Learn how to make ABMs to change blocks.
   num:   7
   link:  chapters/abms.html
 
