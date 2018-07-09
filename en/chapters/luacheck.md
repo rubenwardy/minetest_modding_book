@@ -69,7 +69,7 @@ read_globals = {
     table = {fields = {"copy", "getn"}},
 
     -- Builtin
-    "vector", , "ItemStack",
+    "vector", "ItemStack",
     "dump", "DIR_DELIM", "VoxelArea", "Settings",
 
     -- MTG
@@ -91,6 +91,15 @@ a look at the list below.
   Otherwise add any missing `local`s to the mod.
 * **mutating read-only global variable 'foobar'** - Move `foobar` from `read_globals` to
   `globals`.
+
+## Using with editor
+
+It is highly recommended that you find an install a plugin for your editor of choice
+to show you errors without running a command. Most editors will likely have a plugin
+available.
+
+* **Atom** - `linter-luacheck`
+* **Sublime** - `SublimeLinter-luacheck`
 
 ## Checking commits with Travis
 
