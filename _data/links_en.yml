@@ -26,7 +26,7 @@
   link:  chapters/creating_textures.html
 
 - title: Node Drawtypes
-  description: Guide to all drawtypes, including node boxes/nodeboxes and mesh nodes. 
+  description: Guide to all drawtypes, including node boxes/nodeboxes and mesh nodes.
   num:   5
   link:  chapters/node_drawtypes.html
 
@@ -102,16 +102,28 @@
   link: chapters/common_mistakes.html
 
 - title: Automatic Error Checking
-  description: Use LuaCheck to find errors
+  description: Use LuaCheck as a linter to find errors
   num: 20
   link: chapters/luacheck.html
 
-- title: Releasing a Mod
+- title: Intro to Clean Architectures
+  description: Separate logic from data and API calls using the MVC pattern - Model View Controller.
   num: 21
+  link: chapters/mvc.html
+
+- title: Automatic Unit Testing
+  description: Write tests for your mods using Busted.
+  num: 22
+  link: chapters/unit_testing.html
+
+- hr: true
+
+- title: Releasing a Mod
+  num: 23
   link: chapters/releasing.html
 
 - title: More Resources
-  num: 22
+  num: 24
   link: chapters/readmore.html
 
 - hr: true
