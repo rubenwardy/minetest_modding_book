@@ -1,53 +1,101 @@
----
-title: README for Contributors
-layout: default
----
+# Minetest Modding Book
 
-## Welcome!
-
-This project uses Jekyll to turn Markdown into HTML, but you don't need to
-do that. You can just create Markdown files and pull request them. In fact,
-you don't even need to use Markdown: send me a document via the forum PM, topic
-or my email address (see my github profile).
-It is the writing which is the hard bit, not the formatting.
+[Read Online](https://rubenwardy.com/minetest_modding_book/)
 
 Book written by rubenwardy.  
 License: CC-BY-SA 3.0
 
-## Why is this a GitHub repo, rather than a wiki?
-
-I want to be able to review any changes to make sure that they
-fit my idea of quality.
-
 ## Finding your way around
 
-* `_data/` - Contains the navigation bar file.
-          (a list of links and link text for the navbar.)
-* `_includes/` - Contains HTML templates.
-* `_layouts/` - You can safely ignore this.
+* `_data/` - Contains list of languages
+* `_layouts/` - Layouts to wrap around each page.
 * `static/` - CSS, images, scripts.
-* `<lang>/`
-    * `chapters/` - Markdown files for each chapter.
+* `_<lang>/`
+    * `<section>/` - Markdown files for each chapter.
+
+## Contributing chapters
+
+* Create a pull request with a new chapter in markdown.
+* Write a new chapter in the text editor of your choice and
+ [send them to me](https://rubenwardy.com/contact/).
+
+I'm happy to fix the formatting of any chapters. It is
+the writing which is the hard bit, not the formatting.
+
+### Chapter Guidelines
+
+* Prefer pronounless text, but `you` if you must. Never `we` nor `I`.
+* Do not rely on anything that isn't printable to a physical book.
+* Any links must be invisible - ie: if they're removed, then the chapter must
+  still make sense.
+* Table of contents for each chapter with anchor links.
+* Add `your turn`s to the end of a chapter when relevant.
+* Titles and subheadings should be in Title Case.
+
+### Making a Chapter
+
+To create a new chapter, make a new file in _en/section/.
+Name it something that explains what the chapter is about.
+Replace spaces with underscores ( _ )
+
+```markdown
+---
+title: Chapter Name
+layout: default
+root: ..
+idx: 4.5
+---
+
+## Chapter Name
+
+Write a paragraph or so explaining what will be covered in this chapter.
+Explain why/how these concepts are useful in modding
+
+* [List the](#list-the)
+* [Parts in](#parts-in)
+* [This Chapter](#this-chapter)
+
+## List the
+
+Paragraphs
+
+{% highlight lua %}
+code
+{% endhighlight %}
+
+## Parts in
+
+## This Chapter
+```
+
+## Commits
+
+If you are editing or creating a particular chapter, then use commit messages like this:
+
+```
+Getting Started - corrected typos
+Entities - created chapter
+```
+
+Just use a normal style commit message otherwise.
 
 ## Adding a new language
 
-* Add entry to `_data/languages.yml`
-* Add your language to the if else in `_includes/header.html`
-* Copy `_en/` to your language code
-* Translate your language code folder.
-  You can translate the file paths, just make sure you keep any ids the same.
+1. Copy `_en/` to your language code
+2. Add entry to `_data/languages.yml`
+3. Add entry to `collections` in `_config.yml`
+4. Add your language to the if else in `layouts/default.html`
+5. Translate your language code folder (that you made in step 1)
+   You can translate the file paths, just make sure you keep any ids the same.
+
 
 ## Using Jeykll
 
-I use [Jekyll](http://jekyllrb.com/) 2.5.3
+I use [Jekyll](http://jekyllrb.com/) 3.8.0
 
-    # For Linux based:
-
-    $ sudo apt-get install ruby-dev
-    $ gem install jekyll
-    $ gem install jekyll-sitemap
-
-    # You may need to use sudo on the above commands
+    # For Debian/Ubuntu based:
+    sudo apt install ruby-dev
+    gem install jekyll github-pages
 
 ### Building as a website
 
@@ -67,132 +115,3 @@ rebuild pages when you modify their markdown source.
 
 This serves at <http://localhost:4000> on my computer, but the port
 may be different. Check the console for the "server address"
-
-## Commits
-
-If you are editing or creating a particular chapter, then use commit messages like this:
-
-```
-Getting Started - corrected typos
-Entities - created chapter
-```
-
-Just use a normal style commit message otherwise.
-
-## Making a Chapter
-
-To create a new chapter, make a new file in chapters/.
-Name it something that explains what the chapter is about.
-Replace spaces with underscores ( _ )
-
-**Template**
-
-{% raw %}
-
-    ---
-    title: Player Physics
-    layout: default
-    root: ..
-    ---
-
-    Introduction
-    ------------
-
-    Write an paragraph or so explaining what will be covered in this chapter.
-    Explain why/how these concepts are useful in modding
-
-    * List the
-    * Parts in
-    * This chapter
-
-    Section
-    -------
-
-    Explaining the concept of something.
-
-    You can link to other chapters like this: [chapter title]({{ relative }}/chaptertitle/).//
-    Do it like Wikipedia, link words in a sentence but avoid explicitly telling the user to view it//
-    or click the link.
-
-        Mod Name
-        -    init.lua - the main scripting code file, which is run when the game loads.
-        -    (optional) depends.txt - a list of mod names that needs to be loaded before this mod.
-        -    (optional) textures/ - place images here, commonly in the format modname_itemname.png
-        -    (optional) sounds/ - place sounds in here
-        -    (optional) models/ - place 3d models in here
-        ...and any other lua files to be included by init.lua
-
-    Code snippets are tabbed one level in, except for lua snippets, which use a code highligter.
-
-    Section 2
-    ---------
-
-    Explaining another concept
-
-    {% highlight lua %}
-    print("This file will be run at load time!")
-
-    minetest.register_node("mymod:node",{
-        description = "This is a node",
-        tiles = {
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png"
-        },
-        groups = {cracky = 1}
-    })
-    {% endhighlight %}
-
-    Use the highlight tags to highlight Lua code.
-
-    Section 3
-    ---------
-
-    You should include plenty of examples. Each example should
-    be able to be installed in a mod and used. Don't do the thing where
-    you make the reading create the mod line-by-line, it is rather annoying
-    and good code can explain itself. Explaining line-by-line is needed in earlier chapters,
-    and when introducing new concepts.
-
-    ### Mod Folder
-        mymod/
-        -    init.lua
-        -    depends.txt
-
-
-        default
-
-    {% highlight lua %}
-    print("This file will be run at load time!")
-
-    minetest.register_node("mymod:node",{
-        description = "This is a node",
-        tiles = {
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png",
-            "mymod_node.png"
-        },
-        groups = {cracky = 1}
-    })
-    {% endhighlight %}
-
-    Explain the code here, but there is no need to explain every single line.
-    Use comments and indentation well.
-
-    Your Turn
-    ---------
-
-    * **Set Tasks:** Make tasks for the reader to do.
-    * **Start easy, get hard:** Start with easier ones, and work up to harder ones.
-
-{% endraw %}
-
-Please note that the above is a guideline on how to make good chapter, but isn't
-exhustive and there are many exceptions. The priority is explaining the concepts
-to the reader efficiently and in a way which is understandable.

@@ -30,5 +30,6 @@ Noticed a mistake, or want to give feedback? Make sure to tell me about it.
 
 * Create a [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
 * Post in the [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
-* Send me a [PM](https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=2051) on the forums.
-* Fancy contributing? [Read the README](../README.html).
+* [Contact me](https://rubenwardy.com/contact/).
+* Fancy contributing?
+  [Read the README](https://github.com/rubenwardy/minetest_modding_book/blob/master/README.md).
