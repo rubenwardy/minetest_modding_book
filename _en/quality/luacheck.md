@@ -18,7 +18,7 @@ editor to provide alerts to any mistakes.
 * [Running LuaCheck](#running-luacheck)
 * [Configuring LuaCheck](#configuring-luacheck)
     * [Troubleshooting](#troubleshooting)
-* [Checking commits with Travis](#checking-commits-with-travis)
+* [Checking Commits with Travis](#checking-commits-with-travis)
 
 ## Installing LuaCheck
 
@@ -103,7 +103,7 @@ available.
 * **Atom** - `linter-luacheck`
 * **Sublime** - `SublimeLinter-luacheck`
 
-## Checking commits with Travis
+## Checking Commits with Travis
 
 If your project is public and is on Github, you can use TravisCI - a free service
 to run jobs on commits to check them. This means that every commit you push will
