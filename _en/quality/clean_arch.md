@@ -19,7 +19,10 @@ There is no one good way of designing a mod, and good mod design is very subject
 
 * [Cohesion, Coupling, and Separation of Concerns](#cohesion-coupling-and-separation-of-concerns)
 * [Model-View-Controller](#model-view-controller)
-* [API-View](#api-view)
+    * [API-View](#api-view)
+* [Observer](#observer)
+* [Conclusion](#conclusion)
+
 
 
 ## Cohesion, Coupling, and Separation of Concerns
@@ -172,7 +175,7 @@ you tend to see a lot more of a less formal and strict kind of design -
 varients of the API-View.
 
 
-## API-View
+### API-View
 
 In an ideal world, you'd have the above 3 areas perfectly separated with all
 events going into the controller before going back to the normal view. But
@@ -192,3 +195,61 @@ are views for each type of thing.
 Separating the mod like this means that you can very easily test the API part,
 as it doesn't use any Minetest APIs - as shown in the
 [next chapter](unit_testing.html) and seen in the crafting mod.
+
+
+## Observer
+
+Reducing coupling may seem hard to do to begin with, but you'll make a lot of
+progress by splitting your code up well using a design like the one given above.
+It's not always possible to remove the need for one area to communicate with
+another, but there are ways to decouple anyway - one such way being the Observer
+pattern.
+
+Let's take the example of unlocking an achievement when a player first kills a
+rare animal. The naive approach would be to have achievement code in the mob
+kill function, checking the mob name and unlocking the award if it matches.
+This is a bad idea however, as it makes the mobs mod coupled to the achievements
+code. If you kept on doing this - for example, adding XP to the mob death code -
+you could end up with a lot of messy dependencies.
+
+Enter the Observer pattern. Instead of the mobs mod caring about awards, mobs
+exposes a way for other areas of code to register their interest in an event
+and receive data about the event.
+
+{% highlight lua %}
+mobs.registered_on_death = {}
+function mobs.register_on_death(func)
+    table.insert(mobs.registered_on_death, func)
+end
+
+-- mob death code
+for i=1, #mobs.registered_on_death do
+    mobs.registered_on_death[i](entity, reason)
+end
+{% endhighlight %}
+
+Then the other code registers its interest:
+
+{% highlight lua %}
+
+-- awards
+mobs.register_on_death(function(mob, reason)
+    if reason.type == "punch" and reason.object and reason.object:is_player() then
+        awards.notify_mob_kill(reason.object, mob.name)
+    end
+end)
+{% endhighlight %}
+
+You may be thinking - wait a second, this looks awfully familiar. And you're right!
+The Minetest API is heavily Observer based to stop the engine having to care about
+what is listening to something.
+
+## Conclusion
+
+Good code design is subjective, and depends on the project you're making. As a
+general rule, try to keep cohesion high and coupling low. Phrased differently,
+keep related code together and unrelated code apart, and keep dependencies simple.
+
+I highly recommend reading the [Game Programming Patterns](http://gameprogrammingpatterns.com/)
+book. It's freely available to [read online](http://gameprogrammingpatterns.com/contents.html)
+and goes into much more detail on common programming patterns relevant to games.
