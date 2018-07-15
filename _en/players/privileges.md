@@ -2,6 +2,8 @@
 title: Privileges
 layout: default
 root: ../../
+idx: 4.1
+description: Registering privs.
 ---
 
 ## Introduction
@@ -139,7 +141,7 @@ players privileges such as `give` and `server`, which have greater potential for
 
 To add a privilege to `basic_privs` and adjust which privileges your moderators can
 grant and revoke from other players, you must change the `basic_privs` setting.
-To do this, you must edit the minetest.conf file. 
+To do this, you must edit the minetest.conf file.
 
 By default `basic_privs` has the following value:
 

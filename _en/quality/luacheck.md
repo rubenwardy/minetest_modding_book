@@ -2,6 +2,8 @@
 title: Automatic Error Checking
 layout: default
 root: ../../
+idx: 6.2
+description: Use LuaCheck to find errors
 ---
 
 ## Introduction

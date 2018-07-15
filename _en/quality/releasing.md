@@ -2,6 +2,7 @@
 title: Releasing a Mod
 layout: default
 root: ../../
+idx: 6.5
 ---
 
 ## Introduction
@@ -155,7 +156,7 @@ best for you, as long as it meets these requirements:\\
 * **Stable**      - The hosting website should be unlikely to shutdown without warning.
 * **Direct link** - You should be able to click a link on the forum and download the file
                    without having to view another page.
-* **Virus Free**  - Mods with malicious content are not wanted. 
+* **Virus Free**  - Mods with malicious content are not wanted.
 
 ### Github, or another VCS
 

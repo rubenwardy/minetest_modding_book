@@ -1,10 +1,12 @@
 ---
 ---
 
+{% assign pages = site.en | sort: "idx" %}
+
 [
-{% for link in site.data.links_en %}
-{% if link.hr != true %}
+{% for link in pages %}
 	{
+		"idx": {{ link.idx }},
 		"title": "{{ link.title }}",
 		"loc": "https://rubenwardy.com/minetest_modding_book/en/{{ link.link }}",
 		{% if link.description %}
@@ -13,7 +15,6 @@
 		"priority": 1
 		{% if link.num %}, "chapter_number": {{ link.num }}{% endif %}
 	},
-{% endif %}
 {% endfor %}
 
 	{

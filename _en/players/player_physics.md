@@ -2,6 +2,7 @@
 title: Player Physics
 layout: default
 root: ../../
+idx: 4.4
 ---
 
 ## Introduction
@@ -57,7 +58,7 @@ Two overrides are needed to fully restore old movement behaviour:
 * new_move: whether the player uses new movement (default: true)
 * sneak_glitch: whether the player can use 'sneak elevators' (default: false)
 
-## Mod Incompatibility 
+## Mod Incompatibility
 
 Please be warned that mods which override the same physics value of a player tend
 to be incompatible with each other. When setting an override, it overwrites

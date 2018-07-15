@@ -2,6 +2,7 @@
 title: Inventories
 layout: default
 root: ../../
+idx: 5.2
 ---
 
 ## Introduction
@@ -63,7 +64,7 @@ There are three types of inventory:
 ### Player Inventories
 
 A player inventory usually has two grids, one for the main inventory and one for crafting.
-Press i in game to see your player inventory. 
+Press i in game to see your player inventory.
 
 Use a player's name to get their inventory:
 

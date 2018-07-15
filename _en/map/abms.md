@@ -2,6 +2,8 @@
 title: Active Block Modifiers
 layout: default
 root: ../../
+idx: 3.2
+description: Learn how to make ABMs to change blocks.
 ---
 
 ## Introduction

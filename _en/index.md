@@ -4,6 +4,7 @@ layout: default
 homepage: true
 no_header: true
 root: ../
+idx: 0.1
 ---
 
 <div id="header">

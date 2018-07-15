@@ -32,10 +32,10 @@ fit my idea of quality.
 ## Adding a new language
 
 * Add entry to `_data/languages.yml`
-* Copy links_en, and customise it for your language
 * Add your language to the if else in `_includes/header.html`
-* Copy en/ to your language code
-* Translate your language code folder
+* Copy `_en/` to your language code
+* Translate your language code folder.
+  You can translate the file paths, just make sure you keep any ids the same.
 
 ## Using Jeykll
 

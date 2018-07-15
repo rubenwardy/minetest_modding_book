@@ -2,6 +2,7 @@
 title: Read More
 layout: default
 root: ../../
+idx: 6.6
 ---
 
 ## List of Resources

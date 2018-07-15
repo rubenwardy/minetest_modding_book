@@ -2,6 +2,8 @@
 title: Chat Command Builder
 layout: default
 root: ../../
+idx: 4.3
+description: Use ChatCmdBuilder to make a complex chat command
 ---
 
 ## Introduction

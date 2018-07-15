@@ -2,6 +2,7 @@
 title: "SFINV: Inventory Formspec"
 layout: default
 root: ../../
+idx: 4.7
 ---
 
 ## Introduction

@@ -2,6 +2,8 @@
 title: Node Metadata
 layout: default
 root: ../../
+idx: 3.3
+description: Using get_meta to obtain a NodeMetaRef.
 ---
 
 ## Introduction

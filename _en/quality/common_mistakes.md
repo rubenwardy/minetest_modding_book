@@ -2,6 +2,7 @@
 title: Common Mistakes
 layout: default
 root: ../../
+idx: 6.1
 ---
 
 ## Introduction

@@ -4,3 +4,7 @@ sass:
 
 gems:
   - jekyll-sitemap
+
+collections:
+  en:
+    output: true

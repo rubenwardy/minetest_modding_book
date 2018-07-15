@@ -2,6 +2,8 @@
 title: Basic Map Operations
 layout: default
 root: ../../
+idx: 3.1
+description: Basic operations like set_node and get_node
 ---
 
 ## Introduction

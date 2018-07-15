@@ -14,25 +14,26 @@
 		{% assign language = pathsplit[1] %}
 
 		{% if language == "en" %}
-			{% assign links = site.data.links_en %}
+			{% assign links = site.en | sort: "idx" %}
 
 		{% else %}
 			{% assign language = "en" %}
-			{% assign links = site.data.links_en %}
+			{% assign links = site.en | sort: "idx" %}
 		{% endif %}
+
+		{% assign num = 0 %}
 
 		<div id="container">
 			<nav>
 				{% for link in links %}
-					{% if link.hr %}
-						{% assign hr = true %}
-					{% else %}
-						<li><a href="{{ page.root }}{{ language }}/{{ link.link }}"
-							class="{% if page.title == link.title %}selected{% endif %}{% if hr %} hr {% endif %}">
-							{% if link.num %} {{ link.num }} - {% endif %}
-							{{ link.title }}</a></li>
-						{% assign hr = false %}
-					{% endif %}
+					{% assign idsplit = link.id | split: '/' %}
+					{% assign section = idsplit[2] %}
+					<li><a href="{{ link.url }}"
+						class="{% if page.title == link.title %}selected{% endif %}{% if section != last_section and section != 'index' %} hr {% endif %}">
+						{% if section != "index" %}{{ num }} - {% endif %}
+						{{ link.title }}</a></li>
+					{% assign last_section = section %}
+					{% assign num = num | plus:1 %}
 				{% endfor %}
 
 				<li><a href="{{ page.root }}lua_api.html" class="hr">Lua Modding API Reference</a></li>

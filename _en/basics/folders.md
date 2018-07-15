@@ -2,6 +2,8 @@
 title: Folder Structure
 layout: default
 root: ../../
+idx: 1.1
+description: Learn how to make a mod folder, including init.lua, depends.txt and more.
 ---
 
 ## Introduction
@@ -23,7 +25,7 @@ minetest/mods.
 ![Find the mod's folder]({{ page.root }}/static/folder_modfolder.jpg)
 
 A "mod name" is used to refer to a mod. Each mod should have a unique mod name.
-Mod names can include letters, numbers, and underscores. A good mod name should 
+Mod names can include letters, numbers, and underscores. A good mod name should
 describe what the mod does, and the folder which contains the components of a mod
 needs to be given the same name as the mod name.
 
