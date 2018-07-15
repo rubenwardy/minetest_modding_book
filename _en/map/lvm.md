@@ -42,7 +42,7 @@ local emin, emax = vm:read_from_map(pos1, pos2)
 {% endhighlight %}
 
 An LVM may not read exactly the area you tell it to, for performance reasons.
-Instead it may read a larger area. The larger area is given by `emin` and `emax`,
+Instead, it may read a larger area. The larger area is given by `emin` and `emax`,
 which stand for *emerged min pos* and *emerged max pos*. An LVM will load the area
 it contains for you - whether that involves loading from memory, from disk, or
 calling the map generator.
@@ -95,7 +95,7 @@ end
 {% endhighlight %}
 
 It is recommended that you find out and store the content IDs of nodes types
-uring load time, as the IDs of a node type will never change. Make sure to store
+using load time, as the IDs of a node type will never change. Make sure to store
 the IDs in a local for performance reasons.
 
 Nodes in an LVM data are stored in reverse co-ordinate order, so you should
@@ -152,7 +152,7 @@ vm:write_to_map(true)
 For setting lighting and param2 data, there are the appropriately named
 `set_light_data()` and `set_param2_data()` methods.
 
-`write_to_map()` takes a boolean which is true if you want lighting to be
+`write_to_map()` takes a Boolean which is true if you want lighting to be
 calculated. If you pass false, you need to recalculate lighting at some future
 date using `minetest.fix_light`.
 

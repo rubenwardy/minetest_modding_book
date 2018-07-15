@@ -13,7 +13,7 @@ create the player's inventory [formspec](formspecs.html). SFINV comes with
 an API that allows you to add and otherwise manage the pages shown.
 
 Whilst SFINV by default shows pages as tabs, pages are called "pages" as
-it's entirely possible that a mod or subgame decides to show them in
+it's entirely possible that a mod or game decides to show them in
 some other format instead.
 
 * [Registering a Page](#registering-a-page)
@@ -217,7 +217,7 @@ leaves (another tab is about to be selected) your tab.
 Please note that you can't cancel these, as it would be a bad user experience
 if you could.
 
-Also note that the inventory may not be visible at the time
+Also, note that the inventory may not be visible at the time
 these callbacks are called. For example, on_enter is called for the home page
 when a player joins the game even before they open their inventory!
 

@@ -70,14 +70,14 @@ One way to do this is to think about:
   these actions cause things to happen in the engine.
 
 Let's take an example of a land protection mod. The data you have is the areas
-and any associated meta data. The actions you can take are `create`, `edit`, or
+and any associated metadata. Actions you can take are `create`, `edit`, or
 `delete`. The events that trigger these actions are chat commands and formspec
-receive fields. These are 3 areas can usually be separated pretty well.
+receive fields. These are 3 areas that can usually be separated pretty well.
 
-In your tests, you will be able to make sure that an action when triggered does the right thing
-to the data, but you won't need to test that an event calls an action (as this
-would require using the Minetest API, and this area of code should be made as
-small as possible anyway.)
+In your tests, you will be able to make sure that an action when triggered does
+the right thing to the data, but you won't need to test that an event calls an
+action (as this would require using the Minetest API, and this area of code
+should be made as small as possible anyway.)
 
 You should write your data representation using Pure Lua. "Pure" in this context
 means that the functions could run outside of Minetest - none of the engine's
@@ -86,7 +86,7 @@ functions are called.
 {% highlight lua %}
 -- Data
 function land.create(name, area_name)
-    land.lands[aname] = {
+    land.lands[area_name] = {
         name  = area_name,
         owner = name,
         -- more stuff
@@ -152,14 +152,14 @@ most of the calculations are made.
 The controller should have no knowledge about the Minetest API - notice how
 there are no Minetest calls or any view functions that resemble them.
 You should *NOT* have a function like `view.hud_add(player, def)`.
-Instead the view defines some actions the controller can tell the view to do,
+Instead, the view defines some actions the controller can tell the view to do,
 like `view.add_hud(info)` where info is a value or table which doesn't relate
 to the Minetest API at all.
 
 <figure class="right_image">
     <img
         width="100%"
-        src="{{ page.root }}//static/mvc_diagram.svg"
+        src="{{ page.root }}/static/mvc_diagram.svg"
         alt="Diagram showing a centered text element">
 </figure>
 

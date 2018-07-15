@@ -64,7 +64,7 @@ Malicious clients can submit formspecs whenever they like with whatever content
 they like.
 
 The following code has a vulnerability where any player can give
-themself moderator privileges:
+themselves moderator privileges:
 
 {% highlight lua %}
 local function show_formspec(name)
@@ -130,7 +130,7 @@ inv:set_stack("main", 1, stack)
 {% endhighlight %}
 
 The behaviour of callbacks is slightly more complicated. Modifying an itemstack you
-are given will change it for the caller too, and any subsequent callbacks. However
+are given will change it for the caller too, and any subsequent callbacks. However,
 it will only be saved in the engine if the callback caller sets it.
 
 Avoid this:
@@ -143,7 +143,7 @@ end)
 {% endhighlight %}
 
 If no callbacks cancel, then the stack will be set and the description will be updated.
-If a callback cancels then the update may be lost. It's better to do this instead:
+If a callback cancels, then the update may be lost. It's better to do this instead:
 
 {% highlight lua %}
 minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)

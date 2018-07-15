@@ -59,10 +59,10 @@ sub commands. Each `cmd:sub(route, func)` is a sub command.
 
 A sub command is a particular response to an input param. When a player runs
 the chat command, the first sub command that matches their input will be run,
-and no others. If no subcommands match then the user will be told of the invalid
+and no others. If no subcommands match, then the user will be told of the invalid
 syntax. For example, in the above code snippet if a player
 types something of the form `/sethp username 12` then the function passed
-to cmd:sub will be called. If they type `/sethp 12 bleh` then a wrong
+to cmd:sub will be called. If they type `/sethp 12 bleh`, then a wrong
 input message will appear.
 
 `:name :hp:int` is a route. It describes the format of the param passed to /teleport.
@@ -76,7 +76,7 @@ as terminals.
 Variables can change value depending on what the user types. For example, `:username`
 and `:teamname`.
 
-Variables are defined as `:name:type`. The `name` is used in the help documention.
+Variables are defined as `:name:type`. The `name` is used in the help documentation.
 The `type` is used to match the input. If the type is not given, then the type is
 `word`.
 

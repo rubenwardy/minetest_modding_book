@@ -57,7 +57,7 @@ unintended, it has been preserved in overrides due to its use on many servers.
 Two overrides are needed to fully restore old movement behaviour:
 
 * new_move: whether the player uses new movement (default: true)
-* sneak_glitch: whether the player can use 'sneak elevators' (default: false)
+* sneak_glitch: whether the player can use "sneak elevators" (default: false)
 
 ## Mod Incompatibility
 

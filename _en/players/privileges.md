@@ -136,15 +136,15 @@ minetest.set_player_privs(name, privs)
 ## Adding Privileges to basic_privs
 
 Players with the `basic_privs` privilege are able to grant and revoke a limited
-set of privileges. It's common to give this privilege to moderators so they can
-grant and revoke `interact` and `shout`, but can't grant themselves or other
+set of privileges. It's common to give this privilege to moderators, so that
+they can grant and revoke `interact` and `shout`, but can't grant themselves or other
 players privileges such as `give` and `server`, which have greater potential for abuse.
 
 To add a privilege to `basic_privs` and adjust which privileges your moderators can
 grant and revoke from other players, you must change the `basic_privs` setting.
 To do this, you must edit the minetest.conf file.
 
-By default `basic_privs` has the following value:
+By default, `basic_privs` has the following value:
 
     basic_privs = interact, shout
 

@@ -88,7 +88,7 @@ a look at the list below.
 ### Troubleshooting
 
 * **accessing undefined variable foobar** - If `foobar` is meant to be a global,
-  then add it to `read_globals`. Otherwise add any missing `local`s to the mod.
+  then add it to `read_globals`. Otherwise, add any missing `local`s to the mod.
 * **setting non-standard global variable foobar** - If `foobar` is meant to be a global,
   then add it to `globals`. Remove from `read_globals` if present there.
   Otherwise add any missing `local`s to the mod.
@@ -97,12 +97,14 @@ a look at the list below.
 
 ## Using with editor
 
-It is highly recommended that you find an install a plugin for your editor of choice
+It is highly recommended that you find and install a plugin for your editor of choice
 to show you errors without running a command. Most editors will likely have a plugin
 available.
 
 * **Atom** - `linter-luacheck`
-* **Sublime** - `SublimeLinter-luacheck`
+* **Sublime** - Install using package-control:
+        [SublimeLinter](https://github.com/SublimeLinter/SublimeLinter),
+        [SublimeLinter-luacheck](https://github.com/SublimeLinter/SublimeLinter-luacheck)
 
 ## Checking Commits with Travis
 
@@ -115,7 +117,7 @@ without downloading the code.
 
 First you should visit [travis-ci.org](https://travis-ci.org/) and sign in with
 your Github account. Then find your project's repo in your Travis profile,
-and enable travis by flipping the switch.
+and enable Travis by flipping the switch.
 
 Next, create a file called .travis.yml with the following content:
 
@@ -142,7 +144,7 @@ change the line after `script:` to:
 {% endhighlight %}
 
 Now commit and push to Github. Go to your project's page on Github, and click
-commits. You should see an orange disc next to the commit you just made. After
-a while it should change either into a green tick or a red cross depending on the
+commits. You should see an orange disc next to the commit you just made.
+After a while it should change either into a green tick or a red cross depending on the
 outcome of LuaCheck. In either case, you can click the icon to see the build logs
 and the output of LuaCheck.

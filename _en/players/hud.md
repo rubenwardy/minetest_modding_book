@@ -79,13 +79,13 @@ score panel like so:
         alt="screenshot of the HUD we're aiming for">
 </figure>
 
-In the above screenshot all of the elements have the same percentage position -
+In the above screenshot all the elements have the same percentage position -
 (100%, 50%) - but different offsets. This allows the whole thing to be anchored
 to the right of the window, but to resize without breaking.
 
 ## Text Elements
 
-You can create a hud element once you have a copy of the player object:
+You can create a HUD element once you have a copy of the player object:
 
 {% highlight lua %}
 local player = minetest.get_player_by_name("username")
@@ -109,13 +109,12 @@ table. The meaning of other properties varies based on this type.
 
 `scale` is the maximum bounds of text, text outside these bounds is cropped, eg: `{x=100, y=100}`.
 
-The text's color in [Hexadecimal form](http://www.colorpicker.com/), eg: `0xFF0000`,
-and stored in
+`number` is the text's colour, and is in [Hexadecimal form](http://www.colorpicker.com/), eg: `0xFF0000`.
 
 
 ### Our Example
 
-Let's go ahead, and place all of the text in our score panel:
+Let's go ahead, and place all the text in our score panel:
 
 {% highlight lua %}
 player:hud_add({
@@ -222,7 +221,8 @@ player:hud_add({
 })
 {% endhighlight %}
 
-We now have a HUD that looks like the one in the first post! There is one problem however, it won't update when the stats change
+We now have a HUD that looks like the one in the first post!
+There is one problem however, it won't update when the stats change.
 
 ## Changing an Element
 

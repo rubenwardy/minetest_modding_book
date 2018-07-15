@@ -15,13 +15,13 @@ In this chapter you will learn how to use ItemStacks.
 * Adding and Taking Items
 * Wear
 * Lua Tables
-* Meta data
+* Metadata
 * More Methods
 
 ## Creating ItemStacks
 
-An item stack is a... stack of items. It's basically just an item type with
-a count of items in the stack.
+An item stack is a... stack of items.
+It's basically just an item type with a count of items in the stack.
 
 You can create a stack like so:
 
@@ -120,9 +120,9 @@ local data = items:to_table()
 local items2 = ItemStack(data)
 {% endhighlight %}
 
-## Meta data
+## Metadata
 
-ItemStacks can have meta data, and use the same API as [Node Metadata](node_metadata.html).
+ItemStacks can have metadata, and use the same API as [Node Metadata](node_metadata.html).
 
 {% highlight lua %}
 local meta = items:get_meta()

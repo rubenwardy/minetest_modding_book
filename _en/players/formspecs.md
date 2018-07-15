@@ -164,7 +164,7 @@ want to do.
 
 ### Fields
 
-The fields parameter to the function is a table, index by string, of the values
+The `fields` parameter to the function is a table, index by string, of the values
 submitted by the user. You can access values in the table via fields.name,
 where 'name' is the name of the element.
 

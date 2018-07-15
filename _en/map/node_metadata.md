@@ -72,7 +72,7 @@ The functions available include:
 * get_float
 * get_inventory
 
-To get booleans, you should use `get_string` and `minetest.is_yes`:
+To get a Boolean, you should use `get_string` and `minetest.is_yes`:
 
 {% highlight lua %}
 local value = minetest.is_yes(meta:get_string("key"))
@@ -103,7 +103,7 @@ This can be done using the following functions:
 
 ## Lua Tables
 
-You can convert to and from lua tables using `to_table` and `from_table`:
+You can convert to and from Lua tables using `to_table` and `from_table`:
 
 {% highlight lua %}
 local tmp = meta:to_table()

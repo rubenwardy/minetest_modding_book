@@ -96,7 +96,7 @@ a = a + 10
 print("Sum is "..result)
 {% endhighlight %}
 
-Woah, what happened there? a, b, and result are **variables**. They're like what
+Whoa, what happened there? a, b, and result are **variables**. They're like what
 you get in mathematics, A = w * h. The equals signs are **assignments**, so
 "result" is set to a + b. Variable names can be longer than one character
 unlike in mathematics, as seen with the "result" variable. Lua is **case sensitive**.
@@ -280,7 +280,7 @@ one()
 two()
 {% endhighlight %}
 
-Nil means **not initalised**. The variable hasn't been assigned a value yet,
+Nil means **not initialised**. The variable hasn't been assigned a value yet,
 doesn't exist, or has been uninitialised. (ie: set to nil)
 
 The same goes for functions. Functions are variables of a special type.

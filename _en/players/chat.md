@@ -48,7 +48,7 @@ only visible to the named player, in this case player1.
 ### Older Mods
 
 Occasionally you'll see mods where the chat_send_player function includes a
-boolean:
+Boolean:
 
 {% highlight lua %}
 minetest.chat_send_player("player1", "This is a server message", true)
@@ -93,7 +93,7 @@ will run and the message will be sent:
 return true, "You said " .. param .. "!"
 {% endhighlight %}
 
-This returns two values, a boolean which shows the command succeeded
+This returns two values, a Boolean which shows the command succeeded
 and the chat message to send to the player.
 
 A player name, instead of a player object, is passed because
@@ -121,7 +121,7 @@ Patterns are a way of extracting stuff from text using rules.
 local to, msg = string.match(param, "^([%a%d_-]+) (*+)$")
 {% endhighlight %}
 
-The above implements `/msg <to> <message>`. Lets go through left to right:
+The above implements `/msg <to> <message>`. Let's go through left to right:
 
 * `^` means match the start of the string.
 * `()` is a matching group - anything that matches stuff in here will be

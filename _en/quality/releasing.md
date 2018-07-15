@@ -128,14 +128,16 @@ See appendix for an example and a generator.
 
 ### description.txt
 
-This should explain what your mod does.
-Be concise without being vague. It should be short in length
-because it will be displayed in the mod store.
+This should explain what your mod does. Be concise without being vague.
+It should be short because it will be displayed in the content installer.
 
-For example:
+Good example:
 
-    GOOD: Adds soups, cakes, bakes and juices. The food mod which supports the most ingredients.
-    BAD:  The food mod for Minetest.
+    Adds soup, cakes, bakes and juices. The food mod which supports the most ingredients.
+
+Don't do this:
+
+    (BAD)  The food mod for Minetest.
 
 ### screenshot.png
 
@@ -154,7 +156,7 @@ There are several methods you can use, but you should use the one that works
 best for you, as long as it meets these requirements:\\
 (and any other requirements which may be added by forum moderators)
 
-* **Stable**      - The hosting website should be unlikely to shutdown without warning.
+* **Stable**      - The hosting website should be unlikely to shut down without warning.
 * **Direct link** - You should be able to click a link on the forum and download the file
                    without having to view another page.
 * **Virus Free**  - Mods with malicious content are not wanted.
@@ -189,7 +191,7 @@ On Windows, go to the mod's folder. Select all the files.
 Right click, Send To > Compressed (zipped) folder.
 Rename the resulting zip file to the name of your mod's folder.
 
-On the Create a Topic page (see below), go to the "Upload Attachment" tab at the bottom.
+On the "Create a Topic" page (see below), go to the "Upload Attachment" tab at the bottom.
 Click browse and select the zipped file. It is recommended that you
 enter the version of your mod in the comment field.
 

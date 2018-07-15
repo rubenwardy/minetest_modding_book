@@ -341,7 +341,7 @@ The most important part is the nodebox table:
 {-0.5,    0,    0,       0.5,  0.5,  0.5}
 {% endhighlight %}
 
-Each row is a cubiod which are joined to make a single node.
+Each row is a cuboid which are joined to make a single node.
 The first three numbers are the co-ordinates, from -0.5 to 0.5 inclusive, of
 the bottom front left most corner, the last three numbers are the opposite corner.
 They are in the form X, Y, Z, where Y is up.

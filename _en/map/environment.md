@@ -29,7 +29,7 @@ Areas of the map which are not yet loaded are full of *ignore* nodes, an impassa
 unselectable placeholder node. Empty space is full of *air* nodes, an invisible node
 you can walk through.
 
-Loaded map blocks are often refered to as *active blocks*. Active Blocks can be
+Loaded map blocks are often referred to as *active blocks*. Active Blocks can be
 read from or written to by mods or players, have active entities. The Engine also
 performs operations on the map, such as performing liquid physics.
 
@@ -60,7 +60,7 @@ print(dump(node)) --> { name=.., param1=.., param2=.. }
 If the position is a decimal, it will be rounded to the containing node.
 The function will always return a table containing the node information:
 
-* `name` - The node name, will be ignore when the area is unloaded.
+* `name` - The node name, will be ignored when the area is unloaded.
 * `param1` - See the node definition, will commonly be light.
 * `param2` - See the node definition.
 
@@ -91,7 +91,7 @@ if node_pos then
 end
 {% endhighlight %}
 
-Lets say, for example, that the growth rate increases the more mese there is
+Let's say, for example, that the growth rate increases the more mese there is
 nearby. You should then use a function which can find multiple nodes in area:
 
 {% highlight lua %}
@@ -124,8 +124,8 @@ rooting it to obtain the actual distance. This is because computers find square
 roots computationally expensive, so you should avoid them as much as possible.
 
 There are more variations of the above two functions, such as
-`find_nodes_with_meta` and `find_nodes_in_area_under_air`, which work in a
-similar way and are useful in other circumstances.
+`find_nodes_with_meta` and `find_nodes_in_area_under_air`, which work similarly
+and are useful in other circumstances.
 
 ## Writing
 
@@ -142,13 +142,13 @@ local node = minetest.get_node({ x = 1, y = 3, z = 4 })
 print(node.name) --> default:mese
 {% endhighlight %}
 
-set_node will remove any associated meta data or inventory from that position.
+set_node will remove any associated metadata or inventory from that position.
 This isn't desirable in all circumstances, especially if you're using multiple
 node definitions to represent one conceptual node. An example of this is the
 furnace node - whilst you think conceptually of it as one node, it's actually
 two.
 
-You can set a node without deleting meta data or the inventory like so:
+You can set a node without deleting metadata or the inventory like so:
 
 {% highlight lua %}
 minetest.swap_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
@@ -156,8 +156,7 @@ minetest.swap_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
 
 ### Removing Nodes
 
-A node must always be present. When someone says to remove a node, what
-is usually meant is they want to set the node to `air`.
+A node must always be present. To remove a node, you set the position to `air`.
 
 The following two lines will both remove a node, and are both identical:
 
@@ -171,7 +170,7 @@ In fact, remove_node will call set_node with name being air.
 ## Loading Blocks
 
 You can use `minetest.emerge_area` to load map blocks. Emerge area is asynchronous,
-meaning the the blocks won't be loaded instantly. Instead they will be loaded
+meaning the blocks won't be loaded instantly. Instead, they will be loaded
 soon in the future, and the callback will be called each time.
 
 {% highlight lua %}

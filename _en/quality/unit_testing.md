@@ -92,7 +92,7 @@ end)
 You can now run the tests by opening a terminal in the mod's directory and
 running `busted .`
 
-It's important that the api file doesn't create the table itself, as globals in
+It's important that the API file doesn't create the table itself, as globals in
 Busted work differently. Any variable which would be global in Minetest is instead
 a file local in busted. This would have been a better way for Minetest to do things,
 but it's too late for that now.

@@ -194,8 +194,7 @@ The is_ground_content attribute allows caves to be generated over the stone.
 
 ## Crafting
 
-There are several different types of crafting,
-identified by the ``type`` property.
+There are several types of crafting, identified by the ``type`` property.
 
 * shaped - Ingredients must be in the correct position.
 * shapeless - It doesn't matter where the ingredients are,
@@ -285,7 +284,7 @@ minetest.register_craft({
 As you can see from this example, the only real difference in the code
 is that the recipe is just a single item, compared to being in a table
 (between braces). They also have an optional "cooktime" parameter which
-defines how long the item takes to cook. If this is not set it defaults to 3.
+defines how long the item takes to cook. If this is not set, it defaults to 3.
 
 The recipe above works when the coal block is in the input slot,
 with some form of a fuel below it.

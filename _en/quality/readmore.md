@@ -8,7 +8,7 @@ redirect_from: /en/chapters/readmore.html
 
 ## List of Resources
 
-After you've read this book, take a look at the following
+After you've read this book, take a look at the following.
 
 ### Minetest Modding
 
