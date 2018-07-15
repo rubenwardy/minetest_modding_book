@@ -1,7 +1,7 @@
 ---
 title: Active Block Modifiers
 layout: default
-root: ../../
+root: ../..
 idx: 3.2
 description: Learn how to make ABMs to change blocks.
 redirect_from: /en/chapters/abms.html

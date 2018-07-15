@@ -1,7 +1,7 @@
 ---
 title: Player Physics
 layout: default
-root: ../../
+root: ../..
 idx: 4.4
 redirect_from: /en/chapters/player_physics.html
 ---
@@ -38,7 +38,7 @@ minetest.register_chatcommand("antigravity", {
 ## Available Overrides
 
 player:set_physics_override() is given a table of overrides.\\
-According to [lua_api.txt]({{ page.root }}lua_api.html#player-only-no-op-for-other-objects),
+According to [lua_api.txt]({{ page.root }}/lua_api.html#player-only-no-op-for-other-objects),
 these can be:
 
 * speed: multiplier to default walking speed value (default: 1)

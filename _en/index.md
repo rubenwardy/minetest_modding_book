@@ -3,7 +3,7 @@ title: Introduction
 layout: default
 homepage: true
 no_header: true
-root: ../
+root: ..
 idx: 0.1
 ---
 

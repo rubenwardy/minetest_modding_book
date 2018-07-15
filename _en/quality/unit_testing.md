@@ -1,7 +1,7 @@
 ---
 title: Automatic Unit Testing
 layout: default
-root: ../../
+root: ../..
 idx: 6.4
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Intro to Clean Architectures
 layout: default
-root: ../../
+root: ../..
 idx: 6.3
 ---
 
@@ -159,7 +159,7 @@ to the Minetest API at all.
 <figure class="right_image">
     <img
         width="100%"
-        src="{{ page.root }}/static/mvc_diagram.svg"
+        src="{{ page.root }}//static/mvc_diagram.svg"
         alt="Diagram showing a centered text element">
 </figure>
 

@@ -1,7 +1,7 @@
 ---
 title: Node Drawtypes
 layout: default
-root: ../../
+root: ../..
 idx: 2.3
 description: Guide to all drawtypes, including node boxes/nodeboxes and mesh nodes.
 redirect_from: /en/chapters/node_drawtypes.html
@@ -43,7 +43,7 @@ This article is not complete yet. The following drawtypes are missing:
 ## Normal
 
 <figure class="right_image">
-    <img src="{{ page.root }}/static/drawtype_normal.png" alt="Normal Drawtype">
+    <img src="{{ page.root }}//static/drawtype_normal.png" alt="Normal Drawtype">
     <figcaption>
         Normal Drawtype
     </figcaption>
@@ -102,7 +102,7 @@ minetest.register_node("myair:air", {
 ## Liquid
 
 <figure class="right_image">
-    <img src="{{ page.root }}/static/drawtype_liquid.png" alt="Liquid Drawtype">
+    <img src="{{ page.root }}//static/drawtype_liquid.png" alt="Liquid Drawtype">
     <figcaption>
         Liquid Drawtype
     </figcaption>
@@ -185,7 +185,7 @@ the same as the above example.
 ## Glasslike
 
 <figure class="right_image">
-    <img src="{{ page.root }}/static/drawtype_glasslike.png" alt="Glasslike Drawtype">
+    <img src="{{ page.root }}//static/drawtype_glasslike.png" alt="Glasslike Drawtype">
     <figcaption>
         Glasslike Drawtype
     </figcaption>
@@ -195,7 +195,7 @@ When you place multiple glasslike nodes together, you'll notice that the interna
 edges are hidden, like this:
 
 <figure>
-    <img src="{{ page.root }}/static/drawtype_glasslike_edges.png" alt="Glasslike's Edges">
+    <img src="{{ page.root }}//static/drawtype_glasslike_edges.png" alt="Glasslike's Edges">
     <figcaption>
         Glasslike's Edges
     </figcaption>
@@ -220,7 +220,7 @@ This makes the node's edge go around the whole thing with a 3D effect, rather
 than individual nodes, like the following:
 
 <figure>
-    <img src="{{ page.root }}/static/drawtype_glasslike_framed.png" alt="Glasslike_framed's Edges">
+    <img src="{{ page.root }}//static/drawtype_glasslike_framed.png" alt="Glasslike_framed's Edges">
     <figcaption>
         Glasslike_Framed's Edges
     </figcaption>
@@ -250,7 +250,7 @@ minetest.register_node("default:glass", {
 ## Allfaces
 
 <figure class="right_image">
-    <img src="{{ page.root }}/static/drawtype_allfaces.png" alt="Allfaces drawtype">
+    <img src="{{ page.root }}//static/drawtype_allfaces.png" alt="Allfaces drawtype">
     <figcaption>
         Allfaces drawtype
     </figcaption>
@@ -311,7 +311,7 @@ minetest.register_node("foobar:torch", {
 ## Nodebox
 
 <figure class="right_image">
-    <img src="{{ page.root }}/static/drawtype_nodebox.gif" alt="Nodebox drawtype">
+    <img src="{{ page.root }}//static/drawtype_nodebox.gif" alt="Nodebox drawtype">
     <figcaption>
         Nodebox drawtype
     </figcaption>
@@ -438,7 +438,7 @@ minetest.register_node("default:ladder_wood", {
 ## Plantlike
 
 <figure class="right_image">
-    <img src="{{ page.root }}/static/drawtype_plantlike.png" alt="Plantlike Drawtype">
+    <img src="{{ page.root }}//static/drawtype_plantlike.png" alt="Plantlike Drawtype">
     <figcaption>
         Plantlike Drawtype
     </figcaption>
@@ -466,7 +466,7 @@ Firelike is similar to plantlike, except that it is designed to "cling" to walls
 and ceilings.
 
 <figure>
-    <img src="{{ page.root }}/static/drawtype_firelike.png" alt="Firelike nodes">
+    <img src="{{ page.root }}//static/drawtype_firelike.png" alt="Firelike nodes">
     <figcaption>
         Firelike nodes
     </figcaption>

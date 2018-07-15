@@ -1,7 +1,7 @@
 ---
 title: Chat and Commands
 layout: default
-root: ../../
+root: ../..
 idx: 4.2
 description: Registering a chatcommand and handling chat messages with register_on_chat_message
 redirect_from: /en/chapters/chat.html

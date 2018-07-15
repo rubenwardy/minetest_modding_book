@@ -1,7 +1,7 @@
 ---
 title: Node Metadata
 layout: default
-root: ../../
+root: ../..
 idx: 3.3
 description: Using get_meta to obtain a NodeMetaRef.
 redirect_from: /en/chapters/node_metadata.html

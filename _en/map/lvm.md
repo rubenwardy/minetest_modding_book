@@ -1,7 +1,7 @@
 ---
 title: Lua Voxel Manipulators
 layout: default
-root: ../../
+root: ../..
 idx: 3.4
 description: Learn how to use LVMs to speed up map operations.
 redirect_from: /en/chapters/lvm.html

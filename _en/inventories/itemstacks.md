@@ -1,7 +1,7 @@
 ---
 title: ItemStacks
 layout: default
-root: ../../
+root: ../..
 idx: 5.1
 redirect_from: /en/chapters/itemstacks.html
 ---
@@ -135,5 +135,5 @@ print(dump(meta:get_string("foo")))
 ## More Methods
 
 Have a look at the
-[list of methods for an ItemStack]({{ page.root }}lua_api.html#methods_5).
+[list of methods for an ItemStack]({{ page.root }}/lua_api.html#methods_5).
 There are a lot more available than talked about here.

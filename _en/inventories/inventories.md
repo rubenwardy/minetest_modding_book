@@ -1,7 +1,7 @@
 ---
 title: Inventories
 layout: default
-root: ../../
+root: ../..
 idx: 5.2
 redirect_from: /en/chapters/inventories.html
 ---
@@ -49,7 +49,7 @@ There are three types of inventory:
 * **Detached Inventories**: An inventory which is not attached to a node or player.
 
 <figure>
-    <img src="{{ page.root }}/static/inventories_lists.png" alt="The player inventory formspec, with annotated list names.">
+    <img src="{{ page.root }}//static/inventories_lists.png" alt="The player inventory formspec, with annotated list names.">
     <figcaption>
         This image shows the two inventories visible when you press i.
         The gray boxes are inventory lists.<br />
@@ -104,7 +104,7 @@ minetest.create_detached_inventory("inventory_name", callbacks)
 {% endhighlight %}
 
 This creates a detached inventory or, if the inventory already exists, it is cleared.
-You can also supply a [table of callbacks]({{ page.root }}lua_api.html#detached-inventory-callbacks).
+You can also supply a [table of callbacks]({{ page.root }}/lua_api.html#detached-inventory-callbacks).
 
 ## InvRef and Lists
 

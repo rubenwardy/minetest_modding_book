@@ -1,7 +1,7 @@
 ---
 title: Creating Textures
 layout: default
-root: ../../
+root: ../..
 idx: 2.2
 description: An introduction to making textures in your editor of choice, an a guide on GIMP.
 redirect_from: /en/chapters/creating_textures.html
@@ -73,11 +73,11 @@ obvious.
 When using GIMP, the pencil tool can be selected from the Toolbox:
 
 <figure>
-    <img src="{{ page.root }}/static/pixel_art_gimp_pencil.png" alt="Pencil in GIMP">
+    <img src="{{ page.root }}//static/pixel_art_gimp_pencil.png" alt="Pencil in GIMP">
 </figure>
 
 It's also advisable to select the Hard edge checkbox for the eraser tool:
 
 <figure>
-    <img src="{{ page.root }}/static/pixel_art_gimp_rubber.png" alt="Eraser in GIMP">
+    <img src="{{ page.root }}//static/pixel_art_gimp_rubber.png" alt="Eraser in GIMP">
 </figure>

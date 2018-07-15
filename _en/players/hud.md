@@ -1,7 +1,7 @@
 ---
 title: HUD
 layout: default
-root: ../../
+root: ../..
 idx: 4.6
 redirect_from: /en/chapters/hud.html
 ---
@@ -33,7 +33,7 @@ The HUD doesn't accept user input. For that, you should use a [Formspec](formspe
 <figure class="right_image">
     <img
         width="300"
-        src="{{ page.root }}/static/hud_diagram_center.svg"
+        src="{{ page.root }}//static/hud_diagram_center.svg"
         alt="Diagram showing a centered text element">
 </figure>
 
@@ -60,7 +60,7 @@ make a text element left, center, or right justified.
 <figure>
     <img
         width="500"
-        src="{{ page.root }}/static/hud_diagram_alignment.svg"
+        src="{{ page.root }}//static/hud_diagram_alignment.svg"
         alt="Diagram showing alignment">
 </figure>
 
@@ -75,7 +75,7 @@ score panel like so:
 
 <figure>
     <img
-        src="{{ page.root }}/static/hud_final.png"
+        src="{{ page.root }}//static/hud_final.png"
         alt="screenshot of the HUD we're aiming for">
 </figure>
 
@@ -159,7 +159,7 @@ This results in the following:
 
 <figure>
     <img
-        src="{{ page.root }}/static/hud_text.png"
+        src="{{ page.root }}//static/hud_text.png"
         alt="screenshot of the HUD we're aiming for">
 </figure>
 
@@ -183,7 +183,7 @@ You will now have this:
 
 <figure>
     <img
-        src="{{ page.root }}/static/hud_background_img.png"
+        src="{{ page.root }}//static/hud_background_img.png"
         alt="screenshot of the HUD so far">
 </figure>
 
@@ -292,4 +292,4 @@ end)
 
 ## Other Elements
 
-Read [lua_api.txt]({{ page.root }}lua_api.html#hud-element-types) for a complete list of HUD elements.
+Read [lua_api.txt]({{ page.root }}/lua_api.html#hud-element-types) for a complete list of HUD elements.

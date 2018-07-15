@@ -1,7 +1,7 @@
 ---
 title: Releasing a Mod
 layout: default
-root: ../../
+root: ../..
 idx: 6.5
 redirect_from: /en/chapters/releasing.html
 ---
@@ -194,7 +194,7 @@ Click browse and select the zipped file. It is recommended that you
 enter the version of your mod in the comment field.
 
 <figure>
-    <img src="{{ page.root }}/static/releasing_attachments.png" alt="Upload Attachment">
+    <img src="{{ page.root }}//static/releasing_attachments.png" alt="Upload Attachment">
     <figcaption>
         Upload Attachment tab.
     </figcaption>
@@ -267,7 +267,7 @@ The subject of topic must be in one of these formats:
 ### Profit
 
 <figure>
-    <img src="{{ page.root }}/static/releasing_profit.png" alt="Profit">
+    <img src="{{ page.root }}//static/releasing_profit.png" alt="Profit">
     <figcaption style="display:none;">
         Profit
     </figcaption>

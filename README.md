@@ -92,7 +92,7 @@ Replace spaces with underscores ( _ )
     ---
     title: Player Physics
     layout: default
-    root: ../
+    root: ..
     ---
 
     Introduction

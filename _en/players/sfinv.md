@@ -1,7 +1,7 @@
 ---
 title: "SFINV: Inventory Formspec"
 layout: default
-root: ../../
+root: ../..
 idx: 4.7
 redirect_from: /en/chapters/sfinv.html
 ---
@@ -57,7 +57,7 @@ The fourth parameter, currently set as `true`, determines whether or not the
 player's inventory is shown.
 
 <figure>
-    <img src="{{ page.root }}/static/sfinv_hello_world.png" alt="Furnace Inventory">
+    <img src="{{ page.root }}//static/sfinv_hello_world.png" alt="Furnace Inventory">
     <figcaption>
         Your first sfinv page! Not exactly very exciting, though.
     </figcaption>
@@ -109,7 +109,7 @@ There's nothing new about the above code, all the concepts are covered above and
 in previous chapters.
 
 <figure>
-    <img src="{{ page.root }}/static/sfinv_admin_fs.png" alt="Player Admin Page">
+    <img src="{{ page.root }}//static/sfinv_admin_fs.png" alt="Player Admin Page">
     <figcaption>
         The player admin page created above.
     </figcaption>

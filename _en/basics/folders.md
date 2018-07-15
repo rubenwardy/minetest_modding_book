@@ -1,7 +1,7 @@
 ---
 title: Folder Structure
 layout: default
-root: ../../
+root: ../..
 idx: 1.1
 description: Learn how to make a mod folder, including init.lua, depends.txt and more.
 redirect_from: /en/chapters/folders.html
@@ -23,7 +23,7 @@ Each mod has its own folder where all its Lua code, textures, models, and sounds
 are placed. These folders need to be placed in a mod location such as
 minetest/mods.
 
-![Find the mod's folder]({{ page.root }}/static/folder_modfolder.jpg)
+![Find the mod's folder]({{ page.root }}//static/folder_modfolder.jpg)
 
 A "mod name" is used to refer to a mod. Each mod should have a unique mod name.
 Mod names can include letters, numbers, and underscores. A good mod name should

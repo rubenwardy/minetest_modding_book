@@ -18,11 +18,10 @@ layout: compress
 	{% assign language = pathsplit[1] %}
 
 	{% if language == "en" %}
-	{% assign links = site.en | sort: "idx" %}
-
+		{% assign links = site.en | sort: "idx" %}
 	{% else %}
-	{% assign language = "en" %}
-	{% assign links = site.en | sort: "idx" %}
+		{% assign language = "en" %}
+		{% assign links = site.en | sort: "idx" %}
 	{% endif %}
 
 	{% assign num = 0 %}
@@ -30,19 +29,23 @@ layout: compress
 	<div id="container">
 		<nav>
 			{% for link in links %}
-			{% assign idsplit = link.id | split: '/' %}
-			{% assign section = idsplit[2] %}
-			<li><a href="{{ link.url }}"
-				class="{% if page.title == link.title %}selected{% endif %}{% if section != last_section and section != 'index' %} hr {% endif %}">
-				{% if section != "index" %}{{ num }} - {% endif %}
-				{{ link.title }}</a></li>
+				{% assign idsplit = link.id | split: '/' %}
+				{% assign section = idsplit[2] %}
+				<li>
+					<a href="{{ page.root }}{{ link.url }}"
+							class="{% if page.title == link.title %}selected{% endif %}{% if section != last_section and section != 'index' %} hr {% endif %}">
+						{% if section != "index" %}{{ num }} - {% endif %}
+						{{ link.title }}
+					</a>
+				</li>
+
 				{% assign last_section = section %}
 				{% assign num = num | plus:1 %}
-				{% endfor %}
+			{% endfor %}
 
-				<li><a href="{{ page.root }}lua_api.html" class="hr">Lua Modding API Reference</a></li>
-				<li><a href="https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip">Download Examples</a></li>
-			</nav>
+			<li><a href="{{ page.root }}/lua_api.html" class="hr">Lua Modding API Reference</a></li>
+			<li><a href="https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip">Download Examples</a></li>
+		</nav>
 
 			<main>
 				<article {% if page.homepage %}class="homepage"{% endif %}>
@@ -64,8 +67,8 @@ layout: compress
 				{% endfor %}
 
 				<ul class="prevnext">
-					<li>{% if prev %}<a href="{{ prev.url}}">&lt; {{ prev.title }}</a>{% endif %}</li>
-					<li>{% if next %}<a href="{{ next.url}}">{{ next.title }} &gt;</a>{% endif %}</li>
+					<li>{% if prev %}<a href="{{ page.root }}{{ prev.url}}">&lt; {{ prev.title }}</a>{% endif %}</li>
+					<li>{% if next %}<a href="{{ page.root }}{{ next.url}}">{{ next.title }} &gt;</a>{% endif %}</li>
 				</ul>
 
 				<footer>
@@ -76,8 +79,8 @@ layout: compress
 				</footer>
 			</article>
 		</main>
-		<link rel="stylesheet" href="{{ page.root }}static/style.css">
+		<link rel="stylesheet" href="{{ page.root }}/static/style.css">
 		<script async src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-		<script async src="{{ page.root }}static/script.js"></script>
+		<script async src="{{ page.root }}/static/script.js"></script>
 	</body>
 	</html>
