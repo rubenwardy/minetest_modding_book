@@ -3,6 +3,7 @@ title: Player Physics
 layout: default
 root: ../../
 idx: 4.4
+redirect_from: /en/chapters/player_physics.html
 ---
 
 ## Introduction

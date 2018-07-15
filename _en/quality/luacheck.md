@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 6.2
 description: Use LuaCheck to find errors
+redirect_from: /en/chapters/luacheck.html
 ---
 
 ## Introduction

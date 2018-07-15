@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 4.3
 description: Use ChatCmdBuilder to make a complex chat command
+redirect_from: /en/chapters/chat_complex.html
 ---
 
 ## Introduction

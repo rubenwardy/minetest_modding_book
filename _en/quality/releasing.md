@@ -3,6 +3,7 @@ title: Releasing a Mod
 layout: default
 root: ../../
 idx: 6.5
+redirect_from: /en/chapters/releasing.html
 ---
 
 ## Introduction

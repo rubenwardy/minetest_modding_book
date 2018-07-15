@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 2.3
 description: Guide to all drawtypes, including node boxes/nodeboxes and mesh nodes.
+redirect_from: /en/chapters/node_drawtypes.html
 ---
 
 ## Introduction

@@ -3,6 +3,7 @@ title: Read More
 layout: default
 root: ../../
 idx: 6.6
+redirect_from: /en/chapters/readmore.html
 ---
 
 ## List of Resources

@@ -3,6 +3,7 @@ title: "SFINV: Inventory Formspec"
 layout: default
 root: ../../
 idx: 4.7
+redirect_from: /en/chapters/sfinv.html
 ---
 
 ## Introduction

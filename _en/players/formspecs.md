@@ -3,6 +3,7 @@ title: Formspecs
 layout: default
 root: ../../
 idx: 4.5
+redirect_from: /en/chapters/formspecs.html
 ---
 
 ## Introduction

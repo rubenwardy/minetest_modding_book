@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 1.1
 description: Learn how to make a mod folder, including init.lua, depends.txt and more.
+redirect_from: /en/chapters/folders.html
 ---
 
 ## Introduction

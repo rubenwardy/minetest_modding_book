@@ -2,8 +2,9 @@ sass:
   #  nested (default), compact, compressed, expanded
   style: compressed
 
-gems:
+plugins:
   - jekyll-sitemap
+  - jekyll-redirect-from
 
 collections:
   en:

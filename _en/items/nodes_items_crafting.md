@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 2.1
 description: Learn how to register node, items, and craft recipes using register_node, register_item, and register_craft.
+redirect_from: /en/chapters/nodes_items_crafting.html
 ---
 
 ## Introduction

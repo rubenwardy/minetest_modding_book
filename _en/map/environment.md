@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 3.1
 description: Basic operations like set_node and get_node
+redirect_from: /en/chapters/environment.html
 ---
 
 ## Introduction

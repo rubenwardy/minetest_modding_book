@@ -3,6 +3,7 @@ title: ItemStacks
 layout: default
 root: ../../
 idx: 5.1
+redirect_from: /en/chapters/itemstacks.html
 ---
 
 ## Introduction

@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 1.2
 description: A basic introduction to Lua, including a guide on global/local scope.
+redirect_from: /en/chapters/lua.html
 ---
 
 ## Introduction

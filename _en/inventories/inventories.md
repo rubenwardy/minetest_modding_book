@@ -3,6 +3,7 @@ title: Inventories
 layout: default
 root: ../../
 idx: 5.2
+redirect_from: /en/chapters/inventories.html
 ---
 
 ## Introduction

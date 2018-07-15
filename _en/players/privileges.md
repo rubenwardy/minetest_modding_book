@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 4.1
 description: Registering privs.
+redirect_from: /en/chapters/privileges.html
 ---
 
 ## Introduction

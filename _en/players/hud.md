@@ -3,6 +3,7 @@ title: HUD
 layout: default
 root: ../../
 idx: 4.6
+redirect_from: /en/chapters/hud.html
 ---
 
 ## Introduction

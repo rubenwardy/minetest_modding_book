@@ -4,6 +4,7 @@ layout: default
 root: ../../
 idx: 2.2
 description: An introduction to making textures in your editor of choice, an a guide on GIMP.
+redirect_from: /en/chapters/creating_textures.html
 ---
 
 ## Introduction
