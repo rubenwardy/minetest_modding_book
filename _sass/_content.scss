@@ -81,3 +81,44 @@ h3 {
 .toc > ul > li > ul > li > ul {
 	display: none;
 }
+
+
+
+.prevnext {
+	display: flex;
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	background: #eee;
+
+	li {
+		display: inline-block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		flex: 1;
+
+		a {
+			display: block;
+			margin: 0;
+			padding: 1em 0;
+			text-align: center;
+			font-size: 100%;
+			text-decoration: none;
+			color: black;
+		}
+
+		a:hover {
+			text-decoration: none;
+			background: #fff;
+		}
+	}
+
+	li:first-child {
+		border-right: 2px solid white;
+	}
+
+	li:last-child {
+		border-left: 2px solid white;
+	}
+}
