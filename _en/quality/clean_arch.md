@@ -138,8 +138,8 @@ minetest.register_chatcommand("/land", {
     end,
 })
 
-minetest.register_on_player_receive_fields(function()
-
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+    land.handle_create_submit(player:get_player_name(), fields.area_name)
 end)
 {% endhighlight %}
 
@@ -187,10 +187,11 @@ parts:
 * **View** - the view as before. It's a good idea to structure this into separate
     files for each type of event.
 
-rubenwardy's [crafting mod](https://github.com/rubenwardy/crafting) follows
-this design. `api.lua` is almost all pure Lua functions handling the data
-storage and controller-style calculations. `gui.lua` and `async_crafter.lua`
-are views for each type of thing.
+rubenwardy's [crafting mod](https://github.com/rubenwardy/crafting) roughly
+follows this design. `api.lua` is almost all pure Lua functions handling the data
+storage and controller-style calculations. `gui.lua` is the view for formspecs
+and formspec submission, and `async_crafter.lua` is the view and controller for
+a node formspec and node timers.
 
 Separating the mod like this means that you can very easily test the API part,
 as it doesn't use any Minetest APIs - as shown in the
