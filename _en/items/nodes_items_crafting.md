@@ -116,8 +116,8 @@ minetest.register_craftitem("mymod:mudpie", {
     description = "Alien Mud Pie",
     inventory_image = "myfood_mudpie.png",
     on_use = function(itemstack, user, pointed_thing)
-        hp_change = 20
-        replace_with_item = nil
+        local hp_change = 20
+        local replace_with_item = nil
 
         minetest.chat_send_player(user:get_player_name(), "You ate an alien mud pie!")
 

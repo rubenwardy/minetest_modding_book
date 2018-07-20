@@ -44,6 +44,12 @@ title: Chapter Name
 layout: default
 root: ..
 idx: 4.5
+long_notice:
+  level: tip
+  title: This is a long tip!
+  message: This is a very long tip, so it would be unreadable if
+           placed in the main body of the chapter. Therefore,
+           it is a good idea to put it in the frontmatter instead.
 ---
 
 ## Chapter Name
@@ -56,6 +62,8 @@ Explain why/how these concepts are useful in modding
 * [This Chapter](#this-chapter)
 
 ## List the
+
+{% include notice.html notice=page.long_notice %}
 
 Paragraphs
 

@@ -1,0 +1,21 @@
+{% if include.notice %}
+	{% assign notice=include.notice %}
+{% else %}
+	{% assign notice=include %}
+{% endif %}
+
+<div class="notice notice-{{ notice.level }}">
+	{% if notice.level == "warning" %}
+		<span>⚠</span>
+	{% else if notice.level == "tip" %}
+		<span>i</span>
+	{% else %}
+		<span>?</span>
+	{% endif %}
+	<div>
+		{% if notice.title %}
+			<h2>{{ notice.title }}</h2>
+		{% endif %}
+		{{ notice.message }}
+	</div>
+</div>

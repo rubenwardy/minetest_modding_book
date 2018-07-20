@@ -71,9 +71,7 @@ One such IDE is Eclipse with the Koneki Lua plugin:
 
 ## Coding in Lua
 
-<div class="notice">
-    This section is a Work in Progress. May be unclear.
-</div>
+{% include notice.html level="warning" message="This section is a Work in Progress. May be unclear." %}
 
 Programs are a series of commands that run one after another.
 We call these commands "statements."

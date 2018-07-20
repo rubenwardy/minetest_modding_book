@@ -27,19 +27,54 @@ figure {
 	padding: 0 0 0 6px;
 }
 
+
+.notice-danger {
+	background: #933 !important;
+	border: 1px solid #c44 !important;
+}
+
+.notice-warning {
+	background: #FED;
+	border: 1px solid #fc9;
+}
+
+.notice-tip {
+	background: #ccf;
+	border: 1px solid #66a;
+}
+
+.notice-green {
+	background: #161;
+	border: 1px solid #393;
+}
+
 .notice {
 	margin: 10px;
 	display: block;
 	padding: 5px;
-	border: 1px solid orange;
 	border-radius: 5px;
-	background: #FFEEDD;
+	position: relative;
+}
 
+.notice > span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 40px;
+	font-size: 24px;
+	text-align: center;
+	display: block;
+}
+
+.notice > div {
+	margin-left: 35px;
 }
 
 .notice h2 {
 	margin: 0 0 5px 0;
 	padding: 0 0 2px 0;
+	font-size: 110%;
 }
 
 .header-link, .anchor {

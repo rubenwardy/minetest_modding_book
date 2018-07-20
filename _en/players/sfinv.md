@@ -233,9 +233,4 @@ end,
 
 ## Adding to an existing page
 
-<div class="notice">
-    <h2>To Do</h2>
-
-    This section will be added soon&trade;.
-    This placeholder is just to let you know that it is possible!
-</div>
+{% include notice.html level="warning" title="To Do" message="This section will be added soon&trade;. This placeholder is just to let you know that it is possible!" %}
