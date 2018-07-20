@@ -4,6 +4,13 @@ layout: default
 root: ../..
 idx: 4.5
 redirect_from: /en/chapters/formspecs.html
+submit_vuln:
+    level: warning
+    title: Malicious clients can submit anything at anytime
+    message: You should never trust a formspec submission. A malicious client
+             can submit anything they like at any time - even if you never showed
+             them the formspec. This means that you should check privileges
+             and make sure that they should be allowed to perform the action.
 ---
 
 ## Introduction
@@ -161,6 +168,8 @@ every time a user submits a form. Most callbacks will check the formname given
 to the function, and exit if it is not the right form; however, some callbacks
 may need to work on multiple forms, or all forms - it depends on what you
 want to do.
+
+{% include notice.html notice=page.submit_vuln %}
 
 ### Fields
 

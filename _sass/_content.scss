@@ -27,10 +27,14 @@ figure {
 	padding: 0 0 0 6px;
 }
 
+.notice-info {
+	background: #ececec !important;
+	border: 1px solid #aaa !important;
+}
 
 .notice-danger {
-	background: #933 !important;
-	border: 1px solid #c44 !important;
+	background: #fcc !important;
+	border: 1px solid #a66 !important;
 }
 
 .notice-warning {
@@ -56,6 +60,14 @@ figure {
 	position: relative;
 }
 
+.notice p {
+	margin: 0 0 17px 0;
+}
+
+.notice p:last-child {
+	margin: 0;
+}
+
 .notice > span {
 	position: absolute;
 	top: 0;
@@ -74,7 +86,7 @@ figure {
 .notice h2 {
 	margin: 0 0 5px 0;
 	padding: 0 0 2px 0;
-	font-size: 110%;
+	font-size: 100%;
 }
 
 .header-link, .anchor {

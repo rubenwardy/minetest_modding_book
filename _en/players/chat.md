@@ -5,6 +5,23 @@ root: ../..
 idx: 4.2
 description: Registering a chatcommand and handling chat messages with register_on_chat_message
 redirect_from: /en/chapters/chat.html
+cmd_online:
+    level: warning
+    title: Offline players can run commands
+    message: <p>A player name is passed instead of a player object, because mods
+             can run commands on behalf of offline players. For example, the IRC
+             bridge allows players to run commands without joining the game.</p>
+
+             <p>So make sure that you don't assume that the player is online.
+             You can check by seeing if minetest.get_player_by_name returns a player.</p>
+
+cb_cmdsprivs:
+    level: warning
+    title: Privileges and Chat Commands
+    message: The shout privilege isn't needed for a player to trigger this callback.
+             This is because chat commands are implemented in Lua, and are just
+             chat messages that begin with a /.
+
 ---
 
 ## Introduction
@@ -45,20 +62,6 @@ minetest.chat_send_player("player1", "This is a chat message for player1")
 This message displays in the same manner as messages to all players, but is
 only visible to the named player, in this case player1.
 
-### Older Mods
-
-Occasionally you'll see mods where the chat_send_player function includes a
-Boolean:
-
-{% highlight lua %}
-minetest.chat_send_player("player1", "This is a server message", true)
-minetest.chat_send_player("player1", "This is a server message", false)
-{% endhighlight %}
-
-The boolean is no longer used, and has no affect
-<sup>[[commit]](https://github.com/minetest/minetest/commit/9a3b7715e2c2390a3a549d4e105ed8c18defb228)</sup>.
-
-
 ## Chat Commands
 
 To register a chat command, for example /foo, use register_chatcommand:
@@ -96,14 +99,7 @@ return true, "You said " .. param .. "!"
 This returns two values, a Boolean which shows the command succeeded
 and the chat message to send to the player.
 
-A player name, instead of a player object, is passed because
-**the player might not actually be in-game, but may be running commands from IRC**.
-Due to this, you should not assume `minetest.get_player_by_name`, or any other
-function that requires an in-game player, will work in a chat command call back.
-
-`minetest.show_formspec` also won't work when a command is run from IRC, so you
-should provide a text only version. For example, the email mod allows both `/inbox`
-to show a formspec, and `/inbox text` to send information to chat.
+{% include notice.html notice=page.cmd_online %}
 
 ## Complex Subcommands
 
@@ -162,17 +158,21 @@ By returning false, you allow the chat message to be sent by the default
 handler. You can actually remove the line `return false`, and it would still
 work the same.
 
-**WARNING: CHAT COMMANDS ARE ALSO INTERCEPTED.** If you only want to catch
-player messages, you need to do this:
+{% include notice.html notice=page.cb_cmdsprivs %}
+
+You should make sure you take into account that it may be a chat command,
+or the user may not have `shout`.
 
 {% highlight lua %}
 minetest.register_on_chat_message(function(name, message)
     if message:sub(1, 1) == "/" then
         print(name .. " ran chat command")
-        return false
+    elseif minetest.check_player_privs(name, { shout = true }) then
+        print(name .. " said " .. message)
+    else
+        print(name .. " tried to say " .. message .. " but doesn't have shout")
     end
 
-    print(name .. " said " .. message)
     return false
 end)
 {% endhighlight %}
