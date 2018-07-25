@@ -8,7 +8,7 @@
 	{
 		"idx": {{ link.idx }},
 		"title": "{{ link.title }}",
-		"loc": "https://rubenwardy.com/minetest_modding_book/en/{{ link.link }}",
+		"loc": "https://rubenwardy.com/minetest_modding_book/{{ link.url }}",
 		{% if link.description %}
 		"description": "{{ link.description }}",
 		{% endif %}
