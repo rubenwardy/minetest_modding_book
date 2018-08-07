@@ -54,14 +54,18 @@ the other items are needed by some mods to perform their functionality.
 
 This file stores key-value pairs of mod details, and will replace `depends.txt` and `description.txt` in 5.0.0. In order to retain support for 0.4.x, it's recommended to have a `mod.conf` for 5.0.0 and also `depends.txt` and `description.txt` for 0.4.x versions.
 
-### description.txt (will be deprecated in 5.0.0)
+### description.txt
+
+{% include notice.html level="warning" message="This will be deprecated when 5.0.0 is released" %}
 
     This is a food mod which supports a huge variety of recipes.
 
 This file should contain a short description of the mod, which is used by mod stores (like the builtin
 [content browser](https://content.minetest.net)) and mod managers.
 
-### depends.txt (will be deprecated in 5.0.0)
+### depends.txt
+
+{% include notice.html level="warning" message="This will be deprecated when 5.0.0 is released" %}
 
 This file allows you to specify which mods are required for this mod to run and what
 needs to be loaded before this mod.
