@@ -21,7 +21,7 @@ is an essential skill when creating mods.
 
 Each mod has its own folder where all its Lua code, textures, models, and sounds
 are placed. These folders need to be placed in a mod location such as
-minetest/mods.
+`minetest/mods`.
 
 ![Find the mod's folder]({{ page.root }}//static/folder_modfolder.jpg)
 
@@ -31,23 +31,44 @@ describe what the mod does, and the folder which contains the components of a mo
 needs to be given the same name as the mod name.
 
 ### Mod Folder Structure
-    Mod name (eg: "mymod")
-    -    init.lua - the main scripting code file, which runs when the game loads.
-    -    (optional) depends.txt - a list of mods that need to be loaded before this mod.
-    -    (optional) textures/ - images used by the mod, commonly in the format modname_itemname.png.
-    -    (optional) sounds/ - sounds used by the mod.
-    -    (optional) models/ - 3d models used by the mod.
+
+    <mod_name>/ (eg: "mymod")
+    |──  init.lua - the main scripting code file, which runs when the game loads.
+    |──  (optional) mod.conf - config. file which stores mod-name, dependencies, description, etc.
+    |──  (optional) depends.txt - a list of mods that need to be loaded before this mod.
+    |──  (optional) description.txt - a short description of the mod.
+    |──  (optional) textures/ - images used by the mod, commonly in the format <modname>_<itemname>.png.
+    |──  (optional) sounds/ - sounds used by the mod.
+    └──  (optional) models/ - 3D models used by the mod.
     ...and any other Lua files to be included.
 
-Only the init.lua file is required in a mod for it to run on game load; however,
+Only `init.lua` is required in a mod for it to run on game load. However,
 the other items are needed by some mods to perform their functionality.
 
-## Dependencies
+### mod.conf
 
-The depends text file allows you to specify which mods this mod requires to run and what
+    name=modname
+    description=This is a food mod which supports a huge variety of recipes.
+    depends=mod1,mod2
+    optional_depends=mod3,mod4
+
+This file stores key-value pairs of mod details, and will replace `depends.txt` and `description.txt` in 5.0.0. In order to retain support for 0.4.x, it's recommended to have a `mod.conf` for 5.0.0 and also `depends.txt` and `description.txt` for 0.4.x versions.
+
+### description.txt
+
+{% include notice.html level="warning" message="This will be deprecated when 5.0.0 is released" %}
+
+    This is a food mod which supports a huge variety of recipes.
+
+This file should contain a short description of the mod, which is used by mod stores (like the builtin
+[content browser](https://content.minetest.net)) and mod managers.
+
+### depends.txt
+
+{% include notice.html level="warning" message="This will be deprecated when 5.0.0 is released" %}
+
+This file allows you to specify which mods are required for this mod to run and what
 needs to be loaded before this mod.
-
-**depends.txt**
 
     modone
     modtwo
@@ -68,29 +89,32 @@ and moved together. They are useful if you want to supply multiple mods to
 a player but don't want to make them download each one individually.
 
 ### Mod Pack Folder Structure
-    modpackfolder/
-    -    modone/
-    -    modtwo/
-    -    modthree/
-    -    modfour/
-    -    modpack.txt – signals that this is a mod pack, content does not matter
+
+    <modpack_name>/
+    |──  modone/
+    |──  modtwo/
+    |──  modthree/
+    |──  modfour/
+    └──  modpack.txt – signals that this is a mod pack, content does not matter
 
 ## Example
 
 Are you confused? Don't worry, here is an example which puts all of this together:
 
 ### Mod Folder
-    mymod/
-    -    textures/
-    -    -    mymod_node.png
-    -    init.lua
-    -    depends.txt
 
+    mymod/
+    |──  textures/
+    |    └──  mymod_node.png
+    |──  init.lua
+    └──  depends.txt
 
 ### depends.txt
+
     default
 
 ### init.lua
+
 {% highlight lua %}
 print("This file will be run at load time!")
 
@@ -108,7 +132,7 @@ minetest.register_node("mymod:node", {
 })
 {% endhighlight %}
 
-This mod has the name "mymod". It has two text files: init.lua and depends.txt.\\
+This mod has the name `mymod`. It has two text files: `init.lua` and `depends.txt`.\\
 The script prints a message and then registers a node – which will be explained in the next chapter.\\
-The depends text file adds a dependency on the default mod which is in minetest_game.\\
-There is also a texture in textures/ for the node.
+The depends text file adds a dependency on the `default` mod which is in `minetest_game`.\\
+There is also a texture in `textures/` for the node.
