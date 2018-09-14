@@ -1,10 +1,12 @@
 ---
-title: Folder Structure
+title: Getting Started
 layout: default
 root: ../..
 idx: 1.1
 description: Learn how to make a mod folder, including init.lua, depends.txt and more.
-redirect_from: /en/chapters/folders.html
+redirect_from:
+- /en/chapters/folders.html
+- /en/basics/folders.html
 ---
 
 ## Introduction
@@ -29,32 +31,51 @@ A "mod name" is used to refer to a mod. Each mod should have a unique mod name.
 Mod names can include letters, numbers, and underscores. A good mod name should
 describe what the mod does, and the folder which contains the components of a mod
 needs to be given the same name as the mod name.
+To find out if a mod name is available, try searching for it on
+[content.minetest.net](https://content.minetest.net).
 
-### Mod Folder Structure
     Mod name (eg: "mymod")
     -    init.lua - the main scripting code file, which runs when the game loads.
-    -    (optional) depends.txt - a list of mods that need to be loaded before this mod.
+    -    mod.conf - a list of mods that need to be loaded before this mod.
     -    (optional) textures/ - images used by the mod, commonly in the format modname_itemname.png.
     -    (optional) sounds/ - sounds used by the mod.
     -    (optional) models/ - 3d models used by the mod.
     ...and any other Lua files to be included.
 
-Only the init.lua file is required in a mod for it to run on game load; however,
-the other items are needed by some mods to perform their functionality.
+Only the init.lua file is actually required in a mod for it to run on game load;
+however, mod.conf is recommended and other components may be needed
+to perform a mod's functionality.
 
 ## Dependencies
 
-The depends text file allows you to specify which mods this mod requires to run and what
-needs to be loaded before this mod.
+A dependency is another mod which the mod requires to be loaded before itself.
+The mod may require the other's mods code, items, or other resources to be available.
+There are two types of dependencies: hard and optional dependencies.
+Both require the mod to be loaded first, but a hard dependency will cause the mod to
+fail to load if the required mod isn't available.
+An optional dependency is useful if you want to optionally support another mod if the
+user wishes to use it.
 
-**depends.txt**
+### mod.conf
+
+Dependencies should be listed in mod.conf.
+The file is used for mod metadata such as the mod's name, description, and other information.
+
+    name = mymod
+    description = Adds foo, bar, and bo
+    depends = modone, modtwo
+    optional_depends = modthree
+
+### depends.txt
+
+For compatibility with 0.4.x versions of Minetest, you'll need to also provide
+a depends.txt file:
 
     modone
     modtwo
     modthree?
 
-As you can see, each modname is on its own line.
-
+Each modname is on its own line.
 Mod names with a question mark following them are optional dependencies.
 If an optional dependency is installed, it is loaded before the mod;
 however, if the dependency is not installed, the mod still loads.
@@ -67,7 +88,6 @@ Mods can be grouped into mod packs which allow multiple mods to be packaged
 and moved together. They are useful if you want to supply multiple mods to
 a player but don't want to make them download each one individually.
 
-### Mod Pack Folder Structure
     modpackfolder/
     -    modone/
     -    modtwo/
@@ -83,8 +103,9 @@ Are you confused? Don't worry, here is an example which puts all of this togethe
     mymod/
     -    textures/
     -    -    mymod_node.png
-    -    init.lua
     -    depends.txt
+    -    init.lua
+    -    mod.conf
 
 
 ### depends.txt
@@ -108,7 +129,20 @@ minetest.register_node("mymod:node", {
 })
 {% endhighlight %}
 
-This mod has the name "mymod". It has two text files: init.lua and depends.txt.\\
-The script prints a message and then registers a node – which will be explained in the next chapter.\\
-The depends text file adds a dependency on the default mod which is in minetest_game.\\
+### mod.conf
+    name = mymod
+    descriptions = Adds a node
+    depends = default
+
+This mod has the name "mymod". It has three text files: init.lua, mod.conf,
+and depends.txt.\\
+The script prints a message and then registers a node –
+which will be explained in the next chapter.\\
+There's a single dependency, the
+[default mod](https://content.minetest.net/metapackages/default/) which is
+usually found in Minetest Game.\\
 There is also a texture in textures/ for the node.
+
+Please note that a *game* is not a modpack.
+Games have their own organisational structure which will be explained in the
+Games chapter.
