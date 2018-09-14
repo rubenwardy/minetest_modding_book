@@ -2,7 +2,7 @@
 title: Common Mistakes
 layout: default
 root: ../..
-idx: 6.1
+idx: 7.1
 redirect_from: /en/chapters/common_mistakes.html
 ---
 

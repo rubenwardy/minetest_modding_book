@@ -2,7 +2,7 @@
 title: Security
 layout: default
 root: ../..
-idx: 6.25
+idx: 7.25
 description: Use LuaCheck to find errors
 redirect_from: /en/chapters/luacheck.html
 ---

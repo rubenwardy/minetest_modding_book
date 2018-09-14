@@ -2,7 +2,7 @@
 title: Automatic Error Checking
 layout: default
 root: ../..
-idx: 6.2
+idx: 7.2
 description: Use LuaCheck to find errors
 redirect_from: /en/chapters/luacheck.html
 ---
