@@ -55,7 +55,14 @@ are recommended.
 It's a good idea to try to keep as much API compatibility with Minetest Game as
 convenient, as it'll make porting mods to another game much easier.
 
-API compatibility is the sum of the following things:
+The best way to keep compatibility with another game is to keep API compatibility
+with any mods which have the same name.
+That is, if a mod uses the same name as another mod even if third party,
+then it should have a compatible API.
+For example, if a game includes a mod called `doors` then it should have the
+same API as `doors` in Minetest Game.
+
+API compatibility for a mod is the sum of the following things:
 
 * Lua API table - All documented/advertised functions in the global table which shares the same name.
 		For example, `mobs.register_mob`.
@@ -64,13 +71,6 @@ API compatibility is the sum of the following things:
 It's probably fine to have partial breakages as long as 90% of dependency
 usecases still works. For example, not having a random utility function that was
 only actually used internally is ok, but not having `mobs.register_mobs` is bad.
-
-The best way to keep compatibility with another game is to keep API compatibility
-with any mods which have the same name.
-That is, if a mod uses the same name as another mod even if third party,
-then it should have a compatible API.
-For example, if a game includes a mod called `doors` then it should have the
-same API as `doors` in Minetest Game.
 
 It's difficult to maintain API compatibility with a disgusting God mega-mod like
 *default* in Minetest Game, in which case the game shouldn't include a mod named
