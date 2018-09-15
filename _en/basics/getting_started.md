@@ -14,33 +14,34 @@ redirect_from:
 Understanding the basic structure of a mod's folder
 is an essential skill when creating mods.
 
-* [Mod Folders](#mod-folders)
+* [Mod Directory](#mod-directory)
 * [Dependencies](#dependencies)
 * [Mod Packs](#mod-packs)
 * [Example](#example)
 
-## Mod Folders
+## Mod Directory
 
-Each mod has its own folder where all its Lua code, textures, models, and sounds
-are placed. These folders need to be placed in a mod location such as
+Each mod has its own directory where all its Lua code, textures, models, and
+sounds are placed. These directories need to be placed in a mod location such as
 minetest/mods.
 
-![Find the mod's folder]({{ page.root }}//static/folder_modfolder.jpg)
+![Find the mod's directory]({{ page.root }}/static/folder_modfolder.jpg)
 
-A "mod name" is used to refer to a mod. Each mod should have a unique mod name.
-Mod names can include letters, numbers, and underscores. A good mod name should
-describe what the mod does, and the folder which contains the components of a mod
+A "mod name" is used to refer to a mod. Each mod should have a unique name.
+Mod names can include letters, numbers, and underscores. A good name should
+describe what the mod does, and the directory which contains the components of a mod
 needs to be given the same name as the mod name.
 To find out if a mod name is available, try searching for it on
 [content.minetest.net](https://content.minetest.net).
 
-    Mod name (eg: "mymod")
-    -    init.lua - the main scripting code file, which runs when the game loads.
-    -    mod.conf - a list of mods that need to be loaded before this mod.
-    -    (optional) textures/ - images used by the mod, commonly in the format modname_itemname.png.
-    -    (optional) sounds/ - sounds used by the mod.
-    -    (optional) models/ - 3d models used by the mod.
-    ...and any other Lua files to be included.
+    mymod
+    ├── init.lua (required) - The main scripting code file. Runs when the game loads.
+    ├── mod.conf (recommended) - Mod metadata file. Contains description and dependencies.
+    ├── textures (optional)
+    │   └── ... any textures or images
+    ├── sounds (optional)
+    │   └── ... any sounds
+    └── ... any other files or directories
 
 Only the init.lua file is actually required in a mod for it to run on game load;
 however, mod.conf is recommended and other components may be needed
@@ -88,25 +89,25 @@ Mods can be grouped into mod packs which allow multiple mods to be packaged
 and moved together. They are useful if you want to supply multiple mods to
 a player but don't want to make them download each one individually.
 
-    modpackfolder/
-    -    modone/
-    -    modtwo/
-    -    modthree/
-    -    modfour/
-    -    modpack.txt – signals that this is a mod pack, content does not matter
+    modpack1
+    ├── modpack.lua (required) - signals that this is a mod pack, content does not matter
+    ├── mod1
+    │   └── ... mod files
+    └── mymod (optional)
+        └── ... mod files
+
 
 ## Example
 
 Are you confused? Don't worry, here is an example which puts all of this together:
 
 ### Mod Folder
-    mymod/
-    -    textures/
-    -    -    mymod_node.png
-    -    depends.txt
-    -    init.lua
-    -    mod.conf
-
+    mymod
+    ├── textures
+    │   └── mymod_node.png files
+    ├── depends.txt
+    ├── init.lua
+    └── mod.conf
 
 ### depends.txt
     default
