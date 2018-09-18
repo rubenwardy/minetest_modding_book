@@ -22,7 +22,7 @@ Each chapter focuses on a particular part of the API, and will soon get you maki
 your own mods.
 
 As well as [reading this book online](https://rubenwardy.com/minetest_modding_book),
-you can also [download it in PDF or HTML form](https://github.com/rubenwardy/minetest_modding_book/releases).
+you can also [download it in HTML form](https://github.com/rubenwardy/minetest_modding_book/releases).
 
 ### Feedback and Contributions
 
