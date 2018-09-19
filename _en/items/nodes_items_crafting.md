@@ -22,7 +22,7 @@ basic requirements for many mods.
 * [Crafting](#crafting)
     * [Fuel](#fuel)
 * [Groups](#groups)
-* [Tools, Capabilities and Dig Types](#tools-capabilities-and-dig-types)
+* [Tools, Capabilities, and Dig Types](#tools-capabilities-and-dig-types)
 
 ## What are Nodes and Items?
 
@@ -319,7 +319,7 @@ minetest.register_craft({
 })
 ```
 
-## Tools, Capabilities and Dig Types
+## Tools, Capabilities, and Dig Types
 
 Dig types are groups which are used to define how strong a node is when dug
 with different tools.
