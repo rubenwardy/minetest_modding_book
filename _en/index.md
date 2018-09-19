@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Front Cover
 layout: default
 homepage: true
 no_header: true
