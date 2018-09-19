@@ -26,7 +26,7 @@ has a chance to appear near water.
 To create it, you first need to register the grass, then
 write an ABM.
 
-{% highlight lua %}
+```lua
 minetest.register_node("aliens:grass", {
     description = "Alien Grass",
     light_source = 3, -- The node radiates light. Values can be from 1 to 15
@@ -44,7 +44,7 @@ minetest.register_abm({
         minetest.set_node({x = pos.x, y = pos.y + 1, z = pos.z}, {name = "aliens:grass"})
     end
 })
-{% endhighlight %}
+```
 
 This ABM runs every ten seconds. There is a 1 in 5 chance of the ABM running on each
 node that has the correct name and the correct neighbours. If the ABM runs on a

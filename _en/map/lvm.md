@@ -36,10 +36,10 @@ You can only load a cubic area into an LVM, so you need to work out the minimum
 and maximum positions that you need to modify. Then you can create and read into
 an LVM like so:
 
-{% highlight lua %}
+```lua
 local vm         = minetest.get_voxel_manip()
 local emin, emax = vm:read_from_map(pos1, pos2)
-{% endhighlight %}
+```
 
 An LVM may not read exactly the area you tell it to, for performance reasons.
 Instead, it may read a larger area. The larger area is given by `emin` and `emax`,
@@ -53,9 +53,9 @@ To read the types of nodes at particular positions, you'll need to use `get_data
 `get_data()` returns a flat array where each entry represents the type of a
 particular node.
 
-{% highlight lua %}
+```lua
 local data = vm:get_data()
-{% endhighlight %}
+```
 
 You can get param2 and lighting data using the methods `get_light_data()` and `get_param2_data()`.
 
@@ -63,7 +63,7 @@ You'll need to use `emin` and `emax` to work out where a node is in the flat arr
 given by the above methods. There's a helper class called `VoxelArea` which handles
 the calculation for you:
 
-{% highlight lua %}
+```lua
 local a = VoxelArea:new{
     MinEdge = emin,
     MaxEdge = emax
@@ -74,25 +74,25 @@ local idx = a:index(x, y, z)
 
 -- Read node
 print(data[idx])
-{% endhighlight %}
+```
 
 If you run that, you'll notice that `data[vi]` is an integer. This is because
 the engine doesn't store nodes using their name string, as string comparision
 is slow. Instead, the engine uses a content ID. You can find out the content
 ID for a particular type of node like so:
 
-{% highlight lua %}
+```lua
 local c_stone = minetest.get_content_id("default:stone")
-{% endhighlight %}
+```
 
 and then you can check whether a node is stone like so:
 
-{% highlight lua %}
+```lua
 local idx = a:index(x, y, z)
 if data[idx] == c_stone then
     print("is stone!")
 end
-{% endhighlight %}
+```
 
 It is recommended that you find out and store the content IDs of nodes types
 using load time, as the IDs of a node type will never change. Make sure to store
@@ -101,7 +101,7 @@ the IDs in a local for performance reasons.
 Nodes in an LVM data are stored in reverse co-ordinate order, so you should
 always iterate in the order of `z, y, x` like so:
 
-{% highlight lua %}
+```lua
 for z = min.z, max.z do
     for y = min.y, max.y do
         for x = min.x, max.x do
@@ -113,7 +113,7 @@ for z = min.z, max.z do
         end
     end
 end
-{% endhighlight %}
+```
 
 The reason for this touches computer architecture. Reading from RAM is rather
 costly, so CPUs have multiple levels of caching. If the data a process requests
@@ -128,7 +128,7 @@ another, and avoid *memory thrashing*.
 
 First you need to set the new content ID in the data array:
 
-{% highlight lua %}
+```lua
 for z = min.z, max.z do
     for y = min.y, max.y do
         for x = min.x, max.x do
@@ -139,15 +139,15 @@ for z = min.z, max.z do
         end
     end
 end
-{% endhighlight %}
+```
 
 When you finished setting nodes in the LVM, you then need to upload the data
 array to the engine:
 
-{% highlight lua %}
+```lua
 vm:set_data(data)
 vm:write_to_map(true)
-{% endhighlight %}
+```
 
 For setting lighting and param2 data, there are the appropriately named
 `set_light_data()` and `set_param2_data()` methods.
@@ -158,7 +158,7 @@ date using `minetest.fix_light`.
 
 ## Example
 
-{% highlight lua %}
+```lua
 -- Get content IDs during load time, and store into a local
 local c_dirt  = minetest.get_content_id("default:dirt")
 local c_grass = minetest.get_content_id("default:dirt_with_grass")
@@ -189,7 +189,7 @@ local function grass_to_dirt(pos1, pos2)
     vm:set_data(data)
     vm:write_to_map(true)
 end
-{% endhighlight %}
+```
 
 ## Your Turn
 

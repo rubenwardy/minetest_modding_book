@@ -21,7 +21,7 @@ offline or the entity is unloaded - then calling any methods will result in a cr
 
 Don't do this:
 
-{% highlight lua %}
+```lua
 minetest.register_on_joinplayer(function(player)
     local function func()
         local pos = player:get_pos() -- BAD!
@@ -36,11 +36,11 @@ minetest.register_on_joinplayer(function(player)
     -- It's recommended to just not do this
     -- use minetest.get_connected_players() and minetest.get_player_by_name() instead.
 end)
-{% endhighlight %}
+```
 
 instead, do this:
 
-{% highlight lua %}
+```lua
 minetest.register_on_joinplayer(function(player)
     local function func(name)
         -- Attempt to get the ref again
@@ -56,7 +56,7 @@ minetest.register_on_joinplayer(function(player)
     -- Pass the name into the function
     minetest.after(1, func, player:get_player_name())
 end)
-{% endhighlight %}
+```
 
 ## Don't Trust Formspec Submissions
 
@@ -66,7 +66,7 @@ they like.
 The following code has a vulnerability where any player can give
 themselves moderator privileges:
 
-{% highlight lua %}
+```lua
 local function show_formspec(name)
     if not minetest.check_player_privs(name, { privs = true }) then
         return false
@@ -89,11 +89,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     minetest.set_player_privs(fields.target, privs)
     return true
 end)
-{% endhighlight %}
+```
 
 Instead, do this:
 
-{% highlight lua %}
+```lua
 minetest.register_on_player_receive_fields(function(player, formname, fields)
     if not minetest.check_player_privs(name, { privs = true }) then
         return false
@@ -101,7 +101,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
     -- code
 end)
-{% endhighlight %}
+```
 
 ## Set ItemStacks After Changing Them
 
@@ -112,22 +112,22 @@ This means that modifying a stack won't actually modify that stack in the invent
 
 Don't do this:
 
-{% highlight lua %}
+```lua
 local inv = player:get_inventory()
 local stack = inv:get_stack("main", 1)
 stack:get_meta():set_string("description", "Partially eaten")
 -- BAD! Modification will be lost
-{% endhighlight %}
+```
 
 Do this:
 
-{% highlight lua %}
+```lua
 local inv = player:get_inventory()
 local stack = inv:get_stack("main", 1)
 stack:get_meta():set_string("description", "Partially eaten")
 inv:set_stack("main", 1, stack)
 -- Correct! Item stack is set
-{% endhighlight %}
+```
 
 The behaviour of callbacks is slightly more complicated. Modifying an itemstack you
 are given will change it for the caller too, and any subsequent callbacks. However,
@@ -135,23 +135,23 @@ it will only be saved in the engine if the callback caller sets it.
 
 Avoid this:
 
-{% highlight lua %}
+```lua
 minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
     itemstack:get_meta():set_string("description", "Partially eaten")
     -- Almost correct! Data will be lost if another callback cancels the behaviour
 end)
-{% endhighlight %}
+```
 
 If no callbacks cancel, then the stack will be set and the description will be updated.
 If a callback cancels, then the update may be lost. It's better to do this instead:
 
-{% highlight lua %}
+```lua
 minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
     itemstack:get_meta():set_string("description", "Partially eaten")
     user:get_inventory():set_stack("main", user:get_wield_index(), itemstack)
     -- Correct, description will always be set!
 end)
-{% endhighlight %}
+```
 
 If the callbacks cancel or the callback runner doesn't set the stack,
 then our update will still be set.

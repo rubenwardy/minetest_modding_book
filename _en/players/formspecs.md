@@ -110,7 +110,7 @@ This example shows a formspec to a player when they use the /formspec command.
     </figcaption>
 </figure>
 
-{% highlight lua %}
+```lua
 -- Show form when the /formspec command is used.
 minetest.register_chatcommand("formspec", {
     func = function(name, param)
@@ -121,20 +121,20 @@ minetest.register_chatcommand("formspec", {
                 "button_exit[1,2;2,1;exit;Save]")
     end
 })
-{% endhighlight %}
+```
 
 Note: the .. is used to join two strings together. The following two lines are equivalent:
 
-{% highlight lua %}
+```lua
 "foobar"
 "foo" .. "bar"
-{% endhighlight %}
+```
 
 ## Callbacks
 
 It's possible to expand the previous example with a callback:
 
-{% highlight lua %}
+```lua
 -- Show form when the /formspec command is used.
 minetest.register_chatcommand("formspec", {
     func = function(name, param)
@@ -161,7 +161,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     -- from receiving this submission.
     return true
 end)
-{% endhighlight %}
+```
 
 The function given in minetest.register_on_player_receive_fields is called
 every time a user submits a form. Most callbacks will check the formname given
@@ -185,14 +185,14 @@ Some elements can submit the form without the user clicking a button,
 such as a check box. You can detect these cases by looking
 for a clicked button.
 
-{% highlight lua %}
+```lua
 -- An example of what fields could contain,
 --   using the above code
 {
     name = "Foo Bar",
     exit = true
 }
-{% endhighlight %}
+```
 
 ## Contexts
 
@@ -202,7 +202,7 @@ what a chat command was called with, or what the dialog is about.
 
 For example, you might make a form to handle land protection information:
 
-{% highlight lua %}
+```lua
 --
 -- Step 1) set context when player requests the formspec
 --
@@ -256,7 +256,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "Something went wrong, try again.")
     end
 end)
-{% endhighlight %}
+```
 
 ## Node Meta Formspecs
 
@@ -265,7 +265,7 @@ add formspecs to a [node's meta data](node_metadata.html). For example,
 this is used with chests to allow for faster opening times -
 you don't need to wait for the server to send the player the chest formspec.
 
-{% highlight lua %}
+```lua
 minetest.register_node("mymod:rightclick", {
     description = "Rightclick me!",
     tiles = {"mymod_rightclick.png"},
@@ -286,7 +286,7 @@ minetest.register_node("mymod:rightclick", {
         print(fields.x)
     end
 })
-{% endhighlight %}
+```
 
 Formspecs set this way do not trigger the same callback. In order to
 receive form input for meta formspecs, you must include an

@@ -46,12 +46,12 @@ item, as the distinction between them is rather artificial.
 Item definitions consist of an *item name* and a *definition table*.
 The definition table contains attributes which affect the behaviour of the item.
 
-{% highlight lua %}
+```lua
 minetest.register_craftitem("modname:itemname", {
     description = "My Special Item",
     inventory_image = "modname_itemname.png"
 })
-{% endhighlight %}
+```
 
 ### Item Names and Aliases
 
@@ -80,17 +80,17 @@ Registering an alias is pretty simple.
 A good way to remember is `from → to` where *from* is the alias and *to*
 is the target.
 
-{% highlight lua %}
+```lua
 minetest.register_alias("dirt", "default:dirt")
-{% endhighlight %}
+```
 
 Mods need to make sure to resolve aliases before dealing directly with item names,
 as the engine won't do this.
 This is pretty simple though:
 
-{% highlight lua %}
+```lua
 itemname = minetest.registered_aliases[itemname] or itemname
-{% endhighlight %}
+```
 
 ### Textures
 
@@ -108,14 +108,14 @@ resulting in lowered performance.
 
 ## Registering a basic node
 
-{% highlight lua %}
+```lua
 minetest.register_node("mymod:diamond", {
     description = "Alien Diamond",
     tiles = {"mymod_diamond.png"},
     is_ground_content = true,
     groups = {cracky=3, stone=1}
 })
-{% endhighlight %}
+```
 
 The `tiles` property is a table of texture names the node will use.
 When there is only one texture, this texture is used on every side.
@@ -126,7 +126,7 @@ To give a different texture per-side, supply the names of 6 textures in this ord
 
 Remember: Just like with most 3D graphics, +Y is upwards in Minetest.
 
-{% highlight lua %}
+```lua
 minetest.register_node("mymod:diamond", {
     description = "Alien Diamond",
     tiles = {
@@ -142,7 +142,7 @@ minetest.register_node("mymod:diamond", {
     drop = "mymod:diamond_fragments"
     -- ^  Rather than dropping diamond, drop mymod:diamond_fragments
 })
-{% endhighlight %}
+```
 
 The is_ground_content attribute allows caves to be generated over the stone.
 This is essential for any node which may be placed during map generation underground.
@@ -160,13 +160,13 @@ By default, the use callback is triggered when a player left-clicks with an item
 Having a use callback prevents the item being used to dig nodes.
 One common use of the use callback is for food:
 
-{% highlight lua %}
+```lua
 minetest.register_craftitem("mymod:mudpie", {
     description = "Alien Mud Pie",
     inventory_image = "myfood_mudpie.png",
     on_use = minetest.item_eat(20),
 })
-{% endhighlight %}
+```
 
 The number supplied to the minetest.item_eat function is the number of hit points
 healed when this food is consumed.
@@ -178,7 +178,7 @@ minetest.item_eat() is a function which returns a function, setting it
 as the on_use callback.
 This means the code above is roughly similar to this:
 
-{% highlight lua %}
+```lua
 minetest.register_craftitem("mymod:mudpie", {
     description = "Alien Mud Pie",
     inventory_image = "myfood_mudpie.png",
@@ -186,7 +186,7 @@ minetest.register_craftitem("mymod:mudpie", {
         return minetest.do_item_eat(20, nil, ...)
     end,
 })
-{% endhighlight %}
+```
 
 By, understanding how item_eat works by simply returning a function, it's
 possible to modify it to do more complex behaviour such as play a custom sound.
@@ -212,7 +212,7 @@ Shaped recipes are when the ingredients need to be in the right shape or
 pattern to work. In the below example, the fragments need to be in a
 chair-like pattern for the craft to work.
 
-{% highlight lua %}
+```lua
 minetest.register_craft({
     type = "shaped",
     output = "mymod:diamond_chair 99",
@@ -222,7 +222,7 @@ minetest.register_craft({
         {"mymod:diamond_fragments", "mymod:diamond_fragments",  ""}
     }
 })
-{% endhighlight %}
+```
 
 One thing to note is the blank column on the right-hand side.
 This means that there *must* be an empty column to the right of the shape, otherwise
@@ -230,7 +230,7 @@ this won't work.
 If this empty column shouldn't be required, then the empty strings can be left
 out like so:
 
-{% highlight lua %}
+```lua
 minetest.register_craft({
     output = "mymod:diamond_chair 99",
     recipe = {
@@ -239,7 +239,7 @@ minetest.register_craft({
         {"mymod:diamond_fragments", "mymod:diamond_fragments"}
     }
 })
-{% endhighlight %}
+```
 
 The type field isn't actually needed for shapeless crafts, as shapeless is the
 default craft type.
@@ -249,27 +249,27 @@ default craft type.
 Shapeless recipes are a type of recipe which is used when it doesn't matter
 where the ingredients are placed, just that they're there.
 
-{% highlight lua %}
+```lua
 minetest.register_craft({
     type = "shapeless",
     output = "mymod:diamond 3",
     recipe = {"mymod:diamond_fragments", "mymod:diamond_fragments", "mymod:diamond_fragments"}
 })
-{% endhighlight %}
+```
 
 ### Cooking and Fuel
 
 Recipes with the type "cooking" are not made in the crafting grid,
 but are cooked in furnaces, or other cooking tools that might be found in mods.
 
-{% highlight lua %}
+```lua
 minetest.register_craft({
     type = "cooking",
     output = "mymod:diamond_fragments",
     recipe = "default:coalblock",
     cooktime = 10,
 })
-{% endhighlight %}
+```
 
 The only real difference in the code is that the recipe is just a single item,
 compared to being in a table (between braces).
@@ -284,13 +284,13 @@ It creates diamond fragments after 10 seconds!
 This type is an accompaniment to the cooking type, as it defines
 what can be burned in furnaces and other cooking tools from mods.
 
-{% highlight lua %}
+```lua
 minetest.register_craft({
     type = "fuel",
     recipe = "mymod:diamond",
     burntime = 300,
 })
-{% endhighlight %}
+```
 
 They don't have an output like other recipes, but they have a burn time
 which defines how long they will last as fuel in seconds.
@@ -302,22 +302,22 @@ Items can be members of many groups and groups can have many members.
 Groups are defined using the `groups` property in the definition table,
 and have an associated value.
 
-{% highlight lua %}
+```lua
 groups = {cracky = 3, wood = 1}
-{% endhighlight %}
+```
 
 There are several reasons you use groups.
 Firstly, groups are used to describe properties such as dig types and flammability.
 Secondly, groups can be used in a craft recipe instead of an item name to allow
 any item in group to be used.
 
-{% highlight lua %}
+```lua
 minetest.register_craft({
     type = "shapeless",
     output = "mymod:diamond_thing 3",
     recipe = {"group:wood", "mymod:diamond"}
 })
-{% endhighlight %}
+```
 
 ## Tools, Capabilities and Dig Types
 
@@ -351,7 +351,7 @@ with the less suitable ones having very inefficient properties.
 If the item a player is currently wielding doesn't have an explicit tool
 capability, then the capability of the current hand is used instead.
 
-{% highlight lua %}
+```lua
 minetest.register_tool("mymod:tool", {
     description = "My Tool",
     inventory_image = "mymod_tool.png",
@@ -364,7 +364,7 @@ minetest.register_tool("mymod:tool", {
         damage_groups = {fleshy=2},
     },
 })
-{% endhighlight %}
+```
 
 Groupcaps is the list of supported dig types for digging nodes.
 Damage groups are for controlling how tools damage objects, which will be

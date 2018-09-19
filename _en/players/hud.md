@@ -87,7 +87,7 @@ to the right of the window, but to resize without breaking.
 
 You can create a HUD element once you have a copy of the player object:
 
-{% highlight lua %}
+```lua
 local player = minetest.get_player_by_name("username")
 local idx = player:hud_add({
      hud_elem_type = "text",
@@ -97,7 +97,7 @@ local idx = player:hud_add({
      alignment     = {x = 0, y = 0},  -- center aligned
      scale         = {x = 100, y = 100}, -- covered later
 })
-{% endhighlight %}
+```
 
 The `hud_add` function returns an element ID - this can be used later to modify
 or remove a HUD element.
@@ -116,7 +116,7 @@ table. The meaning of other properties varies based on this type.
 
 Let's go ahead, and place all the text in our score panel:
 
-{% highlight lua %}
+```lua
 player:hud_add({
     hud_elem_type = "text",
     position  = {x = 1, y = 0.5},
@@ -152,7 +152,7 @@ player:hud_add({
     scale     = { x = 50, y = 10},
     number    = 0xFFFFFF,
 })
-{% endhighlight %}
+```
 
 This results in the following:
 
@@ -167,7 +167,7 @@ This results in the following:
 
 Image elements are created in a very similar way to text elements:
 
-{% highlight lua %}
+```lua
 player:hud_add({
     hud_elem_type = "image",
     position  = {x = 1, y = 0.5},
@@ -176,7 +176,7 @@ player:hud_add({
     scale     = { x = 1, y = 1},
     alignment = { x = 1, y = 0 },
 })
-{% endhighlight %}
+```
 
 You will now have this:
 
@@ -199,7 +199,7 @@ For example, `x=-100` is 100% of the width.
 
 Let's make the progress bar for our score panel as an example of scale:
 
-{% highlight lua %}
+```lua
 local percent = tonumber(player:get_attribute("scoreboard:score") or 0.2)
 
 player:hud_add({
@@ -219,7 +219,7 @@ player:hud_add({
     scale     = { x = percent, y = 1},
     alignment = { x = 1, y = 0 },
 })
-{% endhighlight %}
+```
 
 We now have a HUD that looks like the one in the first post!
 There is one problem however, it won't update when the stats change.
@@ -228,7 +228,7 @@ There is one problem however, it won't update when the stats change.
 
 You can use the ID returned by the hud_add method to update or remove it later.
 
-{% highlight lua %}
+```lua
 local idx = player:hud_add({
      hud_elem_type = "text",
      text          = "Hello world!",
@@ -237,7 +237,7 @@ local idx = player:hud_add({
 
 player:hud_change(idx, "text", "New Text")
 player:hud_remove(idx)
-{% endhighlight %}
+```
 
 The `hud_change` method takes the element ID, the property to change, and the new
 value. The above call changes the `text` property from "Hello World" to "Test".
@@ -245,16 +245,16 @@ value. The above call changes the `text` property from "Hello World" to "Test".
 This means that doing the `hud_change` immediately after the `hud_add` is
 functionally equivalent to the following, in a rather inefficient way:
 
-{% highlight lua %}
+```lua
 local idx = player:hud_add({
      hud_elem_type = "text",
      text          = "New Text",
 })
-{% endhighlight %}
+```
 
 ## Storing IDs
 
-{% highlight lua %}
+```lua
 scoreboard = {}
 local saved_huds = {}
 
@@ -287,7 +287,7 @@ minetest.register_on_joinplayer(scoreboard.update_hud)
 minetest.register_on_leaveplayer(function(player)
     saved_huds[player:get_player_name()] = nil
 end)
-{% endhighlight %}
+```
 
 
 ## Other Elements

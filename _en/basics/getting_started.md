@@ -113,7 +113,7 @@ Are you confused? Don't worry, here is an example which puts all of this togethe
     default
 
 ### init.lua
-{% highlight lua %}
+```lua
 print("This file will be run at load time!")
 
 minetest.register_node("mymod:node", {
@@ -128,7 +128,7 @@ minetest.register_node("mymod:node", {
     },
     groups = {cracky = 1}
 })
-{% endhighlight %}
+```
 
 ### mod.conf
     name = mymod

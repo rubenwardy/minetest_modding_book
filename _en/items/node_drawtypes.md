@@ -54,7 +54,7 @@ Nodes that use this will be cubes with textures for each side, simple-as.\\
 Here is the example from the [Nodes, Items and Crafting](nodes_items_crafting.html#registering-a-basic-node) chapter.
 Notice how you don't need to declare the drawtype.
 
-{% highlight lua %}
+```lua
 minetest.register_node("mymod:diamond", {
     description = "Alien Diamond",
     tiles = {
@@ -69,14 +69,14 @@ minetest.register_node("mymod:diamond", {
     groups = {cracky = 3},
     drop = "mymod:diamond_fragments"
 })
-{% endhighlight %}
+```
 
 
 ## Airlike
 
 These nodes are see through and thus have no textures.
 
-{% highlight lua %}
+```lua
 minetest.register_node("myair:air", {
     description = "MyAir (you hacker you!)",
     drawtype = "airlike",
@@ -97,7 +97,7 @@ minetest.register_node("myair:air", {
     drop = "",
     groups = {not_in_creative_inventory=1}
 })
-{% endhighlight %}
+```
 
 ## Liquid
 
@@ -112,7 +112,7 @@ These nodes are complete liquid nodes, the liquid flows outwards from position
 using the flowing liquid drawtype.
 For each liquid node you should also have a flowing liquid node.
 
-{% highlight lua %}
+```lua
 -- Some properties have been removed as they are beyond
 --  the scope of this chapter.
 minetest.register_node("default:water_source", {
@@ -175,7 +175,7 @@ minetest.register_node("default:water_source", {
     post_effect_color = {a=64, r=100, g=100, b=200},
     -- ^ color of screen when the player is submerged
 })
-{% endhighlight %}
+```
 
 ### FlowingLiquid
 
@@ -201,7 +201,7 @@ edges are hidden, like this:
     </figcaption>
 </figure>
 
-{% highlight lua %}
+```lua
 minetest.register_node("default:obsidian_glass", {
     description = "Obsidian Glass",
     drawtype = "glasslike",
@@ -212,7 +212,7 @@ minetest.register_node("default:obsidian_glass", {
     sounds = default.node_sound_glass_defaults(),
     groups = {cracky=3,oddly_breakable_by_hand=3},
 })
-{% endhighlight %}
+```
 
 ## Glasslike_Framed
 
@@ -226,7 +226,7 @@ than individual nodes, like the following:
     </figcaption>
 </figure>
 
-{% highlight lua %}
+```lua
 minetest.register_node("default:glass", {
     description = "Glass",
     drawtype = "glasslike_framed",
@@ -241,7 +241,7 @@ minetest.register_node("default:glass", {
     groups = {cracky = 3, oddly_breakable_by_hand = 3},
     sounds = default.node_sound_glass_defaults()
 })
-{% endhighlight %}
+```
 
 ### Glasslike_Framed_Optional
 
@@ -260,13 +260,13 @@ Allfaces are nodes which show all of their faces, even if they're against
 another node. This is mainly used by leaves as you don't want a gaping space when
 looking through the transparent holes, but instead a nice leaves effect.
 
-{% highlight lua %}
+```lua
 minetest.register_node("default:leaves", {
     description = "Leaves",
     drawtype = "allfaces_optional",
     tiles = {"default_leaves.png"}
 })
-{% endhighlight %}
+```
 
 ### Allfaces_Optional
 
@@ -281,7 +281,7 @@ depending on whether they are placed against a wall, on the floor, or on the cei
 TorchLike nodes are not restricted to torches, you could use them for switches or other
 items which need to have different textures depending on where they are placed.
 
-{% highlight lua %}
+```lua
 minetest.register_node("foobar:torch", {
     description = "Foobar Torch",
     drawtype = "torchlike",
@@ -306,7 +306,7 @@ minetest.register_node("foobar:torch", {
         wall_side = {-0.5, -0.3, -0.1, -0.5+0.3, 0.3, 0.1},
     }
 })
-{% endhighlight %}
+```
 
 ## Nodebox
 
@@ -320,7 +320,7 @@ minetest.register_node("foobar:torch", {
 Nodeboxes allow you to create a node which is not cubic, but is instead made out
 of as many cuboids as you like.
 
-{% highlight lua %}
+```lua
 minetest.register_node("stairs:stair_stone", {
     drawtype = "nodebox",
     paramtype = "light",
@@ -332,14 +332,14 @@ minetest.register_node("stairs:stair_stone", {
         },
     }
 })
-{% endhighlight %}
+```
 
 The most important part is the nodebox table:
 
-{% highlight lua %}
+```lua
 {-0.5, -0.5, -0.5,       0.5,    0,  0.5},
 {-0.5,    0,    0,       0.5,  0.5,  0.5}
-{% endhighlight %}
+```
 
 Each row is a cuboid which are joined to make a single node.
 The first three numbers are the co-ordinates, from -0.5 to 0.5 inclusive, of
@@ -356,7 +356,7 @@ create node boxes by dragging the edges, it is more visual than doing it by hand
 
 Sometimes you want different nodeboxes for when it is placed on the floor, wall, or ceiling like with torches.
 
-{% highlight lua %}
+```lua
 minetest.register_node("default:sign_wall", {
     drawtype = "nodebox",
     node_box = {
@@ -378,7 +378,7 @@ minetest.register_node("default:sign_wall", {
         }
     },
 })
-{% endhighlight %}
+```
 
 ## Mesh
 
@@ -392,7 +392,7 @@ invisible but still rendered.
 
 You can register a mesh node as so:
 
-{% highlight lua %}
+```lua
 minetest.register_node("mymod:meshy", {
     drawtype = "mesh",
 
@@ -404,7 +404,7 @@ minetest.register_node("mymod:meshy", {
     -- Path to the mesh
     mesh = "mymod_meshy.b3d",    
 })
-{% endhighlight %}
+```
 
 Make sure that the mesh is available in a `models` directory.
 Most of the time the mesh should be in your mod's folder, however it's okay to
@@ -420,7 +420,7 @@ Despite the name of this drawtype, signs don't actually tend to use signlike but
 instead use the `nodebox` drawtype to provide a 3D effect. The `signlike` drawtype
 is, however, commonly used by ladders.
 
-{% highlight lua %}
+```lua
 minetest.register_node("default:ladder_wood", {    
     drawtype = "signlike",
 
@@ -433,7 +433,7 @@ minetest.register_node("default:ladder_wood", {
         type = "wallmounted",
     },
 })
-{% endhighlight %}
+```
 
 ## Plantlike
 
@@ -446,7 +446,7 @@ minetest.register_node("default:ladder_wood", {
 
 Plantlike nodes draw their tiles in an X like pattern.
 
-{% highlight lua %}
+```lua
 minetest.register_node("default:papyrus", {
     drawtype = "plantlike",
 
@@ -458,7 +458,7 @@ minetest.register_node("default:papyrus", {
         fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, 0.5, 6 / 16},
     },
 })
-{% endhighlight %}
+```
 
 ## Firelike
 
@@ -472,11 +472,11 @@ and ceilings.
     </figcaption>
 </figure>
 
-{% highlight lua %}
+```lua
 minetest.register_node("mymod:clingere", {
     drawtype = "firelike",
 
     -- Only one texture used
     tiles = { "mymod:clinger" },
 })
-{% endhighlight %}
+```

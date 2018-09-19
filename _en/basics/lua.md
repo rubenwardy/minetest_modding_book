@@ -30,7 +30,7 @@ A code editor with code highlighting is sufficient for writing scripts in Lua.
 Code highlighting gives different colours to different words and characters
 depending on what they mean. This allows you to spot mistakes.
 
-{% highlight lua %}
+```lua
 function ctf.post(team,msg)
     if not ctf.team(team) then
         return false
@@ -44,7 +44,7 @@ function ctf.post(team,msg)
 
     return true
 end
-{% endhighlight %}
+```
 
 For example, keywords in the above snippet are highlighted such as if, then, end, return.
 table.insert is a function which comes with Lua by default.
@@ -88,13 +88,13 @@ There are three main types of flow:
 
 So, what do statements in Lua look like?
 
-{% highlight lua %}
+```lua
 local a = 2     -- Set 'a' to 2
 local b = 2     -- Set 'b' to 2
 local result = a + b -- Set 'result' to a + b, which is 4
 a = a + 10
 print("Sum is "..result)
-{% endhighlight %}
+```
 
 Whoa, what happened there?
 
@@ -140,14 +140,14 @@ Not an exhaustive list. Doesn't contain every possible operator.
 
 The most basic selection is the if statement. It looks like this:
 
-{% highlight lua %}
+```lua
 local random_number = math.random(1, 100) -- Between 1 and 100.
 if random_number > 50 then
     print("Woohoo!")
 else
     print("No!")
 end
-{% endhighlight %}
+```
 
 That example generates a random number between 1 and 100. It then prints
 "Woohoo!" if that number is bigger than 50, otherwise it prints "No!".
@@ -169,24 +169,24 @@ What else can you get apart from '>'?
 
 That doesn't contain every possible operator, and you can combine operators like this:
 
-{% highlight lua %}
+```lua
 if not A and B then
     print("Yay!")
 end
-{% endhighlight %}
+```
 
 Which prints "Yay!" if A is false and B is true.
 
 Logical and arithmetic operators work exactly the same, they both accept inputs
 and return a value which can be stored.
 
-{% highlight lua %}
+```lua
 local A = 5
 local is_equal = (A == 5)
 if is_equal then
     print("Is equal!")
 end
-{% endhighlight %}
+```
 
 ## Programming
 
@@ -208,7 +208,7 @@ however, the following websites are quite useful in developing this:
 Whether a variable is local or global determines where it can be written to or read to.
 A local variable is only accessible from where it is defined. Here are some examples:
 
-{% highlight lua %}
+```lua
 -- Accessible from within this script file
 local one = 1
 
@@ -221,11 +221,11 @@ function myfunc()
         local three = one + two
     end
 end
-{% endhighlight %}
+```
 
 Whereas global variables can be accessed from anywhere in the script file, and from any other mod.
 
-{% highlight lua %}
+```lua
 my_global_variable = "blah"
 
 function one()
@@ -235,7 +235,7 @@ end
 print(my_global_variable) -- Output: "blah"
 one()
 print(my_global_variable) -- Output: "three"
-{% endhighlight %}
+```
 
 
 ### Locals should be used as much as possible
@@ -243,7 +243,7 @@ print(my_global_variable) -- Output: "three"
 Lua is global by default (unlike most other programming languages).
 Local variables must be identified as such.
 
-{% highlight lua %}
+```lua
 function one()
     foo = "bar"
 end
@@ -254,7 +254,7 @@ end
 
 one()
 two()
-{% endhighlight %}
+```
 
 dump() is a function that can turn any variable into a string so the programmer can
 see what it is. The foo variable will be printed as "bar", including the quotes
@@ -266,7 +266,7 @@ This is sloppy coding, and Minetest will in fact warn about this:
 
 To correct this, use "local":
 
-{% highlight lua %}
+```lua
 function one()
     local foo = "bar"
 end
@@ -277,7 +277,7 @@ end
 
 one()
 two()
-{% endhighlight %}
+```
 
 Remember that nil means **not initialised**.
 The variable hasn't been assigned a value yet,
@@ -286,15 +286,15 @@ doesn't exist, or has been uninitialised (ie: set to nil).
 The same goes for functions. Functions are variables of a special type, and
 should be made local, as other mods could have functions of the same name.
 
-{% highlight lua %}
+```lua
 local function foo(bar)
     return bar * 2
 end
-{% endhighlight %}
+```
 
 API tables should be used to allow other mods to call the functions, like so:
 
-{% highlight lua %}
+```lua
 mymod = {}
 
 function mymod.foo(bar)
@@ -303,27 +303,27 @@ end
 
 -- In another mod, or script:
 mymod.foo("foobar")
-{% endhighlight %}
+```
 
 ## Including other Lua Scripts
 
 The recommended way to include other Lua scripts in a mod is to use *dofile*.
 
-{% highlight lua %}
+```lua
 dofile(minetest.get_modpath("modname") .. "/script.lua")
-{% endhighlight %}
+```
 
 "local" variables declared outside of any functions in a script file will be local to that script.
 A script can return a value, which is useful for sharing private locals:
 
-{% highlight lua %}
+```lua
 -- script.lua
 return "Hello world!"
 
 -- init.lua
 local ret = dofile(minetest.get_modpath("modname") .. "/script.lua")
 print(ret) -- Hello world!
-{% endhighlight %}
+```
 
 Later chapters will discuss how to split up the code of a mod in a lot of detail.
 However, the simplistic approach for now is to have different files for different

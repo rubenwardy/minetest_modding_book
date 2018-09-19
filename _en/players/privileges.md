@@ -50,37 +50,37 @@ minetest.conf file) is automatically given all available privileges.
 
 Use `register_privilege` to declare a new privilege:
 
-{% highlight lua %}
+```lua
 minetest.register_privilege("vote", {
     description = "Can vote on issues",
     give_to_singleplayer = true
 })
-{% endhighlight %}
+```
 
 If `give_to_singleplayer` is true, you can remove it, because true is the default
 when it is not specified. This simplifies the privilege registration to:
 
-{% highlight lua %}
+```lua
 minetest.register_privilege("vote", {
     description = "Can vote on issues"
 })
-{% endhighlight %}
+```
 
 ## Checking for Privileges
 
 To quickly check whether a player has all the required privileges:
 
-{% highlight lua %}
+```lua
 local has, missing = minetest.check_player_privs(player_or_name,  {
     interact = true,
     vote = true })
-{% endhighlight %}
+```
 
 In this example, `has` is true if the player has all the privileges needed.\\
 If `has` is false, then `missing` will contain a dictionary
 of missing privileges.
 
-{% highlight lua %}
+```lua
 if minetest.check_player_privs(name, {interact=true, vote=true}) then
     print("Player has all privs!")
 else
@@ -95,43 +95,43 @@ if has then
 else
     print("Player is missing privs: " .. dump(missing))
 end
-{% endhighlight %}
+```
 
 ## Getting and Setting Privileges
 
 To get a table containing a player's privileges, regardless of whether
 the player is logged in, use `minetest.get_player_privs`:
 
-{% highlight lua %}
+```lua
 local privs = minetest.get_player_privs(name)
 print(dump(privs))
-{% endhighlight %}
+```
 
 This example may give:
 
-{% highlight lua %}
+```lua
 {
     fly = true,
     interact = true,
     shout = true
 }
-{% endhighlight %}
+```
 
 To set a player's privileges, use `minetest.set_player_privs`:
 
-{% highlight lua %}
+```lua
 minetest.set_player_privs(name, {
     interact = true,
     shout = true })
-{% endhighlight %}
+```
 
 To grant a player privileges, use a combination of the above two functions:
 
-{% highlight lua %}
+```lua
 local privs = minetest.get_player_privs(name)
 privs.vote = true
 minetest.set_player_privs(name, privs)
-{% endhighlight %}
+```
 
 ## Adding Privileges to basic_privs
 

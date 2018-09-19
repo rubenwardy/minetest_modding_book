@@ -69,9 +69,9 @@ Press i in game to see your player inventory.
 
 Use a player's name to get their inventory:
 
-{% highlight lua %}
+```lua
 local inv = minetest.get_inventory({type="player", name="celeron55"})
-{% endhighlight %}
+```
 
 ### Node Inventories
 
@@ -80,9 +80,9 @@ The node must be loaded, because it is stored in [node metadata](node_metadata.h
 
 Use its position to get a node inventory:
 
-{% highlight lua %}
+```lua
 local inv = minetest.get_inventory({type="node", pos={x=, y=, z=}})
-{% endhighlight %}
+```
 
 ### Detached Inventories
 
@@ -93,15 +93,15 @@ A detached inventory would also allow multiple chests to share the same inventor
 
 Use the inventory name to get a detached inventory:
 
-{% highlight lua %}
+```lua
 local inv = minetest.get_inventory({type="detached", name="inventory_name"})
-{% endhighlight %}
+```
 
 You can create your own detached inventories:
 
-{% highlight lua %}
+```lua
 minetest.create_detached_inventory("inventory_name", callbacks)
-{% endhighlight %}
+```
 
 This creates a detached inventory or, if the inventory already exists, it is cleared.
 You can also supply a [table of callbacks]({{ page.root }}/lua_api.html#detached-inventory-callbacks).
@@ -112,9 +112,9 @@ You can also supply a [table of callbacks]({{ page.root }}/lua_api.html#detached
 
 You can check where an inventory is located:
 
-{% highlight lua %}
+```lua
 local location = inv:get_location()
-{% endhighlight %}
+```
 
 This will return a table like the one passed to `minetest.get_inventory()`.
 
@@ -125,7 +125,7 @@ If the location is unknown, `{type="undefined"}` is returned.
 Inventory lists have a size, for example `main` has size of 32 slots by default.
 They also have a width, which is used to divide them into a grid.
 
-{% highlight lua %}
+```lua
 if inv:set_size("main", 32) then
     inv:set_width("main", 8)
     print("size:  " .. inv.get_size("main"))
@@ -133,7 +133,7 @@ if inv:set_size("main", 32) then
 else
     print("Error!")
 end
-{% endhighlight %}
+```
 
 <!--The width and height of an inventory in a [formspec](formspecs.html) is
 determined by the formspec element, not by the inventory. By that I mean
@@ -143,23 +143,23 @@ a list doesn't have a width or height, only the maximum number of stacks/slots.-
 
 You can use `list_is_empty` to check if a list is empty:
 
-{% highlight lua %}
+```lua
 if inv:is_empty("main") then
     print("The list is empty!")
 end
-{% endhighlight %}
+```
 
 ### Lua Tables
 
 You can convert an inventory to a Lua table:
 
-{% highlight lua %}
+```lua
 local lists = inv:get_lists()
-{% endhighlight %}
+```
 
 The table will be in this form:
 
-{% highlight lua %}
+```lua
 {
     list_one = {
         ItemStack,
@@ -176,13 +176,13 @@ The table will be in this form:
         -- inv:get_size("list_two") elements
     }
 }
-{% endhighlight %}
+```
 
 You can then set the inventory:
 
-{% highlight lua %}
+```lua
 inv:set_lists(lists)
-{% endhighlight %}
+```
 
 Please note that the sizes of lists will not change.
 
@@ -190,13 +190,13 @@ Please note that the sizes of lists will not change.
 
 You can do the above for individual lists:
 
-{% highlight lua %}
+```lua
 local list = inv:get_list("list_one")
-{% endhighlight %}
+```
 
 It will be in this form:
 
-{% highlight lua %}
+```lua
 {
     ItemStack,
     ItemStack,
@@ -204,13 +204,13 @@ It will be in this form:
     ItemStack,
     -- inv:get_size("list_one") elements
 }
-{% endhighlight %}
+```
 
 You can then set the list:
 
-{% highlight lua %}
+```lua
 inv:set_list("list_one", list)
-{% endhighlight %}
+```
 
 Please note that the sizes of lists will not change.
 
@@ -220,42 +220,42 @@ Please note that the sizes of lists will not change.
 
 To add items to a list named `"main"`:
 
-{% highlight lua %}
+```lua
 local stack = ItemStack("default:stone 99")
 local leftover = inv:add_item("main", stack)
 if leftover:get_count() > 0 then
     print("Inventory is full! " .. leftover:get_count() .. " items weren't added")
 end
-{% endhighlight %}
+```
 
 ### Checking for Room
 
 To check whether a list has room for items:
 
-{% highlight lua %}
+```lua
 if not inv:room_for_item("main", stack) then
     print("Not enough room!")
 end
-{% endhighlight %}
+```
 
 ### Taking Items
 
 To remove items from a list:
 
-{% highlight lua %}
+```lua
 local taken = inv:remove_item("main", stack)
 print("Took " .. taken:get_count())
-{% endhighlight %}
+```
 
 ### Checking Inventory Contents
 
 To check whether an inventory contains a specific quantity of an item:
 
-{% highlight lua %}
+```lua
 if not inv:contains_item(listname, stack) then
     print("Item not in inventory!")
 end
-{% endhighlight %}
+```
 
 This works if the item count is split up over multiple stacks.
 For example checking for "default:stone 200" will work if there
@@ -265,7 +265,7 @@ are stacks of 99 + 95 + 6.
 
 You can manipulate individual stacks:
 
-{% highlight lua %}
+```lua
 local stack = inv:get_stack(listname, 0)
 inv:set_stack(listname, 0, stack)
-{% endhighlight %}
+```

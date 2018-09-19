@@ -49,25 +49,25 @@ names ending in `_spec`, and then executes them in a standalone Lua environment.
 
 ### init.lua
 
-{% highlight lua %}
+```lua
 mymod = {}
 
 dofile(minetest.get_modpath("mymod") .. "/api.lua")
-{% endhighlight %}
+```
 
 
 
 ### api.lua
 
-{% highlight lua %}
+```lua
 function mymod.add(x, y)
     return x + y
 end
-{% endhighlight %}
+```
 
 ### tests/api_spec.lua
 
-{% highlight lua %}
+```lua
 -- Look for required things in
 package.path = "../?.lua;" .. package.path
 
@@ -87,7 +87,7 @@ describe("add", function()
         assert.equals(-2, mymod.add(-1, -1))
     end)
 end)
-{% endhighlight %}
+```
 
 You can now run the tests by opening a terminal in the mod's directory and
 running `busted .`
@@ -114,7 +114,7 @@ things not in your area however - for example, you'll have to mock the view when
 testing the controller/API. If you didn't follow the advice, then things are a
 little harder as you may have to mock the Minetest API.
 
-{% highlight lua %}
+```lua
 -- As above, make a table
 _G.minetest = {}
 
@@ -157,7 +157,7 @@ describe("list_areas", function()
         assert.same(expected, chat_send_all_calls)
     end)
 end)
-{% endhighlight %}
+```
 
 
 ## Checking Commits with Travis
@@ -165,7 +165,7 @@ end)
 The Travis script from the [Error Checking](luacheck.html)
 chapter can be modified to also run Busted.
 
-{% highlight yml %}
+```yml
 language: generic
 sudo: false
 addons:
@@ -179,7 +179,7 @@ script:
 - $HOME/.luarocks/bin/busted .
 notifications:
   email: false
-{% endhighlight %}
+```
 
 
 ## Conclusion

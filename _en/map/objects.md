@@ -38,19 +38,19 @@ Don't be fooled though, all entities are Lua entities.
 
 `get_pos` and `set_pos` exist to allow you to get and set an entity's position.
 
-{% highlight lua %}
+```lua
 local object = minetest.get_player_by_name("bob")
 local pos    = object:get_pos()
 object:set_pos({ x = pos.x, y = pos.y + 1, z = pos.z })
-{% endhighlight %}
+```
 
 `set_pos` immediately sets the position, with no animation. If you'd like to
 smoothly animate an object to the new position, you should use `move_to`.
 This, unfortunately, only works for entities.
 
-{% highlight lua %}
+```lua
 object:move_to({ x = pos.x, y = pos.y + 1, z = pos.z })
-{% endhighlight %}
+```
 
 An important thing to think about when dealing with entities is network latency.
 In an ideal world, messages about entity movements would arrive immediately,
@@ -69,14 +69,14 @@ Unlike nodes, objects have a dynamic rather than set appearance.
 You can change how an object looks, among other things, at any time by updating
 its properties.
 
-{% highlight lua %}
+```lua
 object:set_properties({
     visual      = "mesh",
     mesh        = "character.b3d",
     textures    = {"character_texture.png"},
     visual_size = {x=1, y=1},
 })
-{% endhighlight %}
+```
 
 The updated properties will be sent to all players in range.
 This is very useful to get a large amount of variety very cheaply, such as having
@@ -93,7 +93,7 @@ joined players.
 An Entity has a type table much like an item does.
 This table can contain callback methods, default object properties, and custom elements.
 
-{% highlight lua %}
+```lua
 local MyEntity = {
     initial_properties = {
         hp_max = 1,
@@ -113,7 +113,7 @@ local MyEntity = {
 function MyEntity:set_message(msg)
     self.message = msg
 end
-{% endhighlight %}
+```
 
 When an entity is emerged, a table is created for it by copying everything from
 its type table.
@@ -121,16 +121,16 @@ This table can be used to store variables for that particular entity.
 
 Both an ObjectRef and an entity table provide ways to get the counterpart:
 
-{% highlight lua %}
+```lua
 local entity = object:get_luaentity()
 local object = entity.object
 print("entity is at " .. minetest.pos_to_string(object:get_pos()))
-{% endhighlight %}
+```
 
 There are a number of available callbacks for use with entities.
 A complete list can be found in [lua_api.txt]({{ page.root }}/lua_api.html#registered-entities)
 
-{% highlight lua %}
+```lua
 function MyEntity:on_step(dtime)
     local pos = self.object:get_pos()
 
@@ -151,7 +151,7 @@ end
 function MyEntity:on_punch(hitter)
     minetest.chat_send_player(hitter:get_player_name(), self.message)
 end
-{% endhighlight %}
+```
 
 Now, if you were to spawn and use this entity, you'd notice that the message
 would be forgotten when the entity becomes inactive then active again.
@@ -161,7 +161,7 @@ how to save things.
 Staticdata is a string which contains all of the custom information that
 needs to stored.
 
-{% highlight lua %}
+```lua
 function MyEntity:get_staticdata()
     return minetest.write_json({
         message = self.message,
@@ -174,7 +174,7 @@ function MyEntity:on_activate(staticdata, dtime_s)
         self:set_message(data.message)
     end
 end
-{% endhighlight %}
+```
 
 Minetest may call `get_staticdata()` as many times as it once and at any time.
 This is because Minetest doesn't wait for a MapBlock to become inactive to save
@@ -187,9 +187,9 @@ This means that staticdata could be empty.
 
 Finally, you need to register the type table using the aptly named `register_entity`.
 
-{% highlight lua %}
+```lua
 minetest.register_entity("9_entities:myentity", MyEntity)
-{% endhighlight %}
+```
 
 
 ## Attachments
@@ -198,9 +198,9 @@ Attached objects will move when the parent - the object they are attached to -
 is moved. An attached object is said to be a child of the parent.
 An object can have an unlimited number of children, but at most one parent.
 
-{% highlight lua %}
+```lua
 child:set_attach(parent, bone, position, rotation)
-{% endhighlight %}
+```
 
 An Object's `get_pos()` will always return the global position of the object, no
 matter whether it is attached or not.

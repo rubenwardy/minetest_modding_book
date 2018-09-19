@@ -52,10 +52,10 @@ be a cube. -->
 
 You can read from the map once you have a position:
 
-{% highlight lua %}
+```lua
 local node = minetest.get_node({ x = 1, y = 3, z = 4 })
 print(dump(node)) --> { name=.., param1=.., param2=.. }
-{% endhighlight %}
+```
 
 If the position is a decimal, it will be rounded to the containing node.
 The function will always return a table containing the node information:
@@ -82,30 +82,30 @@ For example, say we wanted to make a certain type of plant that grows
 better near mese. You would need to search for any nearby mese nodes,
 and adapt the growth rate accordingly.
 
-{% highlight lua %}
+```lua
 local grow_speed = 1
 local node_pos   = minetest.find_node_near(pos, 5, { "default:mese" })
 if node_pos then
     minetest.chat_send_all("Node found at: " .. dump(node_pos))
     grow_speed = 2
 end
-{% endhighlight %}
+```
 
 Let's say, for example, that the growth rate increases the more mese there is
 nearby. You should then use a function which can find multiple nodes in area:
 
-{% highlight lua %}
+```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
 local pos2       = vector.add(pos, { x = 5, y = 5, z = 5 })
 local pos_list   = minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
 local grow_speed = 1 + #pos_list
-{% endhighlight %}
+```
 
 The above code doesn't quite do what we want, as it checks based on area, whereas
 `find_node_near` checks based on range. In order to fix this we will,
 unfortunately, need to manually check the range ourselves.
 
-{% highlight lua %}
+```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
 local pos2       = vector.add(pos, { x = 5, y = 5, z = 5 })
 local pos_list   = minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
@@ -116,7 +116,7 @@ for i=1, #pos_list do
         grow_speed = grow_speed + 1
     end
 end
-{% endhighlight %}
+```
 
 Now your code will correctly increase `grow_speed` based on mese nodes in range.
 Note how we compared the squared distance from the position, rather than square
@@ -135,12 +135,12 @@ You can use `set_node` to write to the map. Each call to set_node will cause
 lighting to be recalculated, which means that set_node is fairly slow for large
 numbers of nodes.
 
-{% highlight lua %}
+```lua
 minetest.set_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
 
 local node = minetest.get_node({ x = 1, y = 3, z = 4 })
 print(node.name) --> default:mese
-{% endhighlight %}
+```
 
 set_node will remove any associated metadata or inventory from that position.
 This isn't desirable in all circumstances, especially if you're using multiple
@@ -150,9 +150,9 @@ two.
 
 You can set a node without deleting metadata or the inventory like so:
 
-{% highlight lua %}
+```lua
 minetest.swap_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
-{% endhighlight %}
+```
 
 ### Removing Nodes
 
@@ -160,10 +160,10 @@ A node must always be present. To remove a node, you set the position to `air`.
 
 The following two lines will both remove a node, and are both identical:
 
-{% highlight lua %}
+```lua
 minetest.remove_node(pos)
 minetest.set_node(pos, { name = "air" })
-{% endhighlight %}
+```
 
 In fact, remove_node will call set_node with name being air.
 
@@ -173,7 +173,7 @@ You can use `minetest.emerge_area` to load map blocks. Emerge area is asynchrono
 meaning the blocks won't be loaded instantly. Instead, they will be loaded
 soon in the future, and the callback will be called each time.
 
-{% highlight lua %}
+```lua
 -- Load a 20x20x20 area
 local halfsize = { x = 10, y = 10, z = 10 }
 local pos1 = vector.subtract(pos, halfsize)
@@ -181,12 +181,12 @@ local pos2 = vector.add     (pos, halfsize)
 
 local context = {} -- persist data between callback calls
 minetest.emerge_area(pos1, pos2, emerge_callback, context)
-{% endhighlight %}
+```
 
 Minetest will call `emerge_callback` whenever it loads a block, with some
 progress information.
 
-{% highlight lua %}
+```lua
 local function emerge_callback(pos, action, num_calls_remaining, context)
     -- On first call, record number of blocks
     if not context.total_blocks then
@@ -206,7 +206,7 @@ local function emerge_callback(pos, action, num_calls_remaining, context)
             context.loaded_blocks, context.total_blocks, perc)
     end
 end
-{% endhighlight %}
+```
 
 This is not the only way of loading blocks; Using a LVM will also cause the
 encompassed blocks to be loaded synchronously.
@@ -215,14 +215,14 @@ encompassed blocks to be loaded synchronously.
 
 You can use delete_blocks to delete a range of map blocks:
 
-{% highlight lua %}
+```lua
 -- Delete a 20x20x20 area
 local halfsize = { x = 10, y = 10, z = 10 }
 local pos1 = vector.subtract(pos, halfsize)
 local pos2 = vector.add     (pos, halfsize)
 
 minetest.delete_area(pos1, pos2)
-{% endhighlight %}
+```
 
 This will delete all map blocks in that area, *inclusive*. This means that some
 nodes will be deleted outside the area as they will be on a mapblock which overlaps

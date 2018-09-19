@@ -44,16 +44,16 @@ Metadata is stored in a key value relationship. For example:
 
 If you know the position of a node, you can retrieve its metadata:
 
-{% highlight lua %}
+```lua
 local meta = minetest.get_meta(pos)
 -- where pos = { x = 1, y = 5, z = 7 }
-{% endhighlight %}
+```
 
 ## Reading Metadata
 
 After retrieving the metadata, you can read its values:
 
-{% highlight lua %}
+```lua
 local value = meta:get_string("key")
 
 if value then
@@ -63,7 +63,7 @@ else
     -- metadata of key "key" does not exist
     print(value)
 end
-{% endhighlight %}
+```
 
 The functions available include:
 
@@ -74,7 +74,7 @@ The functions available include:
 
 To get a Boolean, you should use `get_string` and `minetest.is_yes`:
 
-{% highlight lua %}
+```lua
 local value = minetest.is_yes(meta:get_string("key"))
 
 if value then
@@ -82,18 +82,18 @@ if value then
 else
     print("is no")
 end
-{% endhighlight %}
+```
 
 ## Setting Metadata
 
 You can set node metadata. For example:
 
-{% highlight lua %}
+```lua
 local value = "one"
 meta:set_string("key", value)
 
 meta:set_string("foo", "bar")
-{% endhighlight %}
+```
 
 This can be done using the following functions:
 
@@ -105,11 +105,11 @@ This can be done using the following functions:
 
 You can convert to and from Lua tables using `to_table` and `from_table`:
 
-{% highlight lua %}
+```lua
 local tmp = meta:to_table()
 tmp.foo = "bar"
 meta:from_table(tmp)
-{% endhighlight %}
+```
 
 ## Infotext
 
@@ -117,9 +117,9 @@ The Minetest engine reads the field `infotext` to make text
 appear on mouse-over. This is used by furnaces to show progress and by signs
 to show their text. For example:
 
-{% highlight lua %}
+```lua
 meta:set_string("infotext", "Here is some text that will appear on mouse-over!")
-{% endhighlight %}
+```
 
 ## Your Turn
 

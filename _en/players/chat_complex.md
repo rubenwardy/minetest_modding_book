@@ -26,14 +26,14 @@ modders tend to use the method outlined in the
 
 Traditionally mods implemented these complex commands using Lua patterns.
 
-{% highlight lua %}
+```lua
 local name = string.match(param, "^join ([%a%d_-]+)")
-{% endhighlight %}
+```
 
 I however find Lua patterns annoying to write and unreadable.
 Because of this, I created a library to do this for you.
 
-{% highlight lua %}
+```lua
 ChatCmdBuilder.new("sethp", function(cmd)
     cmd:sub(":target :hp:int", function(name, target, hp)
         local player = minetest.get_player_by_name(target)        
@@ -51,7 +51,7 @@ end, {
         -- ^ probably better to register a custom priv
     }
 })
-{% endhighlight %}
+```
 
 `ChatCmdBuilder.new(name, setup_func, def)` creates a new chat command called
 `name`. It then calls the function passed to it (`setup_func`), which then creates
@@ -99,11 +99,11 @@ In `:name :hp:int`, there are two variables there:
 The first argument is the caller's name. The variables are then passed to the
 function in order.
 
-{% highlight lua %}
+```lua
 cmd:sub(":target :hp:int", function(name, target, hp)
     -- subcommand function
 end)
-{% endhighlight %}
+```
 
 ## Installing ChatCmdBuilder
 
@@ -125,7 +125,7 @@ Here is an example that creates a chat command that allows us to do this:
 * `/admin log <username>` - show report log
 * `/admin log <username> <message>` - log to report log
 
-{% highlight lua %}
+```lua
 local admin_log
 local function load()
     admin_log = {}
@@ -179,4 +179,4 @@ end, {
         ban = true
     }
 })
-{% endhighlight %}
+```

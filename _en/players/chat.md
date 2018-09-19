@@ -39,9 +39,9 @@ sending messages, intercepting messages and registering chat commands.
 
 To send a message to every player in the game, call the chat_send_all function.
 
-{% highlight lua %}
+```lua
 minetest.chat_send_all("This is a chat message to all players")
-{% endhighlight %}
+```
 
 Here is an example of how this appears in-game:
 
@@ -55,9 +55,9 @@ The message appears on a separate line to distinguish it from in-game player cha
 
 To send a message to a specific player, call the chat_send_player function:
 
-{% highlight lua %}
+```lua
 minetest.chat_send_player("player1", "This is a chat message for player1")
-{% endhighlight %}
+```
 
 This message displays in the same manner as messages to all players, but is
 only visible to the named player, in this case player1.
@@ -66,7 +66,7 @@ only visible to the named player, in this case player1.
 
 To register a chat command, for example /foo, use register_chatcommand:
 
-{% highlight lua %}
+```lua
 minetest.register_chatcommand("foo", {
     privs = {
         interact = true
@@ -75,26 +75,26 @@ minetest.register_chatcommand("foo", {
         return true, "You said " .. param .. "!"
     end
 })
-{% endhighlight %}
+```
 
 Calling /foo bar will display `You said bar!` in the chat console.
 
 You can restrict which players are able to run commands:
 
-{% highlight lua %}
+```lua
 privs = {
     interact = true
 },
-{% endhighlight %}
+```
 
 This means only players with the `interact` [privilege](privileges.html) can run the
 command. Other players will see an error message informing them of which
 privilege they're missing. If the player has the necessary privileges, the command
 will run and the message will be sent:
 
-{% highlight lua %}
+```lua
 return true, "You said " .. param .. "!"
-{% endhighlight %}
+```
 
 This returns two values, a Boolean which shows the command succeeded
 and the chat message to send to the player.
@@ -113,9 +113,9 @@ It is often required to make complex chat commands, such as:
 This is usually done using [Lua patterns](https://www.lua.org/pil/20.2.html).
 Patterns are a way of extracting stuff from text using rules.
 
-{% highlight lua %}
+```lua
 local to, msg = string.match(param, "^([%a%d_-]+) (*+)$")
-{% endhighlight %}
+```
 
 The above implements `/msg <to> <message>`. Let's go through left to right:
 
@@ -147,12 +147,12 @@ to make complex chat commands without Patterns called
 
 To intercept a message, use register_on_chat_message:
 
-{% highlight lua %}
+```lua
 minetest.register_on_chat_message(function(name, message)
     print(name .. " said " .. message)
     return false
 end)
-{% endhighlight %}
+```
 
 By returning false, you allow the chat message to be sent by the default
 handler. You can actually remove the line `return false`, and it would still
@@ -163,7 +163,7 @@ work the same.
 You should make sure you take into account that it may be a chat command,
 or the user may not have `shout`.
 
-{% highlight lua %}
+```lua
 minetest.register_on_chat_message(function(name, message)
     if message:sub(1, 1) == "/" then
         print(name .. " ran chat command")
@@ -175,4 +175,4 @@ minetest.register_on_chat_message(function(name, message)
 
     return false
 end)
-{% endhighlight %}
+```

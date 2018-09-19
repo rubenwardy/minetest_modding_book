@@ -27,14 +27,14 @@ some other format instead.
 So, to register a page you need to call the aptly named `sfinv.register_page`
 function with the page's name, and its definition. Here is a minimal example:
 
-{% highlight lua %}
+```lua
 sfinv.register_page("mymod:hello", {
     title = "Hello!",
     get = function(self, player, context)
         -- TODO: implement this
     end
 })
-{% endhighlight %}
+```
 
 You can also override an existing page using `sfinv.override_page`.
 
@@ -42,7 +42,7 @@ If you ran the above code and clicked the page's tab, it would probably crash
 as sfinv is expecting a response from the `get` method. So let's add a response
 to fix that:
 
-{% highlight lua %}
+```lua
 sfinv.register_page("mymod:hello", {
     title = "Hello!",
     get = function(self, player, context)
@@ -50,7 +50,7 @@ sfinv.register_page("mymod:hello", {
                 "label[0.1,0.1;Hello world!]", true)
     end
 })
-{% endhighlight %}
+```
 
 The `make_formspec` function surrounds your formspec with sfinv's formspec code.
 The fourth parameter, currently set as `true`, determines whether or not the
@@ -69,7 +69,7 @@ Let's make things more exciting. Here is the code for the formspec generation
 part of a player admin tab. This tab will allow admins to kick or ban players by
 selecting them in a list and clicking a button.
 
-{% highlight lua %}
+```lua
 sfinv.register_page("myadmin:myadmin", {
     title = "Tab",
     get = function(self, player, context)
@@ -103,7 +103,7 @@ sfinv.register_page("myadmin:myadmin", {
                 table.concat(formspec, ""), false)
     end,
 })
-{% endhighlight %}
+```
 
 There's nothing new about the above code, all the concepts are covered above and
 in previous chapters.
@@ -120,11 +120,11 @@ in previous chapters.
 You can receive formspec events by adding a `on_player_receive_fields` function
 to a sfinv definition.
 
-{% highlight lua %}
+```lua
 on_player_receive_fields = function(self, player, context, fields)
     -- TODO: implement this
 end,
-{% endhighlight %}
+```
 
 Fields is the exact same as the fields given to the subscribers of
 `minetest.register_on_player_receive_fields`. The return value of
@@ -134,7 +134,7 @@ navigation tab events, so you won't receive them in this callback.
 
 Now let's implement the `on_player_receive_fields` for our admin mod:
 
-{% highlight lua %}
+```lua
 on_player_receive_fields = function(self, player, context, fields)
     -- text list event,  check event type and set index if selection changed
     if fields.playerlist then
@@ -163,7 +163,7 @@ on_player_receive_fields = function(self, player, context, fields)
         end
     end
 end,
-{% endhighlight %}
+```
 
 There's a rather large problem with this, however. Anyone can kick or ban players! You
 need a way to only show this to players with the kick or ban privileges.
@@ -174,12 +174,12 @@ Luckily SFINV allows you to do this!
 You can add an `is_in_nav` function to your page's definition if you'd like to
 control when the page is shown:
 
-{% highlight lua %}
+```lua
 is_in_nav = function(self, player, context)
     local privs = minetest.get_player_privs(player:get_player_name())
     return privs.kick or privs.ban
 end,
-{% endhighlight %}
+```
 
 If you only need to check one priv or want to perform an and, you should use
 `minetest.check_player_privs()` instead of `get_player_privs`.
@@ -192,7 +192,7 @@ This means that you need to manually request that SFINV regenerates the inventor
 formspec on any events that may change `is_in_nav`'s result. In our case,
 we need to do that whenever kick or ban is granted or revoked to a player:
 
-{% highlight lua %}
+```lua
 local function on_grant_revoke(grantee, granter, priv)
     if priv == "kick" or priv == "ban" then
         local player = minetest.get_player_by_name(grantee)
@@ -207,7 +207,7 @@ if minetest.register_on_priv_grant then
     minetest.register_on_priv_grant(on_grant_revoke)
     minetest.register_on_priv_revoke(on_grant_revoke)
 end
-{% endhighlight %}
+```
 
 ## on_enter and on_leave callbacks
 
@@ -221,7 +221,7 @@ Also, note that the inventory may not be visible at the time
 these callbacks are called. For example, on_enter is called for the home page
 when a player joins the game even before they open their inventory!
 
-{% highlight lua %}
+```lua
 on_enter = function(self, player, context)
 
 end,
@@ -229,7 +229,7 @@ end,
 on_leave = function(self, player, context)
 
 end,
-{% endhighlight %}
+```
 
 ## Adding to an existing page
 

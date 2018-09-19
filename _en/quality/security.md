@@ -40,7 +40,7 @@ Any users can submit almost any formspec with any values at any time.
 
 Here's some real code found in a mod:
 
-{% highlight lua %}
+```lua
 minetest.register_on_player_receive_fields(function(player, formname, fields)
     -- Todo: fix security issue here
     local name = player:get_player_name()
@@ -56,7 +56,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         end
     end
 end
-{% endhighlight %}
+```
 
 Can you spot the issue? A malicious user could submit a formspec containing
 their own position values, allowing them to teleport to anywhere they wish to.
@@ -90,19 +90,19 @@ to the full Lua API.
 
 Can you spot the vulnerability in the following?
 
-{% highlight lua %}
+```lua
 local ie = minetest.request_insecure_environment()
 ie.os.execute(("path/to/prog %d"):format(3))
-{% endhighlight %}
+```
 
 `String.format` is a function in the global shared table `String`.
 A malicious mod could override this function and pass stuff to os.execute:
 
-{% highlight lua %}
+```lua
 String.format = function()
     return "xdg-open 'http://example.com'"
 end
-{% endhighlight %}
+```
 
 The mod could pass something a lot more malicious than opening a website, such
 as giving a remote user control over the machine.

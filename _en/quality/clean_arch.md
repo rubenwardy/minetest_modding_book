@@ -83,7 +83,7 @@ You should write your data representation using Pure Lua. "Pure" in this context
 means that the functions could run outside of Minetest - none of the engine's
 functions are called.
 
-{% highlight lua %}
+```lua
 -- Data
 function land.create(name, area_name)
     land.lands[area_name] = {
@@ -96,12 +96,12 @@ end
 function land.get_by_name(area_name)
     return land.lands[area_name]
 end
-{% endhighlight %}
+```
 
 Your actions should also be pure, however calling other functions is more
 acceptable.
 
-{% highlight lua %}
+```lua
 -- Controller
 function land.handle_create_submit(name, area_name)
     -- process stuff (ie: check for overlaps, check quotas, check permissions)
@@ -113,13 +113,13 @@ function land.handle_creation_request(name)
     -- This is a bad example, as explained later
     land.show_create_formspec(name)
 end
-{% endhighlight %}
+```
 
 Your event handlers will have to interact with the Minetest API. You should keep
 the amount of calculations to a minimum, as you won't be able to test this area
 very easily.
 
-{% highlight lua %}
+```lua
 -- View
 function land.show_create_formspec(name)
     -- Note how there's no complex calculations here!
@@ -141,7 +141,7 @@ minetest.register_chatcommand("/land", {
 minetest.register_on_player_receive_fields(function(player, formname, fields)
     land.handle_create_submit(player:get_player_name(), fields.area_name)
 end)
-{% endhighlight %}
+```
 
 The above is the Model-View-Controller pattern. The model is a collection of data
 with minimal functions. The view is a collection of functions which listen to
@@ -217,7 +217,7 @@ Enter the Observer pattern. Instead of the mobs mod caring about awards, mobs
 exposes a way for other areas of code to register their interest in an event
 and receive data about the event.
 
-{% highlight lua %}
+```lua
 mobs.registered_on_death = {}
 function mobs.register_on_death(func)
     table.insert(mobs.registered_on_death, func)
@@ -227,11 +227,11 @@ end
 for i=1, #mobs.registered_on_death do
     mobs.registered_on_death[i](entity, reason)
 end
-{% endhighlight %}
+```
 
 Then the other code registers its interest:
 
-{% highlight lua %}
+```lua
 
 -- awards
 mobs.register_on_death(function(mob, reason)
@@ -239,7 +239,7 @@ mobs.register_on_death(function(mob, reason)
         awards.notify_mob_kill(reason.object, mob.name)
     end
 end)
-{% endhighlight %}
+```
 
 You may be thinking - wait a second, this looks awfully familiar. And you're right!
 The Minetest API is heavily Observer based to stop the engine having to care about

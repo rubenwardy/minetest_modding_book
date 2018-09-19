@@ -67,9 +67,9 @@ Explain why/how these concepts are useful in modding
 
 Paragraphs
 
-{% highlight lua %}
+```lua
 code
-{% endhighlight %}
+```
 
 ## Parts in
 

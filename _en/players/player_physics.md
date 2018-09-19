@@ -23,7 +23,7 @@ gravity twice as strong.
 Here is an example of how to add an antigravity command, which
 puts the caller in low G:
 
-{% highlight lua %}
+```lua
 minetest.register_chatcommand("antigravity", {
     func = function(name, param)
         local player = minetest.get_player_by_name(name)
@@ -33,7 +33,7 @@ minetest.register_chatcommand("antigravity", {
         })
     end
 })
-{% endhighlight %}
+```
 
 ## Available Overrides
 

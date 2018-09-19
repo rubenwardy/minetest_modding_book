@@ -59,7 +59,7 @@ root of your game, modpack, or mod.
 
 Put the following contents in it:
 
-{% highlight lua %}
+```lua
 unused_args = false
 allow_defined_top = true
 
@@ -78,7 +78,7 @@ read_globals = {
     -- MTG
     "default", "sfinv", "creative",
 }
-{% endhighlight %}
+```
 
 Next you'll need to test that it works by running LuaCheck. You should get a lot
 less errors this time. Starting at the first error you get, either modify the
@@ -121,7 +121,7 @@ and enable Travis by flipping the switch.
 
 Next, create a file called .travis.yml with the following content:
 
-{% highlight yml %}
+```yml
 language: generic
 sudo: false
 addons:
@@ -134,14 +134,14 @@ script:
 - $HOME/.luarocks/bin/luacheck --no-color .
 notifications:
   email: false
-{% endhighlight %}
+```
 
 If your project is a game rather than a mod or mod pack,
 change the line after `script:` to:
 
-{% highlight yml %}
+```yml
 - $HOME/.luarocks/bin/luacheck --no-color mods/
-{% endhighlight %}
+```
 
 Now commit and push to Github. Go to your project's page on Github, and click
 commits. You should see an orange disc next to the commit you just made.
