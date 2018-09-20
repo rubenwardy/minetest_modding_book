@@ -3,7 +3,7 @@ title: Getting Started
 layout: default
 root: ../..
 idx: 1.1
-description: Learn how to make a mod folder, including init.lua, depends.txt and more.
+description: Learn how to make a mod folder, including init.lua, mod.conf and more.
 redirect_from:
 - /en/chapters/folders.html
 - /en/basics/folders.html
@@ -14,10 +14,30 @@ redirect_from:
 Understanding the basic structure of a mod's folder
 is an essential skill when creating mods.
 
+* [What are Games and Mods?](#what-are-games-and-mods)
 * [Mod Directory](#mod-directory)
 * [Dependencies](#dependencies)
 * [Mod Packs](#mod-packs)
 * [Example](#example)
+
+
+## What are Games and Mods?
+
+The power of Minetest is the ability to easily create games without the need
+to write your own voxel graphics and algorithms or fancy networking.
+
+In Minetest, a Game is a collection of modules which work together to provide the
+content and behaviour of your game.
+A module, commonly known as a mod, is a collection of scripts and resources.
+It's possible to make a Game using only one mod, but this is rarely done and makes things
+infeasible.
+
+It's also possible to distribute mods outside of a game, in which case they
+are also *mods* in the more traditional sense - modifications.
+Both the mods contained in a Game and third-party mods use the exact same API,
+which makes things easier.
+This book will go over the main parts of the Minetest API,
+and is applicable for both game developers and modders.
 
 ## Mod Directory
 
