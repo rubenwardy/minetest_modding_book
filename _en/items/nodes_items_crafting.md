@@ -77,8 +77,8 @@ There are two main common uses of this:
 * Adding a shortcut. `/giveme dirt` is easier than `/giveme default:dirt`.
 
 Registering an alias is pretty simple.
-A good way to remember is `from → to` where *from* is the alias and *to*
-is the target.
+A good way to remember the order of the arguments is `from → to` where
+*from* is the alias and *to* is the target.
 
 ```lua
 minetest.register_alias("dirt", "default:dirt")
