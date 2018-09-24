@@ -170,7 +170,8 @@ minetest.register_on_chat_message(function(name, message)
     elseif minetest.check_player_privs(name, { shout = true }) then
         print(name .. " said " .. message)
     else
-        print(name .. " tried to say " .. message .. " but doesn't have shout")
+        print(name .. " tried to say " .. message ..
+                " but doesn't have shout")
     end
 
     return false

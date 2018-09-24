@@ -34,7 +34,8 @@ minetest.register_on_joinplayer(function(player)
     foobar[player:get_player_name()] = player
     -- RISKY
     -- It's recommended to just not do this
-    -- use minetest.get_connected_players() and minetest.get_player_by_name() instead.
+    -- use minetest.get_connected_players() and
+    --   minetest.get_player_by_name() instead.
 end)
 ```
 
@@ -80,7 +81,8 @@ local function show_formspec(name)
     return true
 })
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+minetest.register_on_player_receive_fields(function(player,
+        formname, fields)
     -- BAD! Missing privilege check here!
 
     local privs = minetest.get_player_privs(fields.target)
@@ -94,7 +96,8 @@ end)
 Instead, do this:
 
 ```lua
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+minetest.register_on_player_receive_fields(function(player,
+        formname, fields)
     if not minetest.check_player_privs(name, { privs = true }) then
         return false
     end
@@ -136,9 +139,11 @@ it will only be saved in the engine if the callback caller sets it.
 Avoid this:
 
 ```lua
-minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+minetest.register_on_item_eat(function(hp_change, replace_with_item,
+        itemstack, user, pointed_thing)
     itemstack:get_meta():set_string("description", "Partially eaten")
-    -- Almost correct! Data will be lost if another callback cancels the behaviour
+    -- Almost correct! Data will be lost if another
+    -- callback cancels the behaviour
 end)
 ```
 
@@ -146,9 +151,11 @@ If no callbacks cancel, then the stack will be set and the description will be u
 If a callback cancels, then the update may be lost. It's better to do this instead:
 
 ```lua
-minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+minetest.register_on_item_eat(function(hp_change, replace_with_item,
+        itemstack, user, pointed_thing)
     itemstack:get_meta():set_string("description", "Partially eaten")
-    user:get_inventory():set_stack("main", user:get_wield_index(), itemstack)
+    user:get_inventory():set_stack("main", user:get_wield_index(),
+            itemstack)
     -- Correct, description will always be set!
 end)
 ```

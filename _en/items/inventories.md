@@ -127,7 +127,8 @@ Detached inventories need to be created before then can be retrieved -
 this will be covered latter.
 
 ```lua
-local inv = minetest.get_inventory({ type="detached", name="inventory_name" })
+local inv = minetest.get_inventory({
+    type="detached", name="inventory_name" })
 ```
 
 The location of an inventory reference can be found like so:
@@ -185,7 +186,8 @@ To add items to a list named `"main"`, whilst respecting any maximum stack sizes
 local stack    = ItemStack("default:stone 99")
 local leftover = inv:add_item("main", stack)
 if leftover:get_count() > 0 then
-    print("Inventory is full! " .. leftover:get_count() .. " items weren't added")
+    print("Inventory is full! " ..
+            leftover:get_count() .. " items weren't added")
 end
 ```
 

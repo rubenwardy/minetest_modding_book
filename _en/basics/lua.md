@@ -262,7 +262,7 @@ which show it is a string.
 
 This is sloppy coding, and Minetest will in fact warn about this:
 
-    [WARNING] Assigment to undeclared global 'foo' inside function at init.lua:2
+    Assignment to undeclared global 'foo' inside function at init.lua:2
 
 To correct this, use "local":
 

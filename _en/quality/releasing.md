@@ -44,32 +44,6 @@ You license your code under LGPL 2.1 and your art under CC-BY-SA. This means:
 * If someone modifies your mod, they must give their version the same license.
 * Your copyright notice must be kept.
 
-Add this copyright notice to your README.txt, or as a new file called LICENSE.txt:
-
-    License for Code
-    ----------------
-
-    Copyright (C) 2010-2013 Your Name <emailaddress>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation; either version 2.1 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License along
-    with this program; if not, write to the Free Software Foundation, Inc.,
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-    License for Textures, Models and Sounds
-    ---------------------------------------
-
-    CC-BY-SA 3.0 UNPORTED. Created by Your Name
-
 ### WTFPL or CC0
 
 These licenses allows anyone to do what they want with your mod.
@@ -84,29 +58,6 @@ choose not to use your mod if it has this license.
 This is a common license for mod code. The only restriction it places on users
 of your mod is that they must include the same copyright notice and license
 in any copies of the mod or of substantial parts of the mod.
-
-To use this license, include the following in your readme or license file:
-
-    Copyright (c) <year> <your name> <emailaddress>
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
-
 
 ## Packaging
 
@@ -133,7 +84,7 @@ It should be short because it will be displayed in the content installer.
 
 Good example:
 
-    Adds soup, cakes, bakes and juices. The food mod which supports the most ingredients.
+    Adds soup, cakes, bakes and juices
 
 Don't do this:
 

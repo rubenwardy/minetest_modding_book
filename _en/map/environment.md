@@ -38,14 +38,6 @@ will be generated up to the map generation limit (`mapgen_limit`) which is set
 at its maximum value, 31000, by default. Existing MapBlocks can however be
 loaded from the world database outside of the generation limit.
 
-
-<!--Multiple MapBlocks are generated at a time in groups called *MapChunks*. Each
-MapChunk is by default 5x5x5<sup>1</sup> MapBlocks, which is 80x80x80 nodes.
-The size of a MapChunk can change using the chunk_size setting but will always
-be a cube. -->
-
-
-
 ## Reading
 
 ### Reading Nodes
@@ -97,7 +89,8 @@ nearby. You should then use a function which can find multiple nodes in area:
 ```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
 local pos2       = vector.add(pos, { x = 5, y = 5, z = 5 })
-local pos_list   = minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
+local pos_list   =
+        minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
 local grow_speed = 1 + #pos_list
 ```
 
@@ -108,7 +101,8 @@ unfortunately, need to manually check the range ourselves.
 ```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
 local pos2       = vector.add(pos, { x = 5, y = 5, z = 5 })
-local pos_list   = minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
+local pos_list   =
+        minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
 local grow_speed = 1
 for i=1, #pos_list do
     local delta = vector.subtract(pos_list[i], pos)
@@ -187,7 +181,8 @@ Minetest will call `emerge_callback` whenever it loads a block, with some
 progress information.
 
 ```lua
-local function emerge_callback(pos, action, num_calls_remaining, context)
+local function emerge_callback(pos, action,
+        num_calls_remaining, context)
     -- On first call, record number of blocks
     if not context.total_blocks then
         context.total_blocks  = num_calls_remaining + 1
@@ -202,8 +197,9 @@ local function emerge_callback(pos, action, num_calls_remaining, context)
         minetest.chat_send_all("Finished loading blocks!")
     end
         local perc = 100 * context.loaded_blocks / context.total_blocks
-        minetest.chat_send_all(string.format("Loading blocks %d/%d (%.2f%%)",
-            context.loaded_blocks, context.total_blocks, perc)
+        local msg  = string.format("Loading blocks %d/%d (%.2f%%)",
+                context.loaded_blocks, context.total_blocks, perc)
+        minetest.chat_send_all(msg)
     end
 end
 ```

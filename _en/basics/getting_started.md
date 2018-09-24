@@ -55,8 +55,8 @@ To find out if a mod name is available, try searching for it on
 [content.minetest.net](https://content.minetest.net).
 
     mymod
-    ├── init.lua (required) - The main scripting code file. Runs when the game loads.
-    ├── mod.conf (recommended) - Mod metadata file. Contains description and dependencies.
+    ├── init.lua (required) - Runs when the game loads.
+    ├── mod.conf (recommended) - Contains description and dependencies.
     ├── textures (optional)
     │   └── ... any textures or images
     ├── sounds (optional)
@@ -110,7 +110,7 @@ and moved together. They are useful if you want to supply multiple mods to
 a player but don't want to make them download each one individually.
 
     modpack1
-    ├── modpack.lua (required) - signals that this is a mod pack, content does not matter
+    ├── modpack.lua (required) - signals that this is a mod pack
     ├── mod1
     │   └── ... mod files
     └── mymod (optional)

@@ -150,7 +150,8 @@ ChatCmdBuilder.new("admin", function(cmd)
         local player = minetest.get_player_by_name(target)
         if player then
             player:setpos(pos)
-            return true, "Moved " .. target .. " to " .. minetest.pos_to_string(pos)
+            return true, "Moved " .. target .. " to " ..
+                    minetest.pos_to_string(pos)
         else
             return false, "Unable to find " .. target
         end

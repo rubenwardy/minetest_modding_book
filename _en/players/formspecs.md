@@ -147,7 +147,8 @@ minetest.register_chatcommand("formspec", {
 })
 
 -- Register callback
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+minetest.register_on_player_receive_fields(function(player,
+        formname, fields)
     if formname ~= "mymod:form" then
         -- Formname is not mymod:form,
         -- exit callback.
@@ -155,10 +156,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     end
 
     -- Send message to player.
-    minetest.chat_send_player(player:get_player_name(), "You said: " .. fields.name .. "!")
+    minetest.chat_send_player(player:get_player_name(),
+            "You said: " .. fields.name .. "!")
 
-    -- Return true to stop other minetest.register_on_player_receive_fields
-    -- from receiving this submission.
+    -- Return true to stop other callbacks from
+    -- receiving this submission.
     return true
 end)
 ```
@@ -213,7 +215,8 @@ local land_formspec_context = {}
 minetest.register_chatcommand("land", {
     func = function(name, param)
         if param == "" then
-            minetest.chat_send_player(name, "Incorrect parameters - supply a land ID")
+            minetest.chat_send_player(name,
+                    "Incorrect parameters - supply a land ID")
             return
         end
 
@@ -233,7 +236,8 @@ minetest.register_chatcommand("land", {
 --
 -- Step 2) retrieve context when player submits the form
 --
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+minetest.register_on_player_receive_fields(function(player,
+        formname, fields)
     if formname ~= "mylandowner:edit" then
         return false
     end

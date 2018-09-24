@@ -253,7 +253,11 @@ where the ingredients are placed, just that they're there.
 minetest.register_craft({
     type = "shapeless",
     output = "mymod:diamond 3",
-    recipe = {"mymod:diamond_fragments", "mymod:diamond_fragments", "mymod:diamond_fragments"}
+    recipe = {
+        "mymod:diamond_fragments",
+        "mymod:diamond_fragments",
+        "mymod:diamond_fragments",
+    },
 })
 ```
 
@@ -359,7 +363,11 @@ minetest.register_tool("mymod:tool", {
         full_punch_interval = 1.5,
         max_drop_level = 1,
         groupcaps = {
-            crumbly = { maxlevel=2, uses=20, times={[1]=1.60, [2]=1.20, [3]=0.80} },
+            crumbly = {
+                maxlevel = 2,
+                uses = 20,
+                times = { [1]=1.60, [2]=1.20, [3]=0.80 }
+            },
         },
         damage_groups = {fleshy=2},
     },

@@ -89,7 +89,8 @@ sfinv.register_page("myadmin:myadmin", {
             if not is_first then
                 formspec[#formspec + 1] = ","
             end
-            formspec[#formspec + 1] = minetest.formspec_escape(player_name)
+            formspec[#formspec + 1] =
+                    minetest.formspec_escape(player_name)
             is_first = false
         end
         formspec[#formspec + 1] = "]"
@@ -98,7 +99,8 @@ sfinv.register_page("myadmin:myadmin", {
         formspec[#formspec + 1] = "button[0.1,3.3;2,1;kick;Kick]"
         formspec[#formspec + 1] = "button[2.1,3.3;2,1;ban;Kick + Ban]"
 
-        -- Wrap the formspec in sfinv's layout (ie: adds the tabs and background)
+        -- Wrap the formspec in sfinv's layout
+        -- (ie: adds the tabs and background)
         return sfinv.make_formspec(player, context,
                 table.concat(formspec, ""), false)
     end,
@@ -145,7 +147,8 @@ on_player_receive_fields = function(self, player, context, fields)
 
     -- Kick button was pressed
     elseif fields.kick then
-        local player_name = context.myadmin_players[context.myadmin_selected_idx]
+        local player_name =
+                context.myadmin_players[context.myadmin_selected_idx]
         if player_name then
             minetest.chat_send_player(player:get_player_name(),
                     "Kicked " .. player_name)
@@ -154,7 +157,8 @@ on_player_receive_fields = function(self, player, context, fields)
 
     -- Ban button was pressed
     elseif fields.ban then
-        local player_name = context.myadmin_players[context.myadmin_selected_idx]
+        local player_name =
+                context.myadmin_players[context.myadmin_selected_idx]
         if player_name then
             minetest.chat_send_player(player:get_player_name(),
                     "Banned " .. player_name)
@@ -202,7 +206,8 @@ local function on_grant_revoke(grantee, granter, priv)
     end
 end
 
--- Check that the function exists, in order to support older Minetest versions
+-- Check that the function exists,
+-- in order to support older Minetest versions
 if minetest.register_on_priv_grant then
     minetest.register_on_priv_grant(on_grant_revoke)
     minetest.register_on_priv_revoke(on_grant_revoke)

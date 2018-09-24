@@ -144,7 +144,8 @@ describe("list_areas", function()
         end
     end)
 
-    -- The above two tests are actually pointless, as this one tests both things
+    -- The above two tests are actually pointless,
+    --   as this one tests both things
     it("returns correct thing", function()
         chat_send_all_calls = {} -- reset table
 

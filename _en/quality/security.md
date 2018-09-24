@@ -41,7 +41,8 @@ Any users can submit almost any formspec with any values at any time.
 Here's some real code found in a mod:
 
 ```lua
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+minetest.register_on_player_receive_fields(function(player,
+        formname, fields)
     -- Todo: fix security issue here
     local name = player:get_player_name()
     if formname ~= "mymod:fs" then
@@ -49,9 +50,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     end
 
     for key, field in pairs(fields) do
-        local x,y,z = string.match(key, "goto_([%d-]+)_([%d-]+)_([%d-]+)")
+        local x,y,z = string.match(key,
+                "goto_([%d-]+)_([%d-]+)_([%d-]+)")
         if x and y and z then
-            player:setpos({ x=tonumber(x), y=tonumber(y), z=tonumber(z) })
+            player:set_pos({ x=tonumber(x), y=tonumber(y),
+                    z=tonumber(z) })
             return true
         end
     end

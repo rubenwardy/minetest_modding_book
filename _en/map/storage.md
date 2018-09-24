@@ -170,9 +170,11 @@ can be painful for the user to set up.
 ```lua
 local backend
 if use_database then
-    backend = dofile(minetest.get_modpath("mymod") .. "/backend_sqlite.lua")
+    backend =
+        dofile(minetest.get_modpath("mymod") .. "/backend_sqlite.lua")
 else
-    backend = dofile(minetest.get_modpath("mymod") .. "/backend_storage.lua")
+    backend =
+        dofile(minetest.get_modpath("mymod") .. "/backend_storage.lua")
 end
 
 backend.get_foo("a")

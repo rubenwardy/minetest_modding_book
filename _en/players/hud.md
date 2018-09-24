@@ -128,9 +128,9 @@ player:hud_add({
 })
 
 -- Get the dig and place count from storage, or default to 0
-local digs        = tonumber(player:get_attribute("scoreboard:digs") or 0)
+local digs        = tonumber(player:get_attribute("score:digs") or 0)
 local digs_text   = "Digs: " .. digs
-local places      = tonumber(player:get_attribute("scoreboard:digs") or 0)
+local places      = tonumber(player:get_attribute("score:digs") or 0)
 local places_text = "Places: " .. places
 
 player:hud_add({
@@ -172,7 +172,7 @@ player:hud_add({
     hud_elem_type = "image",
     position  = {x = 1, y = 0.5},
     offset    = {x = -220, y = 0},
-    text      = "scoreboard_background.png",
+    text      = "score_background.png",
     scale     = { x = 1, y = 1},
     alignment = { x = 1, y = 0 },
 })
@@ -200,13 +200,13 @@ For example, `x=-100` is 100% of the width.
 Let's make the progress bar for our score panel as an example of scale:
 
 ```lua
-local percent = tonumber(player:get_attribute("scoreboard:score") or 0.2)
+local percent = tonumber(player:get_attribute("score:score") or 0.2)
 
 player:hud_add({
     hud_elem_type = "image",
     position  = {x = 1, y = 0.5},
     offset    = {x = -215, y = 23},
-    text      = "scoreboard_bar_empty.png",
+    text      = "score_bar_empty.png",
     scale     = { x = 1, y = 1},
     alignment = { x = 1, y = 0 },
 })
@@ -215,7 +215,7 @@ player:hud_add({
     hud_elem_type = "image",
     position  = {x = 1, y = 0.5},
     offset    = {x = -215, y = 23},
-    text      = "scoreboard_bar_full.png",
+    text      = "score_bar_full.png",
     scale     = { x = percent, y = 1},
     alignment = { x = 1, y = 0 },
 })
@@ -255,18 +255,18 @@ local idx = player:hud_add({
 ## Storing IDs
 
 ```lua
-scoreboard = {}
+score = {}
 local saved_huds = {}
 
-function scoreboard.update_hud(player)
+function score.update_hud(player)
     local player_name = player:get_player_name()
 
-    local digs = tonumber(player:get_attribute("scoreboard:digs") or 0)
+    local digs = tonumber(player:get_attribute("score:digs") or 0)
     local digs_text   = "Digs: " .. digs
-    local places = tonumber(player:get_attribute("scoreboard:digs") or 0)
+    local places = tonumber(player:get_attribute("score:digs") or 0)
     local places_text = "Places: " .. places
 
-    local percent = tonumber(player:get_attribute("scoreboard:score") or 0.2)
+    local percent = tonumber(player:get_attribute("score:score") or 0.2)
 
     local ids = saved_huds[player_name]
     if ids then
@@ -282,7 +282,7 @@ function scoreboard.update_hud(player)
     end
 end
 
-minetest.register_on_joinplayer(scoreboard.update_hud)
+minetest.register_on_joinplayer(score.update_hud)
 
 minetest.register_on_leaveplayer(function(player)
     saved_huds[player:get_player_name()] = nil

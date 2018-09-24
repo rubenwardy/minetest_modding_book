@@ -104,7 +104,8 @@ acceptable.
 ```lua
 -- Controller
 function land.handle_create_submit(name, area_name)
-    -- process stuff (ie: check for overlaps, check quotas, check permissions)
+    -- process stuff
+    -- (ie: check for overlaps, check quotas, check permissions)
 
     land.create(name, area_name)
 end
@@ -138,8 +139,10 @@ minetest.register_chatcommand("/land", {
     end,
 })
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-    land.handle_create_submit(player:get_player_name(), fields.area_name)
+minetest.register_on_player_receive_fields(function(player,
+            formname, fields)
+    land.handle_create_submit(player:get_player_name(),
+            fields.area_name)
 end)
 ```
 
@@ -235,7 +238,8 @@ Then the other code registers its interest:
 
 -- awards
 mobs.register_on_death(function(mob, reason)
-    if reason.type == "punch" and reason.object and reason.object:is_player() then
+    if reason.type == "punch" and reason.object and
+            reason.object:is_player() then
         awards.notify_mob_kill(reason.object, mob.name)
     end
 end)

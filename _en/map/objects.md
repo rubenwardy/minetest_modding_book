@@ -132,10 +132,11 @@ A complete list can be found in [lua_api.txt]({{ page.root }}/lua_api.html#regis
 
 ```lua
 function MyEntity:on_step(dtime)
-    local pos = self.object:get_pos()
+    local pos      = self.object:get_pos()
+    local pos_down = vector.subtract(pos, vector.new(0, 1, 0))
 
     local delta
-    if minetest.get_node(vector.subtract(pos, vector.new(0, 1, 0))).name == "air" then
+    if minetest.get_node(pos_down).name == "air" then
         delta = vector.new(0, -1, 0)
     elseif minetest.get_node(pos).name == "air" then
         delta = vector.new(0, 0, 1)
