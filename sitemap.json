@@ -2,9 +2,13 @@
 ---
 
 {% assign pages = site.en | sort: "idx" %}
+{% assign num = 0 %}
 
 [
 {% for link in pages %}
+	{% assign idsplit = link.id | split: '/' %}
+	{% assign section = idsplit[2] %}
+
 	{
 		"idx": {{ link.idx }},
 		"title": "{{ link.title }}",
@@ -13,8 +17,10 @@
 		"description": "{{ link.description }}",
 		{% endif %}
 		"priority": 1
-		{% if link.num %}, "chapter_number": {{ link.num }}{% endif %}
+		{% if section != "index" %}, "chapter_number": {{ num }}{% endif %}
 	},
+
+	{% assign num = num | plus:1 %}
 {% endfor %}
 
 	{
