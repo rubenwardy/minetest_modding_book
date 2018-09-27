@@ -15,32 +15,17 @@ an API that allows you to add and otherwise manage the pages shown.
 Whilst SFINV by default shows pages as tabs, pages are called "pages" as
 it's entirely possible that a mod or game decides to show them in
 some other format instead.
+For example, multiple pages could be shown on one view.
 
 * [Registering a Page](#registering-a-page)
-    * [A more complex example](#a-more-complex-example)
 * [Receiving events](#receiving-events)
 * [Conditionally showing to players](#conditionally-showing-to-players)
 * [on_enter and on_leave callbacks](#on_enter-and-on_leave-callbacks)
 
 ## Registering a Page
 
-So, to register a page you need to call the aptly named `sfinv.register_page`
-function with the page's name, and its definition. Here is a minimal example:
-
-```lua
-sfinv.register_page("mymod:hello", {
-    title = "Hello!",
-    get = function(self, player, context)
-        -- TODO: implement this
-    end
-})
-```
-
-You can also override an existing page using `sfinv.override_page`.
-
-If you ran the above code and clicked the page's tab, it would probably crash
-as sfinv is expecting a response from the `get` method. So let's add a response
-to fix that:
+SFINV provides the aptly named `sfinv.register_page` function to create pages.
+Simply call the function with the page's name, and its definition:
 
 ```lua
 sfinv.register_page("mymod:hello", {
@@ -52,18 +37,9 @@ sfinv.register_page("mymod:hello", {
 })
 ```
 
-The `make_formspec` function surrounds your formspec with sfinv's formspec code.
-The fourth parameter, currently set as `true`, determines whether or not the
+The `make_formspec` function surrounds your formspec with SFINV's formspec code.
+The fourth parameter, currently set as `true`, determines whether the
 player's inventory is shown.
-
-<figure>
-    <img src="{{ page.root }}//static/sfinv_hello_world.png" alt="Furnace Inventory">
-    <figcaption>
-        Your first sfinv page! Not exactly very exciting, though.
-    </figcaption>
-</figure>
-
-### A more complex example
 
 Let's make things more exciting. Here is the code for the formspec generation
 part of a player admin tab. This tab will allow admins to kick or ban players by
@@ -185,7 +161,7 @@ is_in_nav = function(self, player, context)
 end,
 ```
 
-If you only need to check one priv or want to perform an and, you should use
+If you only need to check one priv or want to perform an 'and', you should use
 `minetest.check_player_privs()` instead of `get_player_privs`.
 
 Note that the `is_in_nav` is only called when the player's inventory formspec is
@@ -198,33 +174,41 @@ we need to do that whenever kick or ban is granted or revoked to a player:
 
 ```lua
 local function on_grant_revoke(grantee, granter, priv)
-    if priv == "kick" or priv == "ban" then
-        local player = minetest.get_player_by_name(grantee)
-        if player then
-            sfinv.set_player_inventory_formspec(player)
-        end
+    if priv ~= "kick" and priv ~= "ban" then
+        return
     end
+
+    local player = minetest.get_player_by_name(grantee)
+    if not player then
+        return
+    end
+
+    local context = sfinv.get_or_create_context(player)
+    if context.page ~= "myadmin:myadmin" then
+        return
+    end
+
+    sfinv.set_player_inventory_formspec(player, context)
 end
 
--- Check that the function exists,
--- in order to support older Minetest versions
-if minetest.register_on_priv_grant then
-    minetest.register_on_priv_grant(on_grant_revoke)
-    minetest.register_on_priv_revoke(on_grant_revoke)
-end
+minetest.register_on_priv_grant(on_grant_revoke)
+minetest.register_on_priv_revoke(on_grant_revoke)
 ```
 
 ## on_enter and on_leave callbacks
 
-You can run code when a player enters (your tab becomes selected) or
-leaves (another tab is about to be selected) your tab.
+A player *enters* a tab when the tab is selected, and *leaves* a
+tab when another tab is about to be selected.
+It's possible for multiple pages to be selected if a custom theme is
+used.
 
-Please note that you can't cancel these, as it would be a bad user experience
-if you could.
+Note that these events may not be triggered by the player.
+The player may not even have the formspec open at that time.
+For example, on_enter is called for the home page when a player
+joins the game even before they open their inventory.
 
-Also, note that the inventory may not be visible at the time
-these callbacks are called. For example, on_enter is called for the home page
-when a player joins the game even before they open their inventory!
+It's not possible to cancel a page change, as that would potentially
+confuse the player.
 
 ```lua
 on_enter = function(self, player, context)
@@ -238,4 +222,23 @@ end,
 
 ## Adding to an existing page
 
-{% include notice.html level="warning" title="To Do" message="This section will be added soon&trade;. This placeholder is just to let you know that it is possible!" %}
+To add content to an existing page, you will need to override the page
+and modify the returned formspec.
+
+```lua
+local old_func = sfinv.registered_pages["sfinv:crafting"].get
+sfinv.override_page("sfinv:crafting", {
+    get = function(self, player, context, ...)
+        local ret = old_func(self, player, context, ...)
+
+        if type(ret) == "table" then
+            ret.formspec = ret.formspec .. "label[0,0;Hello]"
+        else
+            -- Backwards compatibility
+            ret = ret .. "label[0,0;Hello]"
+        end
+
+        return ret
+    end
+})
+```
