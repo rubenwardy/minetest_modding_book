@@ -113,14 +113,13 @@ A variable will be only one of the following types and can change type after an
 assignment.
 It's good practice to make sure a variable is only ever nil or a single non-nil type.
 
-| Type     | Description                                        | Example                                   |
-|----------|----------------------------------------------------|-------------------------------------------|
+| Type     | Description                     | Example        |
+|----------|---------------------------------|----------------|
 | Nil      | Not initialised. The variable is empty, it has no value | `local A`, `D = nil` |
-
-| Number   | A whole or decimal number.                         | `local A = 4` |
-| String   | A piece of text                                    | `local D = "one two three" |
-| Boolean  | True or False                                      | `local is_true = false`, `local E = (1 == 1)` |
-| Table    | Lists                                              | Explained below                           |
+| Number   | A whole or decimal number.  | `local A = 4` |
+| String   | A piece of text  | `local D = "one two three"` |
+| Boolean  | True or False    | `local is_true = false`, `local E = (1 == 1)` |
+| Table    | Lists | Explained below |
 | Function | Can run. May require inputs and may return a value | `local result = func(1, 2, 3)` |
 
 ### Arithmetic Operators
