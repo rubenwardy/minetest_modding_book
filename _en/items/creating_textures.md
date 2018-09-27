@@ -9,18 +9,21 @@ redirect_from: /en/chapters/creating_textures.html
 
 ## Introduction
 
-Being able to create and optimise textures for Minetest is a useful skill
-when developing mods. There are many techniques relevant to working on
-pixel art textures, and understanding these techniques will greatly improve
-the quality of the textures you create for Minetest.
+Being able to create and optimise textures is a very useful skill when
+developing for Minetest.
+There are many techniques relevant to working on pixel art textures,
+and understanding these techniques will greatly improve
+the quality of the textures you create.
 
-* [Resources](#resources)
+* [Learning to Draw](#learning-to-draw)
 * [Techniques](#techniques)
 * [Editors](#editors)
 
-## Resources
+## Learning to Draw
 
-* [16×16 Pixel Art Tutorial](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
+Teaching how to draw good pixel art is out of scope of this book.
+
+* [16×16 Pixel Art Tutorial on photonstorm.com](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
 
 ## Techniques
 
@@ -36,14 +39,14 @@ level of precision and control.
 
 Textures used for nodes should generally be designed to tile. This means
 when you place multiple nodes with the same texture together, the edges line
-up correctly:
+up correctly.
 
-[IMAGE NEEDED - cobblestone that tiles correctly]
+<!-- IMAGE NEEDED - cobblestone that tiles correctly -->
 
 If you fail to match the edges correctly, the result is far less pleasing
-to look at:
+to look at.
 
-[IMAGE NEEDED - node that doesn't tile correctly]
+<!-- IMAGE NEEDED - node that doesn't tile correctly -->
 
 ### Transparency
 
@@ -76,8 +79,4 @@ When using GIMP, the pencil tool can be selected from the Toolbox:
     <img src="{{ page.root }}//static/pixel_art_gimp_pencil.png" alt="Pencil in GIMP">
 </figure>
 
-It's also advisable to select the Hard edge checkbox for the eraser tool:
-
-<figure>
-    <img src="{{ page.root }}//static/pixel_art_gimp_rubber.png" alt="Eraser in GIMP">
-</figure>
+It's also advisable to select the Hard edge checkbox for the eraser tool.
