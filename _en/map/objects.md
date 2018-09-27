@@ -189,9 +189,27 @@ This means that staticdata could be empty.
 Finally, you need to register the type table using the aptly named `register_entity`.
 
 ```lua
-minetest.register_entity("9_entities:myentity", MyEntity)
+minetest.register_entity("mymod:entity", MyEntity)
 ```
 
+The entity can be spawned by a mod like so:
+
+```lua
+local pos = { x = 1, y = 2, z = 3 }
+local obj = minetest.add_entity(pos, "mymod:entity", nil)
+```
+
+The third parameter is the initial staticdata.
+To set the message, you can use the entity table method:
+
+```lua
+obj:get_luaentity():set_message("hello!")
+```
+
+Players with the *give* [privilege](../players/privileges.html) can
+use a [chat command](../players/chat.html) to spawn entities:
+
+    /spawnentity mymod:entity
 
 ## Attachments
 
