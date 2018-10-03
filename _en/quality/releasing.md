@@ -11,28 +11,28 @@ redirect_from: /en/chapters/releasing.html
 Releasing, or publishing, a mod allows other people to make use of it. Once a mod has been
 released it might be used in singleplayer games or on servers, including public servers.
 
-* License Choices
-* Packaging
-* Uploading
-* Forum Topic
-
-### Before you release your mod, there are some things to think about:
-
-* Is there another mod that does the same thing? If so, how does yours differ or improve on it?
-* Is your mod useful?
+* [License Choices](#license-choices)
+* [Packaging](#packaging)
+* [Uploading](#uploading)
+* [Forum Topic](#forum-topic)
 
 ## License Choices
 
-You need to specify a license for your mod.
-**Public domain is not a valid licence**, as the definition varies in different countries.
+You need to specify a license for your mod. This is important because it tells other
+people the ways in which they are allowed to use your work. If your mod doesn't have
+a license, people won't know whether they are allowed to modify, distribute or use your 
+mod on a public server.
 
 Your code and your art need different things from the licenses they use. For example,
 Creative Commons licenses shouldn't be used with source code,
 but can be suitable choices for artistic works such as images, text and meshes.
 
 You are allowed any license; however, mods which disallow derivatives are banned from the
-official Minetest forum. (Other developers must be able to take your mod, modify it,
-and release it again.)
+official Minetest forum. (For a mod to be allowed on the forum, other developers must be
+able modify it and release the modified version.)
+
+Please note that **public domain is not a valid licence**, because the definition varies
+in different countries.
 
 ### LGPL and CC-BY-SA
 
@@ -44,7 +44,7 @@ You license your code under LGPL 2.1 and your art under CC-BY-SA. This means:
 * If someone modifies your mod, they must give their version the same license.
 * Your copyright notice must be kept.
 
-### WTFPL or CC0
+### WTFPL and CC0
 
 These licenses allows anyone to do what they want with your mod.
 This means they can modify, redistribute, sell, or leave out attribution.
@@ -61,12 +61,12 @@ in any copies of the mod or of substantial parts of the mod.
 
 ## Packaging
 
-There are some files that we recommend you include in your mod
+There are some files it is recommended to include in your mod
 when you release it.
 
 ### README.txt
 
-You should provide a readme file. This should state:
+The readme file should state:
 
 * What the mod does.
 * What the license is.
@@ -75,16 +75,18 @@ You should provide a readme file. This should state:
 * What dependencies there are / what the user needs to install.
 * Where to report problems/bugs or get help.
 
-See appendix for an example and a generator.
+See the [appendix](#appendix-readme-and-forum-generator) for an example readme and
+readme generator.
 
 ### description.txt
 
 This should explain what your mod does. Be concise without being vague.
-It should be short because it will be displayed in the content installer.
+It should be short because it will be displayed in the content installer which has
+limited space.
 
 Good example:
 
-    Adds soup, cakes, bakes and juices
+    Adds soup, cakes, bakes and juices.
 
 Don't do this:
 
@@ -93,38 +95,36 @@ Don't do this:
 ### screenshot.png
 
 Screenshots should be 3:2 (3 pixels of width for every 2 pixels of height)
-and a [minimum size of 300 x 200px](https://github.com/minetest/minetest/issues/2874).
-This is displayed in the mod store.
+and have a minimum size of 300 x 200px.
 
-
+The screenshot is displayed in the mod store.
 
 Uploading
 ---------
 
-So that a potential user can download your mod, you need to upload it to somewhere
-publicly accessible.\\
-There are several methods you can use, but you should use the one that works
-best for you, as long as it meets these requirements:\\
-(and any other requirements which may be added by forum moderators)
+So that a potential user can download your mod, you need to upload it somewhere
+publicly accessible. There are several ways to do this, but you should use the
+approach that works best for you, as long as it meets these requirements, and any
+others which may be added by forum moderators:
 
 * **Stable**      - The hosting website should be unlikely to shut down without warning.
 * **Direct link** - You should be able to click a link on the forum and download the file
                    without having to view another page.
-* **Virus Free**  - Mods with malicious content are not wanted.
+* **Virus Free**  - Mods with malicious content will be removed from the forum.
 
-### Github, or another VCS
+### Version Control Systems
 
-It is recommended that you use a Version Control System because this:
+It is recommended that you use a version control system which:
 
 * Allows other developers to easily submit changes.
 * Allows the code to be previewed before downloading.
 * Allows users to submit bug reports.
 
-However, such systems may be hard to understand when you first use them.
-
 The majority of Minetest developers use GitHub as a website to host their code,
-but other alternatives are possible. For information on how to use GitHub,
-please see:
+but alternatives are possible. 
+
+Using a GitHub can be difficult at first. If you need help with this, for
+information on using GitHub, please see:
 
 * [Using Git](http://git-scm.com/book/en/v1/Getting-Started) - Basic concepts. Using the command line.
 * [GitHub for Windows](https://help.github.com/articles/getting-started-with-github-for-windows/) -
@@ -132,18 +132,19 @@ Using a graphical interface on Windows to upload your code.
 
 ### Forum Attachments
 
-You can use forum attachments instead.
-This is done when creating a mod's forum topic (covered below).
+As an alternative to using a version management system, you can use forum attachments to share
+your mods. This can be done when creating a mod's forum topic (covered below).
 
-First, you need to zip the files into a single file. How to do this varies from
+You need to zip the files for the mod into a single file. How to do this varies from
 operating system to operating system.
 
-On Windows, go to the mod's folder. Select all the files.
+If you use Windows, go to the mod's folder and select all the files.
 Right click, Send To > Compressed (zipped) folder.
-Rename the resulting zip file to the name of your mod's folder.
+Rename the resulting zip file to the name of your mod.
 
-On the "Create a Topic" page (see below), go to the "Upload Attachment" tab at the bottom.
-Click browse and select the zipped file. It is recommended that you
+When making a forum topic, on the "Create a Topic" page (see below), go to the
+"Upload Attachment" tab at the bottom.
+Click "Browse" and select the zipped file. It is recommended that you
 enter the version of your mod in the comment field.
 
 <figure>
@@ -165,7 +166,7 @@ to "Mod Releases."
 ### Content
 
 The requirements of a forum topic are mostly the same as the recommendations for
-a README.txt file:
+a readme file. The topic should include:
 
 * What the mod does.
 * What the license is.
@@ -177,7 +178,8 @@ a README.txt file:
 
 You should also include screenshots of your mod in action, if relevant.
 
-Here is an example. The Minetest forum uses bbcode for formating.
+The Minetest forum uses bbcode for formatting. Here is an example for a
+mod named superspecial:
 
 
     Adds magic, rainbows and other special things.
@@ -193,31 +195,33 @@ Here is an example. The Minetest forum uses bbcode for formating.
 
     [h]Installation[/h]
 
-    Unzip the archive, rename the folder to to modfoldername and
-    place it in minetest/mods/minetest/
+    Unzip the archive, rename the folder to superspecial and
+    place it in minetest/mods/
 
     (  GNU/Linux: If you use a system-wide installation place
-        it in ~/.minetest/mods/minetest/.  )
+        it in ~/.minetest/mods/.  )
 
     (  If you only want this to be used in a single world, place
-        the folder in worldmods/ in your worlddirectory.  )
+        the folder in worldmods/ in your world directory.  )
 
     For further information or help see:
     [url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
 
 If you modify the above example for your mod topic, remember to
-change "modfoldername" to the name of the folder your mod should be
-in.
+change "superspecial" to the name of your mod.
 
-### Title
+### Subject
 
 The subject of topic must be in one of these formats:
 
 * [Mod] Mod Title [modname]
 * [Mod] Mod Title [version number] [modname]
-* eg: [Mod] More Blox [0.1] [moreblox]
 
-### Profit
+For example:
+* [Mod] More Blox [0.1] [moreblox]
+
+This is what the forum topic for the example mod, superspecial, might
+appear once complete:
 
 <figure>
     <img src="{{ page.root }}//static/releasing_profit.png" alt="Profit">
@@ -233,7 +237,7 @@ The subject of topic must be in one of these formats:
 </noscript>
 
 Title: <input id="t_title" value="My Super Special Mod"><br />
-Modname: <input id="t_name" value="mysuperspecial"><br />
+Modname: <input id="t_name" value="superspecial"><br />
 Description: <input id="t_desc" value="Adds magic, rainbows and other special things."><br />
 Version: <input id="t_version" value="1.1"><br />
 License: <input id="t_license" value="LGPL 2.1 or later"><br />
@@ -256,14 +260,14 @@ Report bugs or request help on the forum topic.
 Installation
 ------------
 
-Unzip the archive, rename the folder to mysuperspecial and
+Unzip the archive, rename the folder to superspecial and
 place it in minetest/mods/
 
 (  GNU/Linux: If you use a system-wide installation place
     it in ~/.minetest/mods/.  )
 
 (  If you only want this to be used in a single world, place
-    the folder in worldmods/ in your worlddirectory.  )
+    the folder in worldmods/ in your world directory.  )
 
 For further information or help see:
 http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
@@ -279,14 +283,14 @@ Report bugs or request help on the forum topic.
 
 [h]Installation[/h]
 
-Unzip the archive, rename the folder to mysuperspecial and
+Unzip the archive, rename the folder to superspecial and
 place it in minetest/mods/
 
 (  GNU/Linux: If you use a system-wide installation place
     it in ~/.minetest/mods/.  )
 
 (  If you only want this to be used in a single world, place
-    the folder in worldmods/ in your worlddirectory.  )
+    the folder in worldmods/ in your world directory.  )
 
 For further information or help see:
 http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
@@ -330,7 +334,7 @@ http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
         res += "(  GNU/Linux: If you use a system-wide installation place\n" +
             "\tit in ~/.minetest/mods/.  )\n\n" +
             "(  If you only want this to be used in a single world, place\n" +
-            "\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
+            "\tthe folder in worldmods/ in your world directory.  )\n\n" +
             "For further information or help see:\n" +
             "http://wiki.minetest.com/wiki/Installing_Mods\n";
 
@@ -359,7 +363,7 @@ http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
         res += "(  GNU/Linux: If you use a system-wide installation place\n" +
             "\tit in ~/.minetest/mods/.  )\n\n" +
             "(  If you only want this to be used in a single world, place\n" +
-            "\tthe folder in worldmods/ in your worlddirectory.  )\n\n" +
+            "\tthe folder in worldmods/ in your world directory.  )\n\n" +
             "For further information or help see:\n" +
             "http://wiki.minetest.com/wiki/Installing_Mods\n";
 
