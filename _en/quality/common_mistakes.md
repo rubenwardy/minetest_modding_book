@@ -8,7 +8,7 @@ redirect_from: /en/chapters/common_mistakes.html
 
 ## Introduction
 
-This chapter will detail common mistakes that are made, and how to avoid them.
+This chapter details common mistakes, and how to avoid them.
 
 * [Never Store ObjectRefs (ie: players or entities)](#never-store-objectrefs-ie-players-or-entities)
 * [Don't Trust Formspec Submissions](#dont-trust-formspec-submissions)
@@ -16,16 +16,17 @@ This chapter will detail common mistakes that are made, and how to avoid them.
 
 ## Never Store ObjectRefs (ie: players or entities)
 
-If the Object a ObjectRef represents is deleted - for example, the player goes
-offline or the entity is unloaded - then calling any methods will result in a crash.
+If the object an ObjectRef represents is deleted - for example, if the player goes
+offline or the entity is unloaded - then calling methods on that object
+will result in a crash.
 
-Don't do this:
+For example, don't do this:
 
 ```lua
 minetest.register_on_joinplayer(function(player)
     local function func()
         local pos = player:get_pos() -- BAD!
-        -- `player` is stored in the scope then accessed later.
+        -- `player` is stored then accessed later.
         -- If the player leaves in that second, the server *will* crash.
     end
 
@@ -33,13 +34,13 @@ minetest.register_on_joinplayer(function(player)
 
     foobar[player:get_player_name()] = player
     -- RISKY
-    -- It's recommended to just not do this
-    -- use minetest.get_connected_players() and
-    --   minetest.get_player_by_name() instead.
+    -- It's not recommended to do this.
+    -- Use minetest.get_connected_players() and
+    -- minetest.get_player_by_name() instead.
 end)
 ```
 
-instead, do this:
+Do this:
 
 ```lua
 minetest.register_on_joinplayer(function(player)
@@ -64,8 +65,8 @@ end)
 Malicious clients can submit formspecs whenever they like with whatever content
 they like.
 
-The following code has a vulnerability where any player can give
-themselves moderator privileges:
+For example, the following code has a vulnerability which will allow players to
+give themselves moderator privileges:
 
 ```lua
 local function show_formspec(name)
@@ -93,7 +94,7 @@ minetest.register_on_player_receive_fields(function(player,
 end)
 ```
 
-Instead, do this:
+Add a privilege check to solve this:
 
 ```lua
 minetest.register_on_player_receive_fields(function(player,
@@ -108,12 +109,12 @@ end)
 
 ## Set ItemStacks After Changing Them
 
-Notice how it's simply called an `ItemStack` in the API, not an `ItemStackRef`,
-similar to `InvRef`. This is because an `ItemStack` isn't a reference - it's a
+Have you noticed that it's simply called an `ItemStack` in the API, not an `ItemStackRef`,
+similar to `InvRef`? This is because an `ItemStack` isn't a reference - it's a
 copy. Stacks work on a copy of the data rather than the stack in the inventory.
 This means that modifying a stack won't actually modify that stack in the inventory.
 
-Don't do this:
+For example, don't do this:
 
 ```lua
 local inv = player:get_inventory()
@@ -132,7 +133,7 @@ inv:set_stack("main", 1, stack)
 -- Correct! Item stack is set
 ```
 
-The behaviour of callbacks is slightly more complicated. Modifying an itemstack you
+The behaviour of callbacks is slightly more complicated. Modifying an `ItemStack` you
 are given will change it for the caller too, and any subsequent callbacks. However,
 it will only be saved in the engine if the callback caller sets it.
 
@@ -147,8 +148,10 @@ minetest.register_on_item_eat(function(hp_change, replace_with_item,
 end)
 ```
 
-If no callbacks cancel, then the stack will be set and the description will be updated.
-If a callback cancels, then the update may be lost. It's better to do this instead:
+If no callbacks cancel this, the stack will be set and the description will be updated,
+but if a callback cancels this, then the update may be lost. 
+
+It's better to do this instead:
 
 ```lua
 minetest.register_on_item_eat(function(hp_change, replace_with_item,
@@ -161,6 +164,6 @@ end)
 ```
 
 If the callbacks cancel or the callback runner doesn't set the stack,
-then our update will still be set.
-If the callbacks or the callback runner does set the stack, then our
+then the update will still be set.
+If the callbacks or the callback runner set the stack, then the use of
 set_stack doesn't matter.
