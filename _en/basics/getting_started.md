@@ -11,8 +11,8 @@ redirect_from:
 
 ## Introduction
 
-Understanding the basic structure of a mod's folder
-is an essential skill when creating mods.
+Understanding the basic structure of a mod's folder is an essential skill when
+creating mods.
 
 * [What are Games and Mods?](#what-are-games-and-mods)
 * [Mod Directory](#mod-directory)
@@ -23,25 +23,28 @@ is an essential skill when creating mods.
 
 ## What are Games and Mods?
 
-The power of Minetest is the ability to easily create games without the need
-to write your own voxel graphics and algorithms or fancy networking.
+The power of Minetest is the ability to easily develop games without the need
+to create your own voxel graphics, voxel algorithms or fancy networking code.
 
-In Minetest, a Game is a collection of modules which work together to provide the
-content and behaviour of your game.
+In Minetest, a game is a collection of modules which work together to provide the
+content and behaviour of a game.
 A module, commonly known as a mod, is a collection of scripts and resources.
-It's possible to make a Game using only one mod, but this is rarely done and makes things
-infeasible.
+It's possible to make a game using only one mod, but this is rarely done because it
+reduces the ease by which parts of the game can be adjusted and replaced
+independently of others.
 
 It's also possible to distribute mods outside of a game, in which case they
-are also *mods* in the more traditional sense - modifications.
-Both the mods contained in a Game and third-party mods use the exact same API,
-which makes things easier.
-This book will go over the main parts of the Minetest API,
+are also *mods* in the more traditional sense - modifications. These mods adjust
+or extend the features of a game.
+
+Both the mods contained in a game and third-party mods use the same API.
+
+This book will cover the main parts of the Minetest API,
 and is applicable for both game developers and modders.
 
 ## Mod Directory
 
-Each mod has its own directory where all its Lua code, textures, models, and
+Each mod has its own directory where its Lua code, textures, models, and
 sounds are placed. These directories need to be placed in a mod location such as
 minetest/mods.
 
@@ -50,7 +53,7 @@ minetest/mods.
 A "mod name" is used to refer to a mod. Each mod should have a unique name.
 Mod names can include letters, numbers, and underscores. A good name should
 describe what the mod does, and the directory which contains the components of a mod
-needs to be given the same name as the mod name.
+must have the same name as the mod name.
 To find out if a mod name is available, try searching for it on
 [content.minetest.net](https://content.minetest.net).
 
@@ -63,41 +66,48 @@ To find out if a mod name is available, try searching for it on
     │   └── ... any sounds
     └── ... any other files or directories
 
-Only the init.lua file is actually required in a mod for it to run on game load;
+Only the init.lua file is required in a mod for it to run on game load;
 however, mod.conf is recommended and other components may be needed
-to perform a mod's functionality.
+depending on the mod's functionality.
 
 ## Dependencies
 
-A dependency is another mod which the mod requires to be loaded before itself.
-The mod may require the other's mods code, items, or other resources to be available.
+A dependency occurs when a mod requires another mod to be loaded before itself.
+One mod may require another mod's code, items, or other resources to be available
+for it to use.
+
 There are two types of dependencies: hard and optional dependencies.
-Both require the mod to be loaded first, but a hard dependency will cause the mod to
-fail to load if the required mod isn't available.
-An optional dependency is useful if you want to optionally support another mod if the
-user wishes to use it.
+Both require the mod to be loaded first. If the mod being depended on isn't
+available, a hard dependency will cause the mod to fail to load, while an optional
+dependency might lead to fewer features being enabled.
+
+An optional dependency is useful if you want to optionally support another mod; it can
+enable extra content if the user wishes to use both the mods at the same time.
+
+Dependencies should be listed in mod.conf.
 
 ### mod.conf
 
-Dependencies should be listed in mod.conf.
-The file is used for mod metadata such as the mod's name, description, and other information.
+This file is used for mod metadata including the mod's name, description, and other
+information. For example:
 
     name = mymod
-    description = Adds foo, bar, and bo
+    description = Adds foo, bar, and bo.
     depends = modone, modtwo
     optional_depends = modthree
 
 ### depends.txt
 
-For compatibility with 0.4.x versions of Minetest, you'll need to also provide
-a depends.txt file:
+For compatibility with 0.4.x versions of Minetest, instead of only specifying
+dependencies in mod.conf, you need to provide a depends.txt file in which
+you list all dependencies:
 
     modone
     modtwo
     modthree?
 
-Each modname is on its own line.
-Mod names with a question mark following them are optional dependencies.
+Each mod name is on its own line, and mod names with a question mark
+following them are optional dependencies.
 If an optional dependency is installed, it is loaded before the mod;
 however, if the dependency is not installed, the mod still loads.
 This is in contrast to normal dependencies which will cause the current
@@ -107,7 +117,7 @@ mod not to work if the dependency is not installed.
 
 Mods can be grouped into mod packs which allow multiple mods to be packaged
 and moved together. They are useful if you want to supply multiple mods to
-a player but don't want to make them download each one individually.
+a player, but don't want to make them download each one individually.
 
     modpack1
     ├── modpack.lua (required) - signals that this is a mod pack
@@ -116,10 +126,13 @@ a player but don't want to make them download each one individually.
     └── mymod (optional)
         └── ... mod files
 
+Please note that a modpack is not a *game*.
+Games have their own organisational structure which will be explained in the
+Games chapter.
 
 ## Example
 
-Are you confused? Don't worry, here is an example which puts all of this together:
+Here is an example which puts all of this together:
 
 ### Mod Folder
     mymod
@@ -138,14 +151,7 @@ print("This file will be run at load time!")
 
 minetest.register_node("mymod:node", {
     description = "This is a node",
-    tiles = {
-        "mymod_node.png",
-        "mymod_node.png",
-        "mymod_node.png",
-        "mymod_node.png",
-        "mymod_node.png",
-        "mymod_node.png"
-    },
+    tiles = {"mymod_node.png"},
     groups = {cracky = 1}
 })
 ```
@@ -160,10 +166,6 @@ and depends.txt.\\
 The script prints a message and then registers a node –
 which will be explained in the next chapter.\\
 There's a single dependency, the
-[default mod](https://content.minetest.net/metapackages/default/) which is
+[default mod](https://content.minetest.net/metapackages/default/), which is
 usually found in Minetest Game.\\
 There is also a texture in textures/ for the node.
-
-Please note that a *game* is not a modpack.
-Games have their own organisational structure which will be explained in the
-Games chapter.
