@@ -20,7 +20,7 @@ released it might be used in singleplayer games or on servers, including public 
 
 You need to specify a license for your mod. This is important because it tells other
 people the ways in which they are allowed to use your work. If your mod doesn't have
-a license, people won't know whether they are allowed to modify, distribute or use your 
+a license, people won't know whether they are allowed to modify, distribute or use your
 mod on a public server.
 
 Your code and your art need different things from the licenses they use. For example,
@@ -75,9 +75,6 @@ The readme file should state:
 * What dependencies there are / what the user needs to install.
 * Where to report problems/bugs or get help.
 
-See the [appendix](#appendix-readme-and-forum-generator) for an example readme and
-readme generator.
-
 ### description.txt
 
 This should explain what your mod does. Be concise without being vague.
@@ -99,8 +96,7 @@ and have a minimum size of 300 x 200px.
 
 The screenshot is displayed in the mod store.
 
-Uploading
----------
+## Uploading
 
 So that a potential user can download your mod, you need to upload it somewhere
 publicly accessible. There are several ways to do this, but you should use the
@@ -120,14 +116,14 @@ It is recommended that you use a version control system which:
 * Allows the code to be previewed before downloading.
 * Allows users to submit bug reports.
 
-The majority of Minetest developers use GitHub as a website to host their code,
-but alternatives are possible. 
+The majority of Minetest modders use GitHub as a website to host their code,
+but alternatives are possible.
 
 Using a GitHub can be difficult at first. If you need help with this, for
 information on using GitHub, please see:
 
-* [Using Git](http://git-scm.com/book/en/v1/Getting-Started) - Basic concepts. Using the command line.
-* [GitHub for Windows](https://help.github.com/articles/getting-started-with-github-for-windows/) -
+* [Pro Git book](http://git-scm.com/book/en/v1/Getting-Started) - Free to read online.
+* [GitHub for Windows app](https://help.github.com/articles/getting-started-with-github-for-windows/) -
 Using a graphical interface on Windows to upload your code.
 
 ### Forum Attachments
@@ -148,7 +144,7 @@ Click "Browse" and select the zipped file. It is recommended that you
 enter the version of your mod in the comment field.
 
 <figure>
-    <img src="{{ page.root }}//static/releasing_attachments.png" alt="Upload Attachment">
+    <img src="{{ page.root }}/static/releasing_attachments.png" alt="Upload Attachment">
     <figcaption>
         Upload Attachment tab.
     </figcaption>
@@ -218,161 +214,5 @@ The subject of topic must be in one of these formats:
 * [Mod] Mod Title [version number] [modname]
 
 For example:
+
 * [Mod] More Blox [0.1] [moreblox]
-
-This is what the forum topic for the example mod, superspecial, might
-appear once complete:
-
-<figure>
-    <img src="{{ page.root }}//static/releasing_profit.png" alt="Profit">
-    <figcaption style="display:none;">
-        Profit
-    </figcaption>
-</figure>
-
-## Appendix: Readme and Forum Generator
-
-<noscript>
-    <p>Javascript is required for this section!</p>
-</noscript>
-
-Title: <input id="t_title" value="My Super Special Mod"><br />
-Modname: <input id="t_name" value="superspecial"><br />
-Description: <input id="t_desc" value="Adds magic, rainbows and other special things."><br />
-Version: <input id="t_version" value="1.1"><br />
-License: <input id="t_license" value="LGPL 2.1 or later"><br />
-Dependencies: <input id="t_dep" value="default mod (found in minetest_game)"><br />
-Download: <input id="t_download" value="http://example.com/download.zip"><br />
-Additional:<br />
-<textarea id="t_add">Report bugs or request help on the forum topic.</textarea><br />
-
-<pre><code id="readme">My Super Special Mod
-====================
-
-Adds magic, rainbows and other special things.
-
-Version: 1.1
-License: LGPL 2.1 or later
-Dependencies: default mod (found in minetest_game)
-
-Report bugs or request help on the forum topic.
-
-Installation
-------------
-
-Unzip the archive, rename the folder to superspecial and
-place it in minetest/mods/
-
-(  GNU/Linux: If you use a system-wide installation place
-    it in ~/.minetest/mods/.  )
-
-(  If you only want this to be used in a single world, place
-    the folder in worldmods/ in your world directory.  )
-
-For further information or help see:
-http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
-
-<pre><code id="forum">Adds magic, rainbows and other special things.
-
-[b]Version:[/b] 1.1
-[b]License:[/b] LGPL 2.1 or later
-[b]Dependencies:[/b] default mod (found in minetest_game)
-[b]Download:[/b] http://example.com/download.zip
-
-Report bugs or request help on the forum topic.
-
-[h]Installation[/h]
-
-Unzip the archive, rename the folder to superspecial and
-place it in minetest/mods/
-
-(  GNU/Linux: If you use a system-wide installation place
-    it in ~/.minetest/mods/.  )
-
-(  If you only want this to be used in a single world, place
-    the folder in worldmods/ in your world directory.  )
-
-For further information or help see:
-http://wiki.minetest.com/wiki/Installing_Mods</code></pre>
-
-<script src="http://blog.rubenwardy.com/static/jquery.min.js"></script>
-<script>function regen() {
-    var title = $("#t_title").val();
-    var name = $("#t_name").val();
-    var desc = $("#t_desc").val();
-    var version = $("#t_version").val();
-    var license = $("#t_license").val();
-    var dep = $("#t_dep").val();
-    var add = $("#t_add").val();
-
-    var download = $("#t_download").val();
-
-    {
-        var res = ((title.length > 0) ? title : name) + "\n";
-        var header_count = res.length - 1;
-        for (var i = 0; i < header_count; i++) {
-            res += "=";
-        }
-        res += "\n\n";
-
-        res += desc + "\n\n";
-
-        if (version != "") {
-            res += "Version: " + version + "\n";
-        }
-
-        res += "License: " + license + "\n";
-        res += "Dependencies: " + dep + "\n\n";
-
-        if (add != "") {
-            res += add + "\n\n";
-        }
-
-        res += "Installation\n------------\n\nUnzip the archive, rename the folder to ";
-        res += name + " and\nplace it in minetest/mods/\n\n";
-
-        res += "(  GNU/Linux: If you use a system-wide installation place\n" +
-            "\tit in ~/.minetest/mods/.  )\n\n" +
-            "(  If you only want this to be used in a single world, place\n" +
-            "\tthe folder in worldmods/ in your world directory.  )\n\n" +
-            "For further information or help see:\n" +
-            "http://wiki.minetest.com/wiki/Installing_Mods\n";
-
-        $("#readme").text(res);
-    }
-
-    {
-        var res = desc + "\n\n";
-
-        if (version != "") {
-            res += "[b]Version:[/b] " + version + "\n";
-        }
-
-        res += "[b]License:[/b] " + license + "\n";
-        res += "[b]Dependencies:[/b] " + dep + "\n";
-
-        res += "[b]Download:[/b] " + download + "\n\n";
-
-        if (add != "") {
-            res += add + "\n\n";
-        }
-
-        res += "[h]Installation[/h]\n\nUnzip the archive, rename the folder to ";
-        res += name + " and\nplace it in minetest/mods/\n\n";
-
-        res += "(  GNU/Linux: If you use a system-wide installation place\n" +
-            "\tit in ~/.minetest/mods/.  )\n\n" +
-            "(  If you only want this to be used in a single world, place\n" +
-            "\tthe folder in worldmods/ in your world directory.  )\n\n" +
-            "For further information or help see:\n" +
-            "http://wiki.minetest.com/wiki/Installing_Mods\n";
-
-        $("#forum").text(res);
-    }
-}
-
-$(function() {
-    jQuery('input').on('input propertychange paste', regen);
-    jQuery('textarea').on('input propertychange paste', regen);
-});
-</script>
