@@ -21,11 +21,8 @@ which abilities each player has.
 
 ## When to use Privileges
 
-A privilege should give a player **the ability to do something**.
-Privileges are **not for indicating class or status**.
-
-The main admin of a server (the name set by the `name` setting in the
-minetest.conf file) is automatically given all available privileges.
+A privilege should give a player the ability to do something.
+Privileges are **not** for indicating class or status.
 
 **Good Privileges:**
 
@@ -57,14 +54,8 @@ minetest.register_privilege("vote", {
 })
 ```
 
-If `give_to_singleplayer` is true, you can remove it, because true is the default
-when it is not specified. This simplifies the privilege registration to:
-
-```lua
-minetest.register_privilege("vote", {
-    description = "Can vote on issues"
-})
-```
+`give_to_singleplayer` defaults to true when not specified, so it isn't
+actually needed in the above definition.
 
 ## Checking for Privileges
 
@@ -76,20 +67,15 @@ local has, missing = minetest.check_player_privs(player_or_name,  {
     vote = true })
 ```
 
-In this example, `has` is true if the player has all the privileges needed.\\
-If `has` is false, then `missing` will contain a dictionary
-of missing privileges.
+In this example, `has` is true if the player has all the privileges needed.
+If `has` is false, then `missing` will contain a key-value table
+of the missing privileges.
 
 ```lua
-if minetest.check_player_privs(name, {interact=true, vote=true}) then
-    print("Player has all privs!")
-else
-    print("Player is missing some privs!")
-end
-
 local has, missing = minetest.check_player_privs(name, {
-    interact = true,
-    vote = true })
+        interact = true,
+        vote = true })
+
 if has then
     print("Player has all privs!")
 else
@@ -97,17 +83,31 @@ else
 end
 ```
 
+If you don't need to check the missing privileges, you can put
+`check_player_privs` directly into the if statement.
+
+```lua
+if not minetest.check_player_privs(name, { interact=true }) then
+    return false, "You need interact for this!"
+end
+```
+
 ## Getting and Setting Privileges
 
-To get a table containing a player's privileges, regardless of whether
-the player is logged in, use `minetest.get_player_privs`:
+Player privileges can be accessed or modified regardless of the player
+being online.
+
 
 ```lua
 local privs = minetest.get_player_privs(name)
 print(dump(privs))
+
+privs.vote = true
+minetest.set_player_privs(name, privs)
 ```
 
-This example may give:
+Privileges are always specified as a key-value table with the key being
+the privilege name and the value being a boolean.
 
 ```lua
 {
@@ -115,22 +115,6 @@ This example may give:
     interact = true,
     shout = true
 }
-```
-
-To set a player's privileges, use `minetest.set_player_privs`:
-
-```lua
-minetest.set_player_privs(name, {
-    interact = true,
-    shout = true })
-```
-
-To grant a player privileges, use a combination of the above two functions:
-
-```lua
-local privs = minetest.get_player_privs(name)
-privs.vote = true
-minetest.set_player_privs(name, privs)
 ```
 
 ## Adding Privileges to basic_privs
