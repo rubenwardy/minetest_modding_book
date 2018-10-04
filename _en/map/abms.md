@@ -9,22 +9,29 @@ redirect_from: /en/chapters/abms.html
 
 ## Introduction
 
-An **A**ctive **B**lock **M**odifier (**ABM**) allows you to run code on
-certain nodes at specific intervals.
+An Active Block Modifier (ABM) is a method of periodically running a
+function on nodes matching a criteria.
+As the name implies, this only works on loaded MapBlocks.
 
-Please be warned, ABMs which are too frequent or act on many nodes
-cause massive amounts of lag. Use them sparingly.
+ABMs are best suited for nodes which are frequently found in the world,
+such as grass.
+ABMs have a high CPU overhead, as Minetest needs to scan all Active Blocks
+to find matching nodes, but they have a low memory and storage overhead.
 
-* [Example: Growing Alien Grass](#example-growing-alien-grass)
+For nodes which are uncommon or already use metadata, such as furnaces
+and machines, node timers should be used instead.
+Node timers do not require scanning a MapBlock, but they do require slightly
+more memory and storage to keep track of running timers.
+
+
+* [Registering an ABM](#registering-an-abm)
 * [Your Turn](#your-turn)
 
-## Example: Growing Alien Grass
+## Registering an ABM
 
 Alien grass, for the purposes of this chapter, is a type of grass which
 has a chance to appear near water.
 
-To create it, you first need to register the grass, then
-write an ABM.
 
 ```lua
 minetest.register_node("aliens:grass", {
@@ -48,21 +55,23 @@ minetest.register_abm({
 })
 ```
 
-This ABM runs every ten seconds. There is a 1 in 5 chance of the ABM running on each
-node that has the correct name and the correct neighbours. If the ABM runs on a
-node, an alien grass node is placed above it. Please be warned, this will delete any
-node previously located in that position. To prevent this you should include a check
-using minetest.get_node to make sure there is space for the grass.
+This ABM runs every ten seconds.
+There is a 1 in 50 chance of the ABM running on each node that has the
+correct name and the correct neighbours.
+If the ABM runs on a node, an alien grass node is placed above it.
+Please be warned, this will delete any node previously located in that position.
+To prevent this you should include a check using minetest.get_node to make sure there is space for the grass.
 
-Specifying a neighbour is optional. If you specify multiple neighbours, only one of them
-needs to be present to meet the requirements.
+Specifying a neighbour is optional.
+If you specify multiple neighbours, only one of them needs to be
+present to meet the requirements.
 
-Specifying chance is also optional. If you don't specify the chance, the ABM will
-always run when the other conditions are met.
+Specifying chance is also optional.
+If you don't specify the chance, the ABM will always run when the other conditions are met.
 
 ## Your Turn
 
-* **Midas touch**: Make water turn to gold blocks with a 1 in 100 chance, every 5 seconds.
-* **Decay**: Make wood turn into dirt when water is a neighbour.
-* **Burnin'**: Make every air node catch on fire. (Tip: "air" and "fire:basic_flame").
+* Midas touch: Make water turn to gold blocks with a 1 in 100 chance, every 5 seconds.
+* Decay: Make wood turn into dirt when water is a neighbour.
+* Burnin': Make every air node catch on fire. (Tip: "air" and "fire:basic_flame").
   Warning: expect the game to crash.
