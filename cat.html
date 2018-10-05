@@ -1,0 +1,14 @@
+---
+layout: none
+---
+
+{% if site.calc_word_count %}
+	{% assign chapters = site.en | sort: "idx" %}
+	{% for chapter in chapters %}
+		{% unless chapter.homepage %}
+			{{ chapter.content }}
+		{% endunless %}
+	{% endfor %}
+{% else %}
+	Cat disabled.
+{% endif %}
