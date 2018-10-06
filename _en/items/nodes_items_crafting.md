@@ -26,15 +26,15 @@ basic requirements for many mods.
 
 ## What are Nodes and Items?
 
-Nodes, Craftitems, and Tools are all Items.
+Nodes, craftitems, and tools are all Items.
 An item is something that could be found in an inventory -
 even though it may not be possible through normal game play.
 
-A node is an item which is placable or can be found in the world.
+A node is an item which can be placed or be found in the world.
 Every position in the world must be occupied with one and only one node -
 seemingly blank positions are usually air nodes.
 
-A craftitem isn't placable but is only found in inventories or as a dropped item
+A craftitem can't be placed and is only found in inventories or as a dropped item
 in the world.
 
 A tool has the ability to wear and typically has non-default digging capabilities.
@@ -104,7 +104,7 @@ Textures in Minetest are usually 16 by 16 pixels.
 They can be any resolution, but it is recommended that they are in the order of 2,
 for example 16, 32, 64, or 128.
 This is because other resolutions may not be supported correctly on older devices,
-resulting in lowered performance.
+resulting in decreased performance.
 
 ## Registering a basic node
 
@@ -124,7 +124,7 @@ To give a different texture per-side, supply the names of 6 textures in this ord
     up (+Y), down (-Y), right (+X), left (-X), back (+Z), front (-Z).
     (+Y, -Y, +X, -X, +Z, -Z)
 
-Remember: Just like with most 3D graphics, +Y is upwards in Minetest.
+Remember: just like with most 3D graphics, +Y is upwards in Minetest.
 
 ```lua
 minetest.register_node("mymod:diamond", {
@@ -188,7 +188,7 @@ minetest.register_craftitem("mymod:mudpie", {
 })
 ```
 
-By, understanding how item_eat works by simply returning a function, it's
+By understanding how item_eat works by simply returning a function, it's
 possible to modify it to do more complex behaviour such as play a custom sound.
 
 ## Crafting
@@ -196,12 +196,12 @@ possible to modify it to do more complex behaviour such as play a custom sound.
 There are several types of crafting recipe available, indicated by the `type`
 property.
 
-* shaped - Ingredients must be in the correct position.
-* shapeless - It doesn't matter where the ingredients are,
+* shaped - ingredients must be in the correct position.
+* shapeless - it doesn't matter where the ingredients are,
   just that there is the right amount.
-* cooking - Recipes for the furnace to use.
-* fuel - Defines items which can be burned in furnaces.
-* tool_repair - Defines items which can be tool repaired.
+* cooking - recipes for the furnace to use.
+* fuel - defines items which can be burned in furnaces.
+* tool_repair - defines items which can be tool repaired.
 
 Craft recipes are not items, so they do not use Item Names to uniquely
 identify themselves.
@@ -209,7 +209,7 @@ identify themselves.
 ### Shaped
 
 Shaped recipes are when the ingredients need to be in the right shape or
-pattern to work. In the below example, the fragments need to be in a
+pattern to work. In the example below, the fragments need to be in a
 chair-like pattern for the craft to work.
 
 ```lua
@@ -323,11 +323,11 @@ minetest.register_craft({
 })
 ```
 
-## Tools, Capabilities, and Dig Types
+## Tools, Capabilities and Dig Types
 
 Dig types are groups which are used to define how strong a node is when dug
 with different tools.
-A dig type group having a higher associated value means the node is easier
+A dig type group with a higher associated value means the node is easier
 and quicker to cut.
 It's possible to combine multiple dig types to allow the more efficient use
 of multiple types of tools.
@@ -376,4 +376,4 @@ minetest.register_tool("mymod:tool", {
 
 Groupcaps is the list of supported dig types for digging nodes.
 Damage groups are for controlling how tools damage objects, which will be
-discussed later in the objects chapter.
+discussed later in the Objects, Players, and Entities chapter.

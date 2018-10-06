@@ -46,7 +46,7 @@ function ctf.post(team,msg)
 end
 ```
 
-For example, keywords in the above snippet are highlighted such as if, then, end, return.
+For example, keywords in the above snippet are highlighted such as if, then, end, and return.
 table.insert is a function which comes with Lua by default.
 
 Here is a list of common editors well suited for Lua.
@@ -65,7 +65,7 @@ One such IDE is Eclipse with the Koneki Lua plugin:
 
 * Install Eclipse + Koneki.
 * Create a new Lua project from existing source (specify Minetest's base directory).
-* Follow instructions from Koneki wiki how to do "Attach to remote Application" debugging (just a few steps).
+* Follow instructions from Koneki wiki on how to do "Attach to remote Application" debugging (just a few steps).
 * It is suggested to add those lines from wiki at beginning of builtin.lua.
 * Start the debugger (set "Break on first line" in debugger configuration to see if it is working).
 * Start Minetest.
@@ -105,7 +105,7 @@ Local will be discussed in a bit, as it's part of a very important concept calle
 
 The `=` means *assignment*, so `result = a + b` means set "result" to a + b.
 Variable names can be longer than one character unlike in mathematics, as seen with the "result" variable.
-It's also worth noting that Lua is *case-sensitive*; A is a different variable than a.
+It's also worth noting that Lua is *case-sensitive*; A is a different variable to a.
 
 ### Variable Types
 
@@ -137,7 +137,7 @@ Not an exhaustive list. Doesn't contain every possible operator.
 
 ### Selection
 
-The most basic selection is the if statement. It looks like this:
+The most basic selection is the *if statement*. It looks like this:
 
 ```lua
 local random_number = math.random(1, 100) -- Between 1 and 100.
@@ -176,8 +176,8 @@ end
 
 Which prints "Yay!" if A is false and B is true.
 
-Logical and arithmetic operators work exactly the same, they both accept inputs
-and return a value which can be stored.
+Logical and arithmetic operators work exactly the same;
+they both accept inputs and return a value which can be stored.
 
 ```lua
 local A = 5
@@ -189,7 +189,7 @@ end
 
 ## Programming
 
-Programming is the action of talking a problem, such as sorting a list
+Programming is the action of taking a problem, such as sorting a list
 of items, and then turning it into steps that a computer can understand.
 
 Teaching you the logical process of programming is beyond the scope of this book;
@@ -199,7 +199,7 @@ however, the following websites are quite useful in developing this:
   learning to 'code', it provides an interactive tutorial experience.
 * [Scratch](https://scratch.mit.edu) is a good resource when starting from
   absolute basics, learning the problem solving techniques required to program.\\
-  Scratch is **designed to teach children** how to program, it isn't a serious
+  Scratch is **designed to teach children** how to program, and isn't a serious
   programming language.
 
 ## Local and Global Scope
