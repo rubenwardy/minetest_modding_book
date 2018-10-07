@@ -10,10 +10,11 @@ redirect_from: /en/chapters/lvm.html
 ## Introduction
 
 The functions outlined in the [Basic Map Operations](environment.html) chapter
-are easy to use and convenient, but for large areas they are not efficient.
-Every time you call `set_node` or `get_node` your mod needs to communicate with
-the engine, which results in copying. Copying is slow, and will quickly kill the
-performance of your game.
+are convenient and easy to use, but for large areas they are inefficient.
+Every time you call `set_node` or `get_node`, your mod needs to communicate with
+the engine. This results in constant individual copying operations between the
+engine and your mod, which is slow, and will quickly decrease the performance of
+your game. Using a Lua Voxel Manipulator (LVM) can be a better alternative.
 
 * [Concepts](#concepts)
 * [Reading into the LVM](#reading-into-the-lvm)
@@ -24,24 +25,24 @@ performance of your game.
 
 ## Concepts
 
-Creating a Lua Voxel Manipulator allows you to load large areas of the map into
-your mod's memory at once. You can then read and write to this data without
-interacting with the engine at all or running any callbacks, which means that
-these operations are very fast. Once done, you can then write the area back into
+An LVM allows you to load large areas of the map into your mod's memory.
+You can then read and write this data without further interaction with the
+engine and without running any callbacks, which means that these
+operations are very fast. Once done, you can then write the area back into
 the engine and run any lighting calculations.
 
 ## Reading into the LVM
 
 You can only load a cubic area into an LVM, so you need to work out the minimum
 and maximum positions that you need to modify. Then you can create and read into
-an LVM like so:
+an LVM. For example:
 
 ```lua
 local vm         = minetest.get_voxel_manip()
 local emin, emax = vm:read_from_map(pos1, pos2)
 ```
 
-An LVM may not read exactly the area you tell it to, for performance reasons.
+For performance reasons, an LVM may not read the exact area you tell it to.
 Instead, it may read a larger area. The larger area is given by `emin` and `emax`,
 which stand for *emerged min pos* and *emerged max pos*. An LVM will load the area
 it contains for you - whether that involves loading from memory, from disk, or
@@ -50,7 +51,7 @@ calling the map generator.
 ## Reading Nodes
 
 To read the types of nodes at particular positions, you'll need to use `get_data()`.
-`get_data()` returns a flat array where each entry represents the type of a
+This returns a flat array where each entry represents the type of a
 particular node.
 
 ```lua
@@ -61,7 +62,7 @@ You can get param2 and lighting data using the methods `get_light_data()` and `g
 
 You'll need to use `emin` and `emax` to work out where a node is in the flat arrays
 given by the above methods. There's a helper class called `VoxelArea` which handles
-the calculation for you:
+the calculation for you.
 
 ```lua
 local a = VoxelArea:new{
@@ -76,16 +77,16 @@ local idx = a:index(x, y, z)
 print(data[idx])
 ```
 
-If you run that, you'll notice that `data[vi]` is an integer. This is because
-the engine doesn't store nodes using their name string, as string comparision
+When you run this, you'll notice that `data[vi]` is an integer. This is because
+the engine doesn't store nodes using their name string, as string comparison
 is slow. Instead, the engine uses a content ID. You can find out the content
-ID for a particular type of node like so:
+ID for a particular type of node with `get_content_id()`. For example:
 
 ```lua
 local c_stone = minetest.get_content_id("default:stone")
 ```
 
-and then you can check whether a node is stone like so:
+You can then check whether the node is stone:
 
 ```lua
 local idx = a:index(x, y, z)
@@ -94,12 +95,12 @@ if data[idx] == c_stone then
 end
 ```
 
-It is recommended that you find out and store the content IDs of nodes types
-using load time, as the IDs of a node type will never change. Make sure to store
-the IDs in a local for performance reasons.
+It is recommended that you find and store the content IDs of nodes types
+at load time, because the IDs of a node type will never change. Make sure to store
+the IDs in a local variable for performance reasons.
 
-Nodes in an LVM data are stored in reverse co-ordinate order, so you should
-always iterate in the order of `z, y, x` like so:
+Nodes in an LVM data array are stored in reverse co-ordinate order, so you should
+always iterate in the order `z, y, x`. For example:
 
 ```lua
 for z = min.z, max.z do
@@ -115,14 +116,14 @@ for z = min.z, max.z do
 end
 ```
 
-The reason for this touches computer architecture. Reading from RAM is rather
+The reason for this touches on the topic of computer architecture. Reading from RAM is rather
 costly, so CPUs have multiple levels of caching. If the data a process requests
 is in the cache, it can very quickly retrieve it. If the data is not in the cache,
-then a cache miss occurs so it'll fetch the data it needs from RAM. Any data
-surrounding the requested data is also fetched and then replaces the data in the cache as
-it's quite likely that the process will ask for data near there again. So a
-good rule of optimisation is to iterate in a way that you read data one after
-another, and avoid *memory thrashing*.
+then a cache miss occurs and it will fetch the data it needs from RAM. Any data
+surrounding the requested data is also fetched and then replaces the data in the cache. This is
+because it's quite likely that the process will ask for data near that location again. This means
+a good rule of optimisation is to iterate in a way that you read data one after
+another, and avoid memory thrashing.
 
 ## Writing Nodes
 
@@ -141,7 +142,7 @@ for z = min.z, max.z do
 end
 ```
 
-When you finished setting nodes in the LVM, you then need to upload the data
+When you finish setting nodes in the LVM, you then need to upload the data
 array to the engine:
 
 ```lua
@@ -149,12 +150,12 @@ vm:set_data(data)
 vm:write_to_map(true)
 ```
 
-For setting lighting and param2 data, there are the appropriately named
+For setting lighting and param2 data, use the appropriately named
 `set_light_data()` and `set_param2_data()` methods.
 
 `write_to_map()` takes a Boolean which is true if you want lighting to be
-calculated. If you pass false, you need to recalculate lighting at some future
-date using `minetest.fix_light`.
+calculated. If you pass false, you need to recalculate lighting at a future
+time using `minetest.fix_light`.
 
 ## Example
 
@@ -194,9 +195,9 @@ end
 ## Your Turn
 
 * Create `replace_in_area(from, to, pos1, pos2)` which replaces all instances of
-  `from` with `to` in the area given, where from and to are node names.
+  `from` with `to` in the area given, where `from` and `to` are node names.
 * Make a function which rotates all chest nodes by 90&deg;.
 * Make a function which uses an LVM to cause mossy cobble to spread to nearby
   stone and cobble nodes.
   Does your implementation cause mossy cobble to spread more than a distance of one each
-  time? How could you stop this?
+  time? If so, how could you stop this?
