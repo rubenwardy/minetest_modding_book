@@ -124,7 +124,8 @@ To give a different texture per-side, supply the names of 6 textures in this ord
     up (+Y), down (-Y), right (+X), left (-X), back (+Z), front (-Z).
     (+Y, -Y, +X, -X, +Z, -Z)
 
-Remember: just like with most 3D graphics, +Y is upwards in Minetest.
+Remember that +Y is upwards in Minetest, as is the convention with
+3D computer graphics.
 
 ```lua
 minetest.register_node("mymod:diamond", {
@@ -196,12 +197,12 @@ possible to modify it to do more complex behaviour such as play a custom sound.
 There are several types of crafting recipe available, indicated by the `type`
 property.
 
-* shaped - ingredients must be in the correct position.
-* shapeless - it doesn't matter where the ingredients are,
+* shaped - Ingredients must be in the correct position.
+* shapeless - It doesn't matter where the ingredients are,
   just that there is the right amount.
-* cooking - recipes for the furnace to use.
-* fuel - defines items which can be burned in furnaces.
-* tool_repair - defines items which can be tool repaired.
+* cooking - Recipes for the furnace to use.
+* fuel - Defines items which can be burned in furnaces.
+* tool_repair - Defines items which can be tool repaired.
 
 Craft recipes are not items, so they do not use Item Names to uniquely
 identify themselves.
@@ -323,7 +324,7 @@ minetest.register_craft({
 })
 ```
 
-## Tools, Capabilities and Dig Types
+## Tools, Capabilities, and Dig Types
 
 Dig types are groups which are used to define how strong a node is when dug
 with different tools.

@@ -137,7 +137,7 @@ Not an exhaustive list. Doesn't contain every possible operator.
 
 ### Selection
 
-The most basic selection is the *if statement*. It looks like this:
+The most basic selection is the if statement. It looks like this:
 
 ```lua
 local random_number = math.random(1, 100) -- Between 1 and 100.
