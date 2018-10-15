@@ -30,12 +30,12 @@ unselectable placeholder node. Empty space is full of *air* nodes, an invisible 
 you can walk through.
 
 Loaded map blocks are often referred to as *active blocks*. Active Blocks can be
-read from or written to by mods or players, have active entities. The Engine also
+read from or written to by mods or players, and have active entities. The Engine also
 performs operations on the map, such as performing liquid physics.
 
 MapBlocks can either be loaded from the world database or generated. MapBlocks
 will be generated up to the map generation limit (`mapgen_limit`) which is set
-at its maximum value, 31000, by default. Existing MapBlocks can however be
+at its maximum value, 31000, by default. Existing MapBlocks can, however, be
 loaded from the world database outside of the generation limit.
 
 ## Reading
@@ -52,8 +52,8 @@ print(dump(node)) --> { name=.., param1=.., param2=.. }
 If the position is a decimal, it will be rounded to the containing node.
 The function will always return a table containing the node information:
 
-* `name` - The node name, will be ignored when the area is unloaded.
-* `param1` - See the node definition, will commonly be light.
+* `name` - The node name - will be *ignore* when the area is unloaded.
+* `param1` - See the node definition - will commonly be light.
 * `param2` - See the node definition.
 
 It's worth noting that the function won't load the containing block if the block
@@ -72,7 +72,7 @@ The most commonly used of these are for finding nodes.
 
 For example, say we wanted to make a certain type of plant that grows
 better near mese. You would need to search for any nearby mese nodes,
-and adapt the growth rate accordingly.
+and adapt the growth rate accordingly. <!-- ? -->
 
 ```lua
 local grow_speed = 1
@@ -204,7 +204,7 @@ local function emerge_callback(pos, action,
 end
 ```
 
-This is not the only way of loading blocks; Using a LVM will also cause the
+This is not the only way of loading blocks; using a LVM will also cause the
 encompassed blocks to be loaded synchronously.
 
 ## Deleting Blocks
