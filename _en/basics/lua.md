@@ -9,8 +9,8 @@ redirect_from: /en/chapters/lua.html
 
 ## Introduction
 
-In this chapter we will talk about scripting in Lua, the tools required,
-and go over some techniques which you will probably find useful.
+In this chapter will talk about scripting in Lua, the tools required
+to assist with this, and some techniques which you may find useful.
 
 * [Code Editors](#code-editors)
     * [Integrated Programming Environments](#integrated-programming-environments)
@@ -27,8 +27,11 @@ and go over some techniques which you will probably find useful.
 ## Code Editors
 
 A code editor with code highlighting is sufficient for writing scripts in Lua.
-Code highlighting gives different colours to different words and characters
-depending on what they mean. This allows you to spot mistakes.
+Code highlighting uses different colours for words and characters
+depending on what they represent. This allows you to more easily notice
+mistakes and inconsistencies.
+
+For example:
 
 ```lua
 function ctf.post(team,msg)
@@ -46,28 +49,30 @@ function ctf.post(team,msg)
 end
 ```
 
-For example, keywords in the above snippet are highlighted such as if, then, end, and return.
-table.insert is a function which comes with Lua by default.
+Keywords in this code are highlighted including `if`, `then`, `end`, and `return`.
+Functions which comes with Lua by default, such as `table.insert` are also highlighted.
 
-Here is a list of common editors well suited for Lua.
-Other editors are available, of course.
+Commonly used editors which are well-suited for Lua include:
 
 * Windows: [Notepad++](http://notepad-plus-plus.org/), [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 * Linux: Kate, Gedit, [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 * OSX: [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 
+Other suitable editors are also available.
+
 ### Integrated Programming Environments
 
-IDEs allow you to debug code like a native application.
-These are harder to set up than just a text editor.
+Integrated development environments (IDEs) allow you to more easily debug code,
+but are often more difficult to set up than a simple text editor.
 
-One such IDE is Eclipse with the Koneki Lua plugin:
+One such IDE is Eclipse, which can be used with the Koneki Lua plugin.
+To use this:
 
-* Install Eclipse + Koneki.
+* Install Eclipse and Koneki.
 * Create a new Lua project from existing source (specify Minetest's base directory).
-* Follow instructions from Koneki wiki on how to do "Attach to remote Application" debugging (just a few steps).
-* It is suggested to add those lines from wiki at beginning of builtin.lua.
-* Start the debugger (set "Break on first line" in debugger configuration to see if it is working).
+* Follow instructions from Koneki wiki on how to "Attach to remote Application" debugging.
+* It is suggested to add those lines from wiki at the beginning of builtin.lua.
+* Start the debugger. (Set "Break on first line" in debugger configuration to see if it is working).
 * Start Minetest.
 * Enter the game to startup Lua.
 
@@ -77,13 +82,14 @@ One such IDE is Eclipse with the Koneki Lua plugin:
 
 Programs are a series of commands that run one after another.
 We call these commands "statements."
-Program flow is how these statements are executed.
-Different types of flow allow you to skip or jump over sets of commands.
+Program flow is how these statements are executed and different
+types of flow allow you to skip or jump over sets of commands.
+
 There are three main types of flow:
 
-* Sequence: Just run one statement after another, no skipping.
-* Selection: Skip over sequences depending on conditions.
-* Iteration: Repeating, looping. Keep running the same
+* Sequence: This runs one statement after another, with no skipping.
+* Selection: This skips over sequences depending on conditions.
+* Iteration: Repeating, looping. This runs the same
   statements until a condition is met.
 
 So, what do statements in Lua look like?
@@ -96,16 +102,15 @@ a = a + 10
 print("Sum is "..result)
 ```
 
-Whoa, what happened there?
-
-a, b, and result are *variables*. Local variables are declared
-by using the local keyword, and then given an initial value.
-Local will be discussed in a bit, as it's part of a very important concept called
+In this example `a`, `b`, and `result` are *variables*. Local variables are declared
+by using the `local` keyword, and then given an initial value.
+Local will be discussed later, because it's part of a very important concept called
 *scope*.
 
-The `=` means *assignment*, so `result = a + b` means set "result" to a + b.
-Variable names can be longer than one character unlike in mathematics, as seen with the "result" variable.
-It's also worth noting that Lua is *case-sensitive*; A is a different variable to a.
+The `=` sign means *assignment*, so `result = a + b` means set the value of `result` to
+the value of `a + b`. Variable names can be longer than one character, as seen with the
+`result` variable. It's also worth noting that Lua is *case-sensitive*; `A` is a different
+variable to `a`.
 
 ### Variable Types
 
@@ -117,14 +122,14 @@ It's good practice to make sure a variable is only ever nil or a single non-nil 
 |----------|---------------------------------|----------------|
 | Nil      | Not initialised. The variable is empty, it has no value | `local A`, `D = nil` |
 | Number   | A whole or decimal number.  | `local A = 4` |
-| String   | A piece of text  | `local D = "one two three"` |
-| Boolean  | True or False    | `local is_true = false`, `local E = (1 == 1)` |
-| Table    | Lists | Explained below |
+| String   | A piece of text.  | `local D = "one two three"` |
+| Boolean  | True or False.    | `local is_true = false`, `local E = (1 == 1)` |
+| Table    | Lists. | Explained below. |
 | Function | Can run. May require inputs and may return a value | `local result = func(1, 2, 3)` |
 
 ### Arithmetic Operators
 
-Not an exhaustive list. Doesn't contain every possible operator.
+Arithmetic operators in Lua include:
 
 | Symbol | Purpose        | Example                   |
 |--------|----------------|---------------------------|
@@ -135,9 +140,11 @@ Not an exhaustive list. Doesn't contain every possible operator.
 | A ^ B  | Powers         | 2 ^ 2 = 2<sup>2</sup> = 4 |
 | A .. B | Join strings   | "foo" .. "bar" = "foobar" |
 
+Please note that this is not an exhaustive list; it doesn't contain every possible operator.
+
 ### Selection
 
-The most basic selection is the if statement. It looks like this:
+The most basic method of selection is the if statement. For example:
 
 ```lua
 local random_number = math.random(1, 100) -- Between 1 and 100.
@@ -148,11 +155,12 @@ else
 end
 ```
 
-That example generates a random number between 1 and 100. It then prints
-"Woohoo!" if that number is bigger than 50, otherwise it prints "No!".
-What else can you get apart from '>'?
+This generates a random number between 1 and 100. It then prints
+"Woohoo!" if that number is bigger than 50, and otherwise prints "No!".
 
 ### Logical Operators
+
+Logical operators in Lua include:
 
 | Symbol  | Purpose                              | Example                                                     |
 |---------|--------------------------------------|-------------------------------------------------------------|
@@ -166,7 +174,9 @@ What else can you get apart from '>'?
 | A or B  | either or. One or both must be true. | (2 > 1) or (1 == 2) (true), (2 > 4) or (1 == 3) (false)     |
 | not A   | not true                             | not (1 == 2)  (true), not (1 == 1)  (false)                 |
 
-That doesn't contain every possible operator, and you can combine operators like this:
+Please note that this doesn't contain every possible operator.
+
+It is also possible to combine operators. For example:
 
 ```lua
 if not A and B then
@@ -174,10 +184,10 @@ if not A and B then
 end
 ```
 
-Which prints "Yay!" if A is false and B is true.
+This prints "Yay!" if A is false and B is true.
 
-Logical and arithmetic operators work exactly the same;
-they both accept inputs and return a value which can be stored.
+Logical and arithmetic operators work the same way;
+they both accept inputs and return a value which can be stored. For example:
 
 ```lua
 local A = 5
@@ -190,21 +200,21 @@ end
 ## Programming
 
 Programming is the action of taking a problem, such as sorting a list
-of items, and then turning it into steps that a computer can understand.
+of items, and turning it into steps that a computer can understand.
 
 Teaching you the logical process of programming is beyond the scope of this book;
 however, the following websites are quite useful in developing this:
 
 * [Codecademy](http://www.codecademy.com/) is one of the best resources for
-  learning to 'code', it provides an interactive tutorial experience.
-* [Scratch](https://scratch.mit.edu) is a good resource when starting from
-  absolute basics, learning the problem solving techniques required to program.\\
+  learning to write code. It provides an interactive tutorial experience.
+* [Scratch](https://scratch.mit.edu) is a good resource, when starting from
+  absolute basics, to learn the problem solving techniques required to program.\\
   Scratch is **designed to teach children** how to program, and isn't a serious
   programming language.
 
 ## Local and Global Scope
 
-Whether a variable is local or global determines where it can be written to or read to.
+Whether a variable is local or global determines where it can be written to or read from.
 A local variable is only accessible from where it is defined. Here are some examples:
 
 ```lua
@@ -222,7 +232,7 @@ function myfunc()
 end
 ```
 
-Whereas global variables can be accessed from anywhere in the script file, and from any other mod.
+In contrast, global variables can be accessed from anywhere in the script file, and from any other mod.
 
 ```lua
 my_global_variable = "blah"
@@ -236,11 +246,12 @@ one()
 print(my_global_variable) -- Output: "three"
 ```
 
+Local variables should be used whenever possible.
 
-### Locals should be used as much as possible
+Lua is global by default (unlike most other programming languages), so
+local variables must be identified as such.
 
-Lua is global by default (unlike most other programming languages).
-Local variables must be identified as such.
+For example:
 
 ```lua
 function one()
@@ -255,11 +266,12 @@ one()
 two()
 ```
 
-dump() is a function that can turn any variable into a string so the programmer can
-see what it is. The foo variable will be printed as "bar", including the quotes
-which show it is a string.
+The dump() function can turn any variable into a string so the programmer can
+see what it is. In this example, the foo variable will be printed as "bar", including the quotes
+which show it is a string. This reveals that the foo variable was global, because it could be
+accessed from another function than the one in which it was declared.
 
-This is sloppy coding, and Minetest will in fact warn about this:
+This is sloppy coding, and Minetest will in warn about this:
 
     Assignment to undeclared global 'foo' inside function at init.lua:2
 
@@ -280,18 +292,12 @@ two()
 
 Remember that nil means **not initialised**.
 The variable hasn't been assigned a value yet,
-doesn't exist, or has been uninitialised (ie: set to nil).
+doesn't exist, or has been uninitialised (meaning set to nil).
 
-The same goes for functions. Functions are variables of a special type, and
-should be made local, as other mods could have functions of the same name.
+The same applies to functions. Functions are variables of a special type, and
+should be made local, because other mods could have functions with the same names.
 
-```lua
-local function foo(bar)
-    return bar * 2
-end
-```
-
-API tables should be used to allow other mods to call the functions, like so:
+API tables should be used to allow other mods to call the functions:
 
 ```lua
 mymod = {}
@@ -312,7 +318,7 @@ The recommended way to include other Lua scripts in a mod is to use *dofile*.
 dofile(minetest.get_modpath("modname") .. "/script.lua")
 ```
 
-"local" variables declared outside of any functions in a script file will be local to that script.
+"local" variables declared outside any functions in a script file will be local to that script.
 A script can return a value, which is useful for sharing private locals:
 
 ```lua
@@ -324,6 +330,6 @@ local ret = dofile(minetest.get_modpath("modname") .. "/script.lua")
 print(ret) -- Hello world!
 ```
 
-Later chapters will discuss how to split up the code of a mod in a lot of detail.
-However, the simplistic approach for now is to have different files for different
-types of things - nodes.lua, crafts.lua, craftitems.lua, etc.
+Later chapters will discuss how to split the code for a mod in a lot more detail;
+however, the most simple approach is to have different files for different
+types of things, for example nodes.lua, crafts.lua, craftitems.lua, and so on.
