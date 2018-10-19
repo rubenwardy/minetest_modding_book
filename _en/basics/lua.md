@@ -28,7 +28,7 @@ to assist with this, and some techniques which you may find useful.
 
 A code editor with code highlighting is sufficient for writing scripts in Lua.
 Code highlighting uses different colours for words and characters
-depending on what they represent. This allows you to more easily notice
+depending on what they represent. This allows you to easily notice
 mistakes and inconsistencies.
 
 For example:
@@ -49,8 +49,8 @@ function ctf.post(team,msg)
 end
 ```
 
-Keywords in this code are highlighted including `if`, `then`, `end`, and `return`.
-Functions which comes with Lua by default, such as `table.insert` are also highlighted.
+Keywords in this example are highlighted, including `if`, `then`, `end`, and `return`.
+Functions which come with Lua by default, such as `table.insert`, are also highlighted.
 
 Commonly used editors which are well-suited for Lua include:
 
@@ -62,27 +62,27 @@ Other suitable editors are also available.
 
 ### Integrated Programming Environments
 
-Integrated development environments (IDEs) allow you to more easily debug code,
+Integrated development environments (IDEs) allow you to easily debug code,
 but are often more difficult to set up than a simple text editor.
 
 One such IDE is Eclipse, which can be used with the Koneki Lua plugin.
-To use this:
+To use Eclipse and the Koneki Lua plugin when writing Minetest mods:
 
 * Install Eclipse and Koneki.
 * Create a new Lua project from existing source (specify Minetest's base directory).
-* Follow instructions from Koneki wiki on how to "Attach to remote Application" debugging.
+* Follow the "Attach to remote Application" debugging instructions from Koneki wiki.
 * It is suggested to add those lines from wiki at the beginning of builtin.lua.
 * Start the debugger. (Set "Break on first line" in debugger configuration to see if it is working).
 * Start Minetest.
-* Enter the game to startup Lua.
+* Enter the game to start Lua.
 
 ## Coding in Lua
 
 ### Program Flow
 
 Programs are a series of commands that run one after another.
-We call these commands "statements."
-Program flow is how these statements are executed and different
+We call these commands "statements".
+Program flow is how these statements are executed, and different
 types of flow allow you to skip or jump over sets of commands.
 
 There are three main types of flow:
@@ -102,7 +102,7 @@ a = a + 10
 print("Sum is "..result)
 ```
 
-In this example `a`, `b`, and `result` are *variables*. Local variables are declared
+In this example, `a`, `b`, and `result` are *variables*. Local variables are declared
 by using the `local` keyword, and then given an initial value.
 Local will be discussed later, because it's part of a very important concept called
 *scope*.
@@ -271,7 +271,7 @@ see what it is. In this example, the foo variable will be printed as "bar", incl
 which show it is a string. This reveals that the foo variable was global, because it could be
 accessed from another function than the one in which it was declared.
 
-This is sloppy coding, and Minetest will in warn about this:
+This is sloppy coding, and Minetest will warn about this:
 
     Assignment to undeclared global 'foo' inside function at init.lua:2
 
