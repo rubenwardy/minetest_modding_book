@@ -35,7 +35,7 @@ performs operations on the map, such as performing liquid physics.
 
 MapBlocks can either be loaded from the world database or generated. MapBlocks
 will be generated up to the map generation limit (`mapgen_limit`) which is set
-at its maximum value, 31000, by default. Existing MapBlocks can, however, be
+to its maximum value, 31000, by default. Existing MapBlocks can, however, be
 loaded from the world database outside of the generation limit.
 
 ## Reading
@@ -52,8 +52,8 @@ print(dump(node)) --> { name=.., param1=.., param2=.. }
 If the position is a decimal, it will be rounded to the containing node.
 The function will always return a table containing the node information:
 
-* `name` - The node name - will be *ignore* when the area is unloaded.
-* `param1` - See the node definition - will commonly be light.
+* `name` - The node name, which will be *ignore* when the area is unloaded.
+* `param1` - See the node definition. This will commonly be light.
 * `param2` - See the node definition.
 
 It's worth noting that the function won't load the containing block if the block

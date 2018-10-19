@@ -22,7 +22,7 @@ own.
 
 Players and Entities are both types of Objects. An Object is something that can move
 independently of the node grid and has properties such as velocity and scale.
-Object aren't items, so they have their own separate registration system.
+Objects aren't items, and they have their own separate registration system.
 
 There are a few differences between Players and Entities.
 The biggest one is that Players are player-controlled, whereas Entities are mod-controlled.
@@ -82,7 +82,7 @@ The updated properties will be sent to all players in range.
 This is very useful to get a large amount of variety very cheaply, such as having
 different skins per-player.
 
-As shown in the next section, entities can have a default set of properties
+As shown in the next section, entities can have initial properties
 provided in their definition.
 The default Player properties are defined in the engine, however, so you'll
 need to use `set_properties()` in `on_joinplayer` to set the properties for newly

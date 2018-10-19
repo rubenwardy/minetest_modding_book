@@ -47,7 +47,7 @@ ItemStacks have three components to them.
 The item name may be the item name of a registered item, an alias, or an unknown
 item name.
 Unknown items are common when users uninstall mods, or when mods remove items without
-any mitigation, such as registering an alias.
+precautions, such as registering aliases.
 
 ```lua
 print(stack:get_name())
@@ -147,8 +147,8 @@ which all games have, such as the *main* inventory and *craft* slots.
 
 Lists have a size, which is the total number of cells in the grid, and a width,
 which is only used within the engine.
-The List width is not used when drawing the inventory in a window, as the
-code behind the window determines the width to use.
+The list width is not used when drawing the inventory in a window,
+because the code behind the window determines the width to use.
 
 ```lua
 if inv:set_size("main", 32) then
@@ -180,7 +180,7 @@ end
 
 ### Adding to a List
 
-To add items to a list named `"main"` whilst respecting any maximum stack sizes:
+To add items to a list named `"main"` while respecting maximum stack sizes:
 
 ```lua
 local stack    = ItemStack("default:stone 99")
@@ -239,7 +239,7 @@ inv:set_stack(listname, 0, stack)
 ## Wear
 
 Tools can have wear; wear shows a progress bar and makes the tool break when completely worn.
-Wear is a number out of 65535 - the higher it is, the more worn the tool is.
+Wear is a number out of 65535; the higher it is, the more worn the tool is.
 
 Wear can be manipulated using `add_wear()`, `get_wear()`, and `set_wear(wear)`.
 

@@ -15,7 +15,11 @@ There are many techniques relevant to working on pixel art textures,
 and understanding these techniques will greatly improve
 the quality of the textures you create.
 
-Teaching how to draw good pixel art is out of scope of this book.
+Detailed approaches to creating good pixel art are outside the scope
+of this book, and instead only the most relevant basic techniques
+will be covered.
+There are many [good online tutorials](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
+available, which will cover pixel art in much more detail.
 
 * [Learning to Draw](#learning-to-draw)
 * [Techniques](#techniques)

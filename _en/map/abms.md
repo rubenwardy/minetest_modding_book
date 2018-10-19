@@ -10,7 +10,7 @@ redirect_from: /en/chapters/abms.html
 ## Introduction
 
 An Active Block Modifier (ABM) is a method of periodically running a
-function on nodes matching a criterion.
+function on nodes matching specific criteria.
 As the name implies, this only works on loaded MapBlocks.
 
 ABMs are best suited for nodes which are frequently found in the world,
@@ -20,9 +20,9 @@ to find matching nodes, but they have a low memory and storage overhead.
 
 For nodes which are uncommon or already use metadata, such as furnaces
 and machines, node timers should be used instead.
-Node timers don't need to search all loaded nodes to find matching ones,
-but they do require slightly more memory and storage to keep track of
-running timers.
+Node timers don't involve searching all loaded nodes to find matches,
+but instead require slightly more memory and storage for the tracking
+of running timers.
 
 
 * [Registering an ABM](#registering-an-abm)
