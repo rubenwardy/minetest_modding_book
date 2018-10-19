@@ -2,7 +2,7 @@
 title: Read More
 layout: default
 root: ../..
-idx: 7.6
+idx: 7.7
 redirect_from: /en/chapters/readmore.html
 ---
 
