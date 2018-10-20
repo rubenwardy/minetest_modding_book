@@ -33,7 +33,7 @@ code is thrown in together with no clear boundaries. This ultimately makes a
 project completely unmaintainable, ending in its abandonment.
 
 The opposite of this is to design your project as a collection of interacting
-smaller programs or areas of code.
+smaller programs or areas of code. <!-- Weird wording? -->
 
 > Inside every large program, there is a small program trying to get out.
 >
@@ -51,14 +51,13 @@ a low amount of coupling, as this means that changing the APIs of certain areas
 will be more feasible.
 
 Note that these apply both when thinking about the relationship between mods,
-and the relationship between areas inside a mod. In both cases you should try
-to get high cohesion and low coupling.
+and the relationship between areas inside a mod.
 
 
 ## Model-View-Controller
 
-In the next chapter we will discuss how to automatically test your code, and one
-of the problems we will have is how to separate your logic
+In the next chapter, we will discuss how to automatically test your
+code and one of the problems we will have is how to separate your logic
 (calculations, what should be done) from API calls (`minetest.*`, other mods)
 as much as possible.
 
@@ -75,7 +74,7 @@ and any associated metadata. Actions you can take are `create`, `edit`, or
 receive fields. These are 3 areas that can usually be separated pretty well.
 
 In your tests, you will be able to make sure that an action when triggered does
-the right thing to the data, but you won't need to test that an event calls an
+the right thing to the data. You won't need to test that an event calls an
 action (as this would require using the Minetest API, and this area of code
 should be made as small as possible anyway.)
 
@@ -98,8 +97,8 @@ function land.get_by_name(area_name)
 end
 ```
 
-Your actions should also be pure, however calling other functions is more
-acceptable.
+Your actions should also be pure, but calling other functions is more
+acceptable than in the above.
 
 ```lua
 -- Controller
@@ -155,7 +154,7 @@ most of the calculations are made.
 The controller should have no knowledge about the Minetest API - notice how
 there are no Minetest calls or any view functions that resemble them.
 You should *NOT* have a function like `view.hud_add(player, def)`.
-Instead, the view defines some actions the controller can tell the view to do,
+Instead, the view defines some actions that the controller can tell the view to do,
 like `view.add_hud(info)` where info is a value or table which doesn't relate
 to the Minetest API at all.
 
@@ -167,27 +166,27 @@ to the Minetest API at all.
 </figure>
 
 It is important that each area only communicates with its direct neighbours,
-as shown above, in order to reduce how much you needs to change if you modify
+as shown above, in order to reduce how much you need to change if you modify
 an area's internals or externals. For example, to change the formspec you
 would only need to edit the view. To change the view API, you would only need to
 change the view and the controller, but not the model at all.
 
 In practice, this design is rarely used because of the increased complexity
 and because it doesn't give many benefits for most types of mods. Instead,
-you tend to see a lot more of a less formal and strict kind of design -
-varients of the API-View.
+you will commonly see a less formal and strict kind of design -
+variants of the API-View.
 
 
 ### API-View
 
 In an ideal world, you'd have the above 3 areas perfectly separated with all
 events going into the controller before going back to the normal view. But
-this isn't the real world. A good half-way house is to reduce the mod into 2
+this isn't the real world. A good compromise is to reduce the mod into two
 parts:
 
-* **API** - what was the model and controller. There should be no uses of
+* **API** - This was the model and controller above. There should be no uses of
     `minetest.` here.
-* **View** - the view as before. It's a good idea to structure this into separate
+* **View** - This was also the view above. It's a good idea to structure this into separate
     files for each type of event.
 
 rubenwardy's [crafting mod](https://github.com/rubenwardy/crafting) roughly
@@ -204,40 +203,38 @@ as it doesn't use any Minetest APIs - as shown in the
 ## Observer
 
 Reducing coupling may seem hard to do to begin with, but you'll make a lot of
-progress by splitting your code up well using a design like the one given above.
+progress by splitting your code up using a design like the one given above.
 It's not always possible to remove the need for one area to communicate with
-another, but there are ways to decouple anyway - one such way being the Observer
+another, but there are ways to decouple anyway - one example being the Observer
 pattern.
 
 Let's take the example of unlocking an achievement when a player first kills a
-rare animal. The naive approach would be to have achievement code in the mob
+rare animal. The naïve approach would be to have achievement code in the mob
 kill function, checking the mob name and unlocking the award if it matches.
 This is a bad idea however, as it makes the mobs mod coupled to the achievements
 code. If you kept on doing this - for example, adding XP to the mob death code -
 you could end up with a lot of messy dependencies.
 
-Enter the Observer pattern. Instead of the mobs mod caring about awards, mobs
-exposes a way for other areas of code to register their interest in an event
-and receive data about the event.
+Enter the Observer pattern. Instead of the mymobs mod caring about awards,
+the mymobs mod exposes a way for other areas of code to register their
+interest in an event and receive data about the event.
 
 ```lua
-mobs.registered_on_death = {}
-function mobs.register_on_death(func)
-    table.insert(mobs.registered_on_death, func)
+mymobs.registered_on_death = {}
+function mymobs.register_on_death(func)
+    table.insert(mymobs.registered_on_death, func)
 end
 
 -- mob death code
-for i=1, #mobs.registered_on_death do
-    mobs.registered_on_death[i](entity, reason)
+for i=1, #mymobs.registered_on_death do
+    mymobs.registered_on_death[i](entity, reason)
 end
 ```
 
 Then the other code registers its interest:
 
 ```lua
-
--- awards
-mobs.register_on_death(function(mob, reason)
+mymobs.register_on_death(function(mob, reason)
     if reason.type == "punch" and reason.object and
             reason.object:is_player() then
         awards.notify_mob_kill(reason.object, mob.name)
@@ -246,12 +243,12 @@ end)
 ```
 
 You may be thinking - wait a second, this looks awfully familiar. And you're right!
-The Minetest API is heavily Observer based to stop the engine having to care about
+The Minetest API is heavily Observer-based to stop the engine having to care about
 what is listening to something.
 
 ## Conclusion
 
-Good code design is subjective, and depends on the project you're making. As a
+Good code design is subjective, and highly depends on the project you're making. As a
 general rule, try to keep cohesion high and coupling low. Phrased differently,
 keep related code together and unrelated code apart, and keep dependencies simple.
 

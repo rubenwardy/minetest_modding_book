@@ -24,7 +24,7 @@ creating mods.
 ## What are Games and Mods?
 
 The power of Minetest is the ability to easily develop games without the need
-to create your own voxel graphics, voxel algorithms or fancy networking code.
+to create your own voxel graphics, voxel algorithms, or fancy networking code.
 
 In Minetest, a game is a collection of modules which work together to provide the
 content and behaviour of a game.

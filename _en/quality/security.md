@@ -20,12 +20,13 @@ owner to lose data or control.
 
 The most important concept in security is to **never trust the user**.
 Anything the user submits should be treated as malicious.
-This means that you should always check that the user has the correct permissions,
-that the give valid information, and they are otherwise allowed to do that action
-(ie: in range or an owner)
+This means that you should always check that the information they
+enter is valid, that the user has the correct permissions,
+and that they are otherwise allowed to do that action
+(ie: in range or an owner).
 
 A malicious action isn't necessarily the modification or destruction of data,
-but can be accessing data they're not supposed to such as password hashes or
+but can be accessing sensitive data, such as password hashes or
 private messages.
 This is especially bad if the server stores information such as emails or ages,
 which some may do for verification purposes.
@@ -41,12 +42,6 @@ Here's some real code found in a mod:
 ```lua
 minetest.register_on_player_receive_fields(function(player,
         formname, fields)
-    -- Todo: fix security issue here
-    local name = player:get_player_name()
-    if formname ~= "mymod:fs" then
-        return
-    end
-
     for key, field in pairs(fields) do
         local x,y,z = string.match(key,
                 "goto_([%d-]+)_([%d-]+)_([%d-]+)")
@@ -65,8 +60,8 @@ This could even be automated using client modifications to essentially replicate
 the `/teleport` command with no need for a privilege.
 
 The solution for this kind of issue is to use a
-[Context](../players/formspecs.html#contexts), as shown in
-the formspecs chapter.
+[Context](../players/formspecs.html#contexts), as shown previously in
+the Formspecs chapter.
 
 ### Time of Check isn't Time of Use
 
@@ -77,8 +72,8 @@ engine forbids it:
 * From 5.0 onward, named formspecs will be blocked if they haven't been shown yet.
 
 This means that you should check in the handler that the user meets the
-conditions for showing the formspec in the first place, and any corresponding
-actions.
+conditions for showing the formspec in the first place, as well as any
+corresponding actions.
 
 The vulnerability caused by checking for permissions in the show formspec but not
 in the handle formspec is called Time Of Check is not Time Of Use (TOCTOU).
@@ -105,7 +100,7 @@ String.format = function()
 end
 ```
 
-The mod could pass something a lot more malicious than opening a website, such
+The mod could pass something much more malicious than opening a website, such
 as giving a remote user control over the machine.
 
 Some rules for using an insecure environment:

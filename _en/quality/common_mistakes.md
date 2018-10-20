@@ -40,7 +40,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 ```
 
-Do this:
+Do this instead:
 
 ```lua
 minetest.register_on_joinplayer(function(player)
@@ -62,10 +62,10 @@ end)
 
 ## Don't Trust Formspec Submissions
 
-Malicious clients can submit formspecs whenever they like with whatever content
-they like.
+Malicious clients can submit formspecs whenever they like, with
+whatever content they like.
 
-For example, the following code has a vulnerability which will allow players to
+For example, the following code has a vulnerability which allows players to
 give themselves moderator privileges:
 
 ```lua
@@ -123,7 +123,7 @@ stack:get_meta():set_string("description", "Partially eaten")
 -- BAD! Modification will be lost
 ```
 
-Do this:
+Do this instead:
 
 ```lua
 local inv = player:get_inventory()
@@ -137,8 +137,6 @@ The behaviour of callbacks is slightly more complicated. Modifying an `ItemStack
 are given will change it for the caller too, and any subsequent callbacks. However,
 it will only be saved in the engine if the callback caller sets it.
 
-Avoid this:
-
 ```lua
 minetest.register_on_item_eat(function(hp_change, replace_with_item,
         itemstack, user, pointed_thing)
@@ -149,7 +147,7 @@ end)
 ```
 
 If no callbacks cancel this, the stack will be set and the description will be updated,
-but if a callback cancels this, then the update may be lost. 
+but if a callback does cancel this, then the update may be lost.
 
 It's better to do this instead:
 

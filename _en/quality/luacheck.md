@@ -88,10 +88,10 @@ a look at the list below.
 ### Troubleshooting
 
 * **accessing undefined variable foobar** - If `foobar` is meant to be a global,
-  then add it to `read_globals`. Otherwise, add any missing `local`s to the mod.
+  add it to `read_globals`. Otherwise, add any missing `local`s to the mod.
 * **setting non-standard global variable foobar** - If `foobar` is meant to be a global,
-  then add it to `globals`. Remove from `read_globals` if present there.
-  Otherwise add any missing `local`s to the mod.
+  add it to `globals`. Remove from `read_globals` if present.
+  Otherwise, add any missing `local`s to the mod.
 * **mutating read-only global variable 'foobar'** - Move `foobar` from `read_globals` to
   `globals`.
 
@@ -101,16 +101,16 @@ It is highly recommended that you find and install a plugin for your editor of c
 to show you errors without running a command. Most editors will likely have a plugin
 available.
 
-* **Atom** - `linter-luacheck`
+* **Atom** - `linter-luacheck`.
 * **Sublime** - Install using package-control:
         [SublimeLinter](https://github.com/SublimeLinter/SublimeLinter),
-        [SublimeLinter-luacheck](https://github.com/SublimeLinter/SublimeLinter-luacheck)
+        [SublimeLinter-luacheck](https://github.com/SublimeLinter/SublimeLinter-luacheck).
 
 ## Checking Commits with Travis
 
 If your project is public and is on Github, you can use TravisCI - a free service
 to run jobs on commits to check them. This means that every commit you push will
-be checked against LuaCheck, and a green tick or red cross displayed next to them
+be checked against LuaCheck, and a green tick or red cross will be displayed next to them
 depending on whether LuaCheck finds any mistakes. This is especially helpful for
 when your project receives a pull request - you'll be able to see the LuaCheck output
 without downloading the code.
@@ -144,7 +144,7 @@ change the line after `script:` to:
 ```
 
 Now commit and push to Github. Go to your project's page on Github, and click
-commits. You should see an orange disc next to the commit you just made.
+'commits'. You should see an orange disc next to the commit you just made.
 After a while it should change either into a green tick or a red cross depending on the
 outcome of LuaCheck. In either case, you can click the icon to see the build logs
 and the output of LuaCheck.

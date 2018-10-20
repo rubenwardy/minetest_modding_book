@@ -12,10 +12,10 @@ Simple Fast Inventory (SFINV) is a mod found in Minetest Game that is used to
 create the player's inventory [formspec](formspecs.html). SFINV comes with
 an API that allows you to add and otherwise manage the pages shown.
 
-Whilst SFINV by default shows pages as tabs, pages are called "pages" as
-it's entirely possible that a mod or game decides to show them in
+Whilst SFINV by default shows pages as tabs, pages are called pages
+because it is entirely possible that a mod or game decides to show them in
 some other format instead.
-For example, multiple pages could be shown on one view.
+For example, multiple pages could be shown in one formspec.
 
 * [Registering a Page](#registering-a-page)
 * [Receiving events](#receiving-events)
@@ -25,7 +25,7 @@ For example, multiple pages could be shown on one view.
 ## Registering a Page
 
 SFINV provides the aptly named `sfinv.register_page` function to create pages.
-Simply call the function with the page's name, and its definition:
+Simply call the function with the page's name and its definition:
 
 ```lua
 sfinv.register_page("mymod:hello", {
@@ -41,7 +41,7 @@ The `make_formspec` function surrounds your formspec with SFINV's formspec code.
 The fourth parameter, currently set as `true`, determines whether the
 player's inventory is shown.
 
-Let's make things more exciting. Here is the code for the formspec generation
+Let's make things more exciting; here is the code for the formspec generation
 part of a player admin tab. This tab will allow admins to kick or ban players by
 selecting them in a list and clicking a button.
 
@@ -83,14 +83,11 @@ sfinv.register_page("myadmin:myadmin", {
 })
 ```
 
-There's nothing new about the above code, all the concepts are covered above and
-in previous chapters.
+There's nothing new about the above code; all the concepts are
+covered above and in previous chapters.
 
 <figure>
     <img src="{{ page.root }}//static/sfinv_admin_fs.png" alt="Player Admin Page">
-    <figcaption>
-        The player admin page created above.
-    </figcaption>
 </figure>
 
 ## Receiving events
@@ -104,10 +101,10 @@ on_player_receive_fields = function(self, player, context, fields)
 end,
 ```
 
-Fields is the exact same as the fields given to the subscribers of
-`minetest.register_on_player_receive_fields`. The return value of
-`on_player_receive_fields` is the same as a normal player receive fields.
-Please note that sfinv will consume events relevant to itself, such as
+`on_player_receive_fields` works the same as
+`minetest.register_on_player_receive_fields`, except that `context` is
+given instead of `formname`.
+Please note that SFINV will consume events relevant to itself, such as
 navigation tab events, so you won't receive them in this callback.
 
 Now let's implement the `on_player_receive_fields` for our admin mod:
@@ -166,7 +163,7 @@ If you only need to check one priv or want to perform an 'and', you should use
 
 Note that the `is_in_nav` is only called when the player's inventory formspec is
 generated. This happens when a player joins the game, switches tabs, or a mod
-requests it using SFINV's API.
+requests for SFINV to regenerate.
 
 This means that you need to manually request that SFINV regenerates the inventory
 formspec on any events that may change `is_in_nav`'s result. In our case,

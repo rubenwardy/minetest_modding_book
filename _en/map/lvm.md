@@ -42,8 +42,8 @@ local vm         = minetest.get_voxel_manip()
 local emin, emax = vm:read_from_map(pos1, pos2)
 ```
 
-For performance reasons, an LVM may not read the exact area you tell it to.
-Instead, it may read a larger area. The larger area is given by `emin` and `emax`,
+For performance reasons, an LVM will almost never read the exact area you tell it to.
+Instead, it will likely read a larger area. The larger area is given by `emin` and `emax`,
 which stand for *emerged min pos* and *emerged max pos*. An LVM will load the area
 it contains for you - whether that involves loading from memory, from disk, or
 calling the map generator.
@@ -79,8 +79,9 @@ print(data[idx])
 
 When you run this, you'll notice that `data[vi]` is an integer. This is because
 the engine doesn't store nodes using their name string, as string comparison
-is slow. Instead, the engine uses a content ID. You can find out the content
-ID for a particular type of node with `get_content_id()`. For example:
+is slow. Instead, the engine uses an integer called a content ID.
+You can find out the content ID for a particular type of node with
+`get_content_id()`. For example:
 
 ```lua
 local c_stone = minetest.get_content_id("default:stone")
@@ -117,13 +118,13 @@ end
 ```
 
 The reason for this touches on the topic of computer architecture. Reading from RAM is rather
-costly, so CPUs have multiple levels of caching. If the data a process requests
+costly, so CPUs have multiple levels of caching. If the data that a process requests
 is in the cache, it can very quickly retrieve it. If the data is not in the cache,
 then a cache miss occurs and it will fetch the data it needs from RAM. Any data
 surrounding the requested data is also fetched and then replaces the data in the cache. This is
 because it's quite likely that the process will ask for data near that location again. This means
 a good rule of optimisation is to iterate in a way that you read data one after
-another, and avoid memory thrashing.
+another, and avoid *cache thrashing*.
 
 ## Writing Nodes
 
@@ -194,10 +195,10 @@ end
 
 ## Your Turn
 
-* Create `replace_in_area(from, to, pos1, pos2)` which replaces all instances of
+* Create `replace_in_area(from, to, pos1, pos2)`, which replaces all instances of
   `from` with `to` in the area given, where `from` and `to` are node names.
 * Make a function which rotates all chest nodes by 90&deg;.
 * Make a function which uses an LVM to cause mossy cobble to spread to nearby
   stone and cobble nodes.
-  Does your implementation cause mossy cobble to spread more than a distance of one each
+  Does your implementation cause mossy cobble to spread more than a distance of one node each
   time? If so, how could you stop this?
