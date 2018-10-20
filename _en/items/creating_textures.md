@@ -19,7 +19,7 @@ Detailed approaches to creating good pixel art are outside the scope
 of this book, and instead only the most relevant basic techniques
 will be covered.
 There are many [good online tutorials](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
-available, which will cover pixel art in much more detail.
+available, which cover pixel art in much more detail.
 
 * [Learning to Draw](#learning-to-draw)
 * [Techniques](#techniques)

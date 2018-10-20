@@ -71,8 +71,8 @@ Minetest offers a number of helper functions to speed up common map actions.
 The most commonly used of these are for finding nodes.
 
 For example, say we wanted to make a certain type of plant that grows
-better near mese. You would need to search for any nearby mese nodes,
-and adapt the growth rate accordingly. <!-- ? -->
+better near mese; you would need to search for any nearby mese nodes,
+and adapt the growth rate accordingly.
 
 ```lua
 local grow_speed = 1
