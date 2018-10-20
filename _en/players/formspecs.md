@@ -87,7 +87,7 @@ At the time of writing, formspec information begins on line 1765.
 
 ## Displaying Formspecs
 
-Here is a generalized way to show a formspec:
+Here is a generalised way to show a formspec:
 
     minetest.show_formspec(playername, formname, formspec)
 

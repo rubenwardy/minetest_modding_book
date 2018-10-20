@@ -41,12 +41,6 @@ Here's some real code found in a mod:
 ```lua
 minetest.register_on_player_receive_fields(function(player,
         formname, fields)
-    -- Todo: fix security issue here
-    local name = player:get_player_name()
-    if formname ~= "mymod:fs" then
-        return
-    end
-
     for key, field in pairs(fields) do
         local x,y,z = string.match(key,
                 "goto_([%d-]+)_([%d-]+)_([%d-]+)")
@@ -59,7 +53,7 @@ minetest.register_on_player_receive_fields(function(player,
 end
 ```
 
-Can you spot the issue? A malicious user could submit a formspec containing
+Can you spot the problem? A malicious user could submit a formspec containing
 their own position values, allowing them to teleport to anywhere they wish to.
 This could even be automated using client modifications to essentially replicate
 the `/teleport` command with no need for a privilege.

@@ -173,7 +173,7 @@ minetest.register_node("default:water_source", {
     -- ^ how far
 
     post_effect_color = {a=64, r=100, g=100, b=200},
-    -- ^ color of screen when the player is submerged
+    -- ^ colour of screen when the player is submerged
 })
 ```
 

@@ -99,7 +99,7 @@ This is useful in order to show the owner of the node or the status.
 
 `description` is used in ItemStack Metadata to override the description when
 hovering over the stack in an inventory.
-You can use colors by encoding them with `minetest.colorize()`.
+You can use colours by encoding them with `minetest.colorize()`.
 
 `owner` is a common key used to store the username of the player that owns the
 item or node.
