@@ -22,7 +22,7 @@ own.
 
 Players and Entities are both types of Objects. An Object is something that can move
 independently of the node grid and has properties such as velocity and scale.
-An Object is not an item, and they have their own separate registration system.
+Objects aren't items, and they have their own separate registration system.
 
 There are a few differences between Players and Entities.
 The biggest one is that Players are player-controlled, whereas Entities are mod-controlled.
@@ -82,8 +82,8 @@ The updated properties will be sent to all players in range.
 This is very useful to get a large amount of variety very cheaply, such as having
 different skins per-player.
 
-As shown in the next section, entities can have a default set of properties defined
-in their definition.
+As shown in the next section, entities can have initial properties
+provided in their definition.
 The default Player properties are defined in the engine, however, so you'll
 need to use `set_properties()` in `on_joinplayer` to set the properties for newly
 joined players.
@@ -115,7 +115,7 @@ function MyEntity:set_message(msg)
 end
 ```
 
-When an entity is emerged, a table is created for it by copying everything from
+When an entity has emerged, a table is created for it by copying everything from
 its type table.
 This table can be used to store variables for that particular entity.
 
@@ -128,7 +128,7 @@ print("entity is at " .. minetest.pos_to_string(object:get_pos()))
 ```
 
 There are a number of available callbacks for use with entities.
-A complete list can be found in [lua_api.txt]({{ page.root }}/lua_api.html#registered-entities)
+A complete list can be found in [lua_api.txt]({{ page.root }}/lua_api.html#registered-entities).
 
 ```lua
 function MyEntity:on_step(dtime)
@@ -159,7 +159,7 @@ would be forgotten when the entity becomes inactive then active again.
 This is because the message isn't saved.
 Rather than saving everything in the entity table, Minetest gives you control over
 how to save things.
-Staticdata is a string which contains all of the custom information that
+Staticdata is a string which contains all the custom information that
 needs to stored.
 
 ```lua
@@ -177,7 +177,7 @@ function MyEntity:on_activate(staticdata, dtime_s)
 end
 ```
 
-Minetest may call `get_staticdata()` as many times as it once and at any time.
+Minetest may call `get_staticdata()` as many times as it wants and at any time.
 This is because Minetest doesn't wait for a MapBlock to become inactive to save
 it, as this would result in data loss. MapBlocks are saved roughly every 18
 seconds, so you should notice a similar interval for `get_staticdata()` being called.
@@ -225,7 +225,7 @@ An Object's `get_pos()` will always return the global position of the object, no
 matter whether it is attached or not.
 `set_attach` takes a relative position, but not as you'd expect.
 The attachment position is relative to the parent's origin as scaled up by 10 times.
-So `0,5,0` would be half a node above the parent's origin.
+So, `0,5,0` would be half a node above the parent's origin.
 
 For 3D models with animations, the bone argument is used to attach the entity
 to a bone.

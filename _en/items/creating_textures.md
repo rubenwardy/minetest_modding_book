@@ -15,15 +15,15 @@ There are many techniques relevant to working on pixel art textures,
 and understanding these techniques will greatly improve
 the quality of the textures you create.
 
+Detailed approaches to creating good pixel art are outside the scope
+of this book, and instead only the most relevant basic techniques
+will be covered.
+There are many [good online tutorials](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
+available, which cover pixel art in much more detail.
+
 * [Learning to Draw](#learning-to-draw)
 * [Techniques](#techniques)
 * [Editors](#editors)
-
-## Learning to Draw
-
-Teaching how to draw good pixel art is out of scope of this book.
-
-* [16×16 Pixel Art Tutorial on photonstorm.com](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
 
 ## Techniques
 
@@ -32,7 +32,7 @@ Teaching how to draw good pixel art is out of scope of this book.
 The pencil tool is available in most editors. When set to its lowest size,
 it allows you to edit one pixel at a time without changing any other parts
 of the image. By manipulating the pixels one at a time, you create clear
-and sharp textures without unnecessary blurring. It also gives you a high
+and sharp textures without unintended blurring. It also gives you a high
 level of precision and control.
 
 ### Tiling
@@ -50,12 +50,10 @@ to look at.
 
 ### Transparency
 
-Transparency is important when designing textures for special nodes,
-such as glass or water, which players should be able to see through,
-and for craft item textures.
-It's important to remember that not all editors support transparency,
-so make sure you choose an editor which is suitable for the textures
-you wish to create.
+Transparency is important when creating textures for nearly all craftitems
+and some nodes, such as glass.
+Not all editors support transparency, so make sure you choose an
+editor which is suitable for the textures you wish to create.
 
 ## Editors
 

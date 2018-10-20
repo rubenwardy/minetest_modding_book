@@ -10,7 +10,7 @@ redirect_from: /en/chapters/abms.html
 ## Introduction
 
 An Active Block Modifier (ABM) is a method of periodically running a
-function on nodes matching a criteria.
+function on nodes matching specific criteria.
 As the name implies, this only works on loaded MapBlocks.
 
 ABMs are best suited for nodes which are frequently found in the world,
@@ -20,8 +20,9 @@ to find matching nodes, but they have a low memory and storage overhead.
 
 For nodes which are uncommon or already use metadata, such as furnaces
 and machines, node timers should be used instead.
-Node timers do not require scanning a MapBlock, but they do require slightly
-more memory and storage to keep track of running timers.
+Node timers don't involve searching all loaded nodes to find matches,
+but instead require slightly more memory and storage for the tracking
+of running timers.
 
 
 * [Registering an ABM](#registering-an-abm)
@@ -55,9 +56,8 @@ minetest.register_abm({
 })
 ```
 
-This ABM runs every ten seconds.
-There is a 1 in 50 chance of the ABM running on each node that has the
-correct name and the correct neighbours.
+This ABM runs every ten seconds, and for each matching node there is
+a 1 in 50 chance of it running.
 If the ABM runs on a node, an alien grass node is placed above it.
 Please be warned, this will delete any node previously located in that position.
 To prevent this you should include a check using minetest.get_node to make sure there is space for the grass.
