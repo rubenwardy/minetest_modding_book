@@ -72,7 +72,7 @@ To use Eclipse and the Koneki Lua plugin when writing Minetest mods:
 * Create a new Lua project from existing source (specify Minetest's base directory).
 * Follow the "Attach to remote Application" debugging instructions from Koneki wiki.
 * It is suggested to add those lines from wiki at the beginning of builtin.lua.
-* Start the debugger. (Set "Break on first line" in debugger configuration to see if it is working).
+* Start the debugger. (Set "Break on first line" in debugger configuration to see if it is working.)
 * Start Minetest.
 * Enter the game to start Lua.
 
@@ -89,8 +89,7 @@ There are three main types of flow:
 
 * Sequence: This runs one statement after another, with no skipping.
 * Selection: This skips over sequences depending on conditions.
-* Iteration: Repeating, looping. This runs the same
-  statements until a condition is met.
+* Iteration: This repeats the same statements until a condition is met.
 
 So, what do statements in Lua look like?
 
@@ -266,7 +265,7 @@ one()
 two()
 ```
 
-The dump() function can turn any variable into a string so the programmer can
+The dump() function converts almost any variable into a string so that the programmer can
 see what it is. In this example, the foo variable will be printed as "bar", including the quotes
 which show it is a string. This reveals that the foo variable was global, because it could be
 accessed from another function than the one in which it was declared.
@@ -294,8 +293,8 @@ Remember that nil means **not initialised**.
 The variable hasn't been assigned a value yet,
 doesn't exist, or has been uninitialised (meaning set to nil).
 
-The same applies to functions. Functions are variables of a special type, and
-should be made local, because other mods could have functions with the same names.
+Functions are variables of a special type, but should also be made local,
+because other mods could have functions with the same names.
 
 API tables should be used to allow other mods to call the functions:
 
@@ -318,7 +317,7 @@ The recommended way to include other Lua scripts in a mod is to use *dofile*.
 dofile(minetest.get_modpath("modname") .. "/script.lua")
 ```
 
-"local" variables declared outside any functions in a script file will be local to that script.
+"local" variables that are not declared inside a function will be local to that script.
 A script can return a value, which is useful for sharing private locals:
 
 ```lua
