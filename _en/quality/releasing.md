@@ -29,7 +29,7 @@ but can be suitable choices for artistic works such as images, text and meshes.
 
 You are allowed any license; however, mods which disallow derivatives are banned from the
 official Minetest forum. (For a mod to be allowed on the forum, other developers must be
-able modify it and release the modified version.)
+able to modify it and release the modified version.)
 
 Please note that **public domain is not a valid licence**, because the definition varies
 in different countries.
@@ -37,17 +37,18 @@ in different countries.
 ### LGPL and CC-BY-SA
 
 This is a common license combination in the Minetest community, and is what
-Minetest and minetest_game use.
-You license your code under LGPL 2.1 and your art under CC-BY-SA. This means:
+Minetest and Minetest Game use.
+You license your code under LGPL 2.1 and your art under CC-BY-SA.
+This means that:
 
 * Anyone can modify, redistribute and sell modified or unmodified versions.
 * If someone modifies your mod, they must give their version the same license.
 * Your copyright notice must be kept.
 
-### WTFPL and CC0
+### CC0
 
-These licenses allows anyone to do what they want with your mod.
-This means they can modify, redistribute, sell, or leave out attribution.
+These licenses allow anyone to do what they want with your mod,
+which means they can modify, redistribute, sell, or leave-out attribution.
 These licenses can be used for both code and art.
 
 It is important to note that WTFPL is strongly discouraged and people may
@@ -61,19 +62,19 @@ in any copies of the mod or of substantial parts of the mod.
 
 ## Packaging
 
-There are some files it is recommended to include in your mod
-when you release it.
+There are some files that are recommended to include in your mod
+before you release it.
 
 ### README.txt
 
-The readme file should state:
+The README file should state:
 
 * What the mod does.
 * What the license is.
-* Current version of mod.
+* What dependencies there are.
 * How to install the mod.
-* What dependencies there are / what the user needs to install.
-* Where to report problems/bugs or get help.
+* Current version of the mod.
+* Optionally, the where to report problems or get help.
 
 ### description.txt
 
@@ -85,7 +86,7 @@ Good example:
 
     Adds soup, cakes, bakes and juices.
 
-Don't do this:
+Avoid this:
 
     (BAD)  The food mod for Minetest.
 
@@ -133,10 +134,7 @@ your mods. This can be done when creating a mod's forum topic (covered below).
 
 You need to zip the files for the mod into a single file. How to do this varies from
 operating system to operating system.
-
-If you use Windows, go to the mod's folder and select all the files.
-Right click, Send To > Compressed (zipped) folder.
-Rename the resulting zip file to the name of your mod.
+This is nearly always done using the right click menu after selecting all files.
 
 When making a forum topic, on the "Create a Topic" page (see below), go to the
 "Upload Attachment" tab at the bottom.
@@ -155,24 +153,13 @@ enter the version of your mod in the comment field.
 You can now create a forum topic. You should create it in
 the ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (Work In Progress)
 forum.\\
-When you consider your mod no longer a work in progress, you can
+When you no longer consider your mod a work in progress, you can
 [request that it be moved](https://forum.minetest.net/viewtopic.php?f=11&t=10418)
 to "Mod Releases."
 
-### Content
-
-The requirements of a forum topic are mostly the same as the recommendations for
-a readme file. The topic should include:
-
-* What the mod does.
-* What the license is.
-* Current version of mod.
-* How to install the mod.
-* What dependencies there are.
-* Where to report problems/bugs or get help.
-* Link to download, or an attachment.
-
-You should also include screenshots of your mod in action, if relevant.
+The forum topic should contain similar content to the README, but should
+be more promotional and also include a link to download the mod.
+It's a good idea to include screenshots of your mod in action, if possible.
 
 The Minetest forum uses bbcode for formatting. Here is an example for a
 mod named superspecial:

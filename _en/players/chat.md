@@ -8,12 +8,12 @@ redirect_from: /en/chapters/chat.html
 cmd_online:
     level: warning
     title: Offline players can run commands
-    message: <p>A player name is passed instead of a player object, because mods
+    message: <p>A player name is passed instead of a player object because mods
              can run commands on behalf of offline players. For example, the IRC
              bridge allows players to run commands without joining the game.</p>
 
              <p>So make sure that you don't assume that the player is online.
-             You can check by seeing if minetest.get_player_by_name returns a player.</p>
+             You can check by seeing if <pre>minetest.get_player_by_name</pre> returns a player.</p>
 
 cb_cmdsprivs:
     level: warning
@@ -27,7 +27,7 @@ cb_cmdsprivs:
 ## Introduction
 
 Mods can interact with player chat, including
-sending messages, intercepting messages and registering chat commands.
+sending messages, intercepting messages, and registering chat commands.
 
 * [Sending Messages to All Players](#sending-messages-to-all-players)
 * [Sending Messages to Specific Players](#sending-messages-to-specific-players)
@@ -64,40 +64,25 @@ only visible to the named player, in this case player1.
 
 ## Chat Commands
 
-To register a chat command, for example /foo, use register_chatcommand:
+To register a chat command, for example `/foo`, use `register_chatcommand`:
 
 ```lua
 minetest.register_chatcommand("foo", {
     privs = {
-        interact = true
+        interact = true,
     },
     func = function(name, param)
         return true, "You said " .. param .. "!"
-    end
+    end,
 })
 ```
 
-Calling /foo bar will display `You said bar!` in the chat console.
+In the above snippet, `interact` is listed as a required
+[privilege](privileges.html) meaning that only players with the `interact` privilege can run the command.
 
-You can restrict which players are able to run commands:
-
-```lua
-privs = {
-    interact = true
-},
-```
-
-This means only players with the `interact` [privilege](privileges.html) can run the
-command. Other players will see an error message informing them of which
-privilege they're missing. If the player has the necessary privileges, the command
-will run and the message will be sent:
-
-```lua
-return true, "You said " .. param .. "!"
-```
-
-This returns two values, a Boolean which shows the command succeeded
-and the chat message to send to the player.
+Chat commands can return up to two values,
+the first being a Boolean indicating success, and the second being a
+message to send to the user.
 
 {% include notice.html notice=page.cmd_online %}
 
@@ -117,30 +102,32 @@ Patterns are a way of extracting stuff from text using rules.
 local to, msg = string.match(param, "^([%a%d_-]+) (*+)$")
 ```
 
-The above implements `/msg <to> <message>`. Let's go through left to right:
+The above code implements `/msg <to> <message>`. Let's go through left to right:
 
 * `^` means match the start of the string.
 * `()` is a matching group - anything that matches stuff in here will be
   returned from string.match.
 * `[]` means accept characters in this list.
-* `%a` means accept any letter and `%d` means any digit.
+* `%a` means accept any letter and `%d` means accept any digit.
 * `[%d%a_-]` means accept any letter or digit or `_` or `-`.
-* `+` means match the last thing one or more times.
+* `+` means match the thing before one or more times.
 * `*` means match any character in this context.
 * `$` means match the end of the string.
 
-Put simply, this matches the name (a word with only letters/numbers/-/_),
-then a space, then the message (one of more of any character). The name and
-message are returned, as they're surrounded in parentheses.
+Put simply, the pattern matches the name (a word with only letters/numbers/-/_),
+then a space, then the message (one or more of any character). The name and
+message are returned, because they're surrounded by parentheses.
 
 That's how most mods implement complex chat commands. A better guide to Lua
 Patterns would probably be the
 [lua-users.org tutorial](http://lua-users.org/wiki/PatternsTutorial)
 or the [PIL documentation](https://www.lua.org/pil/20.2.html).
 
+<p class="book_hide">
 There is also a library written by the author of this book which can be used
-to make complex chat commands without Patterns called
-[ChatCmdBuilder](chat_complex.html).
+to make complex chat commands without patterns called
+<a href="chat_complex.html">Chat Command Builder</a>.
+</p>
 
 
 ## Intercepting Messages
@@ -155,8 +142,8 @@ end)
 ```
 
 By returning false, you allow the chat message to be sent by the default
-handler. You can actually remove the line `return false`, and it would still
-work the same.
+handler. You can actually remove the line `return false` and it would still
+work the same, because `nil` is returned implicitly and is treated like false.
 
 {% include notice.html notice=page.cb_cmdsprivs %}
 

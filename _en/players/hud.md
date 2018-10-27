@@ -10,7 +10,7 @@ redirect_from: /en/chapters/hud.html
 
 Heads Up Display (HUD) elements allow you to show text, images, and other graphical elements.
 
-The HUD doesn't accept user input. For that, you should use a [Formspec](formspecs.html).
+The HUD doesn't accept user input; for that, you should use a [formspec](formspecs.html).
 
 * [Positioning](#positioning)
     * [Position and Offset](#position-and-offset)
@@ -43,8 +43,8 @@ the HUD needs to work well on all screen types.
 Minetest's solution to this is to specify the location of an element using both
 a percentage position and an offset.
 The percentage position is relative to the screen size, so to place an element
-in the center of the screen you would need to provide a percentage position of half
-the screen, eg (50%, 50%), and an offset of (0, 0).
+in the centre of the screen, you would need to provide a percentage position of half
+the screen, e.g. (50%, 50%), and an offset of (0, 0).
 
 The offset is then used to move an element relative to the percentage position.
 
@@ -55,7 +55,7 @@ The offset is then used to move an element relative to the percentage position.
 Alignment is where the result of position and offset is on the element -
 for example, `{x = -1.0, y = 0.0}` will make the result of position and offset point
 to the left of the element's bounds. This is particularly useful when you want to
-make a text element left, center, or right justified.
+make a text element aligned to the left, centre, or right.
 
 <figure>
     <img
@@ -65,7 +65,7 @@ make a text element left, center, or right justified.
 </figure>
 
 The above diagram shows 3 windows (blue), each with a single HUD element (yellow)
-with a different alignment each time. The arrow is the result of the position
+and a different alignment each time. The arrow is the result of the position
 and offset calculation.
 
 ### Scoreboard
@@ -79,7 +79,7 @@ score panel like so:
         alt="screenshot of the HUD we're aiming for">
 </figure>
 
-In the above screenshot all the elements have the same percentage position -
+In the above screenshot, all the elements have the same percentage position
 (100%, 50%) - but different offsets. This allows the whole thing to be anchored
 to the right of the window, but to resize without breaking.
 
@@ -107,16 +107,21 @@ or remove a HUD element.
 The element's type is given using the `hud_elem_type` property in the definition
 table. The meaning of other properties varies based on this type.
 
-`scale` is the maximum bounds of text, text outside these bounds is cropped, eg: `{x=100, y=100}`.
+`scale` is the maximum bounds of text; text outside these bounds is cropped, e.g.: `{x=100, y=100}`.
 
-`number` is the text's colour, and is in [Hexadecimal form](http://www.colorpicker.com/), eg: `0xFF0000`.
+`number` is the text's colour, and is in [hexadecimal form](http://www.colorpicker.com/), e.g.: `0xFF0000`.
 
 
 ### Our Example
 
-Let's go ahead, and place all the text in our score panel:
+Let's go ahead and place all the text in our score panel:
 
 ```lua
+-- Get the dig and place count from storage, or default to 0
+local meta        = player:get_meta()
+local digs_text   = "Digs: " .. meta:get_int("score:digs")
+local places_text = "Places: " .. meta:get_int("score:places")
+
 player:hud_add({
     hud_elem_type = "text",
     position  = {x = 1, y = 0.5},
@@ -126,12 +131,6 @@ player:hud_add({
     scale     = { x = 100, y = 30},
     number    = 0xFFFFFF,
 })
-
--- Get the dig and place count from storage, or default to 0
-local digs        = tonumber(player:get_attribute("score:digs") or 0)
-local digs_text   = "Digs: " .. digs
-local places      = tonumber(player:get_attribute("score:digs") or 0)
-local places_text = "Places: " .. places
 
 player:hud_add({
     hud_elem_type = "text",
@@ -191,8 +190,8 @@ You will now have this:
 The `text` field is used to provide the image name.
 
 If a co-ordinate is positive, then it is a scale factor with 1 being the
-original image size, and 2 being double the size, and so on.
-However, if a co-ordinate is negative it is a percentage of the screensize.
+original image size, 2 being double the size, and so on.
+However, if a co-ordinate is negative, it is a percentage of the screensize.
 For example, `x=-100` is 100% of the width.
 
 ### Scale
@@ -200,7 +199,7 @@ For example, `x=-100` is 100% of the width.
 Let's make the progress bar for our score panel as an example of scale:
 
 ```lua
-local percent = tonumber(player:get_attribute("score:score") or 0.2)
+local percent = tonumber(meta:get("score:score") or 0.2)
 
 player:hud_add({
     hud_elem_type = "image",
@@ -226,7 +225,7 @@ There is one problem however, it won't update when the stats change.
 
 ## Changing an Element
 
-You can use the ID returned by the hud_add method to update or remove it later.
+You can use the ID returned by the hud_add method to update it or remove it later.
 
 ```lua
 local idx = player:hud_add({
@@ -261,12 +260,11 @@ local saved_huds = {}
 function score.update_hud(player)
     local player_name = player:get_player_name()
 
-    local digs = tonumber(player:get_attribute("score:digs") or 0)
-    local digs_text   = "Digs: " .. digs
-    local places = tonumber(player:get_attribute("score:digs") or 0)
-    local places_text = "Places: " .. places
-
-    local percent = tonumber(player:get_attribute("score:score") or 0.2)
+    -- Get the dig and place count from storage, or default to 0
+    local meta        = player:get_meta()
+    local digs_text   = "Digs: " .. meta:get_int("score:digs")
+    local places_text = "Places: " .. meta:get_int("score:places")
+    local percent     = tonumber(meta:get("score:score") or 0.2)
 
     local ids = saved_huds[player_name]
     if ids then

@@ -95,7 +95,7 @@ print(meta:get_string("count")) --> "3"
 ### Special Keys
 
 `infotext` is used in Node Metadata to show a tooltip when hovering the crosshair over a node.
-This is useful in order to show the owner of the node or the status.
+This is useful when showing the ownership or status of a node.
 
 `description` is used in ItemStack Metadata to override the description when
 hovering over the stack in an inventory.
@@ -109,10 +109,10 @@ item or node.
 Tables must be converted to strings before they can be stored.
 Minetest offers two formats for doing this: Lua and JSON.
 
-The Lua method tends to be a lot faster and exactly matches the format Lua
-uses for tables.
-JSON is a more standard format and is better structured, and so is well suited
-when you need to exchange information with another program.
+The Lua method tends to be a lot faster and matches the format Lua
+uses for tables, while JSON is a more standard format, is better
+structured, and is well suited when you need to exchange information
+with another program.
 
 ```lua
 local data = { username = "player1", score = 1234 }
@@ -164,8 +164,6 @@ If the mod is likely to be used on a server and will store lots of data,
 it's a good idea to offer a database storage method.
 You should make this optional by separating how the data is stored and where
 it is used.
-Using a database such as sqlite requires using the insecure environment, and
-can be painful for the user to set up.
 
 ```lua
 local backend
@@ -200,11 +198,17 @@ return backend
 
 The backend_sqlite would do a similar thing, but use the Lua *lsqlite3* library
 instead of mod storage.
-You'll need to request an insecure environment and require the library:
+
+Using a database such as SQLite requires using an insecure environment.
+An insecure environment is a table that is only available to mods
+explicitly whitelisted by the user, and it contains a less restricted
+copy of the Lua API which could be abused if available to malicious mods.
+Insecure environments will be covered in more detail in the
+[Security](../quality/security.html) chapter.
 
 ```lua
 local ie = minetest.request_insecure_environment()
-assert(ie, "Please add mymod to secure.trusted_mods")
+assert(ie, "Please add mymod to secure.trusted_mods in the settings")
 
 local _sql = ie.require("lsqlite3")
 -- Prevent other mods from using the global sqlite3 library
@@ -214,8 +218,6 @@ end
 ```
 
 Teaching about SQL or how to use the lsqlite3 library is out of scope for this book.
-Insecure environments will be covered in more detail in the
-[security](../quality/security.html) chapter.
 
 ## Deciding Which to Use
 
@@ -224,16 +226,20 @@ how it is formatted, and how large it is.
 As a guideline, small data is up to 10K, medium data is up to 10MB, and large
 data is any size above that.
 
-Node metadata is a good choice when the data is related to the node.
+Node metadata is a good choice when you need to store node-related data.
 Storing medium data is fairly efficient if you make it private.
 
 Item metadata should not be used to store anything but small amounts of data as it is not
 possible to avoid sending it to the client.
-The data will also be copied every time the stack is moved, or is accessed from Lua.
+The data will also be copied every time the stack is moved, or accessed from Lua.
 
 Mod storage is good for medium data but writing large data may be inefficient.
-It's better to use a database for large data, to avoid having to write all the
+It's better to use a database for large data to avoid having to write all the
 data out on every save.
+
+Databases are only viable for servers due to the
+need to whitelist the mod to access an insecure environment.
+They're well suited for large data sets.
 
 ## Your Turn
 
