@@ -34,18 +34,6 @@ of pending timers.
 ## Node Timers
 
 Node timers are directly tied to a single node.
-When a node timer is up, the `on_timer` method in the node's definition table will
-be called.
-The method only takes a single parameter, the position of the node.
-
-```lua
-minetest.register_node("autodoors:door_open", {
-    on_timer = function(pos)
-        minetest.set_node(pos, { name = "autodoors:door" })
-    end
-})
-```
-
 You can manage node timers by obtaining a NodeTimerRef object.
 
 ```lua
@@ -63,6 +51,25 @@ end
 
 timer:stop()
 ```
+
+When a node timer is up, the `on_timer` method in the node's definition table will
+be called.
+The method only takes a single parameter, the position of the node.
+
+```lua
+minetest.register_node("autodoors:door_open", {
+    on_timer = function(pos)
+        minetest.set_node(pos, { name = "autodoors:door" })
+        return false
+    end
+})
+```
+
+Returning true in `on_timer` will cause the timer to run again for the same interval.
+
+You may have noticed a limitation with timers: for optimisation reasons, it's
+only possible to have one type of timer per node type, and only one timer running per node.
+
 
 ## Active Block Modifiers
 
