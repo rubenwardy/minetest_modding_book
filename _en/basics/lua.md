@@ -56,21 +56,6 @@ Other editors are available, of course.
 * Linux: Kate, Gedit, [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 * OSX: [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 
-### Integrated Programming Environments
-
-IDEs allow you to debug code like a native application.
-These are harder to set up than just a text editor.
-
-One such IDE is Eclipse with the Koneki Lua plugin:
-
-* Install Eclipse + Koneki.
-* Create a new Lua project from existing source (specify Minetest's base directory).
-* Follow instructions from Koneki wiki on how to do "Attach to remote Application" debugging (just a few steps).
-* It is suggested to add those lines from wiki at beginning of builtin.lua.
-* Start the debugger (set "Break on first line" in debugger configuration to see if it is working).
-* Start Minetest.
-* Enter the game to startup Lua.
-
 ## Coding in Lua
 
 ### Program Flow

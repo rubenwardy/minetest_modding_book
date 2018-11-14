@@ -1,34 +1,70 @@
 ---
-title: Active Block Modifiers
+title: Node Timers and ABMs
 layout: default
 root: ../..
 idx: 3.2
 description: Learn how to make ABMs to change blocks.
-redirect_from: /en/chapters/abms.html
+redirect_from:
+- /en/chapters/abms.html
+- /en/map/abms.html
 ---
 
 ## Introduction
 
-An Active Block Modifier (ABM) is a method of periodically running a
-function on nodes matching specific criteria.
-As the name implies, this only works on loaded MapBlocks.
+Periodically running a function on certain nodes is a common task.
+Minetest provides two methods of doing this: Active Block Modifiers (ABMs) and node timers.
 
-ABMs are best suited for nodes which are frequently found in the world,
+ABMs scan all loaded MapBlocks looking for nodes that match a criteria.
+They are best suited for nodes which are frequently found in the world,
 such as grass.
-ABMs have a high CPU overhead, as Minetest needs to scan all Active Blocks
-to find matching nodes, but they have a low memory and storage overhead.
+They have a high CPU overhead, but a low memory and storage overhead.
 
-For nodes which are uncommon or already use metadata, such as furnaces
+For nodes that are uncommon or already use metadata, such as furnaces
 and machines, node timers should be used instead.
-Node timers don't involve searching all loaded nodes to find matches,
+Node timers work by keeping track of pending timers in each MapBlock, and then
+running them when they expire.
+This means that timers don't need to search all loaded nodes to find matches,
 but instead require slightly more memory and storage for the tracking
-of running timers.
+of pending timers.
 
-
-* [Registering an ABM](#registering-an-abm)
+* [Node Timers](#node-timers)
+* [Active Block Modifiers](#active-block-modifiers)
 * [Your Turn](#your-turn)
 
-## Registering an ABM
+## Node Timers
+
+Node timers are directly tied to a single node.
+When a node timer is up, the `on_timer` method in the node's definition table will
+be called.
+The method only takes a single parameter, the position of the node.
+
+```lua
+minetest.register_node("autodoors:door_open", {
+    on_timer = function(pos)
+        minetest.set_node(pos, { name = "autodoors:door" })
+    end
+})
+```
+
+You can manage node timers by obtaining a NodeTimerRef object.
+
+```lua
+local timer = minetest.get_node_timer(pos)
+timer:start(10.5) -- in seconds
+```
+
+You can also check the status or stop the timer:
+
+```lua
+if timer:is_started() then
+    print("The timer is running, and has " .. timer:get_timeout() .. "s remaining!")
+    print(timer:get_elapsed() .. "s has elapsed.")
+end
+
+timer:stop()
+```
+
+## Active Block Modifiers
 
 Alien grass, for the purposes of this chapter, is a type of grass which
 has a chance to appear near water.
