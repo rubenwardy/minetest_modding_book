@@ -242,7 +242,7 @@ minetest.register_craft({
 })
 ```
 
-The type field isn't actually needed for shapeless crafts, as shapeless is the
+The type field isn't actually needed for shaped crafts, as shaped is the
 default craft type.
 
 ### Shapeless
