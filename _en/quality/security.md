@@ -91,11 +91,11 @@ local ie = minetest.request_insecure_environment()
 ie.os.execute(("path/to/prog %d"):format(3))
 ```
 
-`String.format` is a function in the global shared table `String`.
+`string.format` is a function in the global shared table `string`.
 A malicious mod could override this function and pass stuff to os.execute:
 
 ```lua
-String.format = function()
+string.format = function()
     return "xdg-open 'http://example.com'"
 end
 ```
