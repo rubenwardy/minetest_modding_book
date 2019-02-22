@@ -131,7 +131,7 @@ addons:
 before_install:
   - luarocks install --local luacheck
 script:
-- $HOME/.luarocks/bin/luacheck --no-color .
+- $HOME/.luarocks/bin/luacheck .
 notifications:
   email: false
 ```
@@ -140,7 +140,7 @@ If your project is a game rather than a mod or mod pack,
 change the line after `script:` to:
 
 ```yml
-- $HOME/.luarocks/bin/luacheck --no-color mods/
+- $HOME/.luarocks/bin/luacheck mods/
 ```
 
 Now commit and push to Github. Go to your project's page on Github, and click
