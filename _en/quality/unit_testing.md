@@ -176,7 +176,7 @@ addons:
 before_install:
   - luarocks install --local luacheck && luarocks install --local busted
 script:
-- $HOME/.luarocks/bin/luacheck --no-color .
+- $HOME/.luarocks/bin/luacheck .
 - $HOME/.luarocks/bin/busted .
 notifications:
   email: false
