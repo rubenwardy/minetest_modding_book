@@ -13,7 +13,6 @@ In this chapter we will talk about scripting in Lua, the tools required,
 and go over some techniques which you will probably find useful.
 
 * [Code Editors](#code-editors)
-    * [Integrated Programming Environments](#integrated-programming-environments)
 * [Coding in Lua](#coding-in-lua)
     * [Program Flow](#program-flow)
     * [Variable Types](#variable-types)
