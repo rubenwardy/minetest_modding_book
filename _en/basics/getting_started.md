@@ -15,6 +15,7 @@ Understanding the basic structure of a mod's folder is an essential skill when
 creating mods.
 
 * [What are Games and Mods?](#what-are-games-and-mods)
+* [Where are mods stored?](#where-are-mods-stored)
 * [Mod Directory](#mod-directory)
 * [Dependencies](#dependencies)
 * [Mod Packs](#mod-packs)
@@ -42,11 +43,53 @@ Both the mods contained in a game and third-party mods use the same API.
 This book will cover the main parts of the Minetest API,
 and is applicable for both game developers and modders.
 
-## Mod Directory
+
+## Where are mods stored?
+
+<a name="mod-locations"></a>
 
 Each mod has its own directory where its Lua code, textures, models, and
-sounds are placed. These directories need to be placed in a mod location such as
-minetest/mods.
+sounds are placed. Minetest checks in a number of different locations for
+mods. These locations are commonly called *mod load paths*.
+
+For a given world/save game, three mod locations are checked.
+They are, in order:
+
+1. Game mods. These are the mods that form the game that the world is running.
+   Eg: `minetest/games/minetest_game/mods/`, `/usr/share/minetest/games/minetest/`
+2. Global mods, the location to which mods are nearly always installed to.
+   If in doubt, place them here.
+   Eg: `minetest/mods/`
+3. World mods, the location to store mods which are specific to a
+   particular world.
+   Eg: `minetest/worlds/world/worldmods/`
+
+Minetest will check the locations in the order given above. If it encounters a mod
+with a name the same as one found previously, the later mod will be loaded in place
+of the earlier mod.
+This means that you can override game mods by placing a mod with the same name
+in the global mod location.
+
+The actual location of each mod load path depends on what operating system you're
+using, and how you installed Minetest.
+
+* **Windows:**
+    * For portable builds, ie: from a .zip file, just go to the directory where
+      you extracted the zip and look for the `games`, `mods`, and `worlds`
+      directories.
+    * For installed builds, ie: from a setup.exe,
+      look in C:\\\\Minetest or C:\\\\Games\\Minetest.
+* **GNU/Linux:**
+    * For system-wide installs, look in `~/.minetest`.
+      Note that `~` means the user home directory, and that files and directories
+      starting with a dot (`.`) are hidden.
+    * For portable installs, look in the build directory.
+    * For Flatpak installs, look in `~/.var/app/net.minetest.Minetest/.minetest/mods/`.
+* **MacOS**
+    * Look in `~/Library/Application Support/minetest/`.
+      Note that `~` means the user home, ie: `/Users/USERNAME/`.
+
+## Mod Directory
 
 ![Find the mod's directory]({{ page.root }}/static/folder_modfolder.jpg)
 
@@ -69,6 +112,7 @@ To find out if a mod name is available, try searching for it on
 Only the init.lua file is required in a mod for it to run on game load;
 however, mod.conf is recommended and other components may be needed
 depending on the mod's functionality.
+
 
 ## Dependencies
 
