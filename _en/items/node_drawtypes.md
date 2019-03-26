@@ -9,38 +9,39 @@ redirect_from: /en/chapters/node_drawtypes.html
 
 ## Introduction
 
-In this chapter we explain all the different types of node drawtypes there are.
+The method by which a node is drawn is called a *drawtype*. There are many
+available drawtypes. The behaviour of a drawtype can be controlled
+by providing properties in the node type definition. These properties
+are fixed for all instances of this node. It is possible to control some properties
+per-node using something called `param2`.
 
-First of all, what is a drawtype?
-A drawtype defines how the node is to be drawn.
-A torch looks different to water, water looks different to stone.
+In the previous chapter, the concept of nodes and items was introduced, but a
+full definition of a node wasn't given. The Minetest world is a 3D grid of
+positions. Each position is called a node, and consists of the node type
+(name) and two parameters (param1 and param2). The function
+`minetest.register_node` is a bit misleading in that it doesn't actually
+register a node - it registers a new *type* of node.
 
-The string you use to determine the drawtype in the node definition is the same as
-the title of the sections, except in lower case.
+The node params are used to control how a node is individually rendered.
+`param1` is used to store the lighting of a node, and the meaning of
+`param2` depends on the `paramtype2` property of the node type definition.
 
-* [Normal](#normal)
-* [Airlike](#airlike)
-* [Liquid](#liquid)
-    * [FlowingLiquid](#flowingliquid)
-* [Glasslike](#glasslike)
-* [Glasslike_Framed](#glasslike_framed)
-    * [Glasslike_Framed_Optional](#glasslike_framed_optional)
-* [Allfaces](#allfaces)
-    * [Allfaces_Optional](#allfaces_optional)
-* [Torchlike](#torchlike)
-* [Nodebox](#nodebox)
-* [Mesh](#mesh)
-* [Signlike](#signlike)
-* [Plantlike](#plantlike)
-* [Firelike](#firelike)
+* [Cubic Nodes: Normal and Allfaces](#cubic-nodes-normal-and-allfaces)
+* [Glasslike Nodes](#glasslike-nodes)
+    * [Glasslike_Framed](#glasslike_framed)
+* [Airlike Nodes](#airlike-nodes)
+* [Lighting and Sunlight Propagation](#lighting-and-sunlight-propagation)
+* [Liquid Nodes](#liquid-nodes)
+* [Node Boxes](#node-boxes)
+    * [Wallmounted Node Boxes](#wallmounted-node-boxes)
+* [Mesh Nodes](#mesh-nodes)
+* [Signlike Nodes](#signlike-nodes)
+* [Plantlike Nodes](#plantlike-Nodes)
+* [Firelike Nodes](#firelike-nodes)
+* [More Drawtypes](#more-drawtypes)
 
-This article is not complete yet. The following drawtypes are missing:
 
-* Fencelike
-* Plantlike rooted
-* Raillike
-
-## Normal
+## Cubic Nodes: Normal and Allfaces
 
 <figure class="right_image">
     <img src="{{ page.root }}//static/drawtype_normal.png" alt="Normal Drawtype">
@@ -49,43 +50,100 @@ This article is not complete yet. The following drawtypes are missing:
     </figcaption>
 </figure>
 
-This is, well, the normal drawtypes.
-Nodes that use this will be cubes with textures for each side, simple-as.\\
-Here is the example from the [Nodes, Items and Crafting](nodes_items_crafting.html#registering-a-basic-node) chapter.
-Notice how you don't need to declare the drawtype.
+The normal drawtype is typically used to render a cubic node.
+If the side of a normal node is against a solid side, then that side won't be rendered,
+resulting in a large performance gain.
+
+In contrast, the allfaces drawtype will still render the inner side when up against
+a solid node. This is good for nodes with partially transparent sides, such as
+leaf nodes. You can use the allfaces_optional drawtype to allow users to opt-out
+of the slower drawing, in which case it'll act like a normal node.
 
 ```lua
 minetest.register_node("mymod:diamond", {
     description = "Alien Diamond",
-    tiles = {
-        "mymod_diamond_up.png",
-        "mymod_diamond_down.png",
-        "mymod_diamond_right.png",
-        "mymod_diamond_left.png",
-        "mymod_diamond_back.png",
-        "mymod_diamond_front.png"
-    },
-    is_ground_content = true,
+    tiles = {"mymod_diamond.png"},
     groups = {cracky = 3},
-    drop = "mymod:diamond_fragments"
+})
+
+minetest.register_node("default:leaves", {
+    description = "Leaves",
+    drawtype = "allfaces_optional",
+    tiles = {"default_leaves.png"}
+})
+```
+
+Note: the normal drawtype is the default drawtype, so you don't need to explicitly
+specify it.
+
+
+## Glasslike Nodes
+
+The difference between glasslike and normal nodes is that placing a glasslike node
+next to a normal node won't cause the side of the normal node to be hidden.
+This is useful because glasslike nodes tend to be transparent, and so using a normal
+drawtype would result in the ability to see through the world.
+
+<figure>
+    <img src="{{ page.root }}//static/drawtype_glasslike_edges.png" alt="Glasslike's Edges">
+    <figcaption>
+        Glasslike's Edges
+    </figcaption>
+</figure>
+
+```lua
+minetest.register_node("default:obsidian_glass", {
+    description = "Obsidian Glass",
+    drawtype = "glasslike",
+    tiles = {"default_obsidian_glass.png"},
+    paramtype = "light",
+    is_ground_content = false,
+    sunlight_propagates = true,
+    sounds = default.node_sound_glass_defaults(),
+    groups = {cracky=3,oddly_breakable_by_hand=3},
+})
+```
+
+### Glasslike_Framed
+
+This makes the node's edge go around the whole thing with a 3D effect, rather
+than individual nodes, like the following:
+
+<figure>
+    <img src="{{ page.root }}//static/drawtype_glasslike_framed.png" alt="Glasslike_framed's Edges">
+    <figcaption>
+        Glasslike_Framed's Edges
+    </figcaption>
+</figure>
+
+You can use the glasslike_framed_optional drawtype to allow the user to *opt-in*
+to the framed appearance.
+
+```lua
+minetest.register_node("default:glass", {
+    description = "Glass",
+    drawtype = "glasslike_framed",
+    tiles = {"default_glass.png", "default_glass_detail.png"},
+    inventory_image = minetest.inventorycube("default_glass.png"),
+    paramtype = "light",
+    sunlight_propagates = true, -- Sunlight can shine through block
+    groups = {cracky = 3, oddly_breakable_by_hand = 3},
+    sounds = default.node_sound_glass_defaults()
 })
 ```
 
 
-## Airlike
+## Airlike Nodes
 
-These nodes are see through and thus have no textures.
+These nodes are not rendered, and thus have no textures.
 
 ```lua
 minetest.register_node("myair:air", {
     description = "MyAir (you hacker you!)",
     drawtype = "airlike",
-
     paramtype = "light",
-    -- ^ Allows light to propagate through the node with the
-    --   light value falling by 1 per node.
+    sunlight_propagates = true,
 
-    sunlight_propagates = true, -- Sunlight shines through
     walkable     = false, -- Would make the player collide with the air node
     pointable    = false, -- You can't select the node
     diggable     = false, -- You can't dig the node
@@ -99,7 +157,27 @@ minetest.register_node("myair:air", {
 })
 ```
 
-## Liquid
+
+## Lighting and Sunlight Propagation
+
+The lighting of a node is stored in param1. In order to work out how to shade
+a node's side, the light value of the neighbouring node is used.
+Because of this, solid nodes don't have light values because they block light.
+
+By default, a node type won't allow light to be stored in any node instances.
+It's usually desirable for some nodes such as glass and air to be able to
+let light through. To do this, there are two properties which need to be defined:
+
+```lua
+paramtype = "light",
+sunlight_propagates = true,
+```
+
+The first line means that param1 does, in fact, store the light level.
+The second line means that sunlight should go through this node without decreasing in value.
+
+
+## Liquid Nodes
 
 <figure class="right_image">
     <img src="{{ page.root }}//static/drawtype_liquid.png" alt="Liquid Drawtype">
@@ -108,9 +186,8 @@ minetest.register_node("myair:air", {
     </figcaption>
 </figure>
 
-These nodes are complete liquid nodes, the liquid flows outwards from position
-using the flowing liquid drawtype.
-For each liquid node you should also have a flowing liquid node.
+Each type of liquid requires two node definitions - one for the liquid source, and
+another for flowing liquid.
 
 ```lua
 -- Some properties have been removed as they are beyond
@@ -177,138 +254,11 @@ minetest.register_node("default:water_source", {
 })
 ```
 
-### FlowingLiquid
+Flowing nodes have a similar definition, but with a different name and animation.
+See default:water_flowing in the default mod in minetest_game for a full example.
 
-See default:water_flowing in the default mod in minetest_game, it is mostly
-the same as the above example.
 
-## Glasslike
-
-<figure class="right_image">
-    <img src="{{ page.root }}//static/drawtype_glasslike.png" alt="Glasslike Drawtype">
-    <figcaption>
-        Glasslike Drawtype
-    </figcaption>
-</figure>
-
-When you place multiple glasslike nodes together, you'll notice that the internal
-edges are hidden, like this:
-
-<figure>
-    <img src="{{ page.root }}//static/drawtype_glasslike_edges.png" alt="Glasslike's Edges">
-    <figcaption>
-        Glasslike's Edges
-    </figcaption>
-</figure>
-
-```lua
-minetest.register_node("default:obsidian_glass", {
-    description = "Obsidian Glass",
-    drawtype = "glasslike",
-    tiles = {"default_obsidian_glass.png"},
-    paramtype = "light",
-    is_ground_content = false,
-    sunlight_propagates = true,
-    sounds = default.node_sound_glass_defaults(),
-    groups = {cracky=3,oddly_breakable_by_hand=3},
-})
-```
-
-## Glasslike_Framed
-
-This makes the node's edge go around the whole thing with a 3D effect, rather
-than individual nodes, like the following:
-
-<figure>
-    <img src="{{ page.root }}//static/drawtype_glasslike_framed.png" alt="Glasslike_framed's Edges">
-    <figcaption>
-        Glasslike_Framed's Edges
-    </figcaption>
-</figure>
-
-```lua
-minetest.register_node("default:glass", {
-    description = "Glass",
-    drawtype = "glasslike_framed",
-
-    tiles = {"default_glass.png", "default_glass_detail.png"},
-    inventory_image = minetest.inventorycube("default_glass.png"),
-
-    paramtype = "light",
-    sunlight_propagates = true, -- Sunlight can shine through block
-    is_ground_content = false, -- Stops caves from being generated over this node.
-
-    groups = {cracky = 3, oddly_breakable_by_hand = 3},
-    sounds = default.node_sound_glass_defaults()
-})
-```
-
-### Glasslike_Framed_Optional
-
-"optional" drawtypes need less rendering time if deactivated on the client's side.
-
-## Allfaces
-
-<figure class="right_image">
-    <img src="{{ page.root }}//static/drawtype_allfaces.png" alt="Allfaces drawtype">
-    <figcaption>
-        Allfaces drawtype
-    </figcaption>
-</figure>
-
-Allfaces are nodes which show all of their faces, even if they're against
-another node. This is mainly used by leaves as you don't want a gaping space when
-looking through the transparent holes, but instead a nice leaves effect.
-
-```lua
-minetest.register_node("default:leaves", {
-    description = "Leaves",
-    drawtype = "allfaces_optional",
-    tiles = {"default_leaves.png"}
-})
-```
-
-### Allfaces_Optional
-
-Allows clients to disable it using `new_style_leaves = 0`, requiring less rendering time.
-
-TorchLike
----------
-
-TorchLike nodes are 2D nodes which allow you to have different textures
-depending on whether they are placed against a wall, on the floor, or on the ceiling.
-
-TorchLike nodes are not restricted to torches, you could use them for switches or other
-items which need to have different textures depending on where they are placed.
-
-```lua
-minetest.register_node("foobar:torch", {
-    description = "Foobar Torch",
-    drawtype = "torchlike",
-    tiles = {
-        {"foobar_torch_floor.png"},
-        {"foobar_torch_ceiling.png"},
-        {"foobar_torch_wall.png"}
-    },
-    inventory_image = "foobar_torch_floor.png",
-    wield_image = "default_torch_floor.png",
-    light_source = LIGHT_MAX-1,
-
-    -- Determines how the torch is selected, ie: the wire box around it.
-    -- each value is { x1, y1, z1, x2, y2, z2 }
-    -- (x1, y1, y1) is the bottom front left corner
-    -- (x2, y2, y2) is the opposite - top back right.
-    -- Similar to the nodebox format.
-    selection_box = {
-        type = "wallmounted",
-        wall_top = {-0.1, 0.5-0.6, -0.1, 0.1, 0.5, 0.1},
-        wall_bottom = {-0.1, -0.5, -0.1, 0.1, -0.5+0.6, 0.1},
-        wall_side = {-0.5, -0.3, -0.1, -0.5+0.3, 0.3, 0.1},
-    }
-})
-```
-
-## Nodebox
+## Node Boxes
 
 <figure class="right_image">
     <img src="{{ page.root }}//static/drawtype_nodebox.gif" alt="Nodebox drawtype">
@@ -317,7 +267,7 @@ minetest.register_node("foobar:torch", {
     </figcaption>
 </figure>
 
-Nodeboxes allow you to create a node which is not cubic, but is instead made out
+Node boxes allow you to create a node which is not cubic, but is instead made out
 of as many cuboids as you like.
 
 ```lua
@@ -346,13 +296,11 @@ The first three numbers are the co-ordinates, from -0.5 to 0.5 inclusive, of
 the bottom front left most corner, the last three numbers are the opposite corner.
 They are in the form X, Y, Z, where Y is up.
 
-`paramtype = "light"` allows light to propagate from or through the node
-with light value.
-
 You can use the [NodeBoxEditor](https://forum.minetest.net/viewtopic.php?f=14&t=2840) to
 create node boxes by dragging the edges, it is more visual than doing it by hand.
 
-### Wallmounted Nodebox
+
+### Wallmounted Node Boxes
 
 Sometimes you want different nodeboxes for when it is placed on the floor, wall, or ceiling like with torches.
 
@@ -380,7 +328,7 @@ minetest.register_node("default:sign_wall", {
 })
 ```
 
-## Mesh
+## Mesh Nodes
 
 Whilst node boxes are generally easier to make, they are limited in that
 they can only consist of cuboids. Node boxes are also unoptimised;
@@ -412,7 +360,8 @@ share a mesh provided by another mod you depend on. For example, a mod that
 adds more types of furniture may want to share the model provided by a basic
 furniture mod.
 
-## Signlike
+
+## Signlike Nodes
 
 Signlike nodes are flat nodes with can be mounted on the sides of other nodes.
 
@@ -435,7 +384,8 @@ minetest.register_node("default:ladder_wood", {
 })
 ```
 
-## Plantlike
+
+## Plantlike Nodes
 
 <figure class="right_image">
     <img src="{{ page.root }}//static/drawtype_plantlike.png" alt="Plantlike Drawtype">
@@ -460,7 +410,7 @@ minetest.register_node("default:papyrus", {
 })
 ```
 
-## Firelike
+## Firelike Nodes
 
 Firelike is similar to plantlike, except that it is designed to "cling" to walls
 and ceilings.
@@ -480,3 +430,17 @@ minetest.register_node("mymod:clingere", {
     tiles = { "mymod:clinger" },
 })
 ```
+
+## More Drawtypes
+
+This is not a comprehensive list, there's more types including:
+
+* Fencelike
+* Plantlike rooted - for underwater plants
+* Raillike - for cart tracks
+* Torchlike - for 2D wall/floor/ceiling nodes.
+  The torches in Minetest Game actually use two different node definitions of
+  mesh nodes (default:torch and default:torch_wall).
+
+As always, read the [Lua API documentation](../../lua_api.html#node-drawtypes)
+for the complete list.
