@@ -27,21 +27,21 @@ creating mods.
 The power of Minetest is the ability to easily develop games without the need
 to create your own voxel graphics, voxel algorithms, or fancy networking code.
 
-In Minetest, a game is a collection of modules which work together to provide the
+In Minetest, a **Game** is a collection of modules which work together to provide the
 content and behaviour of a game.
-A module, commonly known as a mod, is a collection of scripts and resources.
-It's possible to make a game using only one mod, but this is rarely done because it
+A module, commonly known as a **mod**, is a collection of scripts and resources.
+It's possible to make a Game using only one mod, but this is rarely done because it
 reduces the ease by which parts of the game can be adjusted and replaced
 independently of others.
 
-It's also possible to distribute mods outside of a game, in which case they
+It's also possible to distribute mods outside of a Game, in which case they
 are also *mods* in the more traditional sense - modifications. These mods adjust
-or extend the features of a game.
+or extend the features of a Game.
 
-Both the mods contained in a game and third-party mods use the same API.
+Both the mods contained in a Game and third-party mods use the same API.
 
 This book will cover the main parts of the Minetest API,
-and is applicable for both game developers and modders.
+and is applicable for both Game developers and modders.
 
 
 ## Where are mods stored?
@@ -55,7 +55,7 @@ mods. These locations are commonly called *mod load paths*.
 For a given world/save game, three mod locations are checked.
 They are, in order:
 
-1. Game mods. These are the mods that form the game that the world is running.
+1. Game mods. These are the mods that form the Game that the world is running.
    Eg: `minetest/games/minetest_game/mods/`, `/usr/share/minetest/games/minetest/`
 2. Global mods, the location to which mods are nearly always installed to.
    If in doubt, place them here.
@@ -67,7 +67,7 @@ They are, in order:
 Minetest will check the locations in the order given above. If it encounters a mod
 with a name the same as one found previously, the later mod will be loaded in place
 of the earlier mod.
-This means that you can override game mods by placing a mod with the same name
+This means that you can override Game mods by placing a mod with the same name
 in the global mod location.
 
 The actual location of each mod load path depends on what operating system you're
@@ -170,7 +170,7 @@ a player, but don't want to make them download each one individually.
     └── mymod (optional)
         └── ... mod files
 
-Please note that a modpack is not a *game*.
+Please note that a modpack is not a *Game*.
 Games have their own organisational structure which will be explained in the
 Games chapter.
 
@@ -206,10 +206,10 @@ minetest.register_node("mymod:node", {
     depends = default
 
 This mod has the name "mymod". It has three text files: init.lua, mod.conf,
-and depends.txt.\\
+and depends.txt. <br/>
 The script prints a message and then registers a node –
-which will be explained in the next chapter.\\
+which will be explained in the next chapter. <br/>
 There's a single dependency, the
 [default mod](https://content.minetest.net/metapackages/default/), which is
-usually found in Minetest Game.\\
+usually found in Minetest Game. <br/>
 There is also a texture in textures/ for the node.
