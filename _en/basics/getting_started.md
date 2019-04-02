@@ -70,6 +70,9 @@ of the earlier mod.
 This means that you can override Game mods by placing a mod with the same name
 in the global mod location.
 
+Minetest enables Game and World mods for a specific world automatically
+whereas Global mods have to be toggled in the main menu.
+
 The actual location of each mod load path depends on what operating system you're
 using, and how you installed Minetest.
 
