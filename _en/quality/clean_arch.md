@@ -18,9 +18,9 @@ meant to be prescriptive, but to instead give you an idea of the possibilities.
 There is no one good way of designing a mod, and good mod design is very subjective.
 
 - [Cohesion, Coupling, and Separation of Concerns](#cohesion-coupling-and-separation-of-concerns)
+- [Observer](#observer)
 - [Model-View-Controller](#model-view-controller)
   - [API-View](#api-view)
-- [Observer](#observer)
 - [Conclusion](#conclusion)
 
 
@@ -51,6 +51,49 @@ will be more feasible.
 
 Note that these apply both when thinking about the relationship between mods,
 and the relationship between areas inside a mod.
+
+
+## Observer
+
+A simple way to separate different areas of code is to use the Observer pattern.
+
+Let's take the example of unlocking an achievement when a player first kills a
+rare animal. The naïve approach would be to have achievement code in the mob
+kill function, checking the mob name and unlocking the award if it matches.
+This is a bad idea, however, as it makes the mobs mod coupled to the achievements
+code. If you kept on doing this - for example, adding XP to the mob death code -
+you could end up with a lot of messy dependencies.
+
+Enter the Observer pattern. Instead of the mymobs mod caring about awards,
+the mymobs mod exposes a way for other areas of code to register their
+interest in an event and receive data about the event.
+
+```lua
+mymobs.registered_on_death = {}
+function mymobs.register_on_death(func)
+    table.insert(mymobs.registered_on_death, func)
+end
+
+-- in mob death code
+for i=1, #mymobs.registered_on_death do
+    mymobs.registered_on_death[i](entity, reason)
+end
+```
+
+Then the other code registers its interest:
+
+```lua
+mymobs.register_on_death(function(mob, reason)
+    if reason.type == "punch" and reason.object and
+            reason.object:is_player() then
+        awards.notify_mob_kill(reason.object, mob.name)
+    end
+end)
+```
+
+You may be thinking - wait a second, this looks awfully familiar. And you're right!
+The Minetest API is heavily Observer-based to stop the engine having to care about
+what is listening to something.
 
 
 ## Model-View-Controller
@@ -198,52 +241,6 @@ Separating the mod like this means that you can very easily test the API part,
 as it doesn't use any Minetest APIs - as shown in the
 [next chapter](unit_testing.html) and seen in the crafting mod.
 
-
-## Observer
-
-Reducing coupling may seem hard to do, to begin with, but you'll make a lot of
-progress by splitting your code up using a design like the one given above.
-It's not always possible to remove the need for one area to communicate with
-another, but there are ways to decouple anyway - one example being the Observer
-pattern.
-
-Let's take the example of unlocking an achievement when a player first kills a
-rare animal. The naïve approach would be to have achievement code in the mob
-kill function, checking the mob name and unlocking the award if it matches.
-This is a bad idea, however, as it makes the mobs mod coupled to the achievements
-code. If you kept on doing this - for example, adding XP to the mob death code -
-you could end up with a lot of messy dependencies.
-
-Enter the Observer pattern. Instead of the mymobs mod caring about awards,
-the mymobs mod exposes a way for other areas of code to register their
-interest in an event and receive data about the event.
-
-```lua
-mymobs.registered_on_death = {}
-function mymobs.register_on_death(func)
-    table.insert(mymobs.registered_on_death, func)
-end
-
--- mob death code
-for i=1, #mymobs.registered_on_death do
-    mymobs.registered_on_death[i](entity, reason)
-end
-```
-
-Then the other code registers its interest:
-
-```lua
-mymobs.register_on_death(function(mob, reason)
-    if reason.type == "punch" and reason.object and
-            reason.object:is_player() then
-        awards.notify_mob_kill(reason.object, mob.name)
-    end
-end)
-```
-
-You may be thinking - wait a second, this looks awfully familiar. And you're right!
-The Minetest API is heavily Observer-based to stop the engine having to care about
-what is listening to something.
 
 ## Conclusion
 
