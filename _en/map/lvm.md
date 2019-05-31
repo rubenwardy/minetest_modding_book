@@ -7,21 +7,21 @@ description: Learn how to use LVMs to speed up map operations.
 redirect_from: /en/chapters/lvm.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 The functions outlined in the [Basic Map Operations](environment.html) chapter
 are convenient and easy to use, but for large areas they are inefficient.
 Every time you call `set_node` or `get_node`, your mod needs to communicate with
 the engine. This results in constant individual copying operations between the
-engine and your mod, which is slow, and will quickly decrease the performance of
+engine and your mod, which is slow and will quickly decrease the performance of
 your game. Using a Lua Voxel Manipulator (LVM) can be a better alternative.
 
-* [Concepts](#concepts)
-* [Reading into the LVM](#reading-into-the-lvm)
-* [Reading Nodes](#reading-nodes)
-* [Writing Nodes](#writing-nodes)
-* [Example](#example)
-* [Your Turn](#your-turn)
+- [Concepts](#concepts)
+- [Reading into the LVM](#reading-into-the-lvm)
+- [Reading Nodes](#reading-nodes)
+- [Writing Nodes](#writing-nodes)
+- [Example](#example)
+- [Your Turn](#your-turn)
 
 ## Concepts
 
@@ -78,8 +78,8 @@ print(data[idx])
 ```
 
 When you run this, you'll notice that `data[vi]` is an integer. This is because
-the engine doesn't store nodes using their name string, as string comparison
-is slow. Instead, the engine uses an integer called a content ID.
+the engine doesn't store nodes using strings, for performance reasons.
+Instead, the engine uses an integer called a content ID.
 You can find out the content ID for a particular type of node with
 `get_content_id()`. For example:
 
@@ -97,7 +97,7 @@ end
 ```
 
 It is recommended that you find and store the content IDs of nodes types
-at load time, because the IDs of a node type will never change. Make sure to store
+at load time because the IDs of a node type will never change. Make sure to store
 the IDs in a local variable for performance reasons.
 
 Nodes in an LVM data array are stored in reverse co-ordinate order, so you should
@@ -128,7 +128,7 @@ another, and avoid *cache thrashing*.
 
 ## Writing Nodes
 
-First you need to set the new content ID in the data array:
+First, you need to set the new content ID in the data array:
 
 ```lua
 for z = min.z, max.z do
@@ -172,7 +172,7 @@ local function grass_to_dirt(pos1, pos2)
     local a = VoxelArea:new{
         MinEdge = emin,
         MaxEdge = emax
-    }    
+    }
     local data = vm:get_data()
 
     -- Modify data

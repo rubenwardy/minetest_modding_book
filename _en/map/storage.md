@@ -9,22 +9,22 @@ redirect_from:
   - /en/map/node_metadata.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
-In this chapter you will learn how you can store data.
+In this chapter, you will learn how you can store data.
 
-* [Metadata](#metadata)
-    * [What is Metadata?](#what-is-metadata)
-    * [Obtaining a Metadata Object](#obtaining-a-metadata-object)
-    * [Reading and Writing](#reading-and-writing)
-    * [Special Keys](#special-keys)
-    * [Private Metadata](#private-metadata)
-    * [Storing Tables](#storing-tables)
-    * [Lua Tables](#lua-tables)
-* [Mod Storage](#mod-storage)
-* [Databases](#databases)
-* [Deciding Which to Use](#deciding-which-to-use)
-* [Your Turn](#your-turn)
+- [Metadata](#metadata)
+  - [What is Metadata?](#what-is-metadata)
+  - [Obtaining a Metadata Object](#obtaining-a-metadata-object)
+  - [Reading and Writing](#reading-and-writing)
+  - [Special Keys](#special-keys)
+  - [Storing Tables](#storing-tables)
+  - [Private Metadata](#private-metadata)
+  - [Lua Tables](#lua-tables)
+- [Mod Storage](#mod-storage)
+- [Databases](#databases)
+- [Deciding Which to Use](#deciding-which-to-use)
+- [Your Turn](#your-turn)
 
 ## Metadata
 

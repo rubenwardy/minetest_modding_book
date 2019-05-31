@@ -7,19 +7,20 @@ description: Use LuaCheck to find errors
 redirect_from: /en/chapters/luacheck.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
-In this chapter you will learn how to use a tool called LuaCheck to automatically
+In this chapter, you will learn how to use a tool called LuaCheck to automatically
 scan your mod for any mistakes. This tool can be used in combination with your
 editor to provide alerts to any mistakes.
 
-* [Installing LuaCheck](#installing-luacheck)
-    * [Windows](#windows)
-    * [Linux](#linux)
-* [Running LuaCheck](#running-luacheck)
-* [Configuring LuaCheck](#configuring-luacheck)
-    * [Troubleshooting](#troubleshooting)
-* [Checking Commits with Travis](#checking-commits-with-travis)
+- [Installing LuaCheck](#installing-luacheck)
+  - [Windows](#windows)
+  - [Linux](#linux)
+- [Running LuaCheck](#running-luacheck)
+- [Configuring LuaCheck](#configuring-luacheck)
+  - [Troubleshooting](#troubleshooting)
+- [Using with editor](#using-with-editor)
+- [Checking Commits with Travis](#checking-commits-with-travis)
 
 ## Installing LuaCheck
 
@@ -30,7 +31,7 @@ Simply download luacheck.exe from
 
 ### Linux
 
-First you'll need to install LuaRocks:
+First, you'll need to install LuaRocks:
 
     sudo apt install luarocks
 
@@ -80,10 +81,10 @@ read_globals = {
 }
 ```
 
-Next you'll need to test that it works by running LuaCheck. You should get a lot
-less errors this time. Starting at the first error you get, either modify the
-configuration to take it into account, or if there's a bug then fix it - take
-a look at the list below.
+Next, you'll need to test that it works by running LuaCheck. You should get a lot
+fewer errors this time. Starting at the first error you get, modify the code to
+remove the issue, or modify the configuration if the code is correct. See the list
+below.
 
 ### Troubleshooting
 
@@ -93,7 +94,7 @@ a look at the list below.
   add it to `globals`. Remove from `read_globals` if present.
   Otherwise, add any missing `local`s to the mod.
 * **mutating read-only global variable 'foobar'** - Move `foobar` from `read_globals` to
-  `globals`.
+  `globals`, or stop writing to foobar.
 
 ## Using with editor
 
@@ -102,6 +103,7 @@ to show you errors without running a command. Most editors will likely have a pl
 available.
 
 * **Atom** - `linter-luacheck`.
+* **VSCode** - Ctrl+P, then paste: `ext install dwenegar.vscode-luacheck`
 * **Sublime** - Install using package-control:
         [SublimeLinter](https://github.com/SublimeLinter/SublimeLinter),
         [SublimeLinter-luacheck](https://github.com/SublimeLinter/SublimeLinter-luacheck).
@@ -115,7 +117,7 @@ depending on whether LuaCheck finds any mistakes. This is especially helpful for
 when your project receives a pull request - you'll be able to see the LuaCheck output
 without downloading the code.
 
-First you should visit [travis-ci.org](https://travis-ci.org/) and sign in with
+First, you should visit [travis-ci.org](https://travis-ci.org/) and sign in with
 your Github account. Then find your project's repo in your Travis profile,
 and enable Travis by flipping the switch.
 
@@ -145,6 +147,6 @@ change the line after `script:` to:
 
 Now commit and push to Github. Go to your project's page on Github, and click
 'commits'. You should see an orange disc next to the commit you just made.
-After a while it should change either into a green tick or a red cross depending on the
+After awhile it should change either into a green tick or a red cross depending on the
 outcome of LuaCheck. In either case, you can click the icon to see the build logs
 and the output of LuaCheck.

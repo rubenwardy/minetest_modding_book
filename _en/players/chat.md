@@ -24,16 +24,16 @@ cb_cmdsprivs:
 
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Mods can interact with player chat, including
 sending messages, intercepting messages, and registering chat commands.
 
-* [Sending Messages to All Players](#sending-messages-to-all-players)
-* [Sending Messages to Specific Players](#sending-messages-to-specific-players)
-* [Chat Commands](#chat-commands)
-* [Complex Subcommands](#complex-subcommands)
-* [Intercepting Messages](#intercepting-messages)
+- [Sending Messages to All Players](#sending-messages-to-all-players)
+- [Sending Messages to Specific Players](#sending-messages-to-specific-players)
+- [Chat Commands](#chat-commands)
+- [Complex Subcommands](#complex-subcommands)
+- [Intercepting Messages](#intercepting-messages)
 
 ## Sending Messages to All Players
 
@@ -60,7 +60,7 @@ minetest.chat_send_player("player1", "This is a chat message for player1")
 ```
 
 This message displays in the same manner as messages to all players, but is
-only visible to the named player, in this case player1.
+only visible to the named player, in this case, player1.
 
 ## Chat Commands
 

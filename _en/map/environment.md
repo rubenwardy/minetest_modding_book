@@ -7,19 +7,19 @@ description: Basic operations like set_node and get_node
 redirect_from: /en/chapters/environment.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
-In this chapter you will learn how to perform basic actions on the map.
+In this chapter, you will learn how to perform basic actions on the map.
 
-* [Map Structure](#map-structure)
-* [Reading](#reading)
-    * [Reading Nodes](#reading-nodes)
-    * [Finding Nodes](#finding-nodes)
-* [Writing](#writing)
-    * [Writing Nodes](#writing-nodes)
-    * [Removing Nodes](#removing-nodes)
-* [Loading Blocks](#loading-blocks)
-* [Deleting Blocks](#deleting-blocks)
+- [Map Structure](#map-structure)
+- [Reading](#reading)
+  - [Reading Nodes](#reading-nodes)
+  - [Finding Nodes](#finding-nodes)
+- [Writing](#writing)
+  - [Writing Nodes](#writing-nodes)
+  - [Removing Nodes](#removing-nodes)
+- [Loading Blocks](#loading-blocks)
+- [Deleting Blocks](#deleting-blocks)
 
 ## Map Structure
 
@@ -95,7 +95,7 @@ local grow_speed = 1 + #pos_list
 ```
 
 The above code doesn't quite do what we want, as it checks based on area, whereas
-`find_node_near` checks based on range. In order to fix this we will,
+`find_node_near` checks based on range. In order to fix this, we will,
 unfortunately, need to manually check the range ourselves.
 
 ```lua
@@ -159,7 +159,7 @@ minetest.remove_node(pos)
 minetest.set_node(pos, { name = "air" })
 ```
 
-In fact, remove_node will call set_node with name being air.
+In fact, remove_node will call set_node with the name being air.
 
 ## Loading Blocks
 
@@ -204,7 +204,7 @@ local function emerge_callback(pos, action,
 end
 ```
 
-This is not the only way of loading blocks; using a LVM will also cause the
+This is not the only way of loading blocks; using an LVM will also cause the
 encompassed blocks to be loaded synchronously.
 
 ## Deleting Blocks

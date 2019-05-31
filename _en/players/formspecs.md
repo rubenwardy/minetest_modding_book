@@ -13,7 +13,7 @@ submit_vuln:
              and make sure that they should be allowed to perform the action.
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 <figure class="right_image">
     <img src="{{ page.root }}//static/formspec_example.png" alt="Furnace Inventory">
@@ -27,11 +27,16 @@ A formspec is the specification code for a form.
 In Minetest, forms are windows such as the player inventory, which can contain labels,
 buttons and fields to allow you to enter information.
 
-* [Formspec Syntax](#formspec-syntax)
-* [Displaying Forms](#displaying-forms)
-* [Callbacks](#callbacks)
-* [Contexts](#contexts)
-* [Node Meta Formspecs](#node-meta-formspecs)
+- [Formspec Syntax](#formspec-syntax)
+  - [Size[w, h]](#sizew-h)
+  - [Field[x, y; w, h; name; label; default]](#fieldx-y-w-h-name-label-default)
+  - [Other Elements](#other-elements)
+- [Displaying Formspecs](#displaying-formspecs)
+  - [Example](#example)
+- [Callbacks](#callbacks)
+  - [Fields](#fields)
+- [Contexts](#contexts)
+- [Node Meta Formspecs](#node-meta-formspecs)
 
 Note that if you do not need to get user input, for example when you only need
 to provide information to the player, you should consider using Heads Up Display
@@ -184,7 +189,7 @@ was clicked. In this case, the button called 'exit' was clicked, so fields.exit
 will be true.
 
 Some elements can submit the form without the user clicking a button,
-such as a check box. You can detect these cases by looking
+such as a checkbox. You can detect these cases by looking
 for a clicked button.
 
 ```lua
@@ -265,7 +270,7 @@ end)
 ## Node Meta Formspecs
 
 minetest.show_formspec is not the only way to show a formspec; you can also
-add formspecs to a [node's meta data](node_metadata.html). For example,
+add formspecs to a [node's metadata](node_metadata.html). For example,
 this is used with chests to allow for faster opening times -
 you don't need to wait for the server to send the player the chest formspec.
 

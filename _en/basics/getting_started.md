@@ -9,17 +9,23 @@ redirect_from:
 - /en/basics/folders.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Understanding the basic structure of a mod's folder is an essential skill when
 creating mods.
 
-* [What are Games and Mods?](#what-are-games-and-mods)
-* [Where are mods stored?](#where-are-mods-stored)
-* [Mod Directory](#mod-directory)
-* [Dependencies](#dependencies)
-* [Mod Packs](#mod-packs)
-* [Example](#example)
+- [What are Games and Mods?](#what-are-games-and-mods)
+- [Where are mods stored?](#where-are-mods-stored)
+- [Mod Directory](#mod-directory)
+- [Dependencies](#dependencies)
+  - [mod.conf](#modconf)
+  - [depends.txt](#dependstxt)
+- [Mod Packs](#mod-packs)
+- [Example](#example)
+  - [Mod Folder](#mod-folder)
+  - [depends.txt](#dependstxt-1)
+  - [init.lua](#initlua)
+  - [mod.conf](#modconf-1)
 
 
 ## What are Games and Mods?

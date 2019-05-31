@@ -7,7 +7,7 @@ description: An introduction to making textures in your editor of choice, an a g
 redirect_from: /en/chapters/creating_textures.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Being able to create and optimise textures is a very useful skill when
 developing for Minetest.
@@ -21,9 +21,13 @@ will be covered.
 There are many [good online tutorials](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
 available, which cover pixel art in much more detail.
 
-* [Learning to Draw](#learning-to-draw)
-* [Techniques](#techniques)
-* [Editors](#editors)
+- [Techniques](#techniques)
+  - [Using the Pencil](#using-the-pencil)
+  - [Tiling](#tiling)
+  - [Transparency](#transparency)
+- [Editors](#editors)
+  - [MS Paint](#ms-paint)
+  - [GIMP](#gimp)
 
 ## Techniques
 

@@ -5,16 +5,16 @@ root: ../..
 idx: 7.3
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Security is very important in making sure that your mod doesn't cause the server
 owner to lose data or control.
 
-* [Core Concepts](#core-concepts)
-* [Formspecs](#formspecs)
-    * [Never Trust Submissions](#never-trust-submissions)
-    * [Time of Check isn't Time of Use](#time_of_check_isnt_time_of_use)
-* [(Insecure) Environments](#insecure-environments)
+- [Core Concepts](#core-concepts)
+- [Formspecs](#formspecs)
+  - [Never Trust Submissions](#never-trust-submissions)
+  - [Time of Check isn't Time of Use](#time-of-check-isnt-time-of-use)
+- [(Insecure) Environments](#insecure-environments)
 
 ## Core Concepts
 

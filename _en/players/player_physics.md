@@ -6,19 +6,20 @@ idx: 4.4
 redirect_from: /en/chapters/player_physics.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Player physics can be modified using physics overrides.
 Physics overrides can set the walking speed, jump speed,
 and gravity constants.
-Physics overrides are set on a player-by-player basis,
+Physics overrides are set on a player-by-player basis
 and are multipliers.
 For example, a value of 2 for gravity would make gravity twice as strong.
 
-* [Basic Example](#basic_example)
-* [Available Overrides](#available_overrides)
-* [Mod Incompatibility](#mod_incompatibility)
-* [Your Turn](#your_turn)
+- [Basic Example](#basic-example)
+- [Available Overrides](#available-overrides)
+  - [Old Movement Behaviour](#old-movement-behaviour)
+- [Mod Incompatibility](#mod-incompatibility)
+- [Your Turn](#your-turn)
 
 ## Basic Example
 
@@ -46,7 +47,7 @@ these can be:
 * speed: multiplier to default walking speed value (default: 1)
 * jump: multiplier to default jump value (default: 1)
 * gravity: multiplier to default gravity value (default: 1)
-* sneak: whether player can sneak (default: true)
+* sneak: whether the player can sneak (default: true)
 
 ### Old Movement Behaviour
 

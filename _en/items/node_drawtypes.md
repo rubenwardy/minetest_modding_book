@@ -7,7 +7,7 @@ description: Guide to all drawtypes, including node boxes/nodeboxes and mesh nod
 redirect_from: /en/chapters/node_drawtypes.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 The method by which a node is drawn is called a *drawtype*. There are many
 available drawtypes. The behaviour of a drawtype can be controlled
@@ -26,19 +26,19 @@ The node params are used to control how a node is individually rendered.
 `param1` is used to store the lighting of a node, and the meaning of
 `param2` depends on the `paramtype2` property of the node type definition.
 
-* [Cubic Nodes: Normal and Allfaces](#cubic-nodes-normal-and-allfaces)
-* [Glasslike Nodes](#glasslike-nodes)
-    * [Glasslike_Framed](#glasslike_framed)
-* [Airlike Nodes](#airlike-nodes)
-* [Lighting and Sunlight Propagation](#lighting-and-sunlight-propagation)
-* [Liquid Nodes](#liquid-nodes)
-* [Node Boxes](#node-boxes)
-    * [Wallmounted Node Boxes](#wallmounted-node-boxes)
-* [Mesh Nodes](#mesh-nodes)
-* [Signlike Nodes](#signlike-nodes)
-* [Plantlike Nodes](#plantlike-Nodes)
-* [Firelike Nodes](#firelike-nodes)
-* [More Drawtypes](#more-drawtypes)
+- [Cubic Nodes: Normal and Allfaces](#cubic-nodes-normal-and-allfaces)
+- [Glasslike Nodes](#glasslike-nodes)
+  - [Glasslike_Framed](#glasslikeframed)
+- [Airlike Nodes](#airlike-nodes)
+- [Lighting and Sunlight Propagation](#lighting-and-sunlight-propagation)
+- [Liquid Nodes](#liquid-nodes)
+- [Node Boxes](#node-boxes)
+  - [Wallmounted Node Boxes](#wallmounted-node-boxes)
+- [Mesh Nodes](#mesh-nodes)
+- [Signlike Nodes](#signlike-nodes)
+- [Plantlike Nodes](#plantlike-nodes)
+- [Firelike Nodes](#firelike-nodes)
+- [More Drawtypes](#more-drawtypes)
 
 
 ## Cubic Nodes: Normal and Allfaces
@@ -135,7 +135,7 @@ minetest.register_node("default:glass", {
 
 ## Airlike Nodes
 
-These nodes are not rendered, and thus have no textures.
+These nodes are not rendered and thus have no textures.
 
 ```lua
 minetest.register_node("myair:air", {
@@ -284,7 +284,7 @@ minetest.register_node("stairs:stair_stone", {
 })
 ```
 
-The most important part is the nodebox table:
+The most important part is the node box table:
 
 ```lua
 {-0.5, -0.5, -0.5,       0.5,    0,  0.5},
@@ -350,12 +350,12 @@ minetest.register_node("mymod:meshy", {
     },
 
     -- Path to the mesh
-    mesh = "mymod_meshy.b3d",    
+    mesh = "mymod_meshy.b3d",
 })
 ```
 
 Make sure that the mesh is available in a `models` directory.
-Most of the time the mesh should be in your mod's folder, however it's okay to
+Most of the time the mesh should be in your mod's folder, however, it's okay to
 share a mesh provided by another mod you depend on. For example, a mod that
 adds more types of furniture may want to share the model provided by a basic
 furniture mod.
@@ -370,7 +370,7 @@ instead use the `nodebox` drawtype to provide a 3D effect. The `signlike` drawty
 is, however, commonly used by ladders.
 
 ```lua
-minetest.register_node("default:ladder_wood", {    
+minetest.register_node("default:ladder_wood", {
     drawtype = "signlike",
 
     tiles = {"default_ladder_wood.png"},
@@ -433,7 +433,7 @@ minetest.register_node("mymod:clingere", {
 
 ## More Drawtypes
 
-This is not a comprehensive list, there's more types including:
+This is not a comprehensive list, there are more types including:
 
 * Fencelike
 * Plantlike rooted - for underwater plants

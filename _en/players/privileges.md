@@ -7,17 +7,17 @@ description: Registering privs.
 redirect_from: /en/chapters/privileges.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Privileges, often called privs for short, give players the ability to perform
 certain actions. Server owners can grant and revoke privileges to control
 which abilities each player has.
 
-* [When to use Privileges](#when-to-use-privileges)
-* [Declaring Privileges](#declaring-privileges)
-* [Checking for Privileges](#checking-for-privileges)
-* [Getting and Setting Privileges](#getting-and-setting-privileges)
-* [Adding Privileges to basic_privs](#adding-privileges-to-basic-privs)
+- [When to use Privileges](#when-to-use-privileges)
+- [Declaring Privileges](#declaring-privileges)
+- [Checking for Privileges](#checking-for-privileges)
+- [Getting and Setting Privileges](#getting-and-setting-privileges)
+- [Adding Privileges to basic_privs](#adding-privileges-to-basicprivs)
 
 ## When to use Privileges
 
@@ -120,13 +120,12 @@ the privilege name and the value being a boolean.
 ## Adding Privileges to basic_privs
 
 Players with the `basic_privs` privilege are able to grant and revoke a limited
-set of privileges. It's common to give this privilege to moderators, so that
+set of privileges. It's common to give this privilege to moderators so that
 they can grant and revoke `interact` and `shout`, but can't grant themselves or other
-players privileges such as `give` and `server`, which have greater potential for abuse.
+players privileges with greater potential for abuse such as `give` and `server`.
 
-To add a privilege to `basic_privs` and adjust which privileges your moderators can
+To add a privilege to `basic_privs`, and adjust which privileges your moderators can
 grant and revoke from other players, you must change the `basic_privs` setting.
-To do this, you must edit the minetest.conf file.
 
 By default, `basic_privs` has the following value:
 

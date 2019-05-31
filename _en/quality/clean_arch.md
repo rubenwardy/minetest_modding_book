@@ -5,7 +5,7 @@ root: ../..
 idx: 7.4
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Once your mod reaches a respectable size, you'll find it harder and harder to
 keep the code clean and free of bugs. This is an especially big problem when using
@@ -17,12 +17,11 @@ and common design patterns to achieve that. Please note that this chapter isn't
 meant to be prescriptive, but to instead give you an idea of the possibilities.
 There is no one good way of designing a mod, and good mod design is very subjective.
 
-* [Cohesion, Coupling, and Separation of Concerns](#cohesion-coupling-and-separation-of-concerns)
-* [Model-View-Controller](#model-view-controller)
-    * [API-View](#api-view)
-* [Observer](#observer)
-* [Conclusion](#conclusion)
-
+- [Cohesion, Coupling, and Separation of Concerns](#cohesion-coupling-and-separation-of-concerns)
+- [Model-View-Controller](#model-view-controller)
+  - [API-View](#api-view)
+- [Observer](#observer)
+- [Conclusion](#conclusion)
 
 
 ## Cohesion, Coupling, and Separation of Concerns
@@ -116,7 +115,7 @@ end
 ```
 
 Your event handlers will have to interact with the Minetest API. You should keep
-the amount of calculations to a minimum, as you won't be able to test this area
+the number of calculations to a minimum, as you won't be able to test this area
 very easily.
 
 ```lua
@@ -202,7 +201,7 @@ as it doesn't use any Minetest APIs - as shown in the
 
 ## Observer
 
-Reducing coupling may seem hard to do to begin with, but you'll make a lot of
+Reducing coupling may seem hard to do, to begin with, but you'll make a lot of
 progress by splitting your code up using a design like the one given above.
 It's not always possible to remove the need for one area to communicate with
 another, but there are ways to decouple anyway - one example being the Observer
@@ -211,7 +210,7 @@ pattern.
 Let's take the example of unlocking an achievement when a player first kills a
 rare animal. The naïve approach would be to have achievement code in the mob
 kill function, checking the mob name and unlocking the award if it matches.
-This is a bad idea however, as it makes the mobs mod coupled to the achievements
+This is a bad idea, however, as it makes the mobs mod coupled to the achievements
 code. If you kept on doing this - for example, adding XP to the mob death code -
 you could end up with a lot of messy dependencies.
 

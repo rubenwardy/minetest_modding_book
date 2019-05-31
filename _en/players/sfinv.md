@@ -6,7 +6,7 @@ idx: 4.7
 redirect_from: /en/chapters/sfinv.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Simple Fast Inventory (SFINV) is a mod found in Minetest Game that is used to
 create the player's inventory [formspec](formspecs.html). SFINV comes with
@@ -17,10 +17,11 @@ because it is entirely possible that a mod or game decides to show them in
 some other format instead.
 For example, multiple pages could be shown in one formspec.
 
-* [Registering a Page](#registering-a-page)
-* [Receiving events](#receiving-events)
-* [Conditionally showing to players](#conditionally-showing-to-players)
-* [on_enter and on_leave callbacks](#on_enter-and-on_leave-callbacks)
+- [Registering a Page](#registering-a-page)
+- [Receiving events](#receiving-events)
+- [Conditionally showing to players](#conditionally-showing-to-players)
+- [on_enter and on_leave callbacks](#onenter-and-onleave-callbacks)
+- [Adding to an existing page](#adding-to-an-existing-page)
 
 ## Registering a Page
 
@@ -194,7 +195,7 @@ minetest.register_on_priv_revoke(on_grant_revoke)
 
 ## on_enter and on_leave callbacks
 
-A player *enters* a tab when the tab is selected, and *leaves* a
+A player *enters* a tab when the tab is selected and *leaves* a
 tab when another tab is about to be selected.
 It's possible for multiple pages to be selected if a custom theme is
 used.

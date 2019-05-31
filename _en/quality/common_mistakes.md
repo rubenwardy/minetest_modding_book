@@ -6,13 +6,13 @@ idx: 7.1
 redirect_from: /en/chapters/common_mistakes.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 This chapter details common mistakes, and how to avoid them.
 
-* [Never Store ObjectRefs (ie: players or entities)](#never-store-objectrefs-ie-players-or-entities)
-* [Don't Trust Formspec Submissions](#dont-trust-formspec-submissions)
-* [Set ItemStacks After Changing Them](#set-itemstacks-after-changing-them)
+- [Never Store ObjectRefs (ie: players or entities)](#never-store-objectrefs-ie-players-or-entities)
+- [Don't Trust Formspec Submissions](#dont-trust-formspec-submissions)
+- [Set ItemStacks After Changing Them](#set-itemstacks-after-changing-them)
 
 ## Never Store ObjectRefs (ie: players or entities)
 

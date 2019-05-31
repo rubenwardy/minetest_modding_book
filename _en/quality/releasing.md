@@ -6,15 +6,24 @@ idx: 7.6
 redirect_from: /en/chapters/releasing.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Releasing, or publishing, a mod allows other people to make use of it. Once a mod has been
 released it might be used in singleplayer games or on servers, including public servers.
 
-* [License Choices](#license-choices)
-* [Packaging](#packaging)
-* [Uploading](#uploading)
-* [Forum Topic](#forum-topic)
+- [License Choices](#license-choices)
+  - [LGPL and CC-BY-SA](#lgpl-and-cc-by-sa)
+  - [CC0](#cc0)
+  - [MIT](#mit)
+- [Packaging](#packaging)
+  - [README.txt](#readmetxt)
+  - [description.txt](#descriptiontxt)
+  - [screenshot.png](#screenshotpng)
+- [Uploading](#uploading)
+  - [Version Control Systems](#version-control-systems)
+  - [Forum Attachments](#forum-attachments)
+- [Forum Topic](#forum-topic)
+  - [Subject](#subject)
 
 ## License Choices
 

@@ -7,20 +7,20 @@ description: Use ChatCmdBuilder to make a complex chat command
 redirect_from: /en/chapters/chat_complex.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 This chapter will show you how to make complex chat commands with ChatCmdBuilder,
 such as `/msg <name> <message>`, `/team join <teamname>` or `/team leave <teamname>`.
 
 Note that ChatCmdBuilder is a library created by the author of this book, and most
 modders tend to use the method outlined in the
-[chat commnds](chat.html#complex-subcommands) chapter.
+[Chat and Commands](chat.html#complex-subcommands) chapter.
 
-* Why ChatCmdBuilder?
-* Routes.
-* Subcommand functions.
-* Installing ChatCmdBuilder.
-* Admin complex command.
+- [Why ChatCmdBuilder?](#why-chatcmdbuilder)
+- [Routes](#routes)
+- [Subcommand functions](#subcommand-functions)
+- [Installing ChatCmdBuilder](#installing-chatcmdbuilder)
+- [Admin complex command](#admin-complex-command)
 
 ## Why ChatCmdBuilder?
 
@@ -30,13 +30,13 @@ Traditionally mods implemented these complex commands using Lua patterns.
 local name = string.match(param, "^join ([%a%d_-]+)")
 ```
 
-I however find Lua patterns annoying to write and unreadable.
+I, however, find Lua patterns annoying to write and unreadable.
 Because of this, I created a library to do this for you.
 
 ```lua
 ChatCmdBuilder.new("sethp", function(cmd)
     cmd:sub(":target :hp:int", function(name, target, hp)
-        local player = minetest.get_player_by_name(target)        
+        local player = minetest.get_player_by_name(target)
         if player then
             player:set_hp(hp)
             return true, "Killed " .. target
@@ -55,10 +55,10 @@ end, {
 
 `ChatCmdBuilder.new(name, setup_func, def)` creates a new chat command called
 `name`. It then calls the function passed to it (`setup_func`), which then creates
-sub commands. Each `cmd:sub(route, func)` is a sub command.
+subcommands. Each `cmd:sub(route, func)` is a subcommand.
 
-A sub command is a particular response to an input param. When a player runs
-the chat command, the first sub command that matches their input will be run,
+A subcommand is a particular response to an input param. When a player runs
+the chat command, the first subcommand that matches their input will be run,
 and no others. If no subcommands match, then the user will be told of the invalid
 syntax. For example, in the above code snippet if a player
 types something of the form `/sethp username 12` then the function passed
@@ -89,7 +89,7 @@ Valid types are:
 * `text`   - Any string. There can only ever be one text variable,
              no variables or terminals can come afterwards.
 
-In `:name :hp:int`, there are two variables there:
+In `:name :hp:int`, there are two variables:
 
 * `name` - type of `word` as no type is specified. Accepts any string without spaces.
 * `hp` - type of `int`

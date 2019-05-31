@@ -9,7 +9,7 @@ redirect_from:
 - /en/map/abms.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Periodically running a function on certain nodes is a common task.
 Minetest provides two methods of doing this: Active Block Modifiers (ABMs) and node timers.
@@ -27,9 +27,9 @@ This means that timers don't need to search all loaded nodes to find matches,
 but instead require slightly more memory and storage for the tracking
 of pending timers.
 
-* [Node Timers](#node-timers)
-* [Active Block Modifiers](#active-block-modifiers)
-* [Your Turn](#your-turn)
+- [Node Timers](#node-timers)
+- [Active Block Modifiers](#active-block-modifiers)
+- [Your Turn](#your-turn)
 
 ## Node Timers
 
@@ -99,7 +99,7 @@ minetest.register_abm({
 })
 ```
 
-This ABM runs every ten seconds, and for each matching node there is
+This ABM runs every ten seconds, and for each matching node, there is
 a 1 in 50 chance of it running.
 If the ABM runs on a node, an alien grass node is placed above it.
 Please be warned, this will delete any node previously located in that position.

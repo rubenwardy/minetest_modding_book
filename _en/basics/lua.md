@@ -7,21 +7,22 @@ description: A basic introduction to Lua, including a guide on global/local scop
 redirect_from: /en/chapters/lua.html
 ---
 
-## Introduction
+## Introduction  <!-- omit in toc -->
 
 In this chapter we will talk about scripting in Lua, the tools required,
 and go over some techniques which you will probably find useful.
 
-* [Code Editors](#code-editors)
-* [Coding in Lua](#coding-in-lua)
-    * [Program Flow](#program-flow)
-    * [Variable Types](#variable-types)
-    * [Arithmetic Operators](#arithmetic-operators)
-    * [Selection](#selection)
-    * [Logical Operators](#logical-operators)
-* [Programming](#programming)
-* [Local and Global Scope](#local-and-global-scope)
-* [Including other Lua Scripts](#including-other-lua-scripts)
+- [Code Editors](#code-editors)
+- [Coding in Lua](#coding-in-lua)
+  - [Program Flow](#program-flow)
+  - [Variable Types](#variable-types)
+  - [Arithmetic Operators](#arithmetic-operators)
+  - [Selection](#selection)
+  - [Logical Operators](#logical-operators)
+- [Programming](#programming)
+- [Local and Global Scope](#local-and-global-scope)
+  - [Locals should be used as much as possible](#locals-should-be-used-as-much-as-possible)
+- [Including other Lua Scripts](#including-other-lua-scripts)
 
 ## Code Editors
 
@@ -182,8 +183,8 @@ however, the following websites are quite useful in developing this:
 * [Codecademy](http://www.codecademy.com/) is one of the best resources for
   learning to 'code', it provides an interactive tutorial experience.
 * [Scratch](https://scratch.mit.edu) is a good resource when starting from
-  absolute basics, learning the problem solving techniques required to program.\\
-  Scratch is **designed to teach children** how to program, and isn't a serious
+  absolute basics, learning the problem-solving techniques required to program.\\
+  Scratch is **designed to teach children** how to program and isn't a serious
   programming language.
 
 ## Local and Global Scope
@@ -243,7 +244,7 @@ dump() is a function that can turn any variable into a string so the programmer 
 see what it is. The foo variable will be printed as "bar", including the quotes
 which show it is a string.
 
-This is sloppy coding, and Minetest will in fact warn about this:
+This is sloppy coding and Minetest will, in fact, warn about this:
 
     Assignment to undeclared global 'foo' inside function at init.lua:2
 

@@ -6,17 +6,17 @@ idx: 3.4
 description: Using an ObjectRef
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 In this chapter, you will learn how to manipulate objects and how to define your
 own.
 
-* [What are Objects, Players, and Entities?](#objects_players_and_entities)
-* [Position and Velocity](#position_and_velocity)
-* [Object Properties](#object_properties)
-* [Entities](#entities)
-* [Attachments](#attachments)
-* [Your Turn](#your_turn)
+- [What are Objects, Players, and Entities?](#what-are-objects-players-and-entities)
+- [Position and Velocity](#position-and-velocity)
+- [Object Properties](#object-properties)
+- [Entities](#entities)
+- [Attachments](#attachments)
+- [Your Turn](#your-turn)
 
 ## What are Objects, Players, and Entities?
 
@@ -230,7 +230,7 @@ So, `0,5,0` would be half a node above the parent's origin.
 For 3D models with animations, the bone argument is used to attach the entity
 to a bone.
 3D animations are based on skeletons - a network of bones in the model where
-each bone can be given a position and rotation to change the model, for example
+each bone can be given a position and rotation to change the model, for example,
 to move the arm.
 Attaching to a bone is useful if you want to make a character hold something.
 

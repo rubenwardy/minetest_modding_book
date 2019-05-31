@@ -11,23 +11,23 @@ redirect_from:
 - /en/inventories/itemstacks.html
 ---
 
-## Introduction
+## Introduction  <!-- omit in toc -->
 
-In this chapter you will learn how to use and manipulate inventories, whether
+In this chapter, you will learn how to use and manipulate inventories, whether
 that be a player inventory, a node inventory, or a detached inventory.
 
-* [What are Item Stacks and Inventories?](#what-are-item-stacks-and-inventories)
-* [ItemStacks](#itemstacks)
-* [Inventory Locations](#inventory-locations)
-* [Lists](#lists)
-    * [Size and Width](#size-and-width)
-    * [Checking Contents](#checking-contents)
-* [Modifying Inventories and ItemStacks](#modifying-inventories-and-itemstacks)
-    * [Adding to a List](#adding-to-a-list)
-    * [Taking Items](#taking-items)
-    * [Manipulating Stacks](#manipulating-stacks)
-* [Wear](#wear)
-* [Lua Tables](#lua-tables)
+- [What are ItemStacks and Inventories?](#what-are-itemstacks-and-inventories)
+- [ItemStacks](#itemstacks)
+- [Inventory Locations](#inventory-locations)
+- [Lists](#lists)
+  - [Size and Width](#size-and-width)
+  - [Checking Contents](#checking-contents)
+- [Modifying Inventories and ItemStacks](#modifying-inventories-and-itemstacks)
+  - [Adding to a List](#adding-to-a-list)
+  - [Taking Items](#taking-items)
+  - [Manipulating Stacks](#manipulating-stacks)
+- [Wear](#wear)
+- [Lua Tables](#lua-tables)
 
 ## What are ItemStacks and Inventories?
 
@@ -101,7 +101,7 @@ An inventory is directly tied to one and only one location - updating the invent
 will cause it to update immediately.
 
 Node inventories are related to the position of a specific node, such as a chest.
-The node must be loaded, because it is stored in [node metadata](node_metadata.html).
+The node must be loaded because it is stored in [node metadata](node_metadata.html).
 
 ```lua
 local inv = minetest.get_inventory({ type="node", pos={x=1, y=2, z=3} })
@@ -147,7 +147,7 @@ which all games have, such as the *main* inventory and *craft* slots.
 
 Lists have a size, which is the total number of cells in the grid, and a width,
 which is only used within the engine.
-The list width is not used when drawing the inventory in a window,
+The width of the list is not used when drawing the inventory in a window,
 because the code behind the window determines the width to use.
 
 ```lua
@@ -222,7 +222,7 @@ print("Could not add"  .. leftover:get_count() .. " of the items.")
 -- ^ will be 51
 
 print("Have " .. stack:get_count() .. " items")
--- ^ will be 80  
+-- ^ will be 80
 --   min(50+100, stack_max) - 19 = 80
 --     where stack_max = 99
 ```
@@ -252,7 +252,7 @@ local max_uses = 10
 stack:add_wear(65535 / (max_uses - 1))
 ```
 
-When digging a node, the amount of wear a tool gets may depends on the node
+When digging a node, the amount of wear a tool gets may depend on the node
 being dug. So max_uses varies depending on what is being dug.
 
 ## Lua Tables

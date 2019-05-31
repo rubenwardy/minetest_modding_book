@@ -7,28 +7,30 @@ description: Learn how to register node, items, and craft recipes using register
 redirect_from: /en/chapters/nodes_items_crafting.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Registering new nodes and craftitems, and creating craft recipes, are
 basic requirements for many mods.
 
-* [What are Nodes and Items?](#what-are-nodes-and-items)
-* [Registering Items](#registering-items)
-    * [Item Names and Aliases](#item-names-and-aliases)
-    * [Textures](#textures)
-* [Registering a Basic Node](#registering-a-basic-node)
-* [Actions and Callbacks](#actions-and-callbacks)
-    * [on_use](#on_use)
-* [Crafting](#crafting)
-    * [Fuel](#fuel)
-* [Groups](#groups)
-* [Tools, Capabilities, and Dig Types](#tools-capabilities-and-dig-types)
+- [What are Nodes and Items?](#what-are-nodes-and-items)
+- [Registering Items](#registering-items)
+  - [Item Names and Aliases](#item-names-and-aliases)
+  - [Textures](#textures)
+- [Registering a basic node](#registering-a-basic-node)
+- [Actions and Callbacks](#actions-and-callbacks)
+  - [on_use](#onuse)
+- [Crafting](#crafting)
+  - [Shaped](#shaped)
+  - [Shapeless](#shapeless)
+  - [Cooking and Fuel](#cooking-and-fuel)
+- [Groups](#groups)
+- [Tools, Capabilities, and Dig Types](#tools-capabilities-and-dig-types)
 
 ## What are Nodes and Items?
 
 Nodes, craftitems, and tools are all Items.
 An item is something that could be found in an inventory -
-even though it may not be possible through normal game play.
+even though it may not be possible through normal gameplay.
 
 A node is an item which can be placed or be found in the world.
 Every position in the world must be occupied with one and only one node -
@@ -102,7 +104,7 @@ It is often better to use the PNG format.
 
 Textures in Minetest are usually 16 by 16 pixels.
 They can be any resolution, but it is recommended that they are in the order of 2,
-for example 16, 32, 64, or 128.
+for example, 16, 32, 64, or 128.
 This is because other resolutions may not be supported correctly on older devices,
 resulting in decreased performance.
 
@@ -283,7 +285,7 @@ defines how long the item takes to cook.
 If this is not set, it defaults to 3.
 
 The recipe above works when the coal block is in the input slot,
-with some form of a fuel below it.
+with some form of fuel below it.
 It creates diamond fragments after 10 seconds!
 
 This type is an accompaniment to the cooking type, as it defines
@@ -304,7 +306,7 @@ So, the diamond is good as fuel for 300 seconds!
 ## Groups
 
 Items can be members of many groups and groups can have many members.
-Groups are defined using the `groups` property in the definition table,
+Groups are defined using the `groups` property in the definition table
 and have an associated value.
 
 ```lua
@@ -314,7 +316,7 @@ groups = {cracky = 3, wood = 1}
 There are several reasons you use groups.
 Firstly, groups are used to describe properties such as dig types and flammability.
 Secondly, groups can be used in a craft recipe instead of an item name to allow
-any item in group to be used.
+any item in the group to be used.
 
 ```lua
 minetest.register_craft({

@@ -5,26 +5,26 @@ root: ../..
 idx: 6.1
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 The power of Minetest is the ability to easily develop games without the need
 to create your own voxel graphics, voxel algorithms, or fancy networking code.
 
-* [What is a Game?](#what-is-a-game)
-* [Game Directory](#game-directory)
-* [Inter-game Compatibility](#inter-game-compatibility)
-	* [API Compatibility](#api-compatibility)
-	* [Groups and Aliases](#groups-and-aliases)
-* [Your Turn](#your-turn)
+- [What is a Game?](#what-is-a-game)
+- [Game Directory](#game-directory)
+- [Inter-game Compatibility](#inter-game-compatibility)
+	- [API Compatibility](#api-compatibility)
+	- [Groups and Aliases](#groups-and-aliases)
+- [Your Turn](#your-turn)
 
 ## What is a Game?
 
 Games are a collection of mods which work together to make a cohesive game.
-A good game has a consistent underlying theme and a direction, for example
+A good game has a consistent underlying theme and a direction, for example,
 it could be a classic crafter miner with hard survival elements, or
-it could be a space simulation game with a steam punk automation aesthetic.
+it could be a space simulation game with a steampunk automation aesthetic.
 
-Game design is a complex topic, and is actually a whole field of expertise.
+Game design is a complex topic and is actually a whole field of expertise.
 It's beyond the scope of the book to more than briefly touch on it.
 
 ## Game Directory
@@ -90,4 +90,4 @@ good idea to provide aliases from default nodes to any direct replacements.
 
 ## Your Turn
 
-* Make a game - It can be simple, if you like.
+* Create a simple game where the player gains points from digging special blocks.

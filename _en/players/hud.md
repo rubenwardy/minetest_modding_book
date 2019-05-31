@@ -6,25 +6,25 @@ idx: 4.6
 redirect_from: /en/chapters/hud.html
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Heads Up Display (HUD) elements allow you to show text, images, and other graphical elements.
 
 The HUD doesn't accept user input; for that, you should use a [formspec](formspecs.html).
 
-* [Positioning](#positioning)
-    * [Position and Offset](#position-and-offset)
-    * [Alignment](#alignment)
-    * [Scoreboard](#scoreboard)
-* [Text Elements](#text-elements)
-    * [Parameters](#parameters)
-    * [Our Example](#our-example)
-* [Image Elements](#image-elements)
-    * [Parameters](#parameters-1)
-    * [Scale](#scale)
-* [Changing an Element](#changing-an-element)
-* [Storing IDs](#storing-ids)
-* [Other Elements](#other-elements)
+- [Positioning](#positioning)
+  - [Position and Offset](#position-and-offset)
+  - [Alignment](#alignment)
+  - [Scoreboard](#scoreboard)
+- [Text Elements](#text-elements)
+  - [Parameters](#parameters)
+  - [Our Example](#our-example)
+- [Image Elements](#image-elements)
+  - [Parameters](#parameters-1)
+  - [Scale](#scale)
+- [Changing an Element](#changing-an-element)
+- [Storing IDs](#storing-ids)
+- [Other Elements](#other-elements)
 
 ## Positioning
 
@@ -191,7 +191,7 @@ The `text` field is used to provide the image name.
 
 If a co-ordinate is positive, then it is a scale factor with 1 being the
 original image size, 2 being double the size, and so on.
-However, if a co-ordinate is negative, it is a percentage of the screensize.
+However, if a co-ordinate is negative, it is a percentage of the screen size.
 For example, `x=-100` is 100% of the width.
 
 ### Scale

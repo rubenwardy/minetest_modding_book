@@ -5,28 +5,31 @@ root: ../..
 idx: 7.5
 ---
 
-## Introduction
+## Introduction <!-- omit in toc -->
 
 Unit tests are an essential tool in proving and reassuring yourself that your code
 is correct. This chapter will show you how to write tests for Minetest mods and
 games using Busted. Writing unit tests for functions where you call Minetest
-functions is quite difficult, but luckily [in the previous chapter](clean_arch.html)
- we discussed how to make your code avoid this.
+functions is quite difficult, but luckily [in the previous chapter](clean_arch.html),
+we discussed how to structure your code avoid this.
 
-* [Installing Busted](#installing-busted)
-* [Your First Test](#your-first-test)
-* [Mocking: Using External Functions](#mocking-using-external-functions)
-* [Checking Commits with Travis](#checking-commits-with-travis)
-* [Conclusion](#conclusion)
+- [Installing Busted](#installing-busted)
+- [Your First Test](#your-first-test)
+  - [init.lua](#initlua)
+  - [api.lua](#apilua)
+  - [tests/api_spec.lua](#testsapispeclua)
+- [Mocking: Using External Functions](#mocking-using-external-functions)
+- [Checking Commits with Travis](#checking-commits-with-travis)
+- [Conclusion](#conclusion)
 
 ## Installing Busted
 
-First you'll need to install LuaRocks.
+First, you'll need to install LuaRocks.
 
 * Windows: Follow the [installation instructions on LuaRock's wiki](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows).
 * Debian/Ubuntu Linux: `sudo apt install luarocks`
 
-Next you should install Busted globally:
+Next, you should install Busted globally:
 
     sudo luarocks install busted
 
@@ -83,7 +86,7 @@ describe("add", function()
     end)
 
     it("supports negatives", function()
-        assert.equals(0,  mymod.add(-1,  1))    
+        assert.equals(0,  mymod.add(-1,  1))
         assert.equals(-2, mymod.add(-1, -1))
     end)
 end)
@@ -110,7 +113,7 @@ passed arguments.
 
 If you follow the advice in the [Clean Architectures](clean_arch.html) chapter,
 you'll already have a pretty clean file to test. You will still have to mock
-things not in your area however - for example, you'll have to mock the view when
+things not in your area, however - for example, you'll have to mock the view when
 testing the controller/API. If you didn't follow the advice, then things are a
 little harder as you may have to mock the Minetest API.
 
