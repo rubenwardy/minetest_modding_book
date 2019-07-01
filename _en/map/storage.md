@@ -13,18 +13,18 @@ redirect_from:
 
 In this chapter, you will learn how you can store data.
 
-- [Metadata](#metadata)
-  - [What is Metadata?](#what-is-metadata)
-  - [Obtaining a Metadata Object](#obtaining-a-metadata-object)
-  - [Reading and Writing](#reading-and-writing)
-  - [Special Keys](#special-keys)
-  - [Storing Tables](#storing-tables)
-  - [Private Metadata](#private-metadata)
-  - [Lua Tables](#lua-tables)
-- [Mod Storage](#mod-storage)
-- [Databases](#databases)
-- [Deciding Which to Use](#deciding-which-to-use)
-- [Your Turn](#your-turn)
+- [Metadata](#Metadata)
+  - [What is Metadata?](#What-is-Metadata)
+  - [Obtaining a Metadata Object](#Obtaining-a-Metadata-Object)
+  - [Reading and Writing](#Reading-and-Writing)
+  - [Special Keys](#Special-Keys)
+  - [Storing Tables](#Storing-Tables)
+  - [Private Metadata](#Private-Metadata)
+  - [Lua Tables](#Lua-Tables)
+- [Mod Storage](#Mod-Storage)
+- [Databases](#Databases)
+- [Deciding Which to Use](#Deciding-Which-to-Use)
+- [Your Turn](#Your-Turn)
 
 ## Metadata
 

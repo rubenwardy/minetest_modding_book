@@ -101,7 +101,7 @@ An inventory is directly tied to one and only one location - updating the invent
 will cause it to update immediately.
 
 Node inventories are related to the position of a specific node, such as a chest.
-The node must be loaded because it is stored in [node metadata](node_metadata.html).
+The node must be loaded because it is stored in [node metadata](../map/storage.html#metadata).
 
 ```lua
 local inv = minetest.get_inventory({ type="node", pos={x=1, y=2, z=3} })
@@ -111,6 +111,12 @@ The above obtains an *inventory reference*, commonly referred to as *InvRef*.
 Inventory references are used to manipulate an inventory.
 *Reference* means that the data isn't actually stored inside that object,
 but the object instead directly updates the data in-place.
+
+The location of an inventory reference can be found like so:
+
+```lua
+local location = inv:get_location()
+```
 
 Player inventories can be obtained similarly or using a player reference.
 The player must be online to access their inventory.
@@ -131,11 +137,44 @@ local inv = minetest.get_inventory({
     type="detached", name="inventory_name" })
 ```
 
-The location of an inventory reference can be found like so:
+Unlike the other types of inventory, you must first create a detached inventory:
 
 ```lua
-local location = inv:get_location()
+minetest.create_detached_inventory("inventory_name")
 ```
+
+The create_detached_inventory function accepts 3 arguments, only first is required.
+The second argument takes a table of callbacks, which can be used to control how
+players interact with the inventory:
+
+```lua
+-- Input only detached inventory
+minetest.create_detached_inventory("inventory_name", {
+    allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+        return count -- allow moving
+    end,
+
+    allow_put = function(inv, listname, index, stack, player)
+        return stack:get_count() -- allow putting
+    end,
+
+    allow_take = function(inv, listname, index, stack, player)
+        return -1 -- don't allow taking
+    end,
+
+    on_put = function(inv, listname, index, stack, player)
+        minetest.chat_send_all(player:get_player_name() ..
+            " gave " .. stack:to_string() ..
+            " to the donation chest at " .. minetest.pos_to_str(pos))
+    end,
+})
+```
+
+Permission callbacks - ie: those starting with `allow_`- return the number
+of items to transfer, with -1 being used to prevent transfer completely.
+
+Action callbacks - starting with `on_` - don't have a return value and
+can't prevent transfers.
 
 ## Lists
 
