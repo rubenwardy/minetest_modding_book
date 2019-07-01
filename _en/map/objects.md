@@ -4,6 +4,11 @@ layout: default
 root: ../..
 idx: 3.4
 description: Using an ObjectRef
+degrad:
+    level: warning
+    title: Degrees and Radians
+    message: Attachment rotation is set in degrees, whereas object rotation is in radians.
+            Make sure to convert to the correct angle measurement.
 ---
 
 ## Introduction <!-- omit in toc -->
@@ -11,12 +16,12 @@ description: Using an ObjectRef
 In this chapter, you will learn how to manipulate objects and how to define your
 own.
 
-- [What are Objects, Players, and Entities?](#what-are-objects-players-and-entities)
-- [Position and Velocity](#position-and-velocity)
-- [Object Properties](#object-properties)
-- [Entities](#entities)
-- [Attachments](#attachments)
-- [Your Turn](#your-turn)
+- [What are Objects, Players, and Entities?](#What-are-Objects-Players-and-Entities)
+- [Position and Velocity](#Position-and-Velocity)
+- [Object Properties](#Object-Properties)
+- [Entities](#Entities)
+- [Attachments](#Attachments)
+- [Your Turn](#Your-Turn)
 
 ## What are Objects, Players, and Entities?
 
@@ -31,8 +36,8 @@ and entities are server-side.
 Another difference is that Players will cause map blocks to be loaded, whereas Entities
 will just be saved and become inactive.
 
-Entities are sometimes known as Lua Entities.
-Don't be fooled though, all entities are Lua entities.
+This distinction is muddied by the fact that Entities are controlled using a table
+which is referred to as a luaentity, as discussed later.
 
 ## Position and Velocity
 
@@ -227,14 +232,23 @@ matter whether it is attached or not.
 The attachment position is relative to the parent's origin as scaled up by 10 times.
 So, `0,5,0` would be half a node above the parent's origin.
 
+{% include notice.html notice=page.degrad %}
+
 For 3D models with animations, the bone argument is used to attach the entity
 to a bone.
 3D animations are based on skeletons - a network of bones in the model where
 each bone can be given a position and rotation to change the model, for example,
 to move the arm.
-Attaching to a bone is useful if you want to make a character hold something.
+Attaching to a bone is useful if you want to make a character hold something:
+
+```lua
+obj:set_attach(player,
+    "Arm_Right",           -- default bone
+    {x=0.2, y=6.5, z=3},   -- default position
+    {x=-100, y=225, z=90}) -- default rotation
+```
 
 ## Your Turn
 
 * Make a windmill by combining nodes and an entity.
-* Make a mob of your choice (without using any other mods).
+* Make a mob of your choice (using just the entity API, and without using any other mods).
