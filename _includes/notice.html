@@ -16,6 +16,6 @@
 		{% if notice.title %}
 			<h2>{{ notice.title }}</h2>
 		{% endif %}
-		{{ notice.message }}
+		{{ notice.message | markdownify }}
 	</div>
 </div>

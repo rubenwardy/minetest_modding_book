@@ -5,6 +5,11 @@ root: ../..
 idx: 3.5
 description: Learn how to use LVMs to speed up map operations.
 redirect_from: /en/chapters/lvm.html
+mapgen_object:
+    level: warning
+    title: LVMs and Mapgen
+    message: Don't use `minetest.get_voxel_manip()` with mapgen, as it can cause glitches.
+            Use `minetest.get_mapgen_object("voxelmanip")` instead.
 ---
 
 ## Introduction <!-- omit in toc -->
@@ -16,12 +21,12 @@ the engine. This results in constant individual copying operations between the
 engine and your mod, which is slow and will quickly decrease the performance of
 your game. Using a Lua Voxel Manipulator (LVM) can be a better alternative.
 
-- [Concepts](#concepts)
-- [Reading into the LVM](#reading-into-the-lvm)
-- [Reading Nodes](#reading-nodes)
-- [Writing Nodes](#writing-nodes)
-- [Example](#example)
-- [Your Turn](#your-turn)
+- [Concepts](#Concepts)
+- [Reading into the LVM](#Reading-into-the-LVM)
+- [Reading Nodes](#Reading-Nodes)
+- [Writing Nodes](#Writing-Nodes)
+- [Example](#Example)
+- [Your Turn](#Your-Turn)
 
 ## Concepts
 
@@ -47,6 +52,8 @@ Instead, it will likely read a larger area. The larger area is given by `emin` a
 which stand for *emerged min pos* and *emerged max pos*. An LVM will load the area
 it contains for you - whether that involves loading from memory, from disk, or
 calling the map generator.
+
+{% include notice.html notice=page.mapgen_object %}
 
 ## Reading Nodes
 
