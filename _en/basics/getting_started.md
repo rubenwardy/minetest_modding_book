@@ -209,10 +209,10 @@ minetest.register_node("mymod:node", {
     depends = default
 
 This mod has the name "mymod". It has three text files: init.lua, mod.conf,
-and depends.txt. <br/>
+and depends.txt.\\
 The script prints a message and then registers a node –
-which will be explained in the next chapter. <br/>
+which will be explained in the next chapter.\\
 There's a single dependency, the
 [default mod](https://content.minetest.net/metapackages/default/), which is
-usually found in Minetest Game. <br/>
+usually found in Minetest Game.\\
 There is also a texture in textures/ for the node.
