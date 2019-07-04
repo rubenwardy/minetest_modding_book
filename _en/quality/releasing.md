@@ -197,7 +197,7 @@ mod named superspecial:
         the folder in worldmods/ in your world directory.  )
 
     For further information or help see:
-    [url]http://wiki.minetest.com/wiki/Installing_Mods[/url]
+    [url]https://wiki.minetest.net/Installing_Mods[/url]
 
 If you modify the above example for your mod topic, remember to
 change "superspecial" to the name of your mod.
