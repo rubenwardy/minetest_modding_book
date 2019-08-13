@@ -4,7 +4,7 @@
 	{% assign notice=include %}
 {% endif %}
 
-<div class="notice notice-{{ notice.level }}">
+<div class="notice notice-{{ notice.level }} {{ notice.classes }}">
 	{% if notice.level == "warning" %}
 		<span>⚠</span>
 	{% else if notice.level == "tip" %}

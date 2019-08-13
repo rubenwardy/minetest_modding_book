@@ -4,6 +4,13 @@ layout: default
 root: ../..
 idx: 4.5
 redirect_from: /en/chapters/formspecs.html
+minetest510:
+    level: warning
+    title: Real coordinates will be in 5.1.0
+    classes: web-only
+    message: This chapter describes the use of a feature that hasn't been released yet.
+         You can still use this chapter and the code in Minetest 5.0, but elements will
+         be positioned differently to what is shown.
 submit_vuln:
     level: warning
     title: Malicious clients can submit anything at anytime
@@ -24,250 +31,302 @@ submit_vuln:
 
 In this chapter we will learn how to create a formspec and display it to the user.
 A formspec is the specification code for a form.
-In Minetest, forms are windows such as the player inventory, which can contain labels,
-buttons and fields to allow you to enter information.
-
-- [Formspec Syntax](#formspec-syntax)
-  - [Size[w, h]](#sizew-h)
-  - [Field[x, y; w, h; name; label; default]](#fieldx-y-w-h-name-label-default)
-  - [Other Elements](#other-elements)
-- [Displaying Formspecs](#displaying-formspecs)
-  - [Example](#example)
-- [Callbacks](#callbacks)
-  - [Fields](#fields)
-- [Contexts](#contexts)
-- [Node Meta Formspecs](#node-meta-formspecs)
+In Minetest, forms are windows such as the player inventory and can contain a
+variety of elements, such as labels, buttons and fields.
 
 Note that if you do not need to get user input, for example when you only need
-to provide information to the player, you should consider using Heads Up Display
-(HUD) elements instead of forms, because unexpected windows tend to disrupt gameplay.
+to provide information to the player, you should consider using
+[Heads Up Display (HUD)](hud.html) elements instead of forms, because
+unexpected windows tend to disrupt gameplay.
 
-## Formspec Syntax
+- [Real or Legacy Coordinates](#real-or-legacy-coordinates)
+- [Anatomy of a Formspec](#anatomy-of-a-formspec)
+  - [Elements](#elements)
+  - [Header](#header)
+- [Guessing Game](#guessing-game)
+  - [Padding and Spacing](#padding-and-spacing)
+  - [Receiving Formspec Submissions](#receiving-formspec-submissions)
+  - [Contexts](#contexts)
+- [Formspec Sources](#formspec-sources)
+  - [Node Meta Formspecs](#node-meta-formspecs)
+  - [Player Inventory Formspecs](#player-inventory-formspecs)
+  - [Your Turn](#your-turn)
 
-Formspecs have an unusual syntax.
-They consist of a series of tags which are in the following form:
 
-    element_type[param1;param2;...]
+## Real or Legacy Coordinates
 
-Firstly the element type is declared, and then the attributes are given
-in square brackets.
+In older versions of Minetest, formspecs were inconsistent. The way that different
+elements were positioned varied in unexpected ways; it was hard to predict the
+placement of elements and align them. Minetest 5.1.0 contains a feature
+called real coordinates which aims to rectify this by introducing a consistent
+coordinate system. The use of real coordinates is highly recommended, and so
+this chapter will use them exclusively.
 
-Elements are items such as text boxes or buttons, or can be metadata such
-as size or background.
+{% include notice.html notice=page.minetest510 %}
 
-Here are two elements, of types foo and bar.
+
+## Anatomy of a Formspec
+
+### Elements
+
+Formspec is a domain-specific language with an unusual format.
+It consists of a number of elements with the following form:
+
+    type[param1;param2]
+
+The element type is declared and then any parameters are given
+in square brackets. Multiple elements can be joined together, or placed
+on multiple lines, like so:
 
     foo[param1]bar[param1]
+    bo[param1]
 
-### Size[w, h]
 
-Nearly all forms have a size tag. This declares the size of the form window. Note that
-**forms don't use pixels as co-ordinates; they use a grid based on inventories**.
-A size of (1, 1) means the form is big enough to host a 1x1 inventory.
-This means the size of the form is independent of screen resolution and it should work
-just as well on large screens as small screens.
-You can use decimals in sizes and co-ordinates.
+Elements are items such as text boxes or buttons, or can be metadata such
+as size or background. You should refer to
+[lua_api.txt](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt#L1019)
+for a list of all possible elements. Search for "Formspec" to locate the correct
+part of the document.
 
-    size[5,2]
 
-Co-ordinates and sizes only use one attribute.
-The x and y values are separated by a comma, as you can see above.
+### Header
 
-### Field[x, y; w, h; name; label; default]
+The header of a formspec contains information which must appear first. This
+includes the size of the formspec, the position, the anchor, and whether the
+game-wide theme should be applied.
 
-This is a textbox element. Most other elements have a similar style of attributes.
-The name attribute is used in callbacks to get the submitted information.
-The x and y attributes determine the position of the element, and
-the w and h attributes provide the size.
+The elements in the header must be defined in a specific order, otherwise you
+will see an error. This order is given in the above paragraph, and, as always,
+documented in [lua_api.txt](../../lua_api.html#sizewhfixed_size)
 
-    field[1,1;3,1;firstname;Firstname;]
+The size is in formspec slots - a unit of measurement which is roughly
+around 64 pixels, but varies based on the screen density and scaling
+settings of the client. Here's a formspec which is `2,2` in size:
 
-It is perfectly valid to not define an attribute.
+    size[2,2]
+    real_coordinates[true]
 
-### Other Elements
+Notice how we explicitly need to enable the use of the real coordinate system.
+Without this, the legacy system will instead be used to size the formspec, which will
+result in a larger size. This element is a special case, as it is the only element
+which may appear both in the header and the body of a formspec. When in the header,
+it must appear immediately after the size.
 
-You should refer to [lua_api.txt](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt#L1019)
-for a list of all possible elements. Search for "Formspec" to locate the correct part of the document.
-At the time of writing, formspec information begins on line 1765.
+The position and anchor elements are used to place the formspec on the screen.
+The position sets where on the screen the formspec will be, and defaults to
+the center (`0.5,0.5`). The anchor sets where on the formspec the position is,
+allowing you to line the formspec up with the edge of the screen. The formspec
+can be placed to the left of the screen like so:
 
-## Displaying Formspecs
+    size[2,2]
+    real_coordinates[true]
+    position[0,0.5]
+    anchor[0,0.5]
 
-Here is a generalised way to show a formspec:
+This sets the anchor to the left middle edge of the formspec box, and then the
+position of that anchor to the left of the screen.
 
-    minetest.show_formspec(playername, formname, formspec)
 
-Formnames should be itemnames; however, this is not enforced.
-There is no need to override a formspec, because formspecs are not registered like
-nodes and items are. The formspec code is sent to the player's client for them
-to see, along with the formname.
-Formnames are used in callbacks to identify which form has been submitted,
-and to see if the callback is relevant.
-
-### Example
-
-This example shows a formspec to a player when they use the /formspec command.
+## Guessing Game
 
 <figure class="right_image">
-    <img src="{{ page.root }}//static/formspec_name.png" alt="Name Formspec">
+    <img src="{{ page.root }}/static/formspec_guessing.png" alt="Guessing Formspec">
     <figcaption>
-        The formspec generated by<br />
-        the example's code
+        The guessing game formspec.
     </figcaption>
 </figure>
 
+The best way to learn is to make something, so let's make a guessing game.
+The principle is simple: the mod decides on a number, then the player makes
+guesses on the number. The mod then says if the guess is higher or lower then
+the actual number.
+
+First, let's make a function to create the formspec code. It's good practice to
+do this, as it makes it easier to reuse elsewhere.
+
+<div style="clear: both;"></div>
+
 ```lua
--- Show form when the /formspec command is used.
-minetest.register_chatcommand("formspec", {
-    func = function(name, param)
-        minetest.show_formspec(name, "mymod:form",
-                "size[4,3]" ..
-                "label[0,0;Hello, " .. name .. "]" ..
-                "field[1,1.5;3,1;name;Name;]" ..
-                "button_exit[1,2;2,1;exit;Save]")
-    end
+guessing = {}
+
+function guessing.get_formspec(name)
+    -- TODO: display whether the last guess was higher or lower
+    local text = "I'm thinking of a number... Make a guess!"
+
+    local formspec = {
+        "size[6,3.476]",
+        "real_coordinates[true]",
+        "label[0.375,0.5;", minetest.formspec_escape(text), "]",
+        "field[0.375,1.25;5.25,0.8;number;Number;]",
+        "button[1.5,2.3;3,0.8;guess;Guess]"
+    }
+
+    -- table.concat is faster than string concatenation - `..`
+    return table.concat(formspec, "")
+end
+```
+
+In the above code, we place a field, a label, and a button. A field allows text
+entry, and a button is used to submit the form. You'll notice that the elements
+are positioned carefully in order to add padding and spacing, this will be explained
+later.
+
+Next, we want to allow the player to show the formspec. The main way to do this
+is using `show_formspec`:
+
+```lua
+function guessing.show_to(name)
+    minetest.show_formspec(name, "guessing:game", guessing.get_formspec(name))
+end
+
+minetest.register_chatcommand("game", {
+    func = function(name)
+        guessing.show_to(name)
+    end,
 })
 ```
 
-Note: the .. is used to join two strings together. The following two lines are equivalent:
+The show_formspec function accepts a player name, the formspec name, and the
+formspec itself. The formspec name should be a valid itemname, ie: in the format
+`modname:itemname`.
+
+
+### Padding and Spacing
+
+<figure class="right_image">
+    <img src="{{ page.root }}/static/formspec_padding_spacing.png" alt="Padding and spacing">
+    <figcaption>
+        The guessing game formspec.
+    </figcaption>
+</figure>
+
+Padding is the gap between the edge of the formspec and its contents, or between unrelated
+elements, shown in red. Spacing is the gap between related elements, shown in blue.
+
+It is fairly standard to have a padding of `0.375` and a spacing of `0.25`.
+
+<div style="clear: both;"></div>
+
+
+### Receiving Formspec Submissions
+
+When `show_formspec` is called, the formspec is sent to the client to be displayed.
+For formspecs to be useful, information needs to be returned from the client to server.
+The method for this is called formspec field submission, and for `show_formspec`, that
+submission is received using a global callback:
 
 ```lua
-"foobar"
-"foo" .. "bar"
-```
-
-## Callbacks
-
-It's possible to expand the previous example with a callback:
-
-```lua
--- Show form when the /formspec command is used.
-minetest.register_chatcommand("formspec", {
-    func = function(name, param)
-        minetest.show_formspec(name, "mymod:form",
-                "size[4,3]" ..
-                "label[0,0;Hello, " .. name .. "]" ..
-                "field[1,1.5;3,1;name;Name;]" ..
-                "button_exit[1,2;2,1;exit;Save]")
-    end
-})
-
--- Register callback
-minetest.register_on_player_receive_fields(function(player,
-        formname, fields)
-    if formname ~= "mymod:form" then
-        -- Formname is not mymod:form,
-        -- exit callback.
-        return false
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+    if formname ~= "guessing:game" then
+        return
     end
 
-    -- Send message to player.
-    minetest.chat_send_player(player:get_player_name(),
-            "You said: " .. fields.name .. "!")
-
-    -- Return true to stop other callbacks from
-    -- receiving this submission.
-    return true
+    if fields.guess then
+        local pname = player:get_player_name()
+        minetest.chat_send_all(pname .. " guessed " .. fields.number)
+    end
 end)
 ```
 
 The function given in minetest.register_on_player_receive_fields is called
-every time a user submits a form. Most callbacks will check the formname given
+every time a user submits a form. Most callbacks will need to check the formname given
 to the function, and exit if it is not the right form; however, some callbacks
-may need to work on multiple forms, or all forms - it depends on what you
-want to do.
+may need to work on multiple forms, or on all forms.
+
+The `fields` parameter to the function is a table of the values submitted by the
+user, indexed by strings. Named elements will appear in the field under their own
+name, but only if they are relevent for the event that caused the submission.
+For example, a button element will only appear in fields if that particular button
+was pressed.
 
 {% include notice.html notice=page.submit_vuln %}
 
-### Fields
+So, now the formspec is sent to the client and the client sends information back.
+The next step is to somehow generate and remember the target value, and to update
+the formspec based on guesses. The way to do this is using a concept called
+"contexts".
 
-The `fields` parameter to the function is a table, index by string, of the values
-submitted by the user. You can access values in the table via fields.name,
-where 'name' is the name of the element.
 
-As well as retrieving the values of each element, you can also get which button
-was clicked. In this case, the button called 'exit' was clicked, so fields.exit
-will be true.
-
-Some elements can submit the form without the user clicking a button,
-such as a checkbox. You can detect these cases by looking
-for a clicked button.
-
-```lua
--- An example of what fields could contain,
---   using the above code
-{
-    name = "Foo Bar",
-    exit = true
-}
-```
-
-## Contexts
+### Contexts
 
 In many cases you want minetest.show_formspec to give information
 to the callback which you don't want to send to the client. This might include
-what a chat command was called with, or what the dialog is about.
+what a chat command was called with, or what the dialog is about. In this case,
+the target value that needs to be remembered.
 
-For example, you might make a form to handle land protection information:
+A context is a per-player table to store information, and the contexts for all
+online players are stored in a file-local variable:
 
 ```lua
---
--- Step 1) set context when player requests the formspec
---
+local _contexts = {}
+local function get_context(name)
+    local context = _contexts[name] or {}
+    _contexts[name] = context
+    return context
+end
 
--- land_formspec_context[playername] gives the player's context.
-local land_formspec_context = {}
-
-minetest.register_chatcommand("land", {
-    func = function(name, param)
-        if param == "" then
-            minetest.chat_send_player(name,
-                    "Incorrect parameters - supply a land ID")
-            return
-        end
-
-        -- Save information
-        land_formspec_context[name] = {id = param}
-
-        minetest.show_formspec(name, "mylandowner:edit",
-                "size[4,4]" ..
-                "field[1,1;3,1;plot;Plot Name;]" ..
-                "field[1,2;3,1;owner;Owner;]" ..
-                "button_exit[1,3;2,1;exit;Save]")
-    end
-})
-
-
-
---
--- Step 2) retrieve context when player submits the form
---
-minetest.register_on_player_receive_fields(function(player,
-        formname, fields)
-    if formname ~= "mylandowner:edit" then
-        return false
-    end
-
-    -- Load information
-    local context = land_formspec_context[player:get_player_name()]
-
-    if context then
-        minetest.chat_send_player(player:get_player_name(), "Id " ..
-                context.id .. " is now called " .. fields.plot ..
-                " and owned by " .. fields.owner)
-
-        -- Delete context if it is no longer going to be used
-        land_formspec_context[player:get_player_name()] = nil
-
-        return true
-    else
-        -- Fail gracefully if the context does not exist.
-        minetest.chat_send_player(player:get_player_name(),
-                "Something went wrong, try again.")
-    end
+minetest.register_on_leaveplayer(function(player)
+    _contexts[player:get_player_name()] = nil
 end)
 ```
 
-## Node Meta Formspecs
+Next, we need to modify the show code to update the context
+before showing the formspec:
+
+```lua
+function guessing.show_to(name)
+    local context = get_context(name)
+    context.target = context.target or math.random(1, 10)
+
+    local fs = guessing.get_formspec(name, context)
+    minetest.show_formspec(name, "guessing:game", fs)
+end
+```
+
+We also need to modify the formspec generation code to use the context:
+
+```lua
+function guessing.get_formspec(name, context)
+    local text
+    if not context.guess then
+        text = "I'm thinking of a number... Make a guess!"
+    elseif context.guess == context.target then
+        text = "Hurray, you got it!"
+    elseif context.guess > context.target then
+        text = "To high!"
+    else
+        text = "To low!"
+    end
+```
+
+Note that it's good practice for get_formspec to only read the context, and not
+update it at all. This can make the function simpler, and also easier to test.
+
+And finally, we need to update the handler to update the context with the guess:
+
+```lua
+if fields.guess then
+    local name = player:get_player_name()
+    local context = get_context(name)
+    context.guess = tonumber(fields.number)
+    guessing.show_to(name)
+end
+```
+
+
+## Formspec Sources
+
+There are three different ways that a formspec can be delivered to the client:
+
+* [show_formspec](#guessing-game): the method used above, fields are received by register_on_player_receive_fields.
+* [Node Meta Formspecs](#node-meta-formspecs): the node contains a formspec in its meta data, and the client
+     shows it *immediately* when the player rightclicks. Fields are received by a
+     method in the node definition called `on_receive_fields`.
+* [Player Inventory Formspecs](#player-inventory-formspecs): the formspec is sent to the client at some point, and then
+     shown immediately when the player presses `i`. Fields are received by
+     register_on_player_receive_fields.
+
+### Node Meta Formspecs
 
 minetest.show_formspec is not the only way to show a formspec; you can also
 add formspecs to a [node's metadata](node_metadata.html). For example,
@@ -305,3 +364,22 @@ This style of callback triggers when you press enter
 in a field, which is impossible with `minetest.show_formspec`;
 however, this kind of form can only be shown by right-clicking on a
 node. It cannot be triggered programmatically.
+
+### Player Inventory Formspecs
+
+The player inventory formspec is the one shown when the player presses i.
+The global callback is used to receive events from this formspec, and the
+formname is `""`.
+
+There are a number of different mods which allow multiple mods to customise
+the player inventory. The officially recommended mod is
+[Simple Fast Inventory (sfinv)](sfinv.html), and is included in Minetest Game.
+
+
+### Your Turn
+
+* Extend the Guessing Game to keep track of each player's top score, where the
+  top score is how many guesses it took.
+* Make a node called "Inbox" where users can open up a formspec and leave messages.
+  This node should store the placers' name as `owner` in the meta, and should use
+  `show_formspec` to show different formspecs to different players.
