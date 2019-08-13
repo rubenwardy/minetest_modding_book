@@ -7,12 +7,12 @@ root: ..
 idx: 0.1
 ---
 
-<div id="header">
+<header>
     <h1>Minetest Modding Book</h1>
 
     <span>by <a href="https://rubenwardy.com" rel="author">rubenwardy</a></span>
     <span>with editing by <a href="http://rc.minetest.tv/">Shara</a></span>
-</div>
+</header>
 
 ## Introduction
 
