@@ -16,12 +16,12 @@ degrad:
 In this chapter, you will learn how to manipulate objects and how to define your
 own.
 
-- [What are Objects, Players, and Entities?](#What-are-Objects-Players-and-Entities)
-- [Position and Velocity](#Position-and-Velocity)
-- [Object Properties](#Object-Properties)
-- [Entities](#Entities)
-- [Attachments](#Attachments)
-- [Your Turn](#Your-Turn)
+- [What are Objects, Players, and Entities?](#what-are-objects-players-and-entities)
+- [Position and Velocity](#position-and-velocity)
+- [Object Properties](#object-properties)
+- [Entities](#entities)
+- [Attachments](#attachments)
+- [Your Turn](#your-turn)
 
 ## What are Objects, Players, and Entities?
 

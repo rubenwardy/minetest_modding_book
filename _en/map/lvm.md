@@ -21,12 +21,12 @@ the engine. This results in constant individual copying operations between the
 engine and your mod, which is slow and will quickly decrease the performance of
 your game. Using a Lua Voxel Manipulator (LVM) can be a better alternative.
 
-- [Concepts](#Concepts)
-- [Reading into the LVM](#Reading-into-the-LVM)
-- [Reading Nodes](#Reading-Nodes)
-- [Writing Nodes](#Writing-Nodes)
-- [Example](#Example)
-- [Your Turn](#Your-Turn)
+- [Concepts](#concepts)
+- [Reading into the LVM](#reading-into-the-lvm)
+- [Reading Nodes](#reading-nodes)
+- [Writing Nodes](#writing-nodes)
+- [Example](#example)
+- [Your Turn](#your-turn)
 
 ## Concepts
 
