@@ -15,7 +15,8 @@ register biomes, how to control biome distribution, and how to place decorations
 - [What are Biomes?](#what-are-biomes)
 - [Biome Placement](#biome-placement)
   - [Heat and Humidity](#heat-and-humidity)
-  - [Using Voronoi Diagrams to Visualise Biome Boundaries](#using-voronoi-diagrams-to-visualise-biome-boundaries)
+  - [Visualising Boundaries using Voronoi Diagrams](#visualising-boundaries-using-voronoi-diagrams)
+  - [Creating a Voronoi Diagram using Geogebra](#creating-a-voronoi-diagram-using-geogebra)
 - [Registering a Biome](#registering-a-biome)
 - [What are Decorations?](#what-are-decorations)
 - [Registering a Simple Decoration](#registering-a-simple-decoration)
@@ -66,7 +67,7 @@ biome’s environment. For example:
 In practice, this means that, as long as you have a diverse range of biomes, you
 are likely to find that the biomes which border each other form a logical progression.
 
-### Using Voronoi Diagrams to Visualise Biome Boundaries
+### Visualising Boundaries using Voronoi Diagrams
 
 <figure class="right_image">
     <img src="https://via.placeholder.com/300x200/" alt="Vernoi">
@@ -84,7 +85,13 @@ The simplest way to visualise which biomes may share borders with one another
 is to create a Voronoi diagram, which can be used to show which of a number of
 points on a 2-dimensional diagram any given position is closest to.
 
-To do this, mark a point for each biome based on heat and humidity values,
+A Voronoi diagram can reveal where biomes that should border each other do not, and
+where biomes that should not border each other do. It can also give a general insight
+into how common biomes will be in-game, with larger and more central biomes
+being more common than smaller biomes or biomes that are located on the outer
+edge of the diagram.
+
+This is done by marking a point for each biome based on heat and humidity values,
 where the x-axis is heat and the y-axis is humidity. The diagram is then
 divided into areas, so that every position in a given area is closer to the
 point inside that area than it is to any other point on the diagram.
@@ -94,12 +101,26 @@ represent in-game can be located next to each other. The length of the border
 shared between two areas, compared to the length shared with other areas, will
 tell you how frequently two biomes are likely to be found next to each other.
 
-A Voronoi diagram can reveal where biomes that should border each other do not, and
-where biomes that should not border each other do.
+### Creating a Voronoi Diagram using Geogebra
 
-It can also give a general insight into how common biomes will be in-game, with
-larger and more central biomes being more common than smaller biomes or biomes
-that are located on the outer edge of the diagram.
+As well as drawing them by hand, you can also create Voronoi diagrams using
+programs such as [Geogebra](https://www.geogebra.org).
+
+1. Create points by selecting the point tool in the toolbar (icon is a point with 'A'),
+   and then clicking the chart. You can drag points around or explicitly set their
+   position in the left sidebar. You should also give each point a label, to make things clearer.
+
+1. Next, create the voronoi by entering the following function into the
+   input box in the left sidebar:
+
+   ```cpp
+   Voronoi({ A, B, C, D, E })
+   ```
+
+   Where the each point is inside the curly brackets, separated by commas. You should now
+
+3. Profit! You should now have a voronoi diagram with all draggable points.
+
 
 ## Registering a Biome
 
