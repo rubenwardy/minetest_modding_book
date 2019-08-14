@@ -13,14 +13,14 @@ interesting and varied in-game environment. This chapter teaches you how to
 register biomes, how to control biome distribution, and how to place decorations in biomes.
 
 - [What are Biomes?](#what-are-biomes)
-- [Heat and Humidity](#heat-and-humidity)
-  - [Biome Locations](#biome-locations)
-- [Visualising Biome Boundaries](#visualising-biome-boundaries)
-- [Mapgen Aliases](#mapgen-aliases)
+- [Biome Placement](#biome-placement)
+  - [Heat and Humidity](#heat-and-humidity)
+  - [Using Voronoi Diagrams to Visualise Biome Boundaries](#using-voronoi-diagrams-to-visualise-biome-boundaries)
 - [Registering a Biome](#registering-a-biome)
 - [What are Decorations?](#what-are-decorations)
 - [Registering a Simple Decoration](#registering-a-simple-decoration)
 - [Registering a Schematic Decoration](#registering-a-schematic-decoration)
+- [Mapgen Aliases](#mapgen-aliases)
 
 ## What are Biomes?
 
@@ -38,7 +38,9 @@ Some of the most common types of node that may vary between biomes include:
   biomes, providing an opportunity to create vastly different environments
   within the same game.
 
-## Heat and Humidity
+## Biome Placement
+
+### Heat and Humidity
 
 It is not enough to simply register a biome; you must also decide where it can
 occur in game. This is done by assigning a heat and a humidity value to each biome.
@@ -47,8 +49,6 @@ You should think carefully about these values; they determine which biomes can
 be neighbours to each other. Poor decisions could result in what is meant to
 be a hot desert sharing a border with a glacier, and other improbable
 combinations which you may prefer to avoid.
-
-### Biome Locations
 
 In game, heat and humidity values at any point of the map will usually be between
 0 and 100. The values gradually change, increasing or decreasing as you move
@@ -66,7 +66,7 @@ biome’s environment. For example:
 In practice, this means that, as long as you have a diverse range of biomes, you
 are likely to find that the biomes which border each other form a logical progression.
 
-## Visualising Biome Boundaries
+### Using Voronoi Diagrams to Visualise Biome Boundaries
 
 <figure class="right_image">
     <img src="https://via.placeholder.com/300x200/" alt="Vernoi">
@@ -100,29 +100,6 @@ where biomes that should not border each other do.
 It can also give a general insight into how common biomes will be in-game, with
 larger and more central biomes being more common than smaller biomes or biomes
 that are located on the outer edge of the diagram.
-
-
-## Mapgen Aliases
-
-Existing games should already include suitable mapgen aliases, so you only need
-to consider registering mapgen aliases of your own if you are making your own game.
-
-Mapgen aliases provide information to the core mapgen, and can be registered in the form:
-
-```lua
-minetest.register_alias("mapgen_stone", "base:smoke_stone")
-```
-
-At a minimum you should register:
-
-* mapgen_stone
-* mapgen_water_source
-* mapgen_river_water_source
-
-If you are not defining cave liquid nodes for all biomes, you should also register:
-
-* mapgen_lava_source
-
 
 ## Registering a Biome
 
@@ -240,3 +217,25 @@ a path to a schematic, which in this case is stored in a dedicated schematic dir
 This example also sets flags to center the placement of the schematic, and the rotation
 is set to random. The random rotation of schematics when they are placed as decorations
 helps introduce more variation when asymmetrical schematics are used.
+
+
+## Mapgen Aliases
+
+Existing games should already include suitable mapgen aliases, so you only need
+to consider registering mapgen aliases of your own if you are making your own game.
+
+Mapgen aliases provide information to the core mapgen, and can be registered in the form:
+
+```lua
+minetest.register_alias("mapgen_stone", "base:smoke_stone")
+```
+
+At a minimum you should register:
+
+* mapgen_stone
+* mapgen_water_source
+* mapgen_river_water_source
+
+If you are not defining cave liquid nodes for all biomes, you should also register:
+
+* mapgen_lava_source
