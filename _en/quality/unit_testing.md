@@ -2,7 +2,7 @@
 title: Automatic Unit Testing
 layout: default
 root: ../..
-idx: 7.5
+idx: 8.5
 ---
 
 ## Introduction <!-- omit in toc -->
