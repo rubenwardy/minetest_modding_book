@@ -24,7 +24,7 @@ register biomes, how to control biome distribution, and how to place decorations
 
 ## What are Biomes?
 
-A Minetest biome is a specific in-game environment. When registering biomes you
+A Minetest biome is a specific in-game environment. When registering biomes, you
 can determine the types of nodes that appear in them during map generation.
 Some of the most common types of node that may vary between biomes include:
 
@@ -63,7 +63,7 @@ biome’s environment. For example:
 * A snowy forest might have low heat and a medium humidity value.
 * A swamp biome would generally have high humidity.
 *
-In practice this means that, as long as you have a diverse range of biomes, you
+In practice, this means that, as long as you have a diverse range of biomes, you
 are likely to find that the biomes which border each other form a logical progression.
 
 ## Visualising Biome Boundaries
@@ -75,7 +75,7 @@ are likely to find that the biomes which border each other form a logical progre
     </figcaption>
 </figure>
 
-Visualising Biome Boundaries Fine tuning heat and humidity values for biomes is
+Fine tuning heat and humidity values for biomes is
 easier if you can visualise the relationship between the biomes you are using.
 This is most important if you are creating a full set of your own biomes, but
 can also be helpful if you are adding a biome to an existing set.
@@ -94,13 +94,11 @@ represent in-game can be located next to each other. The length of the border
 shared between two areas, compared to the length shared with other areas, will
 tell you how frequently two biomes are likely to be found next to each other.
 
-A Voronoi diagram can reveal:
-
-* Where biomes that should border each other do not.
-* Where biomes that should not border each other do.
+A Voronoi diagram can reveal where biomes that should border each other do not, and
+where biomes that should not border each other do.
 
 It can also give a general insight into how common biomes will be in-game, with
-larger and more central biomes being more common than smaller biomes and biomes
+larger and more central biomes being more common than smaller biomes or biomes
 that are located on the outer edge of the diagram.
 
 
@@ -132,7 +130,7 @@ The following code registers a simple biome named grasslands biome:
 
 ```lua
 minetest.register_biome({
-    name = grasslands,
+    name = "grasslands",
     node_top = "default:dirt_with_grass",
     depth_top = 1,
     node_filler = "default:dirt",
@@ -146,7 +144,7 @@ minetest.register_biome({
 
 This biome has one layer of Dirt with Grass nodes on the surface, and three layers
 of Dirt nodes beneath this. It does not specify a stone node, so the node defined
-in the mapgen alias registration for mapgen_stone will be present underneath the dirt.
+in the mapgen alias registration for `mapgen_stone` will be present underneath the dirt.
 
 There are many options when registering a biome. The following can be included in
 the registration:
@@ -174,25 +172,25 @@ the registration:
 * heat_point: Heat value for the biome.
 * humidity_point: Humidity value for the biome
 
-You don’t need to define every option for every biome you, but in some cases failure
-to define eithe a specific option, or a suitable mapgen alias, can result in map generation errors.
+You don’t need to define every option for every biome you create, but in some cases failure
+to define either a specific option, or a suitable mapgen alias, can result in map generation errors.
 
 ## What are Decorations?
 
 Decorations are either nodes or schematics that can be placed on the map at mapgen.
-Some common examples include flowers, bushes and trees. Other more creative uses
-may include hanging icicles or stalagmites in caves, underground crystal formations
+Some common examples include flowers, bushes, and trees. Other more creative uses
+may include hanging icicles or stalagmites in caves, underground crystal formations,
 or even the placement of small buildings.
 
 Decorations can be restricted to specific biomes, by height, or by which nodes
-they can be placed on They are often used to develop the environment of a biome
+they can be placed on. They are often used to develop the environment of a biome
 by ensuring it has specific plants, trees or other features.
 
 ## Registering a Simple Decoration
 
 Simple decorations are used to place single node decorations on the map during
 map generation. You must specify the node that is to be placed as a decoration,
-and details for where it can be placed, and how frequently.
+details for where it can be placed, and how frequently it occurs.
 
 For example:
 
@@ -209,8 +207,8 @@ minetest.register_decoration({
 })
 ```
 
-In this example, the node named plants:grass will be placed in the biome named
-grassy_plains on top of base:dirt_with_grass nodes, between the heights of y = 1 and y = 200.
+In this example, the node named `plants:grass` will be placed in the biome named
+grassy_plains on top of `base:dirt_with_grass` nodes, between the heights of `y = 1` and `y = 200`.
 
 The fill_ratio value determines how frequently the decoration appears, with higher
 values up to 1 resulting in a great number of decorations being placed. It is possible
