@@ -67,9 +67,9 @@ Explain why/how these concepts are useful in modding
 
 Paragraphs
 
-```lua
+\```lua
 code
-```
+\```
 
 ## Parts in
 
