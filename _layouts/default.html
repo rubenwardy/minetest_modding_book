@@ -22,6 +22,8 @@ layout: compress
 
 	{% if language == "en" %}
 		{% assign links = site.en | sort: "idx" %}
+	{% else if language == "it" %}
+		{% assign links = site.it | sort: "idx" %}
 	{% else %}
 		{% assign language = "en" %}
 		{% assign links = site.en | sort: "idx" %}

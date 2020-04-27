@@ -1,3 +1,6 @@
 - code: en
   name: English (UK)
   cta: This book is available in English
+- code: it
+  name: Italiano
+  cta: Questo libro è disponibile in italiano
