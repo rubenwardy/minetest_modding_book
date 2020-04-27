@@ -8,28 +8,29 @@ idx: 0.1
 ---
 
 <header>
-    <h1>Minetest Modding Book</h1>
+    <h1>Minetest: Libro del Modding</h1>
 
-    <span>by <a href="https://rubenwardy.com" rel="author">rubenwardy</a></span>
-    <span>with editing by <a href="http://rc.minetest.tv/">Shara</a></span>
+    <span>di <a href="https://rubenwardy.com" rel="author">rubenwardy</a></span>
+    <span>con modifiche di <a href="http://rc.minetest.tv/">Shara</a></span>
+    <span>traduzione italiana di <a href="https://gitlab.com/zughy-friends-minetest">Zughy</a></span>
 </header>
 
-## Introduction
+## Introduzione
 
-Minetest uses Lua scripts to provide modding support.
-This book aims to teach you how to create your own mods, starting from the basics.
-Each chapter focuses on a particular part of the API, and will soon get you making
-your own mods.
+Il modding su Minetest è supportato grazie a script in Lua.
+Questo libro mira a insegnarti come creare le tue mod, iniziando dalle basi.
+Ogni capitolo si concentra su un punto specifico dell'API, e ti porterà presto
+a fare le tue mod.
 
-As well as [reading this book online](https://rubenwardy.com/minetest_modding_book),
-you can also [download it in HTML form](https://github.com/rubenwardy/minetest_modding_book/releases).
+Oltre che [leggere questo libro online](https://rubenwardy.com/minetest_modding_book),
+puoi anche [scaricarlo in HTML](https://github.com/rubenwardy/minetest_modding_book/releases).
 
-### Feedback and Contributions
+### Feedback e Contributi
 
-Noticed a mistake, or want to give feedback? Make sure to tell me about it.
+Hai notato un errore o vuoi dare un feedback? Assicurati di farmelo presente.
 
-* Create a [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
-* Post in the [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
-* [Contact me](https://rubenwardy.com/contact/).
-* Fancy contributing?
-  [Read the README](https://github.com/rubenwardy/minetest_modding_book/blob/master/README.md).
+* Crea una [Issue su GitLab](https://gitlab.com/rubenwardy/minetest_modding_book/-/issues).
+* Posta nel [Topic sul Forum](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
+* [Contattami (in inglese)](https://rubenwardy.com/contact/).
+* Voglia di contribuire?
+  [Leggi il README](https://gitlab.com/rubenwardy/minetest_modding_book/-/blob/master/README.md).
