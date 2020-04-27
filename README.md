@@ -1,5 +1,6 @@
 # Minetest Modding Book
 
+[![Build status](https://gitlab.com/rubenwardy/minetest_modding_book/badges/master/pipeline.svg)](https://gitlab.com/rubenwardy/minetest_modding_book/pipelines)<br>
 [Read Online](https://rubenwardy.com/minetest_modding_book/)
 
 Book written by rubenwardy.  
