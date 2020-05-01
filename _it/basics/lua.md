@@ -1,34 +1,34 @@
 ---
-title: Lua Scripting
+title: Scriptare in Lua
 layout: default
 root: ../..
 idx: 1.2
-description: A basic introduction to Lua, including a guide on global/local scope.
-redirect_from: /en/chapters/lua.html
+description: Un'introduzione a Lua, con inclusa una guida alla portata globale/locale.
+redirect_from: /it/chapters/lua.html
 ---
 
-## Introduction  <!-- omit in toc -->
+## Introduzione  <!-- omit in toc -->
 
-In this chapter we will talk about scripting in Lua, the tools required,
-and go over some techniques which you will probably find useful.
+In questo capitolo parleremo dello scripting in Lua, degli strumenti necessari,
+e tratteremo alcune tecniche che troverai probabilmente utili.
 
-- [Code Editors](#code-editors)
-- [Coding in Lua](#coding-in-lua)
-  - [Program Flow](#program-flow)
-  - [Variable Types](#variable-types)
-  - [Arithmetic Operators](#arithmetic-operators)
-  - [Selection](#selection)
-  - [Logical Operators](#logical-operators)
-- [Programming](#programming)
-- [Local and Global Scope](#local-and-global-scope)
-  - [Locals should be used as much as possible](#locals-should-be-used-as-much-as-possible)
-- [Including other Lua Scripts](#including-other-lua-scripts)
+- [Editor di codice](#editor-di-codice)
+- [Programmare in Lua](#programmare-in-lua)
+  - [Flusso del programma](#flusso-del-programma)
+  - [Tipi di variabili](#tipi-di-variabili)
+  - [Operatori matematici](#operatori-matematici)
+  - [Selezione](#selezione)
+  - [Operatori logici](#operatori-logici)
+- [Programmare](#programmare)
+- [Portata locale e globale](#portata-locale-e-globale)
+  - [Local dovrebbe essere usato il più possibile](#local-dovrebbe-essere-usato-il-piu-possibile)
+- [Inclusione di altri script Lua](#inclusione-di-altri-script-lua)
 
-## Code Editors
+## Editor di codice
 
-A code editor with code highlighting is sufficient for writing scripts in Lua.
-Code highlighting gives different colours to different words and characters
-depending on what they mean. This allows you to spot mistakes.
+Un editor di codice con evidenziamento delle parole chiave è sufficiente per scrivere script in Lua.
+L'evidenziamento assegna colori diversi a parole e caratteri diversi a seconda del loro significato.
+Questo ti permette di individuare più facilmente eventuali errori.
 
 ```lua
 function ctf.post(team,msg)
@@ -46,86 +46,87 @@ function ctf.post(team,msg)
 end
 ```
 
-For example, keywords in the above snippet are highlighted such as if, then, end, and return.
-table.insert is a function which comes with Lua by default.
+Per esempio, parole chiave come if, then, end e return sono evidenziate nel passaggio qui sopra.
+table.insert è invece una funzione base che deriva direttamente da Lua.
 
-Here is a list of common editors well suited for Lua.
-Other editors are available, of course.
+Segue una lista di editor noti che si prestano bene per programmare in Lua.
+Non sono, ovviamente, gli unici esisteneti.
 
 * Windows: [Notepad++](http://notepad-plus-plus.org/), [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 * Linux: Kate, Gedit, [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 * OSX: [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
 
-## Coding in Lua
+## Programmare in Lua
 
-### Program Flow
+### Flusso del programma
 
-Programs are a series of commands that run one after another.
-We call these commands "statements."
-Program flow is how these statements are executed.
-Different types of flow allow you to skip or jump over sets of commands.
-There are three main types of flow:
+I programmi sono una serie di comandi che vengono eseguiti uno dopo l'altro.
+Chiamiamo questi comandi "istruzioni".
+Il flusso del programma è il come queste istruzioni vengono eseguite.
+Differenti tipi di flusso ti permettono di saltare o meno serie di comandi.
+Ci sono tre tipi di flusso:
 
-* Sequence: Just run one statement after another, no skipping.
-* Selection: Skip over sequences depending on conditions.
-* Iteration: Repeating, looping. Keep running the same
-  statements until a condition is met.
+* Sequenziale: esegue un'istruzione dopo l'altra, senza salti.
+* Selettivo: salta alcune sequenze a seconda delle condizioni.
+* Iterante: ripete ciclicamente. Continua a eseguire le stesse istruzioni
+  finché una condizione non è soddisfatta.
 
-So, what do statements in Lua look like?
+Quindi, come vengono rappresentate le istruzioni in Lua?
 
 ```lua
-local a = 2     -- Set 'a' to 2
-local b = 2     -- Set 'b' to 2
-local result = a + b -- Set 'result' to a + b, which is 4
+local a = 2     -- Imposta 'a' a 2
+local b = 2     -- Imposta 'b' a 2
+local risultato = a + b -- Imposta 'risultato' ad a + b, cioè 4
 a = a + 10
-print("Sum is "..result)
+print("La somma è ".. risultato)
 ```
 
-Whoa, what happened there?
+Whoa, cos'è appena successo?
 
-a, b, and result are *variables*. Local variables are declared
-by using the local keyword, and then given an initial value.
-Local will be discussed in a bit, as it's part of a very important concept called
-*scope*.
+a, b, e risultato sono *variabili*. Le variabili locali si dichiarano
+tramite l'uso della parola chiave local, e assegnando loro un valore iniziale.
+Local sarà discussa in un attimo, in quanto parte di un concetto molto importante
+chiamato *portata*.
 
-The `=` means *assignment*, so `result = a + b` means set "result" to a + b.
-Variable names can be longer than one character unlike in mathematics, as seen with the "result" variable.
-It's also worth noting that Lua is *case-sensitive*; A is a different variable to a.
+Il simbolo `=` significa *assegnazione*, quindi `risultato = a + b` significa impostare "risultato" ad a + b.
+I nomi delle variabili possono essere più lunghi di un carattere, al contrario che in matematica, come
+visto nella variabile "risultato".
+Vale anche la pena notare che Lua è *case-sensitive* (differenzia maiscuole da minuscole); 
+A è una variabile diversa da a.
 
-### Variable Types
+### Tipi di variabili
 
-A variable will be only one of the following types and can change type after an
-assignment.
-It's good practice to make sure a variable is only ever nil or a single non-nil type.
+Una variabile può equivalere solo a uno dei seguenti tipi e può cambiare tipo dopo l'assegnazione.
+È buona pratica assicurarsi che una variabile sia sempre solo o nil o diversa da nil.
 
-| Type     | Description                     | Example        |
+| Tipo     | Descrizione                     | Esempio        |
 |----------|---------------------------------|----------------|
-| Nil      | Not initialised. The variable is empty, it has no value | `local A`, `D = nil` |
-| Number   | A whole or decimal number.  | `local A = 4` |
-| String   | A piece of text  | `local D = "one two three"` |
-| Boolean  | True or False    | `local is_true = false`, `local E = (1 == 1)` |
-| Table    | Lists | Explained below |
-| Function | Can run. May require inputs and may return a value | `local result = func(1, 2, 3)` |
+| Nil      | Non inizializzata. La variabile è vuota, non ha valore | `local A`, `D = nil` |
+| Numero   | Un numero intero o decimale  | `local A = 4` |
+| Stringa  | Una porzione di testo  | `local D = "one two three"` |
+| Booleano | Vero o falso (true, false)    | `local is_true = false`, `local E = (1 == 1)` |
+| Tabella  | Liste | Spiegate sotto |
+| Funzione | Può essere eseguita. Può richiedere input e ritornare un valore | `local result = func(1, 2, 3)` |
 
-### Arithmetic Operators
+### Operatori matematici
 
-Not an exhaustive list. Doesn't contain every possible operator.
+Lista non esaustiva, ce ne sono altri
 
-| Symbol | Purpose        | Example                   |
-|--------|----------------|---------------------------|
-| A + B  | Addition       | 2 + 2 = 4                 |
-| A - B  | Subtraction    | 2 - 10 = -8               |
-| A * B  | Multiplication | 2 * 2 = 4                 |
-| A / B  | Division       | 100 / 50 = 2              |
-| A ^ B  | Powers         | 2 ^ 2 = 2<sup>2</sup> = 4 |
-| A .. B | Join strings   | "foo" .. "bar" = "foobar" |
+| Simbolo | Scopo              | Esempio                   |
+|---------|--------------------|---------------------------|
+| A + B   | Addizione          | 2 + 2 = 4                 |
+| A - B   | Sottrazione        | 2 - 10 = -8               |
+| A * B   | Moltiplicazione    | 2 * 2 = 4                 |
+| A / B   | Divisione          | 100 / 50 = 2              |
+| A ^ B   | Potenze            | 2 ^ 2 = 2<sup>2</sup> = 4 |
+| A .. B  | Concatena stringhe | "foo" .. "bar" = "foobar" |
 
-### Selection
+### Selezione
 
-The most basic selection is the if statement. It looks like this:
+La selezione più basica è il costrutto if. Si presenta così:
 
 ```lua
-local random_number = math.random(1, 100) -- Between 1 and 100.
+local random_number = math.random(1, 100) -- Tra 1 e 100.
 if random_number > 50 then
     print("Woohoo!")
 else
@@ -133,25 +134,25 @@ else
 end
 ```
 
-That example generates a random number between 1 and 100. It then prints
-"Woohoo!" if that number is bigger than 50, otherwise it prints "No!".
-What else can you get apart from '>'?
+Questo esempio genera un numero casuale tra 1 e 100. Stampa poi
+"Woohoo!" se il numero è superiore a 50, altrimenti stampa "No!".
+Cos'altro puoi usare oltre a '>'?
 
-### Logical Operators
+### Operatori logici
 
-| Symbol  | Purpose                              | Example                                                     |
+| Simbolo  | Scopo                               | Esempio                                                     |
 |---------|--------------------------------------|-------------------------------------------------------------|
-| A == B  | Equals                               | 1 == 1 (true), 1 == 2 (false)                               |
-| A ~= B  | Doesn't equal                        | 1 ~= 1 (false), 1 ~= 2 (true)                               |
-| A > B   | Greater than                         | 5 > 2 (true), 1 > 2 (false), 1 > 1 (false)                  |
-| A < B   | Less than                            | 1 < 3 (true), 3 < 1 (false), 1 < 1 (false)                  |
-| A >= B  | Greater than or equals               | 5 >= 5 (true), 5 >= 3 (true), 5 >= 6 (false)                |
-| A <= B  | Less than or equals                  | 3 <= 6 (true), 3 <= 3 (true)                                |
-| A and B | And (both must be correct)           | (2 > 1) and (1 == 1)  (true), (2 > 3) and (1 == 1)  (false) |
-| A or B  | either or. One or both must be true. | (2 > 1) or (1 == 2) (true), (2 > 4) or (1 == 3) (false)     |
-| not A   | not true                             | not (1 == 2)  (true), not (1 == 1)  (false)                 |
+| A == B  | Uguale a                             | 1 == 1 (true), 1 == 2 (false)                               |
+| A ~= B  | Non uguale a (diverso da)            | 1 ~= 1 (false), 1 ~= 2 (true)                               |
+| A > B   | Maggiore di                          | 5 > 2 (true), 1 > 2 (false), 1 > 1 (false)                  |
+| A < B   | Minore di                            | 1 < 3 (true), 3 < 1 (false), 1 < 1 (false)                  |
+| A >= B  | Maggiore o uguale a                  | 5 >= 5 (true), 5 >= 3 (true), 5 >= 6 (false)                |
+| A <= B  | Minore o uguale a                    | 3 <= 6 (true), 3 <= 3 (true)                                |
+| A and B | E (entrambi devono essere veri)      | (2 > 1) and (1 == 1)  (true), (2 > 3) and (1 == 1)  (false) |
+| A or B  | O (almeno uno dei due vero)          | (2 > 1) or (1 == 2) (true), (2 > 4) or (1 == 3) (false)     |
+| not A   | non vero                             | not (1 == 2)  (true), not (1 == 1)  (false)                 |
 
-That doesn't contain every possible operator, and you can combine operators like this:
+La lista non è esaustiva, e puoi inoltre combinare gli operatori in questo modo:
 
 ```lua
 if not A and B then
@@ -159,73 +160,72 @@ if not A and B then
 end
 ```
 
-Which prints "Yay!" if A is false and B is true.
+Che stampa "Yay!" se A è falso e B vero.
 
-Logical and arithmetic operators work exactly the same;
-they both accept inputs and return a value which can be stored.
+Gli operatori logici e matematici funzionano esattamente allo stesso modo;
+entrambi accettano input e ritornano un valore che può essere immagazzinato.
 
 ```lua
 local A = 5
 local is_equal = (A == 5)
 if is_equal then
-    print("Is equal!")
+    print("È equivalente!")
 end
 ```
 
-## Programming
+## Programmare
 
-Programming is the action of taking a problem, such as sorting a list
-of items, and then turning it into steps that a computer can understand.
+Programmare è l'azione di prendere un problema, come ordinare una lista di oggetti,
+e tramutarlo in dei passaggi che il computer può comprendere.
 
-Teaching you the logical process of programming is beyond the scope of this book;
-however, the following websites are quite useful in developing this:
+Insegnarti i processi logici della programmazione non rientra nell'ambito di questo libro;
+tuttavia, i seguenti siti sono alquanto utili per approfondire l'argomento:
 
-* [Codecademy](http://www.codecademy.com/) is one of the best resources for
-  learning to 'code', it provides an interactive tutorial experience.
-* [Scratch](https://scratch.mit.edu) is a good resource when starting from
-  absolute basics, learning the problem-solving techniques required to program.\\
-  Scratch is **designed to teach children** how to program and isn't a serious
-  programming language.
+* [Codecademy](http://www.codecademy.com/) è una delle migliori risorse per
+  imparare a 'programmare'; offre un'esperienza guidata interattiva.
+* [Scratch](https://scratch.mit.edu) è una buona risorsa quando si comincia
+  dalle basi assolute, imparando le tecniche di problem solving necessarie per programmare.\\
+  Scratch è **ideato per insegnare ai bambini** e non è un linguaggio serio di programmazione.
 
-## Local and Global Scope
+## Portata locale e globale
 
-Whether a variable is local or global determines where it can be written to or read to.
-A local variable is only accessible from where it is defined. Here are some examples:
+L'essere locale o globale di una variabile determina da dove è possibile accederci.
+Una variabile locale è accessibile soltanto da dove viene definita. Ecco alcuni esempi:
 
 ```lua
--- Accessible from within this script file
+-- Accessibile dall'interno dello script
 local one = 1
 
 function myfunc()
-    -- Accessible from within this function
+    -- Accessibile dall'interno della funzione
     local two = one + one
 
     if two == one then
-        -- Accessible from within this if statement
+        -- Accessible dall'interno del costrutto if
         local three = one + two
     end
 end
 ```
 
-Whereas global variables can be accessed from anywhere in the script file, and from any other mod.
+Mentre le variabili globali sono accessibili da qualsiasi script di qualsiasi mod.
 
 ```lua
-my_global_variable = "blah"
+my_global_variable = "ciao"
 
 function one()
-    my_global_variable = "three"
+    my_global_variable = "hey"
 end
 
-print(my_global_variable) -- Output: "blah"
+print(my_global_variable) -- Output: "ciao"
 one()
-print(my_global_variable) -- Output: "three"
+print(my_global_variable) -- Output: "hey"
 ```
 
 
-### Locals should be used as much as possible
+### Local dovrebbe essere usato il più possibile
 
-Lua is global by default (unlike most other programming languages).
-Local variables must be identified as such.
+Lua è globale di default (a differenza di molti altri linguaggi di programmazione).
+Le variabili locali devono essere identificate come tali.
 
 ```lua
 function one()
@@ -240,15 +240,15 @@ one()
 two()
 ```
 
-dump() is a function that can turn any variable into a string so the programmer can
-see what it is. The foo variable will be printed as "bar", including the quotes
-which show it is a string.
+dump() è una funzione che può trasformare qualsiasi variabile in una stringa, cosicché
+il programmatore possa vedere cosa rappresenta. La variabile foo sarà stampata come
+"bar", virgolette incluse (che dimostrano che è una stringa).
 
-This is sloppy coding and Minetest will, in fact, warn about this:
+L'esempio precedente non è buona programmazione e Minetest, infatti, avviserà di ciò:
 
     Assignment to undeclared global 'foo' inside function at init.lua:2
 
-To correct this, use "local":
+Per ovviare, usa "local":
 
 ```lua
 function one()
@@ -263,12 +263,13 @@ one()
 two()
 ```
 
-Remember that nil means **not initialised**.
-The variable hasn't been assigned a value yet,
-doesn't exist, or has been uninitialised (ie: set to nil).
+Ricorda che nil significa **non inizializzato**.
+Ovvero la variabile non è stata ancora assegnata a un valore, 
+non esiste o è stata deinizializzata (cioè impostata a nil)
 
-The same goes for functions. Functions are variables of a special type, and
-should be made local, as other mods could have functions of the same name.
+La stessa cosa vale per le funzioni. Le funzioni sono variabili di tipo speciale,
+e dovrebbero essere dichiarate locali, in quanto altre mod potrebbero sennò avere funzioni
+con lo stesso nome.
 
 ```lua
 local function foo(bar)
@@ -276,7 +277,7 @@ local function foo(bar)
 end
 ```
 
-API tables should be used to allow other mods to call the functions, like so:
+Le tabelle API dovrebbero essere usate per permettere ad altre mod di chiamare le funzioni, come in:
 
 ```lua
 mymod = {}
@@ -285,20 +286,19 @@ function mymod.foo(bar)
     return "foo" .. bar
 end
 
--- In another mod, or script:
+-- In un'altra mod o script:
 mymod.foo("foobar")
 ```
 
-## Including other Lua Scripts
+## Inclusione di altri script Lua
 
-The recommended way to include other Lua scripts in a mod is to use *dofile*.
+Il metodo consigliato per includere in una mod altri script Lua è usare *dofile*.
 
 ```lua
 dofile(minetest.get_modpath("modname") .. "/script.lua")
 ```
 
-"local" variables declared outside of any functions in a script file will be local to that script.
-A script can return a value, which is useful for sharing private locals:
+Uno script può ritornare un valore, che è utile per condividere variabili locali private:
 
 ```lua
 -- script.lua
@@ -309,6 +309,6 @@ local ret = dofile(minetest.get_modpath("modname") .. "/script.lua")
 print(ret) -- Hello world!
 ```
 
-Later chapters will discuss how to split up the code of a mod in a lot of detail.
-However, the simplistic approach for now is to have different files for different
-types of things - nodes.lua, crafts.lua, craftitems.lua, etc.
+Nei capitoli seguenti si parlerà nel dettaglio di come suddividere il codice di una mod.
+Tuttavia, per ora l'approccio semplicistico è di avere file differenti per diversi tipi di cose
+— nodi.lua, craft.lua, oggetti.lua ecc.
