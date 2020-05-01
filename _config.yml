@@ -9,3 +9,5 @@ plugins:
 collections:
   en:
     output: true
+  it:
+    output: true
