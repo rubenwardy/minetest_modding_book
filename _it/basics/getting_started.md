@@ -1,12 +1,12 @@
 ---
-title: Getting Started
+title: Per iniziare
 layout: default
 root: ../..
 idx: 1.1
-description: Learn how to make a mod folder, including init.lua, mod.conf and more.
+description: Impara come si crea la cartella di una mod, un file init.lua, mod.conf e altro.
 redirect_from:
-- /en/chapters/folders.html
-- /en/basics/folders.html
+- /it/chapters/folders.html
+- /it/basics/folders.html
 ---
 
 ## Introduzione <!-- omit in toc -->
