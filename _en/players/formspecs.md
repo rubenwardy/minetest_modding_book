@@ -1,16 +1,9 @@
 ---
-title: Formspecs
+title: GUIs (Formspecs)
 layout: default
 root: ../..
 idx: 4.5
 redirect_from: /en/chapters/formspecs.html
-minetest510:
-    level: warning
-    title: Real coordinates will be in 5.1.0
-    classes: web-only
-    message: This chapter describes the use of a feature that hasn't been released yet.
-         You can still use this chapter and the code in Minetest 5.0, but elements will
-         be positioned differently to what is shown.
 submit_vuln:
     level: warning
     title: Malicious clients can submit anything at anytime
@@ -62,9 +55,6 @@ called real coordinates which aims to rectify this by introducing a consistent
 coordinate system. The use of real coordinates is highly recommended, and so
 this chapter will use them exclusively.
 
-{% include notice.html notice=page.minetest510 %}
-
-
 ## Anatomy of a Formspec
 
 ### Elements
@@ -103,14 +93,12 @@ The size is in formspec slots - a unit of measurement which is roughly
 around 64 pixels, but varies based on the screen density and scaling
 settings of the client. Here's a formspec which is `2,2` in size:
 
+    formspec_version[3]
     size[2,2]
-    real_coordinates[true]
 
-Notice how we explicitly need to enable the use of the real coordinate system.
-Without this, the legacy system will instead be used to size the formspec, which will
-result in a larger size. This element is a special case, as it is the only element
-which may appear both in the header and the body of a formspec. When in the header,
-it must appear immediately after the size.
+Notice how we explicitly defined the formspec language version.
+Without this, the legacy system will instead be used instead - which will
+prevent the use of consistent element positioning and other new feautures.
 
 The position and anchor elements are used to place the formspec on the screen.
 The position sets where on the screen the formspec will be, and defaults to
@@ -118,6 +106,7 @@ the center (`0.5,0.5`). The anchor sets where on the formspec the position is,
 allowing you to line the formspec up with the edge of the screen. The formspec
 can be placed to the left of the screen like so:
 
+    formspec_version[3]
     size[2,2]
     real_coordinates[true]
     position[0,0.5]
@@ -154,8 +143,8 @@ function guessing.get_formspec(name)
     local text = "I'm thinking of a number... Make a guess!"
 
     local formspec = {
+        "formspec_version[3]",
         "size[6,3.476]",
-        "real_coordinates[true]",
         "label[0.375,0.5;", minetest.formspec_escape(text), "]",
         "field[0.375,1.25;5.25,0.8;number;Number;]",
         "button[1.5,2.3;3,0.8;guess;Guess]"
@@ -339,18 +328,22 @@ minetest.register_node("mymod:rightclick", {
     tiles = {"mymod_rightclick.png"},
     groups = {cracky = 1},
     after_place_node = function(pos, placer)
-        -- This function is run    when the chest node is placed.
+        -- This function is run when the chest node is placed.
         -- The following code sets the formspec for chest.
         -- Meta is a way of storing data onto a node.
 
         local meta = minetest.get_meta(pos)
         meta:set_string("formspec",
-                "size[5,5]"..
-                "label[1,1;This is shown on right click]"..
+                "formspec_version[3]" ..
+                "size[5,5]" ..
+                "label[1,1;This is shown on right click]" ..
                 "field[1,2;2,1;x;x;]")
     end,
     on_receive_fields = function(pos, formname, fields, player)
-        if(fields.quit) then return end
+        if fields.quit then
+            return
+        end
+
         print(fields.x)
     end
 })
