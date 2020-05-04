@@ -158,10 +158,6 @@ you list all dependencies:
 
 Each mod name is on its own line, and mod names with a question mark
 following them are optional dependencies.
-If an optional dependency is installed, it is loaded before the mod;
-however, if the dependency is not installed, the mod still loads.
-This is in contrast to normal dependencies which will cause the current
-mod not to work if the dependency is not installed.
 
 ## Mod Packs
 

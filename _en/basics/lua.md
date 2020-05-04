@@ -297,7 +297,6 @@ The recommended way to include other Lua scripts in a mod is to use *dofile*.
 dofile(minetest.get_modpath("modname") .. "/script.lua")
 ```
 
-"local" variables declared outside of any functions in a script file will be local to that script.
 A script can return a value, which is useful for sharing private locals:
 
 ```lua

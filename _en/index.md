@@ -22,14 +22,14 @@ Each chapter focuses on a particular part of the API, and will soon get you maki
 your own mods.
 
 As well as [reading this book online](https://rubenwardy.com/minetest_modding_book),
-you can also [download it in HTML form](https://github.com/rubenwardy/minetest_modding_book/releases).
+you can also [download it in HTML form](https://gitlab.com/rubenwardy/minetest_modding_book/-/releases).
 
 ### Feedback and Contributions
 
 Noticed a mistake, or want to give feedback? Make sure to tell me about it.
 
-* Create a [GitHub Issue](https://github.com/rubenwardy/minetest_modding_book/issues).
+* Create a [GitHub Issue](https://gitlab.com/rubenwardy/minetest_modding_book/-/issues).
 * Post in the [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
 * [Contact me](https://rubenwardy.com/contact/).
 * Fancy contributing?
-  [Read the README](https://github.com/rubenwardy/minetest_modding_book/blob/master/README.md).
+  [Read the README](https://gitlab.com/rubenwardy/minetest_modding_book/-/blob/master/README.md).
