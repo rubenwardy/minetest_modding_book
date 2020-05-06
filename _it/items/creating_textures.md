@@ -1,84 +1,81 @@
 ---
-title: Creating Textures
+title: Creare le texture
 layout: default
 root: ../..
 idx: 2.2
-description: An introduction to making textures in your editor of choice, an a guide on GIMP.
-redirect_from: /en/chapters/creating_textures.html
+description: Un'introduzione sul come creare texture nel tuo editor di fiducia, e una guida a GIMP.
+redirect_from: /it/chapters/creating_textures.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Being able to create and optimise textures is a very useful skill when
-developing for Minetest.
-There are many techniques relevant to working on pixel art textures,
-and understanding these techniques will greatly improve
-the quality of the textures you create.
+Essere in grado di creare e ottimizare le texture è un'abilità alquanto utile quando si sviluppa
+per Minetest.
+Ci sono molti approcci sul come creare texture in pixel art, e capire questi approcci
+migliorerà nettamente la qualità dei tuoi lavori.
 
-Detailed approaches to creating good pixel art are outside the scope
-of this book, and instead only the most relevant basic techniques
-will be covered.
-There are many [good online tutorials](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial)
-available, which cover pixel art in much more detail.
+Fornire spiegazioni dettagliate non rientra tuttavia nell'ambito di questo libro:
+verranno quindi trattate solo le tecniche più semplici.
+Se si vuole approfondire, ci sono comunque molti [buoni tutorial online](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial) disponibili, che si occupano di pixel art in modo molto più dettagliato.
 
-- [Techniques](#techniques)
-  - [Using the Pencil](#using-the-pencil)
-  - [Tiling](#tiling)
-  - [Transparency](#transparency)
-- [Editors](#editors)
+- [Tecniche](#tecniche)
+  - [Usare la matita](#usare-la-matita)
+  - [Piastrellatura (tiling)](#piastrellatura-tiling)
+  - [Trasparenza](#trasparenza)
+- [Programmi](#programmi)
   - [MS Paint](#ms-paint)
   - [GIMP](#gimp)
 
-## Techniques
+## Tecniche
 
-### Using the Pencil
+### Usare la matita
 
-The pencil tool is available in most editors. When set to its lowest size,
-it allows you to edit one pixel at a time without changing any other parts
-of the image. By manipulating the pixels one at a time, you create clear
-and sharp textures without unintended blurring. It also gives you a high
-level of precision and control.
+Lo strumento matita è disponibile nella maggior parte dei programmi di disegno.
+Quando viene impostato alla dimensione minima, ti permette di disegnare un pixel alla volta
+senza alterare le atre parti dell'immagine.
+Manipolando i singoli pixel si possono creare texture chiare e nette senza alcuna
+sfocatura non voluta, dando inoltre un alto livello di precisione e controllo.
 
-### Tiling
+### Piastrellatura (tiling)
 
-Textures used for nodes should generally be designed to tile. This means
-when you place multiple nodes with the same texture together, the edges line
-up correctly.
+Le texture usate per i nodi dovrebbero generalmente essere progettate per ripetersi come
+delle piastrelle.
+Questo significa che quando piazzi più nodi con la stessa texture vicini, i bordi dovranno
+allinearsi correttamente creando un effetto di continuità.
 
 <!-- IMAGE NEEDED - cobblestone that tiles correctly -->
 
-If you fail to match the edges correctly, the result is far less pleasing
-to look at.
+Se non riesci nell'allineamento, il risultato sarà molto meno
+gradevole da vedere.
 
 <!-- IMAGE NEEDED - node that doesn't tile correctly -->
 
-### Transparency
+### Trasparenza
 
-Transparency is important when creating textures for nearly all craftitems
-and some nodes, such as glass.
-Not all editors support transparency, so make sure you choose an
-editor which is suitable for the textures you wish to create.
+La trasparenza è importante quando si creano texture per pressoché tutti gli
+oggetti fabbricabili e per alcuni nodi, come il vetro.
+Non tutti i programmi supportano la trasparenza, perciò assicurati di sceglierne
+uno adatto ai tipi di texture che vuoi creare.
 
-## Editors
+## Programmi
 
 ### MS Paint
 
-MS Paint is a simple editor which can be useful for basic texture
-design; however, it does not support transparency.
-This usually won't matter when making textures for the sides of nodes,
-but if you need transparency in your textures you should choose a
-different editor.
+MS Paint è un programma di disegno davvero semplice che può rivelarsi utile
+per la creazione di texture base; tuttavia, non supporta la trasparenza.
+Ciò di solitò non farà differenza finché ci si limiterà alle facce di un nodo (a parte nodi come il vetro),
+tuttavia se la trasparenza è un requisito nelle tue texture dovresti guardare oltre.
 
 ### GIMP
 
-GIMP is commonly used in the Minetest community. It has quite a high
-learning curve because many of its features are not immediately
-obvious.
+GIMP viene impiegato spesso nella comunità di Minetest.
+Ha una curva di apprendimento alquanto alta, dato che molte delle sue funzioni
+non risultano ovvie nell'immediato.
 
-When using GIMP, the pencil tool can be selected from the Toolbox:
+Quando usi GIMP, puoi selezionare la matita dalla Barra degli Strumenti:
 
 <figure>
-    <img src="{{ page.root }}//static/pixel_art_gimp_pencil.png" alt="Pencil in GIMP">
+    <img src="{{ page.root }}//static/pixel_art_gimp_pencil.png" alt="La matita su GIMP">
 </figure>
 
-It's also advisable to select the Hard edge checkbox for the eraser tool.
+È anche consigliato spuntare l'opzione "Margine netto" per la gomma.
