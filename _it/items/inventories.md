@@ -1,68 +1,66 @@
 ---
-title: ItemStacks and Inventories
+title: ItemStack e Inventari
 layout: default
 root: ../..
 idx: 2.4
-description: Manipulate InvRefs and ItemStacks
+description: Manipola gli InvRef e gli ItemStack
 redirect_from:
-- /en/chapters/inventories.html
-- /en/chapters/itemstacks.html
-- /en/inventories/inventories.html
-- /en/inventories/itemstacks.html
+- /it/chapters/inventories.html
+- /it/chapters/itemstacks.html
+- /it/inventories/inventories.html
+- /it/inventories/itemstacks.html
 ---
 
-## Introduction  <!-- omit in toc -->
+## Introduzione  <!-- omit in toc -->
 
-In this chapter, you will learn how to use and manipulate inventories, whether
-that be a player inventory, a node inventory, or a detached inventory.
+In questo capitolo, imparerai come usare e manipolare gli inventari, siano essi quelli
+di un giocatore, di un nodo o a sé stanti.
 
-- [What are ItemStacks and Inventories?](#what-are-itemstacks-and-inventories)
-- [ItemStacks](#itemstacks)
-- [Inventory Locations](#inventory-locations)
-- [Lists](#lists)
-  - [Size and Width](#size-and-width)
-  - [Checking Contents](#checking-contents)
-- [Modifying Inventories and ItemStacks](#modifying-inventories-and-itemstacks)
-  - [Adding to a List](#adding-to-a-list)
-  - [Taking Items](#taking-items)
-  - [Manipulating Stacks](#manipulating-stacks)
-- [Wear](#wear)
-- [Lua Tables](#lua-tables)
+- [Cosa sono gli ItemStack e gli inventari?](#cosa-sono-gli-itemstack-e-gli-inventari)
+- [ItemStack](#itemstack)
+- [Collocazione inventari](#collocazione-inventari)
+- [Liste](#liste)
+  - [Dimensione e ampiezza](#dimensione-e-ampiezza)
+  - [Controllare il contenuto](#controllare-il-contenuto)
+- [Modificare inventari e ItemStack](#modificare-inventari-e-itemstack)
+  - [Aggiungere a una lista](#aggiungere-a-una-lista)
+  - [Rimuovere oggetti](#rimuovere-oggetti)
+  - [Manipolazione pile](#manipolazione-pile)
+- [Usura](#usura)
+- [Tabelle Lua](#tabelle-lua)
 
-## What are ItemStacks and Inventories?
+## Cosa sono gli ItemStack e gli inventari?
 
-An ItemStack is the data behind a single cell in an inventory.
+Un ItemStack (*pila di oggetti*) è il dato dietro una singola cella di un inventario.
 
-An *inventory* is a collection of *inventory lists*, each of which
-is a 2D grid of ItemStacks.
-Inventory lists are simply called *lists* in the context
-of inventories.
-The point of an inventory is to allow multiple grids when Players
-and Nodes only have at most one inventory in them.
+Un *inventario* è una collezione di *liste* apposite, ognuna delle quali è una griglia
+2D di ItemStack.
+Lo scopo di un inventario è quello di raggruppare più liste in un singolo oggetto (l'inventario appunto),
+in quanto a ogni giocatore e a ogni nodo può essere associato massimo un inventario.
 
-## ItemStacks
+## ItemStack
 
-ItemStacks have three components to them.
+Gli ItemStack sono composti da quattro parametri: nome, quantità, durabilità e metadati.
 
-The item name may be the item name of a registered item, an alias, or an unknown
-item name.
-Unknown items are common when users uninstall mods, or when mods remove items without
-precautions, such as registering aliases.
+Il nome dell'oggetto può essere il nome di un oggetto registrato, di uno sconosciuto (non registrato)
+o un alias.
+Gli oggetti sconosciuti sono tipici di quando si disinstallano le mod, o quando le mod rimuovono
+degli oggetti senza nessun accorgimento, tipo senza registrarne un alias.
 
 ```lua
 print(stack:get_name())
 stack:set_name("default:dirt")
 
 if not stack:is_known() then
-    print("Is an unknown item!")
+    print("È un oggetto sconosciuto!")
 end
 ```
 
-The count will always be 0 or greater.
-Through normal gameplay, the count should be no more than the maximum stack size
-of the item - `stack_max`.
-However, admin commands and buggy mods may result in stacks exceeding the maximum
-size.
+La quantità sarà sempre 0 o maggiore.
+Durante una normale sessione di gioco, la quantità non dovrebbe mai essere maggiore della dimensione
+massima della pila dell'oggetto - `stack_max`.
+Tuttavia, comandi da amministratore e mod fallate potrebbero portare a oggetti impilati che superano
+la grandezza massima.
 
 ```lua
 print(stack:get_stack_max())
@@ -71,14 +69,14 @@ print(stack:get_stack_max())
 
 
 
-An ItemStack can be empty, in which case the count will be 0.
+Un ItemStack può essere vuoto, nel qual caso avrà come quantità 0.
 
 ```lua
 print(stack:get_count())
 stack:set_count(10)
 ```
 
-ItemStacks can be constructed in multiple ways using the ItemStack function.
+Gli ItemStack possono essere creati in diversi modi usando la funzione ItemStack.
 
 ```lua
 ItemStack() -- name="", count=0
@@ -87,255 +85,259 @@ ItemStack("default:stone 30")
 ItemStack({ name = "default:wood", count = 10 })
 ```
 
-Item metadata is an unlimited key-value store for data about the item.
-Key-value means that you use a name (called the key) to access the data (called the value).
-Some keys have special meaning, such as `description` which is used to have a per-stack
-item description.
-This will be covered in more detail in the Metadata and Storage chapter.
+I metadati di un oggetto sono una o più coppie chiave-valore custodite in esso.
+Chiave-valore significa che si usa un nome (la chiave) per accedere al dato corrispettivo (il valore).
+Alcune chiavi hanno significati predefiniti, come `description` che è usato per specificare la descrizione
+di una pila di oggetti.
+Questo sarà trattato più dettagliatamente nel capitolo Metadati e Storage.
 
-## Inventory Locations
+## Collocazione inventari
 
-An Inventory Location is where and how the inventory is stored.
-There are three types of inventory location: player, node, and detached.
-An inventory is directly tied to one and only one location - updating the inventory
-will cause it to update immediately.
+La collocazione di un inventario è dove e come un inventario viene conservato.
+Ci sono tre tipi di collocazione: giocatore, nodo e separata.
+Un inventario è direttamente legato a una e a una sola collocazione.
 
-Node inventories are related to the position of a specific node, such as a chest.
-The node must be loaded because it is stored in [node metadata](../map/storage.html#metadata).
+Gli inventari collocati nei nodi sono associati alle coordinate di un nodo specifico, come le casse.
+Il nodo deve essere stato caricato perché viene salvato [nei suoi metadati](../map/storage.html#metadata).
 
 ```lua
 local inv = minetest.get_inventory({ type="node", pos={x=1, y=2, z=3} })
 ```
 
-The above obtains an *inventory reference*, commonly referred to as *InvRef*.
-Inventory references are used to manipulate an inventory.
-*Reference* means that the data isn't actually stored inside that object,
-but the object instead directly updates the data in-place.
+L'esempio in alto ottiene il *riferimento a un inventario*, comunemente definito *InvRef*.
+Questi riferimenti sono usati per manipolare l'inventario, e son chiamati così perché i dati 
+non sono davvero salvati dentro all'oggetto (in questo caso "inv"), bensì *puntano* a quei dati.
+In questo modo, modificando "inv", stiamo in verità modificando l'inventario.
 
-The location of an inventory reference can be found like so:
+La collocazione di tali riferimenti può essere ottenuta nel seguente modo:
 
 ```lua
 local location = inv:get_location()
 ```
 
-Player inventories can be obtained similarly or using a player reference.
-The player must be online to access their inventory.
+Gli inventari dei giocatori si ottengono in maniera simile, oppure usando il riferimento
+a un giocatore (*PlayerRef*). In entrambi casi, il giocatore deve essere connesso.
 
 ```lua
 local inv = minetest.get_inventory({ type="player", name="player1" })
--- or
+-- oppure
 local inv = player:get_inventory()
 ```
 
-A detached inventory is one which is independent of players or nodes.
-Detached inventories also don't save over a restart.
-Detached inventories need to be created before they can be used -
-this will be covered later.
+Gli inventari separati, infine, sono quelli non collegati né a nodi né a giocatori,
+e al contrario degli altri, vengono persi dopo un riavvio.
 
 ```lua
 local inv = minetest.get_inventory({
-    type="detached", name="inventory_name" })
+    type="detached", name="nome_inventario" })
 ```
 
-Unlike the other types of inventory, you must first create a detached inventory:
+Un'ulteriore differenza, è che gli inventari separati devono essere creati prima di poterci accedere:
 
 ```lua
 minetest.create_detached_inventory("inventory_name")
 ```
 
-The create_detached_inventory function accepts 3 arguments, only first is required.
-The second argument takes a table of callbacks, which can be used to control how
-players interact with the inventory:
+La funzione create_detached_inventory accetta 3 parametri, di cui solo il primo - il nome - è necessario.
+Il secondo parametro prende una tabella di callback, che possono essere utilizzati
+per controllare come i giocatori interagiscono con l'inventario:
 
 ```lua
 -- Input only detached inventory
 minetest.create_detached_inventory("inventory_name", {
     allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-        return count -- allow moving
+        return count -- permette di spostare gli oggetti
     end,
 
     allow_put = function(inv, listname, index, stack, player)
-        return stack:get_count() -- allow putting
+        return stack:get_count() -- permette di inserirli
     end,
 
     allow_take = function(inv, listname, index, stack, player)
-        return -1 -- don't allow taking
+        return -1 -- non permette di rimuoverli
     end,
 
     on_put = function(inv, listname, index, stack, player)
         minetest.chat_send_all(player:get_player_name() ..
-            " gave " .. stack:to_string() ..
-            " to the donation chest at " .. minetest.pos_to_str(pos))
+            " ha messo " .. stack:to_string() ..
+            " nella cassa delle donazioni da " .. minetest.pos_to_string(player:get_pos()))
     end,
 })
 ```
 
-Permission callbacks - ie: those starting with `allow_`- return the number
-of items to transfer, with -1 being used to prevent transfer completely.
+I callback dei permessi - quelle che iniziano con `allow_` - ritornano il numero
+degli oggetti da trasferire, e si usa -1 per impedirne del tutto l'azione.
 
-Action callbacks - starting with `on_` - don't have a return value and
-can't prevent transfers.
+I callback delle azioni - quelle che iniziano con `on_` - non ritornano invece alcun valore.
 
-## Lists
+## Liste
 
-Inventory Lists are a concept used to allow multiple grids to be stored inside a single location.
-This is especially useful for the player as there are a number of common lists
-which all games have, such as the *main* inventory and *craft* slots.
+Le liste negli inventari permettono di disporre più griglie nello stesso luogo (l'inventario).
+Esse sono particolarmente utili per il giocatore, e infatti di base ogni gioco possiede già
+delle liste come *main* per il corpo principale dell'inventario e *craft* per l'area di fabbricazione.
 
-### Size and Width
+### Dimensione e ampiezza
 
-Lists have a size, which is the total number of cells in the grid, and a width,
-which is only used within the engine.
-The width of the list is not used when drawing the inventory in a window,
-because the code behind the window determines the width to use.
+Le liste hanno una dimensione, equivalente al numero totale di celle nella griglia, e un'ampiezza,
+che è usata esclusivamente dentro il motore di gioco: quando viene disegnato un inventario in una finestra, 
+infatti, il codice dietro di essa già determina che ampiezza usare.
 
 ```lua
 if inv:set_size("main", 32) then
     inv:set_width("main", 8)
-    print("size:  " .. inv.get_size("main"))
-    print("width: " .. inv:get_width("main"))
+    print("dimensione:  " .. inv.get_size("main"))
+    print("ampiezza: " .. inv:get_width("main"))
 else
-    print("Error! Invalid itemname or size to set_size()")
+    print("Errore! Nome dell'oggetto o dimensione non validi")
 end
 ```
 
-`set_size` will fail and return false if the listname or size is invalid.
-For example, the new size may be too small to fit all the current items
-in the inventory.
+`set_size` non andrà in porto e ritornerà "false" se il nome della lista o la dimensione dichiarata
+non risultano valide.
+Per esempio, la nuova dimensione potrebbe essere troppo piccola per contenere gli oggetti attualmente
+presenti nell'inventario.
 
-### Checking Contents
+### Controllare il contenuto
 
-`is_empty` can be used to see if a list contains any items:
+`is_empty` può essere usato per vedere se una lista contiene o meno degli oggetti:
 
 ```lua
 if inv:is_empty("main") then
-    print("The list is empty!")
+    print("La lista è vuota!")
 end
 ```
 
-`contains_item` can be used to see if a list contains a specific item.
+`contains_item` può invece essere usato per vedere se la lista contiene un oggetto specifico:
 
-## Modifying Inventories and ItemStacks
+```lua
+if inv:contains_item("main", "default:stone") then
+    print("Ho trovato della pietra!")
+end
+```
 
-### Adding to a List
+## Modificare inventari e ItemStack
 
-To add items to a list named `"main"` while respecting maximum stack sizes:
+### Aggiungere a una lista
+
+Per aggiungere degli oggetti a una lista (in questo caso "main") usiamo `add_item`. Nell'esempio
+sottostante ci accertiamo anche di rispettare la dimensione:
 
 ```lua
 local stack    = ItemStack("default:stone 99")
 local leftover = inv:add_item("main", stack)
 if leftover:get_count() > 0 then
-    print("Inventory is full! " ..
-            leftover:get_count() .. " items weren't added")
+    print("L'inventario è pieno! " ..
+            leftover:get_count() .. " oggetti non sono stati aggiunti")
 end
 ```
 
-### Taking Items
+### Rimuovere oggetti
 
-To remove items from a list:
+Per rimuovere oggetti da una lista, `remove_item`:
 
 ```lua
 local taken = inv:remove_item("main", stack)
-print("Took " .. taken:get_count())
+print("Rimossi " .. taken:get_count())
 ```
 
-### Manipulating Stacks
+### Manipolare pile
 
-You can modify individual stacks by first getting them:
+Puoi modificare le singole pile prima ottenendole:
 
 ```lua
 local stack = inv:get_stack(listname, 0)
 ```
 
-Then modifying them by setting properties or by using the methods which
-respect `stack_size`:
-
+E poi modificandole impostando le nuove proprietà o usando i metodi che
+rispettano `stack_size`:
 
 ```lua
-local stack    = ItemStack("default:stone 50")
-local to_add   = ItemStack("default:stone 100")
-local leftover = stack:add_item(to_add)
-local taken    = stack:take_item(19)
+local pila          = ItemStack("default:stone 50")
+local da_aggiungere = ItemStack("default:stone 100")
+local resto 	    = pila:add_item(da_aggiungere)
+local rimossi       = pila:take_item(19)
 
-print("Could not add"  .. leftover:get_count() .. " of the items.")
--- ^ will be 51
+print("Impossibile aggiungere "  .. resto:get_count() .. " degli oggetti.")
+-- ^ sarà 51
 
-print("Have " .. stack:get_count() .. " items")
--- ^ will be 80
+print("Hai " .. pila:get_count() .. " oggetti")
+-- ^ sarà 80
 --   min(50+100, stack_max) - 19 = 80
---     where stack_max = 99
+--     dove stack_max = 99
 ```
 
-`add_item` will add items to an ItemStack and return any that could not be added.
-`take_item` will take up to the number of items but may take less, and returns the stack taken.
+`add_item` aggiungerà gli oggetti all'ItemStack e ritornerà quelli in eccesso.
+`take_item` rimuoverà gli oggetti indicati (o meno se ce ne sono meno), e ritornerà
+l'ammontare rimosso.
 
-Finally, set the item stack:
+Infine, si imposta la pila modificata:
 
 ```lua
-inv:set_stack(listname, 0, stack)
+inv:set_stack(listname, 0, pila)
 ```
 
-## Wear
+## Usura
 
-Tools can have wear; wear shows a progress bar and makes the tool break when completely worn.
-Wear is a number out of 65535; the higher it is, the more worn the tool is.
+Gli strumenti possono avere un livello di usura; l'usura è rappresentata da un barra progressiva
+e fa rompere lo strumento quando completamente logorato.
+L'usura è un numero da 0 a 65535; più è alto, più è consumato l'oggetto.
 
-Wear can be manipulated using `add_wear()`, `get_wear()`, and `set_wear(wear)`.
+Il livello di usura può essere manipolato usando `add_wear()`, `get_wear()`, e `set_wear(wear)`.
 
 ```lua
-local stack = ItemStack("default:pick_mese")
-local max_uses = 10
+local pila = ItemStack("default:pick_mese")
+local usi_massimi = 10
 
--- This is done automatically when you use a tool that digs things
--- It increases the wear of an item by one use.
-stack:add_wear(65535 / (max_uses - 1))
+-- Questo viene fatto in automatico quando usi uno strumento che scava cose.
+-- Aumenta l'usura dell'oggetto dopo un uso
+pila:add_wear(65535 / (usi_massimi - 1))
 ```
 
-When digging a node, the amount of wear a tool gets may depend on the node
-being dug. So max_uses varies depending on what is being dug.
+Quando scavi un nodo, l'incremento di usura di uno strumento dipende da che tipo di nodo è.
+Di conseguenza, `usi_massimi` varia a seconda di cos'è stato scavato.
 
-## Lua Tables
+## Tabelle Lua
 
-ItemStacks and Inventories can be converted to and from tables.
-This is useful for copying and bulk operations.
+Gli ItemStack e gli inventari possono essere convertiti in/dalle tabelle.
+Questo è utile per operazioni di copiatura e immagazzinaggio.
 
 ```lua
--- Entire inventory
+-- Inventario intero
 local data = inv1:get_lists()
 inv2:set_lists(data)
 
--- One list
+-- Una lista
 local listdata = inv1:get_list("main")
 inv2:set_list("main", listdata)
 ```
 
-The table of lists returned by `get_lists()` will be in this form:
+La tabella di liste ritornata da `get_lists()` sarà nel seguente formato:
 
 ```lua
 {
-    list_one = {
+    lista_uno = {
         ItemStack,
         ItemStack,
         ItemStack,
         ItemStack,
-        -- inv:get_size("list_one") elements
+        -- inv:get_size("lista_uno") elementi
     },
-    list_two = {
+    lista_due = {
         ItemStack,
         ItemStack,
         ItemStack,
         ItemStack,
-        -- inv:get_size("list_two") elements
+        -- inv:get_size("lista_due") elementi
     }
 }
 ```
 
-`get_list()` will return a single list as just a list of ItemStacks.
+`get_list()` ritornerà una lista singola fatta di ItemStack.
 
-One important thing to note is that the set methods above don't change the size
-of the lists.
-This means that you can clear a list by setting it to an empty table and it won't
-decrease in size:
+Una cosa importante da sottolineare è che i metodi `set` qui in alto non cambiano
+la dimensione delle liste.
+Questo significa che si può svuotare una lista dichiarandola uguale a una tabella vuota,
+e la sua dimensione tuttavia non cambierà:
 
 ```lua
 inv:set_list("main", {})
