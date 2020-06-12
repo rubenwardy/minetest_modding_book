@@ -172,7 +172,7 @@ I giochi hanno una propria struttura organizzativa che verrà spiegata nel loro 
 
 ## Esempio
 
-Here is an example which puts all of this together:
+Segue un esempio che mette insieme tutto ciò discusso finora:
 
 ### Cartella mod
     lamiamod
@@ -189,9 +189,9 @@ Here is an example which puts all of this together:
 ```lua
 print("Questo file parte al caricamento!")
 
-minetest.register_node("mymod:nodo", {
+minetest.register_node("lamiamod:nodo", {
     description = "Questo è un nodo",
-    tiles = {"mymod_nodo.png"},
+    tiles = {"lamiamod_nodo.png"},
     groups = {cracky = 1}
 })
 ```
