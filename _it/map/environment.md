@@ -1,225 +1,206 @@
 ---
-title: Basic Map Operations
+title: Mappa: operazioni base 
 layout: default
 root: ../..
 idx: 3.1
-description: Basic operations like set_node and get_node
-redirect_from: /en/chapters/environment.html
+description: Operazioni base come set_node e get_node
+redirect_from: /it/chapters/environment.html
 ---
 
 ## Introduction <!-- omit in toc -->
 
-In this chapter, you will learn how to perform basic actions on the map.
+In questo capitolo imparerai come eseguire semplici azioni sulla mappa.
 
-- [Map Structure](#map-structure)
-- [Reading](#reading)
-  - [Reading Nodes](#reading-nodes)
-  - [Finding Nodes](#finding-nodes)
-- [Writing](#writing)
-  - [Writing Nodes](#writing-nodes)
-  - [Removing Nodes](#removing-nodes)
-- [Loading Blocks](#loading-blocks)
-- [Deleting Blocks](#deleting-blocks)
+- [Struttura della mappa](#struttura-della-mappa)
+- [Lettura](#lettura)
+  - [Lettura dei nodi](#lettura-dei-nodi)
+  - [Ricerca dei nodi](#ricerca-dei-nodi)
+- [Scrittura](#scrittura)
+  - [Scrittura dei nodi](#scrittura-dei-nodi)
+  - [Rimozione dei nodi](#rimozione-dei-nodi)
+- [Caricamento blocchi](#caricamento-blocchi)
+- [Cancellazione blocchi](#cancellazione-blocchi)
 
-## Map Structure
+## Struttura della mappa
 
-The Minetest map is split into MapBlocks, each MapBlocks being a cube of size 16.
-As players travel around the map, MapBlocks are created, loaded, and unloaded.
-Areas of the map which are not yet loaded are full of *ignore* nodes, an impassable
-unselectable placeholder node. Empty space is full of *air* nodes, an invisible node
-you can walk through.
+La mappa di Minetest è suddivisa in Blocchi Mappa (*MapBlocks*), cubi di 16x16x16 nodi.
+Man mano che i giocatori si addentrano per la mappa, i Blocchi Mappa vengono creati, caricati e rimossi dalla memoria.
+Le aree della mappa che non sono ancora caricate sono piene di nodi *ignora*, dei nodi segnaposto che non possono
+essere né attraversati né selezionati. Gli spazi vuoti delle aree già caricate, invece, sono nodi *d'aria*, dei
+nodi invisibili e attraversabili.
 
-Loaded map blocks are often referred to as *active blocks*. Active Blocks can be
-read from or written to by mods or players, and have active entities. The Engine also
-performs operations on the map, such as performing liquid physics.
+Spesso, ci si rifà ai blocchi caricati (attenzione! Blocco non vuol dire nodo, come detto qui sopra!) chiamandoli *blocchi attivi*.
+I blocchi attivi possono essere letti e sovrascritti dalle mod o dai giocatori, e contenere entità attive. 
+Anche il motore di gioco esegue operazioni sulla mappa, come il calcolare la fisica dei liquidi.
 
-MapBlocks can either be loaded from the world database or generated. MapBlocks
-will be generated up to the map generation limit (`mapgen_limit`) which is set
-to its maximum value, 31000, by default. Existing MapBlocks can, however, be
-loaded from the world database outside of the generation limit.
+I Blocchi Mappa possono essere sia caricati dal database del mondo che generati.
+Essi vengono generati fino al limite di generazione della mappa (`mapgen_limit`), che è impostato di base al suo valore massimo, 31000.
+I Blocchi Mappa esistenti, tuttavia, ignorano questo limite quando caricati dal database del mondo.
 
-## Reading
+## Lettura
 
-### Reading Nodes
+### Lettura dei nodi
 
-You can read from the map once you have a position:
+Un nodo può essere letto da un mondo fornendone la posizione:
 
 ```lua
-local node = minetest.get_node({ x = 1, y = 3, z = 4 })
-print(dump(node)) --> { name=.., param1=.., param2=.. }
+local nodo = minetest.get_node({ x = 1, y = 3, z = 4 })
+print(dump(nodo)) --> { name=.., param1=.., param2=.. }
 ```
 
-If the position is a decimal, it will be rounded to the containing node.
-The function will always return a table containing the node information:
+Se la posizione è un decimale, verrà arrotondata alle coordinate del nodo.
+`get_node` ritornerà sempre una tabella contenente le informazioni del nodo:
 
-* `name` - The node name, which will be *ignore* when the area is unloaded.
-* `param1` - See the node definition. This will commonly be light.
-* `param2` - See the node definition.
+* `name` - Il nome del nodo, che sarà `ignore` quando l'area non è caricata.
+* `param1` - Guarda la definizione dei nodi. È solitamente associato alla luce.
+* `param2` - Guarda la definizione dei nodi.
 
-It's worth noting that the function won't load the containing block if the block
-is inactive, but will instead return a table with `name` being `ignore`.
+Per vedere se un nodo è caricato si può utilizzare `minetest.get_node_or_nil`, che ritornerà `nil` se il nome del nodo risulta `ignore`
+(la funzione non caricherà comunque il nodo).
+Potrebbe comunque ritornare `ignore` se un blocco contiene effettivamente `ignore`: questo succede ai limiti della mappa.
 
-You can use `minetest.get_node_or_nil` instead, which will return `nil` rather
-than a table with a name of `ignore`. It still won't load the block, however.
-This may still return `ignore` if a block actually contains ignore.
-This will happen near the edge of the map as defined by the map generation
-limit (`mapgen_limit`).
+### Ricerca dei nodi
 
-### Finding Nodes
+Minetest offre un numero di funzioni d'aiuto per accelerare le azioni più comuni legate alla mappa.
+Le più frequenti sono quelle per trovare i nodi.
 
-Minetest offers a number of helper functions to speed up common map actions.
-The most commonly used of these are for finding nodes.
-
-For example, say we wanted to make a certain type of plant that grows
-better near mese; you would need to search for any nearby mese nodes,
-and adapt the growth rate accordingly.
+Per esempio, mettiamo che si voglia creare un certo tipo di pianta che cresce più velocemente vicino alla pietra;
+si dovrebbe controllare che ogni nodo nei pressi della pianta sia pietra, e modificarne il suo indice di crescita di conseguenza.
 
 ```lua
-local grow_speed = 1
-local node_pos   = minetest.find_node_near(pos, 5, { "default:mese" })
-if node_pos then
-    minetest.chat_send_all("Node found at: " .. dump(node_pos))
-    grow_speed = 2
+local vel_crescita = 1
+local pos_nodo   = minetest.find_node_near(pos, 5, { "default:stone" })
+if pos_nodo then
+    minetest.chat_send_all("Nodo trovato a: " .. dump(pos_nodo))
+    vel_crescita = 2
 end
 ```
 
-Let's say, for example, that the growth rate increases the more mese there is
-nearby. You should then use a function which can find multiple nodes in area:
+Mettiamo ora che l'indice di crescita debba incrementare per ogni nodo di pietra nei dintorni.
+Si dovrebbe quindi usare una funzione in grado di trovare più nodi in un'area:
 
 ```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
 local pos2       = vector.add(pos, { x = 5, y = 5, z = 5 })
-local pos_list   =
-        minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
-local grow_speed = 1 + #pos_list
+local lista_pos   =
+        minetest.find_nodes_in_area(pos1, pos2, { "default:stone" })
+local vel_crescita = 1 + #lista_pos
 ```
 
-The above code doesn't quite do what we want, as it checks based on area, whereas
-`find_node_near` checks based on range. In order to fix this, we will,
-unfortunately, need to manually check the range ourselves.
+Il codice qui in alto, tuttavia, non fa proprio quello che ci serve, in quanto fa controlli basati su un'area, mentre `find_node_near` li fa su un intervallo.
+Per ovviare a ciò, bisogna purtroppo controllare l'intervallo manualmente.
 
 ```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
 local pos2       = vector.add(pos, { x = 5, y = 5, z = 5 })
-local pos_list   =
-        minetest.find_nodes_in_area(pos1, pos2, { "default:mese" })
-local grow_speed = 1
-for i=1, #pos_list do
-    local delta = vector.subtract(pos_list[i], pos)
+local lista_pos   =
+        minetest.find_nodes_in_area(pos1, pos2, { "default:stone" })
+local vel_crescita = 1
+for i=1, #lista_pos do
+    local delta = vector.subtract(lista_pos[i], pos)
     if delta.x*delta.x + delta.y*delta.y <= 5*5 then
-        grow_speed = grow_speed + 1
+        vel_crescita = vel_crescita + 1
     end
 end
 ```
 
-Now your code will correctly increase `grow_speed` based on mese nodes in range.
-Note how we compared the squared distance from the position, rather than square
-rooting it to obtain the actual distance. This is because computers find square
-roots computationally expensive, so you should avoid them as much as possible.
+Ora il codice aumenterà correttamente `vel_crescita` basandosi su quanti nodi di pietra ci sono in un intervallo.
+Notare come si sia comparata la distanza al quadrato dalla posizione, invece che calcolarne la radice quadrata per ottenerne la distanza vera e propria.
+Questo perché i computer trovano le radici quadrate computazionalmente pesanti, quindi dovresti evitare di usarle il più possibile.
 
-There are more variations of the above two functions, such as
-`find_nodes_with_meta` and `find_nodes_in_area_under_air`, which work similarly
-and are useful in other circumstances.
+Ci sono altre variazioni delle due funzioni sopracitate, come `find_nodes_with_meta` e `find_nodes_in_area_under_air`, che si comportano in modo simile e sono utili in altre circostanze.
 
-## Writing
+## Scrittura
 
-### Writing Nodes
+### Scrittura dei nodi
 
-You can use `set_node` to write to the map. Each call to set_node will cause
-lighting to be recalculated, which means that set_node is fairly slow for large
-numbers of nodes.
+Puoi usare `set_node` per sovrascrivere nodi nella mappa.
+Ogni chiamata a set_node ricalcolerà la luce, il ché significa che set_node è alquanto lento quando usato su un elevato numero di nodi.
 
 ```lua
-minetest.set_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
+minetest.set_node({ x = 1, y = 3, z = 4 }, { name = "default:stone" })
 
-local node = minetest.get_node({ x = 1, y = 3, z = 4 })
-print(node.name) --> default:mese
+local nodo = minetest.get_node({ x = 1, y = 3, z = 4 })
+print(nodo.name) --> default:stone
 ```
 
-set_node will remove any associated metadata or inventory from that position.
-This isn't desirable in all circumstances, especially if you're using multiple
-node definitions to represent one conceptual node. An example of this is the
-furnace node - whilst you think conceptually of it as one node, it's actually
-two.
+set_node rimuoverà ogni metadato e inventario associato a quel nodo: ciò non è sempre desiderabile, specialmente se si stanno usando
+più definizioni di nodi per rappresentarne concettualmente uno. Un esempio è il nodo fornace: per quanto lo si immagini come un nodo unico,
+sono in verità due.
 
-You can set a node without deleting metadata or the inventory like so:
+Si può impostare un nuovo nodo senza rimuoverne metadati e inventario con `swap_node`:
 
 ```lua
-minetest.swap_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
+minetest.swap_node({ x = 1, y = 3, z = 4 }, { name = "default:stone" })
 ```
 
-### Removing Nodes
+### Rimozione dei nodi
 
-A node must always be present. To remove a node, you set the position to `air`.
+Un nodo deve sempre essere presente. Per rimuoverlo, basta impostarlo uguale a `air`.
 
-The following two lines will both remove a node, and are both identical:
+Le seguenti due linee di codice sono equivalenti, rimuovendo in entrambi i casi il nodo:
 
 ```lua
 minetest.remove_node(pos)
 minetest.set_node(pos, { name = "air" })
 ```
 
-In fact, remove_node will call set_node with the name being air.
+Infatti, `remove_node` non fa altro che richiamare `set_node` con nome `air`.
 
-## Loading Blocks
+## Caricamento blocchi
 
-You can use `minetest.emerge_area` to load map blocks. Emerge area is asynchronous,
-meaning the blocks won't be loaded instantly. Instead, they will be loaded
-soon in the future, and the callback will be called each time.
+Puoi usare `minetest.emerge_area` per caricare i blocchi mappa.
+Questo comando è asincrono, ovvero i blocchi non saranno caricati istantaneamente; al contrario, verranno caricati man mano e il callback associato sarà richiamato a ogni passaggio.
 
 ```lua
--- Load a 20x20x20 area
-local halfsize = { x = 10, y = 10, z = 10 }
-local pos1 = vector.subtract(pos, halfsize)
-local pos2 = vector.add     (pos, halfsize)
+-- Carica un'area 20x20x20
+local mezza_dimensione = { x = 10, y = 10, z = 10 }
+local pos1 = vector.subtract(pos, mezza_dimensione)
+local pos2 = vector.add     (pos, mezza_dimensione)
 
-local context = {} -- persist data between callback calls
-minetest.emerge_area(pos1, pos2, emerge_callback, context)
+local param = {} -- dati persistenti tra un callback e l'altro
+minetest.emerge_area(pos1, pos2, mio_callback, param)
 ```
 
-Minetest will call `emerge_callback` whenever it loads a block, with some
-progress information.
+Minetest chiamerà la funzione locale definita qua sotto `mio_callback` ogni volta che carica un blocco, con delle informazioni sul progresso.
 
 ```lua
-local function emerge_callback(pos, action,
-        num_calls_remaining, context)
-    -- On first call, record number of blocks
-    if not context.total_blocks then
-        context.total_blocks  = num_calls_remaining + 1
-        context.loaded_blocks = 0
+local function mio_callback(pos, action,
+        calls_remaining, param)
+    -- alla prima chiamata, registra il numero di blocchi
+    if not param.blocchi_totali then
+        param.blocchi_totali  = calls_remaining + 1
+        param.blocchi_caricati = 0
     end
 
-    -- Increment number of blocks loaded
-    context.loaded_blocks = context.loaded_blocks + 1
+    -- Incrementa il numero di blocchi caricati
+    param.loaded_blocks = param.blocchi_caricati + 1
 
-    -- Send progress message
-    if context.total_blocks == context.loaded_blocks then
-        minetest.chat_send_all("Finished loading blocks!")
+    -- Invia messaggio indicante il progresso
+    if param.blocchi_totali == param.blocchi_caricati then
+        minetest.chat_send_all("Ho finito di caricare blocchi!")
     end
-        local perc = 100 * context.loaded_blocks / context.total_blocks
-        local msg  = string.format("Loading blocks %d/%d (%.2f%%)",
-                context.loaded_blocks, context.total_blocks, perc)
+        local percentuale = 100 * param.blocchi_caricati / param.blocchi_totali
+        local msg  = string.format("Caricamento blocchi %d/%d (%.2f%%)",
+                param.blocchi_caricati, param.blocchi_totali, percentuale)
         minetest.chat_send_all(msg)
     end
 end
 ```
 
-This is not the only way of loading blocks; using an LVM will also cause the
-encompassed blocks to be loaded synchronously.
+Questo non è l'unico modo per caricare blocchi; utilizzando un LVM (nel dettaglio nel capitolo 19) si potranno infatti caricare i blocchi selezionati in maniera sincrona.
 
-## Deleting Blocks
+## Cancellazione blocchi
 
-You can use delete_blocks to delete a range of map blocks:
+Puoi usare `delete_area` per cancellare una serie di blocchi mappa:
 
 ```lua
--- Delete a 20x20x20 area
-local halfsize = { x = 10, y = 10, z = 10 }
-local pos1 = vector.subtract(pos, halfsize)
-local pos2 = vector.add     (pos, halfsize)
+-- Cancella un'area 20x20x20
+local mezza_dimensione = { x = 10, y = 10, z = 10 }
+local pos1 = vector.subtract(pos, mezza_dimensione)
+local pos2 = vector.add     (pos, mezza_dimensione)
 
 minetest.delete_area(pos1, pos2)
 ```
 
-This will delete all map blocks in that area, *inclusive*. This means that some
-nodes will be deleted outside the area as they will be on a mapblock which overlaps
-the area bounds.
+Questo cancellerà tutti i blocchi mappa in quell'area, anche quelli solo parzialmente selezionati.
