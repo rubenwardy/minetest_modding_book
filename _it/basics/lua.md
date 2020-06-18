@@ -1,5 +1,5 @@
 ---
-title: Scriptare in Lua
+title: Programmare in Lua
 layout: default
 root: ../..
 idx: 1.2
@@ -9,7 +9,7 @@ redirect_from: /it/chapters/lua.html
 
 ## Introduzione  <!-- omit in toc -->
 
-In questo capitolo parleremo dello scripting in Lua, degli strumenti necessari,
+In questo capitolo parleremo della programmazione in Lua, degli strumenti necessari,
 e tratteremo alcune tecniche che troverai probabilmente utili.
 
 - [Editor di codice](#editor-di-codice)

@@ -1,120 +1,106 @@
 ---
-title: Node Timers and ABMs
+title: Timer dei nodi e ABM
 layout: default
 root: ../..
 idx: 3.2
-description: Learn how to make ABMs to change blocks.
+description: Impara come creare ABM e timer per modificare i blocchi.
 redirect_from:
-- /en/chapters/abms.html
-- /en/map/abms.html
+- /it/chapters/abms.html
+- /it/map/abms.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Periodically running a function on certain nodes is a common task.
-Minetest provides two methods of doing this: Active Block Modifiers (ABMs) and node timers.
+Eseguire periodicamente una funzione su certi nodi è abbastanza comune.
+Minetest fornisce due metodi per fare ciò: gli ABM (*Active Block Modifiers*, Modificatori di blocchi attivi) e i timer associati ai nodi.
 
-ABMs scan all loaded MapBlocks looking for nodes that match a criteria.
-They are best suited for nodes which are frequently found in the world,
-such as grass.
-They have a high CPU overhead, but a low memory and storage overhead.
+Gli ABM scansionano tutti i Blocchi Mappa alla ricerca dei nodi che rientrano nei canoni:
+essi sono quindi ottimali per quei nodi che si trovano con frequenza in giro per il mondo, come l'erba.
+Possiedono un alto consumo della CPU, senza invece pressoché impattare sulla memoria e lo storage.
 
-For nodes that are uncommon or already use metadata, such as furnaces
-and machines, node timers should be used instead.
-Node timers work by keeping track of pending timers in each MapBlock, and then
-running them when they expire.
-This means that timers don't need to search all loaded nodes to find matches,
-but instead require slightly more memory and storage for the tracking
-of pending timers.
+Per i nodi invece non troppo comuni o che già usano metadati, come le fornaci e i macchinari, dovrebbero venire impiegati i timer.
+I timer dei nodi tengon traccia dei timer accodati in ogni Blocco Mappa, eseguendoli quando raggiungono lo zero.
+Ciò significa che non hanno bisogno di cercare tra tutti i nodi caricati per trovare un match, bensì, richiedendo un po' più di memoria e storage, vanno alla ricerca dei soli nodi con un timer in corso.
 
-- [Node Timers](#node-timers)
-- [Active Block Modifiers](#active-block-modifiers)
-- [Your Turn](#your-turn)
+- [Timer dei nodi](#timer-dei-nodi)
+- [ABM: modificatori di blocchi attivi](#abm-modificatori-di-blocchi-attivi)
+- [Il tuo turno](#il-tuo-turno)
 
-## Node Timers
+## Timer dei nodi
 
-Node timers are directly tied to a single node.
-You can manage node timers by obtaining a NodeTimerRef object.
+A ogni nodo è associato un timer.
+Questi timer possono essere gestiti ottenendo un oggetto NodeTimerRef (quindi un riferimento, come già visto per gli inventari).
 
 ```lua
 local timer = minetest.get_node_timer(pos)
-timer:start(10.5) -- in seconds
+timer:start(10.5) -- in secondi
 ```
 
-You can also check the status or stop the timer:
+Nell'esempio sottostante controlliamo che un timer sia attivo (`is_started()`), da quanto (`get_elapsed()`), quanto manca (`get_timeout()`) e infine lo fermiamo (`stop()`)
 
 ```lua
 if timer:is_started() then
-    print("The timer is running, and has " .. timer:get_timeout() .. "s remaining!")
-    print(timer:get_elapsed() .. "s has elapsed.")
+    print("Il timer sta andando, e gli rimangono " .. timer:get_timeout() .. " secondi!")
+    print("Sono passati " .. timer:get_elapsed() .. " secondi")
 end
 
 timer:stop()
 ```
 
-When a node timer is up, the `on_timer` method in the node's definition table will
-be called.
-The method only takes a single parameter, the position of the node.
+Quando un timer raggiunge lo zero, viene eseguito il metodo `on_timer`, che va dichiarato dentro la tabella di definizione del nodo.
+`on_timer` richiede un solo parametro, ovvero la posizione del nodo.
 
 ```lua
-minetest.register_node("autodoors:door_open", {
+minetest.register_node("porteautomatiche:porta_aperta", {
     on_timer = function(pos)
-        minetest.set_node(pos, { name = "autodoors:door" })
+        minetest.set_node(pos, { name = "porteautomatiche:porta_chiusa" })
         return false
     end
 })
 ```
 
-Returning true in `on_timer` will cause the timer to run again for the same interval.
+Ritornando true, il timer ripartirà (con la stessa durata di prima).
 
-You may have noticed a limitation with timers: for optimisation reasons, it's
-only possible to have one type of timer per node type, and only one timer running per node.
+Potresti aver tuttavia notato una limitazione: per questioni di ottimizzazione, infatti, è possibile avere uno e un solo timer per tipo di nodo, e solo un timer attivo per nodo.
 
 
-## Active Block Modifiers
+## ABM: modificatori di blocchi attivi
 
-Alien grass, for the purposes of this chapter, is a type of grass which
-has a chance to appear near water.
-
+Erba aliena, a scopo illustrativo del capitolo, è un tipo d'erba che ha una probabilità di apparire vicino all'acqua.
 
 ```lua
-minetest.register_node("aliens:grass", {
-    description = "Alien Grass",
-    light_source = 3, -- The node radiates light. Min 0, max 14
-    tiles = {"aliens_grass.png"},
+minetest.register_node("alieni:erba", {
+    description = "Erba Aliena",
+    light_source = 3, -- Il nodo irradia luce. Min 0, max 14
+    tiles = {"alieni_erba.png"},
     groups = {choppy=1},
     on_use = minetest.item_eat(20)
 })
 
 minetest.register_abm({
-    nodenames = {"default:dirt_with_grass"},
-    neighbors = {"default:water_source", "default:water_flowing"},
-    interval = 10.0, -- Run every 10 seconds
-    chance = 50, -- Select every 1 in 50 nodes
+    nodenames = {"default:dirt_with_grass"}, -- nodo sul quale applicare l'ABM
+    neighbors = {"default:water_source", "default:water_flowing"}, -- nodi che devono essere nei suoi dintorni (almeno uno)
+    interval = 10.0, -- viene eseguito ogni 10 secondi
+    chance = 50, -- possibilità di partire su un nodo ogni 50
     action = function(pos, node, active_object_count,
             active_object_count_wider)
         local pos = {x = pos.x, y = pos.y + 1, z = pos.z}
-        minetest.set_node(pos, {name = "aliens:grass"})
+        minetest.set_node(pos, {name = "alieni:erba"})
     end
 })
 ```
 
-This ABM runs every ten seconds, and for each matching node, there is
-a 1 in 50 chance of it running.
-If the ABM runs on a node, an alien grass node is placed above it.
-Please be warned, this will delete any node previously located in that position.
-To prevent this you should include a check using minetest.get_node to make sure there is space for the grass.
+Questo ABM viene eseguito ogni 10 secondi, e per ogni nodo d'erba (`default:default_with_grass`) c'è una possibilità su 50 che l'ABM parta.
+Quando ciò accade, un nodo di erba aliena (`alieni:erba`) gli viene piazzato sopra (attenzione, tuttavia, che così facendo, il nodo che c'era prima verrà cancellato, quindi sarebbe meglio controllare prima che sopra ci sia dell'aria)
 
-Specifying a neighbour is optional.
-If you specify multiple neighbours, only one of them needs to be
-present to meet the requirements.
+Specificare dei vicini (*neighbors*) è opzionale.
+Se ne vengono specificati più di uno, basterà che uno solo di essi sia presente per soddisfare la condizione.
 
-Specifying chance is also optional.
-If you don't specify the chance, the ABM will always run when the other conditions are met.
+Anche le possibilità (*chance*) sono opzionali.
+Se non vengono specificate, l'ABM verrà sempre eseguito quando le altre condizioni sono soddisfatte.
 
-## Your Turn
+## Il tuo turno
 
-* Midas touch: Make water turn to gold blocks with a 1 in 100 chance, every 5 seconds.
-* Decay: Make wood turn into dirt when water is a neighbour.
-* Burnin': Make every air node catch on fire. (Tip: "air" and "fire:basic_flame").
-  Warning: expect the game to crash.
+* Tocco di Mida: tramuta l'acqua in oro con una possibilità di 1 su 100, ogni 5 secondi;
+* Decadimento: fai che il legno diventi terra quando questo confina con dell'acqua.
+* Al fuoco!: fai prendere fuoco a ogni blocco d'aria (suggerimento: "air" e "fire:basic_flame"). Avvertenza: aspettati un crash del gioco
