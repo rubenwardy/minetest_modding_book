@@ -89,7 +89,7 @@ I metadati di un oggetto sono una o più coppie chiave-valore custodite in esso.
 Chiave-valore significa che si usa un nome (la chiave) per accedere al dato corrispettivo (il valore).
 Alcune chiavi hanno significati predefiniti, come `description` che è usato per specificare la descrizione
 di una pila di oggetti.
-Questo sarà trattato più dettagliatamente nel capitolo Metadati e Storage.
+Questo sarà trattato più in dettaglio nel capitolo Storaggio e Metadati.
 
 ## Collocazione inventari
 

@@ -1,73 +1,65 @@
 ---
-title: Storage and Metadata
+title: Storaggio e metadati
 layout: default
 root: ../..
 idx: 3.3
-description: Mod Storage, NodeMetaRef (get_meta).
+description: Scopri come funziona lo spazio d'archiviazione delle mod e come usare i metadati per passare informazioni.
 redirect_from:
-  - /en/chapters/node_metadata.html
-  - /en/map/node_metadata.html
+  - /it/chapters/node_metadata.html
+  - /it/map/node_metadata.html
 ---
 
 ## Introduction <!-- omit in toc -->
 
-In this chapter, you will learn how you can store data.
+In questo capitolo imparerai i vari modi per immagazzinare dati.
 
-- [Metadata](#metadata)
-  - [What is Metadata?](#what-is-metadata)
-  - [Obtaining a Metadata Object](#obtaining-a-metadata-object)
-  - [Reading and Writing](#reading-and-writing)
-  - [Special Keys](#special-keys)
-  - [Storing Tables](#storing-tables)
-  - [Private Metadata](#private-metadata)
-  - [Lua Tables](#lua-tables)
-- [Mod Storage](#mod-storage)
-- [Databases](#databases)
-- [Deciding Which to Use](#deciding-which-to-use)
-- [Your Turn](#your-turn)
+- [Metadati](#metadati)
+  - [Cos'è un metadato?](#cos-e-un-metadato)
+  - [Ottenere i metadati di un oggetto](#ottenere-i-metadati-di-un-oggetto)
+  - [Lettura e scrittura](#lettura-e-scrittura)
+  - [Chiavi speciali](#chiavi-speciali)
+  - [Immagazzinare tabelle](#immagazzinare-tabelle)
+  - [Metadati privati](#metadati-privati)
+  - [Tabelle Lua](#tabelle-lua)
+- [Storaggio mod](#storaggio-mod)
+- [Database](#database)
+- [Decidere quale usare](#decidere-quale-usare)
+- [Il tuo turno](#il-tuo-turno)
 
-## Metadata
+## Metadati
 
-### What is Metadata?
+### Cos'è un metadato?
 
-In Minetest, Metadata is a key-value store used to attach custom data to something.
-You can use metadata to store information against a Node, Player, or ItemStack.
+In Minetest, un metadato è una coppia chiave-valore usata per collegare dei dati a qualcosa.
+Puoi usare i metadati per salvare informazioni nei nodi, nei giocatori o negli ItemStack.
 
-Each type of metadata uses the exact same API.
-Metadata stores values as strings, but there are a number of methods to
-convert and store other primitive types.
+Ogni tipo di metadato usa la stessa identica API.
+Ognuno di essi salva i valori come stringhe, ma ci sono comunque dei metodi per convertire e salvare altri tipi di primitivi.
 
-Some keys in metadata may have special meaning.
-For example, `infotext` in node metadata is used to store the tooltip which shows
-when hovering over the node using the crosshair.
-To avoid conflicts with other mods, you should use the standard namespace
-convention for keys: `modname:keyname`.
-The exception is for conventional data such as the owner name which is stored as
-`owner`.
+Per evitare conflitti con altre mod, dovresti usare la nomenclatura convenzionale per le chiavi: `nomemod:nomechiave`.
+Alcune chiavi hanno invece un significato speciale, come vedremo più in basso.
 
-Metadata is data about data.
-The data itself, such as a node's type or an stack's count, is not metadata.
+Ricorda che i metadati sono dati riguardo altri dati.
+Il dato in sé, come il tipo di un nodo o la quantità di un ItemStack, non rientra perciò nella definizione.
 
-### Obtaining a Metadata Object
+### Ottenere i metadati di un oggetto
 
-If you know the position of a node, you can retrieve its metadata:
+Se si conosce la posizione di un nodo, si possono ottenere i suoi metadati:
 
 ```lua
 local meta = minetest.get_meta({ x = 1, y = 2, z = 3 })
 ```
 
-Player and ItemStack metadata are obtained using `get_meta()`:
+Quelli dei giocatori e degli ItemStack invece sono ottenuti tramite `get_meta()`:
 
 ```lua
-local pmeta = player:get_meta()
-local imeta = stack:get_meta()
+local p_meta = player:get_meta()
+local i_meta = pila:get_meta()
 ```
 
-### Reading and Writing
+### Lettura e scrittura
 
-In most cases, `get_<type>()` and `set_<type>()` methods will be used to read
-and write to meta.
-Metadata stores strings, so the string methods will directly set and get the value.
+Nella maggior parte dei casi, per leggere e scrivere metadati saranno usati i metodi `get_<type>()` e `set_<type>()`.
 
 ```lua
 print(meta:get_string("foo")) --> ""
@@ -75,15 +67,12 @@ meta:set_string("foo", "bar")
 print(meta:get_string("foo")) --> "bar"
 ```
 
-All of the typed getters will return a neutral default value if the key doesn't
-exist, such as `""` or `0`.
-You can use `get()` to return a string or nil.
+Tutti i getter ritorneranno un valore di default se la chiave non esiste, rispettivamente `""` per le stringhe e `0` per gli interi.
+Si può inoltre usare `get()` per ritornare o una stringa o nil.
 
-As Metadata is a reference, any changes will be updated to the source automatically.
-ItemStacks aren't references however, so you'll need to update the itemstack in the
-inventory.
+Come gli inventari, anche i metadati sono riferimenti: ogni cambiamento applicato ad essi, cambierà la fonte originale.
 
-The non-typed getters and setters will convert to and from strings:
+Inoltre, se è possibile convertire un intero in stringa e viceversa, basterà cambiare `get_int`/`get_string` per ottenerne la versione corrispondente:
 
 ```lua
 print(meta:get_int("count"))    --> 0
@@ -92,48 +81,42 @@ print(meta:get_int("count"))    --> 3
 print(meta:get_string("count")) --> "3"
 ```
 
-### Special Keys
+### Chiavi speciali
 
-`infotext` is used in Node Metadata to show a tooltip when hovering the crosshair over a node.
-This is useful when showing the ownership or status of a node.
+`infotext` è usato nei nodi per mostrare una porzione di testo al passare il mirino sopra il nodo.
+Questo è utile, per esempio, per mostrare lo stato o il proprietario di un nodo.
 
-`description` is used in ItemStack Metadata to override the description when
-hovering over the stack in an inventory.
-You can use colours by encoding them with `minetest.colorize()`.
+`description` è usato negli ItemStack per sovrascrivere la descrizione al passare il mouse sopra l'oggetto in un formspec (come l'inventario, li vedremo più avanti).
+È possibile utilizzare `minetest.colorize()` per cambiarne il colore.
 
-`owner` is a common key used to store the username of the player that owns the
-item or node.
+`owner` è una chiave comune, usata per immagazzinare il nome del giocatore a cui appartiene l'oggetto o il nodo.
 
-### Storing Tables
+### Immagazzinare tabelle
 
-Tables must be converted to strings before they can be stored.
-Minetest offers two formats for doing this: Lua and JSON.
+Le tabelle devono essere convertite in stringhe prima di essere immagazzinate.
+Minetest offre due formati per fare ciò: Lua e JSON.
 
-The Lua method tends to be a lot faster and matches the format Lua
-uses for tables, while JSON is a more standard format, is better
-structured, and is well suited when you need to exchange information
-with another program.
+Quello in Lua tende a essere molto più veloce e corrisponde al formato usato da Lua per le tabelle, mentre JSON è un formato più standard, con una miglior struttura, e che ben si presta per scambiare informazioni con un altro programma.
 
 ```lua
-local data = { username = "player1", score = 1234 }
+local data = { username = "utente1", score = 1234 }
 meta:set_string("foo", minetest.serialize(data))
 
 data = minetest.deserialize(minetest:get_string("foo"))
 ```
 
-### Private Metadata
+### Metadati privati
 
-Entries in Node Metadata can be marked as private, and not sent to the client.
-Entries not marked as private will be sent to the client.
+Le voci nei metadati di un nodo possono essere segnate come private, senza venire quindi inviate al client (al contrario delle normali).
 
 ```lua
-meta:set_string("secret", "asd34dn")
-meta:mark_as_private("secret")
+meta:set_string("segreto", "asd34dn")
+meta:mark_as_private("segreto")
 ```
 
-### Lua Tables
+### Tabelle Lua
 
-You can convert to and from Lua tables using `to_table` and `from_table`:
+Le tabelle possono essere convertite da/a stringhe nei metadati tramite `to_table` e `from_table`:
 
 ```lua
 local tmp = meta:to_table()
@@ -141,107 +124,94 @@ tmp.foo = "bar"
 meta:from_table(tmp)
 ```
 
-## Mod Storage
+## Storaggio Mod
 
-Mod storage uses the exact same API as Metadata, although it's not technically
-Metadata.
-Mod storage is per-mod, and can only be obtained during load time in order to
-know which mod is requesting it.
+Lo spazio d'archiviazione della mod (*storage*) usa la stessa identica API dei metadati, anche se non sono tecnicamente la stessa cosa.
+Il primo infatti è per mod, e può essere ottenuto solo durante l'inizializzazione - appunto - della mod.
 
 ```lua
-local storage = minetest.get_mod_storage()
+local memoria = minetest.get_mod_storage()
 ```
 
-You can now manipulate the storage just like metadata:
+Nell'esempio è ora possibile manipolare lo spazio d'archiviazione come se fosse un metadato:
 
 ```lua
-storage:set_string("foo", "bar")
+memoria:set_string("foo", "bar")
 ```
 
-## Databases
+## Database
 
-If the mod is likely to be used on a server and will store lots of data,
-it's a good idea to offer a database storage method.
-You should make this optional by separating how the data is stored and where
-it is used.
+Se la mod ha buone probabilità di essere usata su un server e tenere traccia di un sacco di dati, è buona norma offrire un database come metodo di storaggio.
+Dovresti rendere ciò opzionale, separando il come i dati vengono salvati e il dove vengono usati.
 
 ```lua
 local backend
 if use_database then
     backend =
-        dofile(minetest.get_modpath("mymod") .. "/backend_sqlite.lua")
+        dofile(minetest.get_modpath("miamod") .. "/backend_sqlite.lua")
 else
     backend =
-        dofile(minetest.get_modpath("mymod") .. "/backend_storage.lua")
+        dofile(minetest.get_modpath("miamod") .. "/backend_storage.lua")
 end
 
 backend.get_foo("a")
 backend.set_foo("a", { score = 3 })
 ```
 
-The backend_storage.lua file should include a mod storage implementation:
+Il file `backend_storage.lua` dell'esempio (puoi nominarlo come vuoi) dovrebbe includere l'implementazione del metodo di storaggio:
 
 ```lua
-local storage = minetest.get_mod_storage()
+local memoria = minetest.get_mod_storage()
 local backend = {}
 
 function backend.set_foo(key, value)
-    storage:set_string(key, minetest.serialize(value))
+    memoria:set_string(key, minetest.serialize(value))
 end
 
 function backend.get_foo(key, value)
-    return minetest.deserialize(storage:get_string(key))
+    return minetest.deserialize(memoria:get_string(key))
 end
 
 return backend
 ```
 
-The backend_sqlite would do a similar thing, but use the Lua *lsqlite3* library
-instead of mod storage.
+Il file `backend_sqlite.lua` dovrebbe fare una cosa simile, ma utilizzando la libreria Lua *lsqlite3* al posto della memoria d'archiviazione interna.
 
-Using a database such as SQLite requires using an insecure environment.
-An insecure environment is a table that is only available to mods
-explicitly whitelisted by the user, and it contains a less restricted
-copy of the Lua API which could be abused if available to malicious mods.
-Insecure environments will be covered in more detail in the
-[Security](../quality/security.html) chapter.
+Usare un database come SQLite richiede l'utilizzo di un ambiente non sicuro (*insecure environment*).
+Un ambiente non sicuro è una tabella disponibile solamente alle mod con accesso esplicito dato dall'utente, e contiene una copia meno limitata della API Lua, che potrebbe essere abusata da mod con intenzioni malevole.
+Gli ambienti non sicuri saranno trattati più nel dettaglio nel capitolo sulla [Sicurezza](../quality/security.html).
 
 ```lua
-local ie = minetest.request_insecure_environment()
-assert(ie, "Please add mymod to secure.trusted_mods in the settings")
+local amb_nonsicuro = minetest.request_insecure_environment()
+assert(amb_nonsicuro, "Per favore aggiungi miamod a secure.trusted_mods nelle impostazioni")
 
-local _sql = ie.require("lsqlite3")
--- Prevent other mods from using the global sqlite3 library
+local _sql = amb_nonsicuro.require("lsqlite3")
+-- Previene che altre mod usino la libreria globale sqlite3
 if sqlite3 then
     sqlite3 = nil
 end
 ```
 
-Teaching about SQL or how to use the lsqlite3 library is out of scope for this book.
+Spiegare il funzionamento di SQL o della libreria lsqlite non rientra nell'obiettivo di questo libro.
 
-## Deciding Which to Use
+## Decidere quale usare
 
-The type of method you use depends on what the data is about,
-how it is formatted, and how large it is.
-As a guideline, small data is up to 10K, medium data is up to 10MB, and large
-data is any size above that.
+Il tipo di metodo che si sceglie di utilizzare dipende dal tipo di dati trattati, come sono formattati e quanto sono grandi.
+In linea di massima, i dati piccoli vanno fino ai 10KB, quelli medi 10MB, e quelli grandi oltre i 10MB.
 
-Node metadata is a good choice when you need to store node-related data.
-Storing medium data is fairly efficient if you make it private.
+I metadati dei nodi sono un'ottima scelta quando si vogliono immagazzinare dati relativi al nodo.
+Inserirne di medi (quindi massimo 10MB) è abbastanza efficiente se si rendono privati.
 
-Item metadata should not be used to store anything but small amounts of data as it is not
-possible to avoid sending it to the client.
-The data will also be copied every time the stack is moved, or accessed from Lua.
+Quelli degli oggetti invece dovrebbero essere usati solo per piccole quantità di dati e non è possibile evitare di inviarli al client.
+I dati, poi, saranno anche copiati ogni volta che la pila viene spostata o ne viene fatto accesso tramite Lua.
 
-Mod storage is good for medium data but writing large data may be inefficient.
-It's better to use a database for large data to avoid having to write all the
-data out on every save.
+La memoria interna della mod va bene per i dati di medie dimensioni, tuttavia provare a salvarne di grandi potrebbe rivelarsi inefficiente.
+È meglio usare un database per le grandi porzioni di dati, onde evitare di dover sovrascrivere tutti i dati a ogni salvataggio.
 
-Databases are only viable for servers due to the
-need to whitelist the mod to access an insecure environment.
-They're well suited for large data sets.
+I database sono fattibili solo per i server a causa della necessità di lasciar passare la mod nell'ambiente non sicuro.
+Si prestano bene per i grandi ammontare di dati.
 
-## Your Turn
+## Il tuo turno
 
-* Make a node which disappears after it has been punched five times.
-(Use `on_punch` in the node definition and `minetest.set_node`.)
+* Crea un nodo che sparisce dopo essere stato colpito cinque volte.
+(Usa `on_punch` nella definizione del nodo e `minetest.set_node`)

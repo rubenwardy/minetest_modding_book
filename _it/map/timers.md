@@ -16,11 +16,11 @@ Minetest fornisce due metodi per fare ciò: gli ABM (*Active Block Modifiers*, M
 
 Gli ABM scansionano tutti i Blocchi Mappa alla ricerca dei nodi che rientrano nei canoni:
 essi sono quindi ottimali per quei nodi che si trovano con frequenza in giro per il mondo, come l'erba.
-Possiedono un alto consumo della CPU, senza invece pressoché impattare sulla memoria e lo storage.
+Possiedono un alto consumo della CPU, senza invece pressoché impattare sulla memoria e lo spazio d'archiviazione.
 
 Per i nodi invece non troppo comuni o che già usano metadati, come le fornaci e i macchinari, dovrebbero venire impiegati i timer.
 I timer dei nodi tengon traccia dei timer accodati in ogni Blocco Mappa, eseguendoli quando raggiungono lo zero.
-Ciò significa che non hanno bisogno di cercare tra tutti i nodi caricati per trovare un match, bensì, richiedendo un po' più di memoria e storage, vanno alla ricerca dei soli nodi con un timer in corso.
+Ciò significa che non hanno bisogno di cercare tra tutti i nodi caricati per trovare un match, bensì, richiedendo un po' più di memoria e spazio d'archiviazione, vanno alla ricerca dei soli nodi con un timer in corso.
 
 - [Timer dei nodi](#timer-dei-nodi)
 - [ABM: modificatori di blocchi attivi](#abm-modificatori-di-blocchi-attivi)
