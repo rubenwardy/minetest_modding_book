@@ -42,7 +42,7 @@ and Nodes only have at most one inventory in them.
 
 ## ItemStacks
 
-ItemStacks have three components to them.
+ItemStacks have four components to them: name, count, wear and metadata.
 
 The item name may be the item name of a registered item, an alias, or an unknown
 item name.
@@ -129,21 +129,21 @@ local inv = player:get_inventory()
 
 A detached inventory is one which is independent of players or nodes.
 Detached inventories also don't save over a restart.
-Detached inventories need to be created before they can be used -
-this will be covered later.
 
 ```lua
 local inv = minetest.get_inventory({
     type="detached", name="inventory_name" })
 ```
 
-Unlike the other types of inventory, you must first create a detached inventory:
+Unlike the other types of inventory, you must first create a detached inventory
+before accessing it:
 
 ```lua
 minetest.create_detached_inventory("inventory_name")
 ```
 
-The create_detached_inventory function accepts 3 arguments, only first is required.
+The create_detached_inventory function accepts 3 arguments, where only the first - the inventory name - 
+is required.
 The second argument takes a table of callbacks, which can be used to control how
 players interact with the inventory:
 
@@ -165,16 +165,15 @@ minetest.create_detached_inventory("inventory_name", {
     on_put = function(inv, listname, index, stack, player)
         minetest.chat_send_all(player:get_player_name() ..
             " gave " .. stack:to_string() ..
-            " to the donation chest at " .. minetest.pos_to_str(pos))
+            " to the donation chest from " .. minetest.pos_to_string(player:get_pos()))
     end,
 })
 ```
 
-Permission callbacks - ie: those starting with `allow_`- return the number
+Permission callbacks - ie: those starting with `allow_` - return the number
 of items to transfer, with -1 being used to prevent transfer completely.
 
-Action callbacks - starting with `on_` - don't have a return value and
-can't prevent transfers.
+On the contrary, action callbacks - starting with `on_` - don't have a return value.
 
 ## Lists
 
@@ -213,13 +212,20 @@ if inv:is_empty("main") then
 end
 ```
 
-`contains_item` can be used to see if a list contains a specific item.
+`contains_item` can be used to see if a list contains a specific item:
+
+```lua
+if inv:contains_item("main", "default:stone") then
+    print("I've found some stone!")
+end
+```
 
 ## Modifying Inventories and ItemStacks
 
 ### Adding to a List
 
-To add items to a list named `"main"` while respecting maximum stack sizes:
+`add_item` adds items to a list (in this case `"main"`). In the example below,
+the maximum stack size is also respected:
 
 ```lua
 local stack    = ItemStack("default:stone 99")

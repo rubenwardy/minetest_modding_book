@@ -28,7 +28,7 @@ you can also [download it in HTML form](https://gitlab.com/rubenwardy/minetest_m
 
 Noticed a mistake, or want to give feedback? Make sure to tell me about it.
 
-* Create a [GitHub Issue](https://gitlab.com/rubenwardy/minetest_modding_book/-/issues).
+* Create a [GitLab Issue](https://gitlab.com/rubenwardy/minetest_modding_book/-/issues).
 * Post in the [Forum Topic](https://forum.minetest.net/viewtopic.php?f=14&t=10729).
 * [Contact me](https://rubenwardy.com/contact/).
 * Fancy contributing?
