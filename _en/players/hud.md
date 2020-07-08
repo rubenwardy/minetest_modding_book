@@ -3,6 +3,7 @@ title: HUD
 layout: default
 root: ../..
 idx: 4.6
+description: Learn how to display HUD elements
 redirect_from: /en/chapters/hud.html
 ---
 
@@ -225,7 +226,7 @@ There is one problem however, it won't update when the stats change.
 
 ## Changing an Element
 
-You can use the ID returned by the hud_add method to update it or remove it later.
+You can use the ID returned by the `hud_add` method to update it or remove it later.
 
 ```lua
 local idx = player:hud_add({
@@ -239,7 +240,7 @@ player:hud_remove(idx)
 ```
 
 The `hud_change` method takes the element ID, the property to change, and the new
-value. The above call changes the `text` property from "Hello World" to "Test".
+value. The above call changes the `text` property from "Hello World" to "New text".
 
 This means that doing the `hud_change` immediately after the `hud_add` is
 functionally equivalent to the following, in a rather inefficient way:
