@@ -1,39 +1,35 @@
 ---
-title: Creating Games
+title: Creare giochi
 layout: default
 root: ../..
 idx: 7.1
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-The power of Minetest is the ability to easily develop games without the need
-to create your own voxel graphics, voxel algorithms, or fancy networking code.
+Il punto forte di Minetest è quello di poter sviluppare giochi con facilità senza il bisogno di costruirsi il proprio motore grafico voxel, i propri algoritmi voxel, o la propria parte network.
 
-- [What is a Game?](#what-is-a-game)
-- [Game Directory](#game-directory)
-- [Inter-game Compatibility](#inter-game-compatibility)
-	- [API Compatibility](#api-compatibility)
-	- [Groups and Aliases](#groups-and-aliases)
-- [Your Turn](#your-turn)
+- [Cos'è un gioco?](#cose-un-gioco)
+- [Cartella di un gioco](#cartella-di-un-gioco)
+- [Compatibilità tra giochi](#compatibilita-tra-giochi)
+	- [Compatibilità delle API](#compatibilita-delle-api)
+	- [Gruppi e alias](#gruppi-e-alias)
+- [Il tuo turno](#il-tuo-turno)
 
-## What is a Game?
+## Cos'è un gioco?
 
-Games are a collection of mods which work together to make a cohesive game.
-A good game has a consistent underlying theme and a direction, for example,
-it could be a classic crafter miner with hard survival elements, or
-it could be a space simulation game with a steampunk automation aesthetic.
+I giochi sono una collezione di mod che lavorano insieme per creare un gioco coerente.
+Un buon gioco ha una base consistente e una direzione: per esempio, potrebbe essere il classico gioco survival dove picconare e fabbricare oggetti, come potrebbe essere un simulatore spaziale con estetiche steampunk.
 
-Game design is a complex topic and is actually a whole field of expertise.
-It's beyond the scope of the book to more than briefly touch on it.
+Il design di un gioco, tuttavia, è un argomento complesso, tanto che è una branca di specializzazione a parte.
+L'intento del libro è giusto farne un accenno.
 
-## Game Directory
+## Cartella di un gioco
 
-The structure and location of a game will seem rather familiar after working
-with mods.
-Games are found in a game location, such as `minetest/games/foo_game`.
+La struttura e la collocazione di un gioco dovrebbero sembrare alquanto familiari dopo aver pasticciato con le mod.
+Le cartelle dei giochi si trovano in `minetest/games/` e sono strutturate come segue:
 
-	foo_game
+	mio_gioco
 	├── game.conf
 	├── menu
 	│   ├── header.png
@@ -45,49 +41,35 @@ Games are found in a game location, such as `minetest/games/foo_game`.
 	├── README.txt
 	└── settingtypes.txt
 
-The only thing that is required is a mods folder, but `game.conf` and `menu/icon.png`
-are recommended.
+L'unica cosa necessaria è la cartella `mods`, ma è raccomandato anche l'inserimento di `game.conf` e `menu/icon.png`.
 
-## Inter-game Compatibility
+## Compatibilità tra giochi
 
-### API Compatibility
+### Compatibilità delle API
 
-It's a good idea to try to keep as much API compatibility with Minetest Game as
-convenient, as it'll make porting mods to another game much easier.
+È buona norma provare a mantenere le API compatibili con quelle di Minetest Game quanto possibile, in quanto renderebbe il porting delle mod (in un altro gioco) molto più semplice.
 
-The best way to keep compatibility with another game is to keep API compatibility
-with any mods which have the same name.
-That is, if a mod uses the same name as another mod, even if third party,
-it should have a compatible API.
-For example, if a game includes a mod called `doors`, then it should have the
-same API as `doors` in Minetest Game.
+Il modo migliore per mantenere la compatibilità tra un gioco e l'altro è di mantenere la stessa compatibilità nelle API delle mod che hanno lo stesso nome.
+Cosicché, se una mod usa lo stesso nome di un'altra (come fare una mod chiamata `doors`, che già esiste in Minetest Game), non ci saranno problemi.
 
-API compatibility for a mod is the sum of the following things:
+Questa compatibilità per le mod si traduce in due punti:
 
-* Lua API table - All documented/advertised functions in the global table which shares the same name.
-		For example, `mobs.register_mob`.
-* Registered Nodes/Items - The presence of items.
+* Tabella API Lua - tutte le funzioni nella tabella globale (`mia_mod.funzionivarie`) che condividono lo stesso nome;
+* Nodi e oggetti registrati.
 
-Small breakages aren't that bad, such as not having a random utility
-function that was only actually used internally, but bigger breakages
-related to core features are very bad.
+Eventuali piccole rotture non sono la fine del mondo (come non avere una funzione che tanto veniva usata solo internamente), ma quando saltano le funzioni principali è un altro paio di maniche.
 
-It's difficult to maintain API compatibility with a disgusting mega God-mod like
-*default* in Minetest Game, in which case the game shouldn't include a mod named
-default.
+È difficile mantenere queste compatibilità con modpack disgustatamente grosse come la *default* in Minetest Game, dacché si dovrebbe evitare di chiamare una mod "default".
 
-API compatibility also applies to other third-party mods and games,
-so try to make sure that any new mods have a unique mod name.
-To check whether a mod name has been taken, search for it on
-[content.minetest.net](https://content.minetest.net/).
+Infine, le compatibilità delle API si applicano anche a mod e giochi esterni, quindi assicurati che una mod nuova abbia un nome unico.
+Per controllare se un nome è già stato preso, prova a cercarlo su [content.minetest.net](https://content.minetest.net/).
 
-### Groups and Aliases
+### Gruppi e alias
 
-Groups and Aliases are both useful tools in keeping compatibility between games,
-as it allows item names to be different between different games. Common nodes
-like stone and wood should have groups to indicate the material. It's also a
-good idea to provide aliases from default nodes to any direct replacements.
+I gruppi e gli alias sono entrambi strumenti utili per mantenere la compatibilità tra giochi, in quanto permettono ai nomi degli oggetti di variare a seconda del gioco.
+Nodi comuni come pietra e legno dovrebbero avere dei gruppi per indicarne il materiale.
+È anche buona norma fornire degli alias che vanno dai nodi di base a qualsiasi eventuale rimpiazzo.
 
-## Your Turn
+## Il tuo turno
 
-* Create a simple game where the player gains points from digging special blocks.
+* Crea un semplice gioco dove il giocatore guadagna punti allo scavare alcuni nodi speciali.
