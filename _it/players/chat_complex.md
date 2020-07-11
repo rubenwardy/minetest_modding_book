@@ -3,178 +3,168 @@ title: Chat Command Builder
 layout: default
 root: ../..
 idx: 4.3
-description: Use ChatCmdBuilder to make a complex chat command
-redirect_from: /en/chapters/chat_complex.html
+description: Creazione di comandi complessi semplificandosi la vita
+redirect_from: /it/chapters/chat_complex.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-This chapter will show you how to make complex chat commands with ChatCmdBuilder,
-such as `/msg <name> <message>`, `/team join <teamname>` or `/team leave <teamname>`.
+Questo capitolo ti mostrerà come creare comandi complessi con ChatCmdBuilder, come `/msg <nome> <messaggio>`, `/team entra <nometeam>` or `/team esci <nometeam>`.
 
-Note that ChatCmdBuilder is a library created by the author of this book, and most
-modders tend to use the method outlined in the
-[Chat and Commands](chat.html#complex-subcommands) chapter.
+Tieni conto che ChatCmdBuilder è una libreria creata dall'autore di questo libro, e che molti modder tendono a usare il metodo illustrato nel capitolo [Chat e comandi](chat.html#complex-subcommands).
 
-- [Why ChatCmdBuilder?](#why-chatcmdbuilder)
-- [Routes](#routes)
-- [Subcommand functions](#subcommand-functions)
-- [Installing ChatCmdBuilder](#installing-chatcmdbuilder)
-- [Admin complex command](#admin-complex-command)
+- [Perché ChatCmdBuilder?](#perche-chatcmdbuilder)
+- [Tratte](#tratte)
+- [Funzioni nei sottocomandi](#funzioni-nei-sottocomandi)
+- [Installare ChatCmdBuilder](#installare-chatcmdbuilder)
+- [Esempio: comando complesso /admin](#esempio-comando-complesso-admin)
 
-## Why ChatCmdBuilder?
+## Perché ChatCmdBuilder?
 
-Traditionally mods implemented these complex commands using Lua patterns.
+Le mod tradizionali implementano questi comandi complessi usando i pattern Lua.
 
 ```lua
-local name = string.match(param, "^join ([%a%d_-]+)")
+local nome = string.match(param, "^join ([%a%d_-]+)")
 ```
 
-I, however, find Lua patterns annoying to write and unreadable.
-Because of this, I created a library to do this for you.
+Io, tuttavia, trovo i pattern Lua illeggibili e scomodi.
+Per via di ciò, ho creato una libreria che ti semplifichi la vita.
 
 ```lua
 ChatCmdBuilder.new("sethp", function(cmd)
     cmd:sub(":target :hp:int", function(name, target, hp)
-        local player = minetest.get_player_by_name(target)
-        if player then
-            player:set_hp(hp)
-            return true, "Killed " .. target
+        local giocatore = minetest.get_player_by_name(target)
+        if giocatore then
+            giocatore:set_hp(hp)
+            return true, "Gli hp di " .. target .. " sono ora " .. hp
         else
-            return false, "Unable to find " .. target
+            return false, "Giocatore " .. target .. " non trovato"
         end
     end)
 end, {
-    description = "Set hp of player",
+    description = "Imposta gli hp del giocatore",
     privs = {
         kick = true
-        -- ^ probably better to register a custom priv
+        -- ^ è probabilmente meglio impostare un nuovo privilegio
     }
 })
 ```
 
-`ChatCmdBuilder.new(name, setup_func, def)` creates a new chat command called
-`name`. It then calls the function passed to it (`setup_func`), which then creates
-subcommands. Each `cmd:sub(route, func)` is a subcommand.
+`ChatCmdBuilder.new(name, setup_func, def)` crea un nuovo comando chiamato `name`.
+Poi, chiama la funzione passatagli (`setup_func`), che crea a sua volta i sottocomandi.
+Ogni `cmd:sub(route, func)` è un sottocomando.
 
-A subcommand is a particular response to an input param. When a player runs
-the chat command, the first subcommand that matches their input will be run,
-and no others. If no subcommands match, then the user will be told of the invalid
-syntax. For example, in the above code snippet if a player
-types something of the form `/sethp username 12` then the function passed
-to cmd:sub will be called. If they type `/sethp 12 bleh`, then a wrong
-input message will appear.
+Un sottocomando è una particolare risposta a un parametro di input.
+Quando un giocatore esegue il comando, il primo sottocomando che combacia con l'input verrà eseguito.
+Se non ne viene trovato nessuno, il giocatore verrà avvisato della sintassi non valida.
+Nel codice qui in alto, per esempio, se qualcuno scrive qualcosa come `/sethp nickname 12`, la funzione corrispondente verrà chiamata.
+Tuttavia, qualcosa come `/sethp 12 bleh` genererà un messaggio d'errore.
 
-`:name :hp:int` is a route. It describes the format of the param passed to /teleport.
+`:name :hp:int` è una tratta.
+Descrive il formato del parametro passato a /teleport.
 
-## Routes
+## Tratte
 
-A route is made up of terminals and variables. Terminals must always be there.
-For example, `join` in `/team join :username :teamname`. The spaces also count
-as terminals.
+Una tratta è composta di fermate e variabili, dove le prime sono obbligatorie.
+Una fermata è per esempio `crea` in `/team crea :nometeam :giocatorimassimi:int`, ma anche gli spazi contano come tali.
 
-Variables can change value depending on what the user types. For example, `:username`
-and `:teamname`.
+Le variabili possono cambiare valore a seconda di cosa scrive l'utente. Per esempio `:nometeam` e `:giocatorimassimi:int`.
 
-Variables are defined as `:name:type`. The `name` is used in the help documentation.
-The `type` is used to match the input. If the type is not given, then the type is
-`word`.
+Le variabili sono definite con `:nome:tipo`: il nome è usato nella documentazione, mentre il tipo è usato per far combaciare l'input.
+Se il tipo non è specificato, allora sarà di base `word`.
 
-Valid types are:
+I tipi consentiti sono:
 
-* `word`   - default. Any string without spaces.
-* `int`    - Any integer/whole number, no decimals.
-* `number` - Any number, including ints and decimals.
-* `pos`    - 1,2,3 or 1.1,2,3.4567 or (1,2,3) or 1.2, 2 ,3.2
-* `text`   - Any string. There can only ever be one text variable,
-             no variables or terminals can come afterwards.
+* `word`   - Predefinito. Qualsiasi stringa senza spazi;
+* `int`    - Qualsiasi numero intero;
+* `number` - Qualsiasi numero, decimali inclusi;
+* `pos`    - Coordinate. Il formato può essere 1,2,3, o 1.1,2,3.4567, o (1,2,3), o ancora 1.2, 2 ,3.2;
+* `text`   - Qualsiasi stringa, spazi inclusi. Può esserci solo un `text` e non può essere seguito da nient'altro.
 
-In `:name :hp:int`, there are two variables:
+In `:nome :hp:int`, ci sono due variabili:
 
-* `name` - type of `word` as no type is specified. Accepts any string without spaces.
-* `hp` - type of `int`
+* `name` - di tipo `word` in quanto non è stato specificato
+* `hp` - di tipo `int`, quindi un numero intero
 
-## Subcommand functions
+## Funzioni nei sottocomandi
 
-The first argument is the caller's name. The variables are then passed to the
-function in order.
+Il primo parametro è il nome di chi invia il comando. Le variabili sono poi passate alla funzione nell'ordine in cui sono state dichiarate.
 
 ```lua
 cmd:sub(":target :hp:int", function(name, target, hp)
-    -- subcommand function
+    -- funzione del sottocomando
 end)
 ```
 
-## Installing ChatCmdBuilder
+## Installare ChatCmdBuilder
 
-The source code can be found and downloaded on
+Il codice sorgente può essere trovato e scaricato su
 [Github](https://github.com/rubenwardy/ChatCmdBuilder/).
 
-There are two ways to install:
+Ci sono due modi per installarlo:
 
-1. Install ChatCmdBuilder as a mod and depend on it.
-2. Include the init.lua file in ChatCmdBuilder as chatcmdbuilder.lua in your mod,
-   and dofile it.
+1. Installarlo come una mod a sé stante;
+2. Includere nella tua mod l'init.lua di ChatCmdBuilder rinominandolo chatcmdbuilder.lua, e integrarlo tramite `dofile`.
 
-## Admin complex command
+## Esempio: comando complesso /admin
 
-Here is an example that creates a chat command that allows us to do this:
+Segue un esempio che crea un comando che aggiunge le seguenti funzioni per chi ha il permesso `kick` e `ban` (quindi, in teoria, un admin):
 
-* `/admin kill <username>` - kill user
-* `/admin move <username> to <pos>` - teleport user
-* `/admin log <username>` - show report log
-* `/admin log <username> <message>` - log to report log
+* `/admin uccidi <nome>` - uccide un utente;
+* `/admin sposta <nome> a <pos>` - teletrasporta un utente;
+* `/admin log <nome>` - mostra il log di un utente;
+* `/admin log <nome> <messaggio>` - aggiunge un messaggio al log di un utente.
 
 ```lua
 local admin_log
-local function load()
+local function carica()
     admin_log = {}
 end
-local function save()
+local function salva()
     -- todo
 end
-load()
+carica()
 
 ChatCmdBuilder.new("admin", function(cmd)
-    cmd:sub("kill :name", function(name, target)
-        local player = minetest.get_player_by_name(target)
-        if player then
-            player:set_hp(0)
-            return true, "Killed " .. target
+    cmd:sub("uccidi :nome", function(name, target)
+        local giocatore = minetest.get_player_by_name(target)
+        if giocatore then
+            giocatore:set_hp(0)
+            return true, "Hai ucciso " .. target
         else
             return false, "Unable to find " .. target
         end
     end)
 
-    cmd:sub("move :name to :pos:pos", function(name, target, pos)
-        local player = minetest.get_player_by_name(target)
-        if player then
-            player:setpos(pos)
-            return true, "Moved " .. target .. " to " ..
+    cmd:sub("sposta :nome to :pos:pos", function(nome, target, pos)
+        local giocatore = minetest.get_player_by_name(target)
+        if giocatore then
+            giocatore:setpos(pos)
+            return true, "Giocatore " .. target .. " teletrasportato a " ..
                     minetest.pos_to_string(pos)
         else
-            return false, "Unable to find " .. target
+            return false, "Giocatore " .. target .. " non trovato"
         end
     end)
 
-    cmd:sub("log :username", function(name, target)
+    cmd:sub("log :nome", function(name, target)
         local log = admin_log[target]
         if log then
             return true, table.concat(log, "\n")
         else
-            return false, "No entries for " .. target
+            return false, "Nessuna voce per " .. target
         end
     end)
 
-    cmd:sub("log :username :message", function(name, target, message)
+    cmd:sub("log :nome :messaggio", function(name, target, messaggio)
         local log = admin_log[target] or {}
-        table.insert(log, message)
+        table.insert(log, messaggio)
         admin_log[target] = log
-        save()
-        return true, "Logged"
+        salva()
+        return true, "Aggiunto"
     end)
 end, {
-    description = "Admin tools",
+    description = "Strumenti per gli admin",
     privs = {
         kick = true,
         ban = true

@@ -1,70 +1,66 @@
 ---
-title: Chat and Commands
+title: Chat e comandi
 layout: default
 root: ../..
 idx: 4.2
-description: Registering a chatcommand and handling chat messages with register_on_chat_message
-redirect_from: /en/chapters/chat.html
+description: Come registrare un comando e gestire i messaggi della chat
+redirect_from: /it/chapters/chat.html
 cmd_online:
     level: warning
-    title: Offline players can run commands
-    message: <p>A player name is passed instead of a player object because mods
-             can run commands on behalf of offline players. For example, the IRC
-             bridge allows players to run commands without joining the game.</p>
+    title: I giocatori offline possono eseguire comandi
+    message: <p>Viene passato il nome del giocatore al posto del giocatore in sé perché le mod possono eseguire comandi in vece di un giocatore offline.
+             Per esempio, il bridge IRC permette ai giocatori di eseguire comandi senza dover entrare in gioco.</p>
 
-             <p>So make sure that you don't assume that the player is online.
-             You can check by seeing if <pre>minetest.get_player_by_name</pre> returns a player.</p>
+             <p>Assicurati quindi di non dar per scontato che un giocatore sia connesso.
+             Puoi controllare ciò tramite <pre>minetest.get_player_by_name</pre>, per vedere se ritorna qualcosa o meno.</p>
 
 cb_cmdsprivs:
     level: warning
-    title: Privileges and Chat Commands
-    message: The shout privilege isn't needed for a player to trigger this callback.
-             This is because chat commands are implemented in Lua, and are just
-             chat messages that begin with a /.
+    title: Privilegi e comandi
+    message: Il privilegio shout non è necessario per far sì che un giocatore attivi questo callback.
+             Questo perché i comandi sono implementati in Lua, e sono semplicemente dei messaggi in chat che iniziano con /.
 
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Mods can interact with player chat, including
-sending messages, intercepting messages, and registering chat commands.
+Le mod possono interagire con la chat del giocatore, tra l'inviare messaggi, intercettarli e registrare dei comandi.
 
-- [Sending Messages to All Players](#sending-messages-to-all-players)
-- [Sending Messages to Specific Players](#sending-messages-to-specific-players)
-- [Chat Commands](#chat-commands)
+- [Inviare messaggi a tutti i giocatori](#inviare-messaggi-a-tutti-i-giocatori)
+- [Inviare messaggi a giocatori specifici](#inviare-messaggi-a-giocatori-specifici)
+- [Comandi](#comandi)
 - [Complex Subcommands](#complex-subcommands)
-- [Intercepting Messages](#intercepting-messages)
+- [Intercettare i messaggi](#interecettare-i-messaggi)
 
-## Sending Messages to All Players
+## Inviare messaggi a tutti i giocatori
 
-To send a message to every player in the game, call the chat_send_all function.
-
-```lua
-minetest.chat_send_all("This is a chat message to all players")
-```
-
-Here is an example of how this appears in-game:
-
-    <player1> Look at this entrance
-    This is a chat message to all players
-    <player2> What about it?
-
-The message appears on a separate line to distinguish it from in-game player chat.
-
-## Sending Messages to Specific Players
-
-To send a message to a specific player, call the chat_send_player function:
+Per inviare un messaggio a tutti i giocatori connessi in gioco, si usa la funzione `chat_send_all`:
 
 ```lua
-minetest.chat_send_player("player1", "This is a chat message for player1")
+minetest.chat_send_all("Questo è un messaggio visualizzabile da tutti")
 ```
 
-This message displays in the same manner as messages to all players, but is
-only visible to the named player, in this case, player1.
+Segue un esempio di come apparirerebbe in gioco:
 
-## Chat Commands
+    <Tizio> Guarda qui
+    Questo è un messaggio visualizzabile da tutti
+    <Caio> Eh, cosa?
 
-To register a chat command, for example `/foo`, use `register_chatcommand`:
+Il messaggio appare su una nuova riga, per distinguerlo dai messaggi dei giocatori.
+
+## Inviare messaggi a giocatori specifici
+
+Per inviare un messaggio a un giocatore in particolare, si usa invece la funzione `chat_send_player`:
+
+```lua
+minetest.chat_send_player("Tizio", "Questo è un messaggio per Tizio")
+```
+
+Questo messaggio viene mostrato esattamente come il precedente, ma solo, in questo caso, a Tizio.
+
+## Comandi
+
+Per registrare un comando, per esempio `/foo`, si usa `register_chatcommand`:
 
 ```lua
 minetest.register_chatcommand("foo", {
@@ -72,93 +68,83 @@ minetest.register_chatcommand("foo", {
         interact = true,
     },
     func = function(name, param)
-        return true, "You said " .. param .. "!"
+        return true, "Hai detto " .. param .. "!"
     end,
 })
 ```
 
-In the above snippet, `interact` is listed as a required
-[privilege](privileges.html) meaning that only players with the `interact` privilege can run the command.
+Nel codice qui in alto, `interact` è elencato come [privilegio](privileges.html) necessario; in altre parole, solo i giocatori che hanno quel privilegio possono usare il comando.
 
-Chat commands can return up to two values,
-the first being a Boolean indicating success, and the second being a
-message to send to the user.
+I comandi ritornano un massimo di due valori, dove il primo è un booleano che indica l'eventuale successo, mentre il secondo è un messaggio da inviare all'utente.
 
 {% include notice.html notice=page.cmd_online %}
 
-## Complex Subcommands
+## Sottocomandi complessi
 
-It is often required to make complex chat commands, such as:
+È spesso necessario creare dei comandi complessi, come per esempio:
 
-* `/msg <to> <message>`
-* `/team join <teamname>`
-* `/team leave <teamname>`
-* `/team list`
+* `/msg <a> <messaggio>`
+* `/team entra <nometeam>`
+* `/team esci <nometeam>`
+* `/team elenco`
 
-This is usually done using [Lua patterns](https://www.lua.org/pil/20.2.html).
-Patterns are a way of extracting stuff from text using rules.
+Questo viene solitamente reso possibile dai [pattern di Lua](https://www.lua.org/pil/20.2.html).
+I pattern sono un modo di estrapolare "cose" dal testo usando delle regole ben precise.
 
 ```lua
-local to, msg = string.match(param, "^([%a%d_-]+) (*+)$")
+local a, msg = string.match(param, "^([%a%d_-]+) (*+)$")
 ```
 
-The above code implements `/msg <to> <message>`. Let's go through left to right:
+Il codice sovrastante implementa `/msg <a> <messaggio>`. Vediamo cos'è successo partendo da sinistra:
 
-* `^` means match the start of the string.
-* `()` is a matching group - anything that matches stuff in here will be
-  returned from string.match.
-* `[]` means accept characters in this list.
-* `%a` means accept any letter and `%d` means accept any digit.
-* `[%d%a_-]` means accept any letter or digit or `_` or `-`.
-* `+` means match the thing before one or more times.
-* `*` means match any character in this context.
-* `$` means match the end of the string.
+* `^` dice di iniziare a combaciare dall'inizio della stringa;
+* `()` è un gruppo - qualsiasi cosa che combaci con ciò che è contenuto al suo interno verrà ritornato da string.match;
+* `[]` significa che i caratteri al suo interno sono accettati;
+* `%a` significa che accetta ogni lettera e `%d` ogni cifra.
+* `[%d%a_-]` significa che accetta ogni lettera, cifra, `_` e `-`.
+* `+` dice di combaciare ciò che lo precede una o più volte.
+* `*` dice di combaciare qualsiasi tipo di carattere.
+* `$` dice di combaciare la fine della stringa.
 
-Put simply, the pattern matches the name (a word with only letters/numbers/-/_),
-then a space, then the message (one or more of any character). The name and
-message are returned, because they're surrounded by parentheses.
+Detto semplicemente, il pattern cerca un nome (una parola fatta di lettere, numeri, trattini o trattini bassi), poi uno spazio e poi il messaggio (uno o più caratteri, qualsiasi essi siano).
+Vengono poi ritornati nome e messaggio, perché sono inseriti nelle parentesi.
 
-That's how most mods implement complex chat commands. A better guide to Lua
-Patterns would probably be the
-[lua-users.org tutorial](http://lua-users.org/wiki/PatternsTutorial)
-or the [PIL documentation](https://www.lua.org/pil/20.2.html).
+Questo è come molte mod implementano comandi complessi.
+Una guida più completa ai pattern è probabilmente quella su [lua-users.org](http://lua-users.org/wiki/PatternsTutorial) o la [documentazione PIL](https://www.lua.org/pil/20.2.html).
 
 <p class="book_hide">
-There is also a library written by the author of this book which can be used
-to make complex chat commands without patterns called
-<a href="chat_complex.html">Chat Command Builder</a>.
+C'è anche una libreria scritta dall'autore di questo libro che può essere usata per creare comandi complessi senza l'utilizzo di pattern: <a href="chat_complex.html">Chat Command Builder</a>.
 </p>
 
 
-## Intercepting Messages
+## Intercettare i messaggi
 
-To intercept a message, use register_on_chat_message:
+Per intercettare un messaggio, si usa `register_on_chat_message`:
 
 ```lua
 minetest.register_on_chat_message(function(name, message)
-    print(name .. " said " .. message)
+    print(name .. " ha detto " .. message)
     return false
 end)
 ```
 
-By returning false, you allow the chat message to be sent by the default
-handler. You can actually remove the line `return false` and it would still
-work the same, because `nil` is returned implicitly and is treated like false.
+Ritornando false, si permette al messaggio di essere inviato.
+In verità `return false` può anche essere omesso in quanto `nil` verrebbe ritornato implicitamente, e nil è trattato come false.
 
 {% include notice.html notice=page.cb_cmdsprivs %}
 
-You should make sure you take into account that it may be a chat command,
-or the user may not have `shout`.
+Dovresti assicurarti, poi, che il messaggio potrebbe essere un comando che invia messaggi in chat,
+o che l'utente potrebbere non avere `shout`.
 
 ```lua
 minetest.register_on_chat_message(function(name, message)
     if message:sub(1, 1) == "/" then
-        print(name .. " ran chat command")
+        print(name .. " ha eseguito un comando")
     elseif minetest.check_player_privs(name, { shout = true }) then
-        print(name .. " said " .. message)
+        print(name .. " ha detto " .. message)
     else
-        print(name .. " tried to say " .. message ..
-                " but doesn't have shout")
+        print(name .. " ha provato a dire " .. message ..
+                " ma non ha lo shout")
     end
 
     return false

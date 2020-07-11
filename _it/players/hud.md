@@ -3,126 +3,116 @@ title: HUD
 layout: default
 root: ../..
 idx: 4.6
-redirect_from: /en/chapters/hud.html
+description: come creare elementi a schermo
+redirect_from: /it/chapters/hud.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Heads Up Display (HUD) elements allow you to show text, images, and other graphical elements.
+Le HUD (Heads Up Display) ti permettono di mostrare testi, immagini e altri elementi grafici senza interrompere il giocatore.
+Le HUD, infatti, non accettano input dall'utente, lasciando quel ruolo ai [formspec](formspecs.html).
 
-The HUD doesn't accept user input; for that, you should use a [formspec](formspecs.html).
+- [Posizionamento](#posizionamento)
+  - [Posizione e scostamento](#posizione-e-scostamento)
+  - [Allineamento](#allineamento)
+  - [Esempio: tabellone segnapunti](#esempio-tabellone-segnapunti)
+- [Elementi di testo](#elementi-di-testo)
+  - [Parametri](#parametri)
+  - [Tornando all'esempio](#tornando-all-esempio)
+- [Elementi immagine](#elementi-immagine)
+  - [Parametri](#parametri-1)
+  - [Tornando all'esempio](#tornando-all-esempio-1)
+- [Cambiare un elemento](#cambiare-un-elemento)
+- [Salvare gli ID](#salvare-gli-id)
+- [Altri elementi](#altri-elementi)
 
-- [Positioning](#positioning)
-  - [Position and Offset](#position-and-offset)
-  - [Alignment](#alignment)
-  - [Scoreboard](#scoreboard)
-- [Text Elements](#text-elements)
-  - [Parameters](#parameters)
-  - [Our Example](#our-example)
-- [Image Elements](#image-elements)
-  - [Parameters](#parameters-1)
-  - [Scale](#scale)
-- [Changing an Element](#changing-an-element)
-- [Storing IDs](#storing-ids)
-- [Other Elements](#other-elements)
+## Posizionamento
 
-## Positioning
-
-### Position and Offset
+### Posizione e scostamento
 
 <figure class="right_image">
     <img
         width="300"
         src="{{ page.root }}//static/hud_diagram_center.svg"
-        alt="Diagram showing a centered text element">
+        alt="Diagramma che mostra un elemento di testo centrato">
 </figure>
 
-Screens come in a variety of different physical sizes and resolutions, and
-the HUD needs to work well on all screen types.
+Essendoci schermi di tutte le dimensioni e risoluzioni, per funzionare bene le HUD devono sapersi adattare a ognuno di essi.
 
-Minetest's solution to this is to specify the location of an element using both
-a percentage position and an offset.
-The percentage position is relative to the screen size, so to place an element
-in the centre of the screen, you would need to provide a percentage position of half
-the screen, e.g. (50%, 50%), and an offset of (0, 0).
+Per ovviare al problema, Minetest specifica il collocamento di un elemento usando sia una posizione in percentuale che uno scostamento (*offset*).
+La posizione percentuale è relativa alla grandezza dello schermo, dacché per posizionarne un elemento al centro, bisogna fornire un valore di 0.5 (cioè il 50%).
 
-The offset is then used to move an element relative to the percentage position.
+Lo scostamento è poi usato per - appunto - scostare un elemento in relazione alla sua posizione.
 
 <div style="clear:both;"></div>
 
-### Alignment
+### Allineamento
 
-Alignment is where the result of position and offset is on the element -
-for example, `{x = -1.0, y = 0.0}` will make the result of position and offset point
-to the left of the element's bounds. This is particularly useful when you want to
-make a text element aligned to the left, centre, or right.
+L'allineamento (*alignment*) è dove il risultato della posizione e dello scostamento viene applicato sull'elemento - per esempio, `{x = -1.0, y = 0.0}` allineerà i valori degli altri due parametri sulla sinistra dell'elemento.
+Questo è particolarmente utile quando si vuole allineare del testo a sinistra, a destra o al centro.
 
 <figure>
     <img
         width="500"
         src="{{ page.root }}//static/hud_diagram_alignment.svg"
-        alt="Diagram showing alignment">
+        alt="Diagramma che mostra i vari tipi di allineamento">
 </figure>
 
-The above diagram shows 3 windows (blue), each with a single HUD element (yellow)
-and a different alignment each time. The arrow is the result of the position
-and offset calculation.
+Il diagramma qui in alto mostra mostra tre finestre (in blu), ognuna contenente un elemento HUD (in giallo) con ogni volta un allineamento diverso.
+La freccia è il risultato del calcolo di posizione e scostamento.
 
-### Scoreboard
+### Esempio: tabellone segnapunti
 
-For the purposes of this chapter, you will learn how to position and update a
-score panel like so:
+Per capire meglio il capitolo, vedremo come posizionare e aggiornare un pannello contenente dei punti come questo:
 
 <figure>
     <img
         src="{{ page.root }}//static/hud_final.png"
-        alt="screenshot of the HUD we're aiming for">
+        alt="Screenshot dell'HUD da realizzare">
 </figure>
 
-In the above screenshot, all the elements have the same percentage position
-(100%, 50%) - but different offsets. This allows the whole thing to be anchored
-to the right of the window, but to resize without breaking.
+Nello screenshot sovrastante, tutti gli elementi hanno la stessa posizione percentuale (100%, 50%) - ma scostamenti diversi.
+Questo permette all'intero pannello di essere ancorato sulla destra della finestra, senza posizioni/scostamenti strani al ridimensionarla.
 
-## Text Elements
+## Elementi di testo
 
-You can create a HUD element once you have a copy of the player object:
+Puoi creare un elemento HUD una volta ottenuto il riferimento al giocatore al quale assegnarla:
 
 ```lua
-local player = minetest.get_player_by_name("username")
-local idx = player:hud_add({
+local giocatore = minetest.get_player_by_name("tizio")
+local idx = giocatore:hud_add({
      hud_elem_type = "text",
      position      = {x = 0.5, y = 0.5},
      offset        = {x = 0,   y = 0},
-     text          = "Hello world!",
-     alignment     = {x = 0, y = 0},  -- center aligned
-     scale         = {x = 100, y = 100}, -- covered later
+     text          = "Ciao mondo!",
+     alignment     = {x = 0, y = 0},  -- allineamento centrato
+     scale         = {x = 100, y = 100}, -- lo vedremo tra poco
 })
 ```
 
-The `hud_add` function returns an element ID - this can be used later to modify
-or remove a HUD element.
+La funzione `hud_add` ritorna l'ID di un elemento, che è utile per modificarlo o rimuoverlo.
 
-### Parameters
+### Parametri
 
-The element's type is given using the `hud_elem_type` property in the definition
-table. The meaning of other properties varies based on this type.
+Il tipo dell'elemento è ottenuto usando la proprietà `hud_elem_type` nella tabella di definizione.
+Cambiando il tipo, cambia il significato di alcune delle proprietà che seguono.
 
-`scale` is the maximum bounds of text; text outside these bounds is cropped, e.g.: `{x=100, y=100}`.
+`scale` sono i limiti del testo; se esce da questo spazio, viene tagliato - nell'esempio `{x=100, y=100}`.
 
-`number` is the text's colour, and is in [hexadecimal form](http://www.colorpicker.com/), e.g.: `0xFF0000`.
+`number` è il colore del testo, ed è in [formato esadecimale](http://www.colorpicker.com/) - nell'esempio `0xFF0000`.
 
 
-### Our Example
+### Tornando all'esempio
 
-Let's go ahead and place all the text in our score panel:
+Andiamo avanti e piazziamo tutto il testo nel nostro pannello (si son tenute le stringhe in inglese per non confondere con l'immagine, NdT):
 
 ```lua
--- Get the dig and place count from storage, or default to 0
-local meta        = player:get_meta()
-local digs_text   = "Digs: " .. meta:get_int("score:digs")
-local places_text = "Places: " .. meta:get_int("score:places")
+-- Ottiene il numero di blocchi scavati e piazzati dallo spazio d'archiviazione; se non esiste è 0
+local meta        = giocatore:get_meta()
+local digs_testo   = "Digs: " .. meta:get_int("punteggio:digs")
+local places_testo = "Places: " .. meta:get_int("punteggio:places")
 
-player:hud_add({
+giocatore:hud_add({
     hud_elem_type = "text",
     position  = {x = 1, y = 0.5},
     offset    = {x = -120, y = -25},
@@ -132,162 +122,160 @@ player:hud_add({
     number    = 0xFFFFFF,
 })
 
-player:hud_add({
+giocatore:hud_add({
     hud_elem_type = "text",
     position  = {x = 1, y = 0.5},
     offset    = {x = -180, y = 0},
-    text      = digs_text,
+    text      = digs_testo,
     alignment = -1,
     scale     = { x = 50, y = 10},
     number    = 0xFFFFFF,
 })
 
-player:hud_add({
+giocatore:hud_add({
     hud_elem_type = "text",
     position  = {x = 1, y = 0.5},
     offset    = {x = -70, y = 0},
-    text      = places_text,
+    text      = places_testo,
     alignment = -1,
     scale     = { x = 50, y = 10},
     number    = 0xFFFFFF,
 })
 ```
 
-This results in the following:
+Il risultato è il seguente:
 
 <figure>
     <img
         src="{{ page.root }}//static/hud_text.png"
-        alt="screenshot of the HUD we're aiming for">
+        alt="Screenshot della HUD finora">
 </figure>
 
 
-## Image Elements
+## Elementi immagine
 
-Image elements are created in a very similar way to text elements:
+Le immagini sono create in un modo molto simile a quelli del testo:
 
 ```lua
 player:hud_add({
     hud_elem_type = "image",
     position  = {x = 1, y = 0.5},
     offset    = {x = -220, y = 0},
-    text      = "score_background.png",
+    text      = "punteggio_sfondo.png",
     scale     = { x = 1, y = 1},
     alignment = { x = 1, y = 0 },
 })
 ```
 
-You will now have this:
+Siamo ora a questo punto:
 
 <figure>
     <img
         src="{{ page.root }}//static/hud_background_img.png"
-        alt="screenshot of the HUD so far">
+        alt="Screenshot della HUD finora">
 </figure>
 
-### Parameters
+### Parametri
 
-The `text` field is used to provide the image name.
+Il campo `text` in questo caso viene usato per fornire il nome dell'immagine.
 
-If a co-ordinate is positive, then it is a scale factor with 1 being the
-original image size, 2 being double the size, and so on.
-However, if a co-ordinate is negative, it is a percentage of the screen size.
-For example, `x=-100` is 100% of the width.
+Se una coordinata in `scale` è positiva, allora è un fattore scalare dove 1 è la grandezza originale, 2 è il doppio e così via.
+Tuttavia, se una coordinata è negativa, sarà la percentuale della grandezza dello schermo.
+Per esempio, `x=-100` equivale al 100% della larghezza di quest'ultimo.
 
-### Scale
+### Tornando all'esempio
 
-Let's make the progress bar for our score panel as an example of scale:
+Creiamo la barra di progresso per il nostro tabellone usando `scale`:
 
 ```lua
-local percent = tonumber(meta:get("score:score") or 0.2)
+local percentuale = tonumber(meta:get("punteggio:score") or 0.2)
 
-player:hud_add({
+giocatore:hud_add({
     hud_elem_type = "image",
     position  = {x = 1, y = 0.5},
     offset    = {x = -215, y = 23},
-    text      = "score_bar_empty.png",
+    text      = "barra_punteggio_vuota.png",
     scale     = { x = 1, y = 1},
     alignment = { x = 1, y = 0 },
 })
 
-player:hud_add({
+giocatore:hud_add({
     hud_elem_type = "image",
     position  = {x = 1, y = 0.5},
     offset    = {x = -215, y = 23},
-    text      = "score_bar_full.png",
-    scale     = { x = percent, y = 1},
+    text      = "barra_punteggio_piena.png",
+    scale     = { x = percentuale, y = 1},
     alignment = { x = 1, y = 0 },
 })
 ```
 
-We now have a HUD that looks like the one in the first post!
-There is one problem however, it won't update when the stats change.
+Abbiamo ora una HUD uguale identica a quella della prima immagine!
+C'è un problema, tuttavia: non si aggiornerà al cambiare delle statistiche.
 
-## Changing an Element
+## Cambiare un elemento
 
-You can use the ID returned by the hud_add method to update it or remove it later.
+Per cambiare un elemento si usa l'ID ritornato dal metodo `hud_add`.
 
 ```lua
-local idx = player:hud_add({
+local idx = giocatore:hud_add({
      hud_elem_type = "text",
-     text          = "Hello world!",
-     -- parameters removed for brevity
+     text          = "Ciao mondo!",
+     -- parametri rimossi per brevità
 })
 
-player:hud_change(idx, "text", "New Text")
-player:hud_remove(idx)
+giocatore:hud_change(idx, "text", "Nuovo testo")
+giocatore:hud_remove(idx)
 ```
 
-The `hud_change` method takes the element ID, the property to change, and the new
-value. The above call changes the `text` property from "Hello World" to "Test".
+Il metodo `hud_change` prende l'ID dell'elemento, la proprietà da cambiare e il nuovo valore.
+La chiamata qui sopra cambia la proprietà `text` da "Ciao mondo!" a "Nuovo test".
 
-This means that doing the `hud_change` immediately after the `hud_add` is
-functionally equivalent to the following, in a rather inefficient way:
+Questo significa che fare `hud_change` subito dopo `hud_add` è funzionalmente equivalente a
+fare ciò che segue, in maniera alquanto inefficiente:
 
 ```lua
-local idx = player:hud_add({
+local idx = giocatore:hud_add({
      hud_elem_type = "text",
-     text          = "New Text",
+     text          = "Nuovo testo",
 })
 ```
 
-## Storing IDs
+## Salvare gli ID
 
 ```lua
-score = {}
-local saved_huds = {}
+local hud_salvate = {}
 
-function score.update_hud(player)
-    local player_name = player:get_player_name()
+function punteggio.aggiorna_hud(giocatore)
+    local nome_giocatore = giocatore:get_player_name()
 
-    -- Get the dig and place count from storage, or default to 0
-    local meta        = player:get_meta()
-    local digs_text   = "Digs: " .. meta:get_int("score:digs")
-    local places_text = "Places: " .. meta:get_int("score:places")
-    local percent     = tonumber(meta:get("score:score") or 0.2)
+    -- Ottiene il numero di blocchi scavati e piazzati dallo spazio d'archiviazione; se non esiste è 0
+    local meta            = giocatore:get_meta()
+    local digs_testo      = "Digs: " .. meta:get_int("punteggio:digs")
+    local places_testo    = "Places: " .. meta:get_int("punteggio:places")
+    local percentuale     = tonumber(meta:get("punteggio:score") or 0.2)
 
-    local ids = saved_huds[player_name]
+    local ids = hud_salvate[nome_giocatore]
     if ids then
-        player:hud_change(ids["places"], "text", places_text)
-        player:hud_change(ids["digs"],   "text", digs_text)
-        player:hud_change(ids["bar_foreground"],
-                "scale", { x = percent, y = 1 })
+        giocatore:hud_change(ids["places"], "text", places_testo)
+        giocatore:hud_change(ids["digs"],   "text", digs_testo)
+        giocatore:hud_change(ids["bar_foreground"],
+                "scale", { x = percentuale, y = 1 })
     else
         ids = {}
-        saved_huds[player_name] = ids
+        hud_salvate[player_name] = ids
 
-        -- create HUD elements and set ids into `ids`
+        -- crea gli elementi HUD e imposta gli ID in `ids`
     end
 end
 
-minetest.register_on_joinplayer(score.update_hud)
+minetest.register_on_joinplayer(punteggio.aggiorna_hud)
 
 minetest.register_on_leaveplayer(function(player)
-    saved_huds[player:get_player_name()] = nil
+    hud_salvate[player:get_player_name()] = nil
 end)
 ```
 
 
-## Other Elements
+## Altri elementi
 
-Read [lua_api.txt]({{ page.root }}/lua_api.html#hud-element-types) for a complete list of HUD elements.
+Dai un occhio a [lua_api.txt]({{ page.root }}/lua_api.html#hud-element-types) per una lista completa degli elementi HUD.

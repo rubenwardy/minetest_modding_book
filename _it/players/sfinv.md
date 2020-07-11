@@ -1,156 +1,146 @@
 ---
-title: "SFINV: Inventory Formspec"
+title: "SFINV"
 layout: default
 root: ../..
 idx: 4.7
-redirect_from: /en/chapters/sfinv.html
+description: una mod per rendere più semplice la creazione di un inventario complesso
+redirect_from: /it/chapters/sfinv.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Simple Fast Inventory (SFINV) is a mod found in Minetest Game that is used to
-create the player's inventory [formspec](formspecs.html). SFINV comes with
-an API that allows you to add and otherwise manage the pages shown.
+Simple Fast Inventory (SFINV) è una mod presente in Minetest Game, usata per creare il [formspec](formspecs.html) del giocatore.
+SFINV ha un'API che permette di aggiungere e altresì gestire le pagine mostrate.
 
-Whilst SFINV by default shows pages as tabs, pages are called pages
-because it is entirely possible that a mod or game decides to show them in
-some other format instead.
-For example, multiple pages could be shown in one formspec.
+Mentre SFINV di base mostra le pagine come finestre, le pagine sono chiamate tali in quanto è assolutamente possibile che una mod o un gioco decidano di mostrarle in un altro formato.
+Per esempio, più pagine possono essere mostrate nel medesimo formspec.
 
-- [Registering a Page](#registering-a-page)
-- [Receiving events](#receiving-events)
-- [Conditionally showing to players](#conditionally-showing-to-players)
-- [on_enter and on_leave callbacks](#onenter-and-onleave-callbacks)
-- [Adding to an existing page](#adding-to-an-existing-page)
+- [Registrare una pagina](#registrare-una-pagina)
+- [Ricevere eventi](#ricevere-eventi)
+- [Condizioni per la visualizzazione](#condizioni-per-la-visualizzazione)
+- [Callback on_enter e on_leave](#callback-onenter-e-onleave)
+- [Aggiungere a una pagina esistente](#aggiungere-a-una-pagina-esistente)
 
-## Registering a Page
+## Registrare una pagina
 
-SFINV provides the aptly named `sfinv.register_page` function to create pages.
-Simply call the function with the page's name and its definition:
+SFINV fornisce la funzione chiamata `sfinv.register_page` per creare nuove pagine.
+Basta chiamare la funzione con il nome che si vuole assegnare alla pagina e la sua definizione:
 
 ```lua
-sfinv.register_page("mymod:hello", {
-    title = "Hello!",
+sfinv.register_page("miamod:ciao", {
+    title = "Ciao!",
     get = function(self, player, context)
         return sfinv.make_formspec(player, context,
-                "label[0.1,0.1;Hello world!]", true)
+                "label[0.1,0.1;Ciao mondo!]", true)
     end
 })
 ```
 
-The `make_formspec` function surrounds your formspec with SFINV's formspec code.
-The fourth parameter, currently set as `true`, determines whether the
-player's inventory is shown.
+La funzione `make_formspec` circonda il formspec con il codice di SFINV.
+Il quarto parametro, attualmente impostato a `true`, determina se l'inventario del giocatore è mostrato.
 
-Let's make things more exciting; here is the code for the formspec generation
-part of a player admin tab. This tab will allow admins to kick or ban players by
-selecting them in a list and clicking a button.
+Rendiamo le cose più eccitanti; segue il codice della generazione di un formspec per gli admin.
+Questa finestra permetterà agli admin di cacciare o bannare i giocatori selezionandoli da una lista e premendo un pulsante.
 
 ```lua
-sfinv.register_page("myadmin:myadmin", {
-    title = "Tab",
+sfinv.register_page("mioadmin:mioadmin", {
+    title = "Finestra",
     get = function(self, player, context)
-        local players = {}
-        context.myadmin_players = players
+        local giocatori = {}
+        context.mioadmin_giocatori = giocatori
 
-        -- Using an array to build a formspec is considerably faster
+        -- Usare un array per costruire un formspec è decisamente più veloce
         local formspec = {
-            "textlist[0.1,0.1;7.8,3;playerlist;"
+            "textlist[0.1,0.1;7.8,3;lista_giocatori;"
         }
 
-        -- Add all players to the text list, and to the players list
-        local is_first = true
-        for _ , player in pairs(minetest.get_connected_players()) do
-            local player_name = player:get_player_name()
-            players[#players + 1] = player_name
-            if not is_first then
+        -- Aggiunge tutti i giocatori sia alla lista testuale che a quella - appunto - dei giocatori
+        local primo = true
+        for _ , giocatore in pairs(minetest.get_connected_players()) do
+            local nome_giocatore = giocatore:get_player_name()
+            giocatori[#giocatori + 1] = nome_giocatore
+            if not primo then
                 formspec[#formspec + 1] = ","
             end
             formspec[#formspec + 1] =
-                    minetest.formspec_escape(player_name)
-            is_first = false
+                    minetest.formspec_escape(nome_giocatore)
+            primo = false
         end
         formspec[#formspec + 1] = "]"
 
-        -- Add buttons
-        formspec[#formspec + 1] = "button[0.1,3.3;2,1;kick;Kick]"
-        formspec[#formspec + 1] = "button[2.1,3.3;2,1;ban;Kick + Ban]"
+        -- Aggiunge i pulsanti
+        formspec[#formspec + 1] = "button[0.1,3.3;2,1;caccia;Caccia]"
+        formspec[#formspec + 1] = "button[2.1,3.3;2,1;banna;Caccia e Banna]"
 
-        -- Wrap the formspec in sfinv's layout
-        -- (ie: adds the tabs and background)
+        -- Avvolge il formspec nella disposizione di SFINV
+        -- (es: aggiunge le linguette delle finestre e lo sfondo)
         return sfinv.make_formspec(player, context,
                 table.concat(formspec, ""), false)
     end,
 })
 ```
 
-There's nothing new about the above code; all the concepts are
-covered above and in previous chapters.
+Non c'è niente di nuovo in questa parte di codice; tutti i concetti sono già stati trattati o qui in alto o nei precedenti capitoli.
 
 <figure>
-    <img src="{{ page.root }}//static/sfinv_admin_fs.png" alt="Player Admin Page">
+    <img src="{{ page.root }}//static/sfinv_admin_fs.png" alt="Pagina per gli amministratori">
 </figure>
 
-## Receiving events
+## Ricevere eventi
 
-You can receive formspec events by adding a `on_player_receive_fields` function
-to a sfinv definition.
+Puoi ricevere eventi formspec tramite l'aggiunta della funzione `on_player_receive_fields` nella definizione SFINV.
 
 ```lua
 on_player_receive_fields = function(self, player, context, fields)
-    -- TODO: implement this
+    -- TODO: implementarlo
 end,
 ```
 
-`on_player_receive_fields` works the same as
-`minetest.register_on_player_receive_fields`, except that `context` is
-given instead of `formname`.
-Please note that SFINV will consume events relevant to itself, such as
-navigation tab events, so you won't receive them in this callback.
+`on_player_receive_fields` funziona alla stessa maniera di `minetest.register_on_player_receive_fields`, con la differenza che viene richiesto il contesto al posto del nome del form.
+Tieni a mente che gli eventi interni di SFINV, come la navigazione tra le varie finestre, vengono gestiti dentro la mod stessa, e che quindi non verranno ricevuti in questo callback.
 
-Now let's implement the `on_player_receive_fields` for our admin mod:
+Implementiamo ora `on_player_receive_fields` nella mod:
 
 ```lua
 on_player_receive_fields = function(self, player, context, fields)
-    -- text list event,  check event type and set index if selection changed
-    if fields.playerlist then
-        local event = minetest.explode_textlist_event(fields.playerlist)
+    -- evento della lista testuale: controlla il tipo di evento e imposta il nuovo indice se è cambiata la selezione
+    if fields.lista_giocatori then
+        local event = minetest.explode_textlist_event(fields.lista_giocatori)
         if event.type == "CHG" then
-            context.myadmin_selected_idx = event.index
+            context.mioadmin_sel_id = event.index
         end
 
-    -- Kick button was pressed
-    elseif fields.kick then
-        local player_name =
-                context.myadmin_players[context.myadmin_selected_idx]
+    -- Al premere "Caccia"
+    elseif fields.caccia then
+        local nome_giocatore =
+                context.myadmin_players[context.mioadmin_sel_id]
         if player_name then
             minetest.chat_send_player(player:get_player_name(),
-                    "Kicked " .. player_name)
-            minetest.kick_player(player_name)
+                    "Cacciato " .. nome_giocatore)
+            minetest.kick_player(nome_giocatore)
         end
 
-    -- Ban button was pressed
-    elseif fields.ban then
-        local player_name =
-                context.myadmin_players[context.myadmin_selected_idx]
+    -- Al premere "Caccia e Banna"
+    elseif fields.banna then
+        local nome_giocatore =
+                context.myadmin_players[context.mioadmin_sel_id]
         if player_name then
             minetest.chat_send_player(player:get_player_name(),
                     "Banned " .. player_name)
-            minetest.ban_player(player_name)
-            minetest.kick_player(player_name, "Banned")
+            minetest.ban_player(nome_giocatore)
+            minetest.kick_player(nome_giocatore, "Banned")
         end
     end
 end,
 ```
 
-There's a rather large problem with this, however. Anyone can kick or ban players! You
-need a way to only show this to players with the kick or ban privileges.
-Luckily SFINV allows you to do this!
+C'è, tuttavia, un problema abbastanza grande a riguardo: chiunque può cacciare o bannare i giocatori!
+C'è bisogno di un modo per mostrare questa finestra solo a chi ha i privilegi `kick` e `ban`.
+Fortunatamente, SFINV ci permette di farlo!
 
-## Conditionally showing to players
+## Condizioni per la visualizzazione
 
-You can add an `is_in_nav` function to your page's definition if you'd like to
-control when the page is shown:
+Si può aggiungere una funzione `is_in_nav` nella definizione della pagina se si desidera gestire quando la pagina deve essere mostrata:
 
 ```lua
 is_in_nav = function(self, player, context)
@@ -159,54 +149,46 @@ is_in_nav = function(self, player, context)
 end,
 ```
 
-If you only need to check one priv or want to perform an 'and', you should use
-`minetest.check_player_privs()` instead of `get_player_privs`.
+Se si ha bisogno di controllare un solo privilegio o si vuole eseguire un `and`, si bisognerebbe usare `minetest.check_player_privs()` al posto di `get_player_privs`.
 
-Note that the `is_in_nav` is only called when the player's inventory formspec is
-generated. This happens when a player joins the game, switches tabs, or a mod
-requests for SFINV to regenerate.
+Tieni a mente che `is_in_nav` viene chiamato soltanto alla generazione dell'inventario del giocatore.
+Questo succede quando un giocatore entra in gioco, si muove tra le finestre, o una mod richiede a SFINV di rigenerare l'inventario.
 
-This means that you need to manually request that SFINV regenerates the inventory
-formspec on any events that may change `is_in_nav`'s result. In our case,
-we need to do that whenever kick or ban is granted or revoked to a player:
+Ciò significa che hai bisogno di richiedere manualmente la rigenerazione del formspec dell'inventario per ogni evento che potrebbe cambiare il risultato ti `is_in_nav`.
+Nel nostro caso, abbiamo bisogno di farlo ogni volta che i permessi `kick` o `ban` vengono assegnati/revocati a un giocatore:
 
 ```lua
-local function on_grant_revoke(grantee, granter, priv)
+local function al_cambio_privilegi(nome_target, nome_garante, priv)
     if priv ~= "kick" and priv ~= "ban" then
         return
     end
 
-    local player = minetest.get_player_by_name(grantee)
-    if not player then
+    local giocatore = minetest.get_player_by_name(nome_target)
+    if not giocatore then
         return
     end
 
-    local context = sfinv.get_or_create_context(player)
-    if context.page ~= "myadmin:myadmin" then
+    local contesto = sfinv.get_or_create_context(giocatore)
+    if contesto.page ~= "mioadmin:mioadmin" then
         return
     end
 
-    sfinv.set_player_inventory_formspec(player, context)
+    sfinv.set_player_inventory_formspec(giocatore, contesto)
 end
 
-minetest.register_on_priv_grant(on_grant_revoke)
-minetest.register_on_priv_revoke(on_grant_revoke)
+minetest.register_on_priv_grant(al_cambio_privilegi)
+minetest.register_on_priv_revoke(al_cambio_privilegi)
 ```
 
-## on_enter and on_leave callbacks
+## Callback on_enter e on_leave
 
-A player *enters* a tab when the tab is selected and *leaves* a
-tab when another tab is about to be selected.
-It's possible for multiple pages to be selected if a custom theme is
-used.
+Un giocatore *entra* in una finestra quando la finestra è selezionata e *esce* dalla finestra quando un'altra finestra è prossima a essere selezionata.
+Attenzione che è possibile selezionare più pagine alla volta se viene usata un tema personalizzato.
 
-Note that these events may not be triggered by the player.
-The player may not even have the formspec open at that time.
-For example, on_enter is called for the home page when a player
-joins the game even before they open their inventory.
+Si tenga conto, poi, che questi eventi potrebbero non essere innescati dal giocatore, in quanto potrebbe addirittura non avere un formspec aperto in quel momento.
+Per esempio, `on_enter` viene chiamato dalla pagina principale anche quando un giocatore entra in gioco, ancor prima che apri l'inventario.
 
-It's not possible to cancel a page change, as that would potentially
-confuse the player.
+Infine, non è possibile annullare il cambio pagina, in quanto potrebbe potenzialmente confondere il giocatore.
 
 ```lua
 on_enter = function(self, player, context)
@@ -218,22 +200,21 @@ on_leave = function(self, player, context)
 end,
 ```
 
-## Adding to an existing page
+## Aggiungere a una pagina esistente
 
-To add content to an existing page, you will need to override the page
-and modify the returned formspec.
+Per aggiungere contenuti a una pagina che già esiste, avrai bisogno di sovrascrivere la pagina e modificare il formspec che viene ritornato:
 
 ```lua
-local old_func = sfinv.registered_pages["sfinv:crafting"].get
+local vecchia_funzione = sfinv.registered_pages["sfinv:crafting"].get
 sfinv.override_page("sfinv:crafting", {
     get = function(self, player, context, ...)
-        local ret = old_func(self, player, context, ...)
+        local ret = vecchia_funzione(self, player, context, ...)
 
         if type(ret) == "table" then
-            ret.formspec = ret.formspec .. "label[0,0;Hello]"
+            ret.formspec = ret.formspec .. "label[0,0;Ciao]"
         else
-            -- Backwards compatibility
-            ret = ret .. "label[0,0;Hello]"
+            -- Retrocompatibilità
+            ret = ret .. "label[0,0;Ciao]"
         end
 
         return ret

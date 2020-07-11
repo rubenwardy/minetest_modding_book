@@ -1,268 +1,224 @@
 ---
-title: Formspecs
+title: GUI (Formspec)
 layout: default
 root: ../..
 idx: 4.5
-redirect_from: /en/chapters/formspecs.html
-minetest510:
-    level: warning
-    title: Real coordinates will be in 5.1.0
-    classes: web-only
-    message: This chapter describes the use of a feature that hasn't been released yet.
-         You can still use this chapter and the code in Minetest 5.0, but elements will
-         be positioned differently to what is shown.
+description: Tempo di interagire con le finestre
+redirect_from: /it/chapters/formspecs.html
 submit_vuln:
     level: warning
-    title: Malicious clients can submit anything at anytime
-    message: You should never trust a formspec submission. A malicious client
-             can submit anything they like at any time - even if you never showed
-             them the formspec. This means that you should check privileges
-             and make sure that they should be allowed to perform the action.
+    title: Client malevoli possono inviare qualsiasi cosa quando più gli piace
+    message: Non dovresti mai fidarti di un modulo di compilazione - anche se non hai mai mostrato loro il formspec.
+             Questo significa che dovresti controllarne i privilegi e assicurarti che dovrebbero effettivamente essere in grado di eseguire quest'azione.
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
 <figure class="right_image">
     <img src="{{ page.root }}//static/formspec_example.png" alt="Furnace Inventory">
     <figcaption>
-        Screenshot of furnace formspec, labelled.
+        Screenshot del formspec di una fornace e della sua struttura.
     </figcaption>
 </figure>
 
-In this chapter we will learn how to create a formspec and display it to the user.
-A formspec is the specification code for a form.
-In Minetest, forms are windows such as the player inventory and can contain a
-variety of elements, such as labels, buttons and fields.
+In questo capitolo impareremo come creare un formspec e mostrarlo all'utente.
+Un formspec è il codice di specifica di un modulo (*form*, da qui *form*-*spec*).
+In Minetest, i moduli sono delle finestre come l'inventario del giocatore e possono contenere un'ampia gamma di elementi, come le etichette, i pulsanti e i campi.
 
-Note that if you do not need to get user input, for example when you only need
-to provide information to the player, you should consider using
-[Heads Up Display (HUD)](hud.html) elements instead of forms, because
-unexpected windows tend to disrupt gameplay.
+Tieni presente che se non si ha bisogno di ricevere input dal giocatore, per esempio quando si vogliono far apparire semplicemente delle istruzioni a schermo, si dovrebbe considerare l'utilizzo di una [HUD (Heads Up Display)](hud.html) piuttosto che quello di un formspec, in quanto le finestre inaspettate (con tanto di mouse che appare) tendono a impattare negativamente sulla giocabilità.
 
-- [Real or Legacy Coordinates](#real-or-legacy-coordinates)
-- [Anatomy of a Formspec](#anatomy-of-a-formspec)
-  - [Elements](#elements)
-  - [Header](#header)
-- [Guessing Game](#guessing-game)
-  - [Padding and Spacing](#padding-and-spacing)
-  - [Receiving Formspec Submissions](#receiving-formspec-submissions)
-  - [Contexts](#contexts)
-- [Formspec Sources](#formspec-sources)
-  - [Node Meta Formspecs](#node-meta-formspecs)
-  - [Player Inventory Formspecs](#player-inventory-formspecs)
-  - [Your Turn](#your-turn)
+- [Coordinate reali o datate](#coordinate-reali-o-datate)
+- [Anatomia di un formspec](#anatomia-di-un-formspec)
+  - [Elementi](#elementi)
+  - [Intestazione](#intestazione)
+- [Esempio: indovina un numero](#esempio-indovina-un-numero)
+  - [Imbottitura e spaziatura](#imbottitura-e-spaziatura)
+  - [Ricevere i moduli di compilazione](#ricevere-i-moduli-di-compilazione)
+  - [Contesti](#contesti)
+- [Ricavare un formspec](#ricavare-un-formspec)
+  - [Formspec nei nodi](#formspec-nei-nodi)
+  - [Inventario del giocatore](#inventario-del-giocatore)
+  - [Il tuo turno](#il-tuo-turno)
 
 
-## Real or Legacy Coordinates
+## Coordinate reali o datate
 
-In older versions of Minetest, formspecs were inconsistent. The way that different
-elements were positioned varied in unexpected ways; it was hard to predict the
-placement of elements and align them. Minetest 5.1.0 contains a feature
-called real coordinates which aims to rectify this by introducing a consistent
-coordinate system. The use of real coordinates is highly recommended, and so
-this chapter will use them exclusively.
+Nelle vecchie versioni di Minetest, i formspec erano incoerenti.
+Il modo in cui elementi diversi venivano posizionati nel formspec variava in maniere inaspettate; era difficile predirne la collocazione e allinearli correttamente.
+Da Minetest 5.1.0, tuttavia, è stata introdotta una funzione chiamata Coordinate Reali (*real coordinates*), la quale punta a correggere questo comportamento tramite l'introduzione di un sistema di coordinate coerente.
+L'uso delle coordinate reali è caldamente consigliato, onde per cui questo capitolo non tratterà di quelle vecchie.
 
-{% include notice.html notice=page.minetest510 %}
+## Anatomia di un formspec
 
+### Elementi
 
-## Anatomy of a Formspec
+Il formspec è un linguaggio di dominio specifico con un formato insolito.
+Consiste in un numero di elementi che seguono il seguente schema:
 
-### Elements
+    tipo[param1;param2]
 
-Formspec is a domain-specific language with an unusual format.
-It consists of a number of elements with the following form:
-
-    type[param1;param2]
-
-The element type is declared and then any parameters are given
-in square brackets. Multiple elements can be joined together, or placed
-on multiple lines, like so:
+Viene prima dichiarato il tipo dell'elemento, seguito dai parametri nelle parentesi quadre.
+Si possono concatenare più elementi, piazzandoli eventualmente su più linee:
 
     foo[param1]bar[param1]
     bo[param1]
 
+Gli elementi sono o oggetti come i campi di testo e i pulsanti, o dei metadati come la grandezza e lo sfondo.
+Per una lista esaustiva di tutti i possibili elementi, si rimanda a [lua_api.txt](../../lua_api.html#elements).
 
-Elements are items such as text boxes or buttons, or can be metadata such
-as size or background. You should refer to
-[lua_api.txt](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt#L1019)
-for a list of all possible elements. Search for "Formspec" to locate the correct
-part of the document.
+### Intestazione
 
+L'intestazione di un formspec contiene informazioni che devono apparire prima di tutto il resto.
+Questo include la grandezza del formspec, la posizione, l'ancoraggio, e se il tema specifico del gioco debba venir applicato.
 
-### Header
+Gli elementi nell'intestazione devono essere definiti in un ordine preciso, altrimenti ritorneranno un errore.
+L'ordine è dato nel paragrafo qui in alto e, come sempre, documentato in [lua_api.txt](../../lua_api.html#sizewhfixed_size).
 
-The header of a formspec contains information which must appear first. This
-includes the size of the formspec, the position, the anchor, and whether the
-game-wide theme should be applied.
+La grandezza è in caselle formspec - un'unità di misura che è circa 64 pixel, ma varia a seconda della densità dello schermo e delle impostazioni del client.
+Ecco un formspec di 2x2:
 
-The elements in the header must be defined in a specific order, otherwise you
-will see an error. This order is given in the above paragraph, and, as always,
-documented in [lua_api.txt](../../lua_api.html#sizewhfixed_size)
-
-The size is in formspec slots - a unit of measurement which is roughly
-around 64 pixels, but varies based on the screen density and scaling
-settings of the client. Here's a formspec which is `2,2` in size:
-
+    formspec_version[3]
     size[2,2]
-    real_coordinates[true]
 
-Notice how we explicitly need to enable the use of the real coordinate system.
-Without this, the legacy system will instead be used to size the formspec, which will
-result in a larger size. This element is a special case, as it is the only element
-which may appear both in the header and the body of a formspec. When in the header,
-it must appear immediately after the size.
+Notare come è stata esplicitamente definita la versione del linguaggio: senza di essa, il sistema datato sarebbe stato usato di base - che avrebbe impossibilitato il posizionamento coerente degli elementi e altre nuove funzioni.
 
-The position and anchor elements are used to place the formspec on the screen.
-The position sets where on the screen the formspec will be, and defaults to
-the center (`0.5,0.5`). The anchor sets where on the formspec the position is,
-allowing you to line the formspec up with the edge of the screen. The formspec
-can be placed to the left of the screen like so:
+La posizione e l'ancoraggio degli elementi sono usati per collocare il formspec nello schermo.
+La posizione imposta dove si troverà (con valore predefinito al centro, `0.5,0.5`), mentre l'ancoraggio da dove partire, permettendo di allineare il formspec con i bordi dello schermo.
+Per esempio, lo si può posizionare ancorato a sinistra in questo modo:
 
+    formspec_version[3]
     size[2,2]
     real_coordinates[true]
     position[0,0.5]
     anchor[0,0.5]
 
-This sets the anchor to the left middle edge of the formspec box, and then the
-position of that anchor to the left of the screen.
+Per l'esattezza è stato messo il centro del formspec sul bordo sinistro dello schermo (`position[0, 0.5]`) e poi ne è stato spostato l'ancoraggio in modo da allineare il lato sinistro del formspec con quello dello schermo.
 
-
-## Guessing Game
+## Esempio: indovina un numero
 
 <figure class="right_image">
     <img src="{{ page.root }}/static/formspec_guessing.png" alt="Guessing Formspec">
     <figcaption>
-        The guessing game formspec.
+        Il formspec del gioco dell'indovinare un numero
     </figcaption>
 </figure>
 
-The best way to learn is to make something, so let's make a guessing game.
-The principle is simple: the mod decides on a number, then the player makes
-guesses on the number. The mod then says if the guess is higher or lower then
-the actual number.
+Il modo migliore per imparare è sporcarsi le mani, quindi creiamo un gioco.
+Il principio è semplice: la mod decide un numero, e il giocatore deve tentare di indovinarlo.
+La mod, poi, comunica se si è detto un numero più alto o più basso rispetto a quello corretto.
 
-First, let's make a function to create the formspec code. It's good practice to
-do this, as it makes it easier to reuse elsewhere.
+Prima di tutto, costruiamo una funzione per creare il formspec.
+È buona pratica fare ciò, in quanto rende il riutilizzo più comodo.
 
 <div style="clear: both;"></div>
 
 ```lua
-guessing = {}
+indovina = {}
 
-function guessing.get_formspec(name)
-    -- TODO: display whether the last guess was higher or lower
-    local text = "I'm thinking of a number... Make a guess!"
+function indovina.prendi_formspec(nome)
+    -- TODO: comunicare se il numero del tentativo era più alto o più basso
+    local testo = "Sto pensando a un numero... Prova a indovinare!"
 
     local formspec = {
         "size[6,3.476]",
-        "real_coordinates[true]",
-        "label[0.375,0.5;", minetest.formspec_escape(text), "]",
-        "field[0.375,1.25;5.25,0.8;number;Number;]",
-        "button[1.5,2.3;3,0.8;guess;Guess]"
+        "label[0.375,0.5;", minetest.formspec_escape(testo), "]",
+        "field[0.375,1.25;5.25,0.8;numero;Numero;]",
+        "button[1.5,2.3;3,0.8;indovina;Indovina]"
     }
 
-    -- table.concat is faster than string concatenation - `..`
+    -- table.concat è più veloce della concatenazione di stringhe - `..`
     return table.concat(formspec, "")
 end
 ```
 
-In the above code, we place a field, a label, and a button. A field allows text
-entry, and a button is used to submit the form. You'll notice that the elements
-are positioned carefully in order to add padding and spacing, this will be explained
-later.
+Nel codice qui sopra abbiamo inserito un'etichetta (*label*), un campo (*field*) e un pulante (*button*).
+Un campo ci permete di inserire del testo, mentre useremo il pulsante per inviare il modulo.
+Noterai che gli elementi sono posizionati attentamente per aggiungere imbottitura e spaziatura (*padding* e *spacing*),
+ma ci arriveremo tra poco.
 
-Next, we want to allow the player to show the formspec. The main way to do this
-is using `show_formspec`:
+Come prossima cosa, vogliamo permettere al giocatore di visualizzare il formspec.
+Il metodo principale per farlo è usare `show_formspec`:
 
 ```lua
-function guessing.show_to(name)
-    minetest.show_formspec(name, "guessing:game", guessing.get_formspec(name))
+function indovina.mostra_a(nome)
+    minetest.show_formspec(nome, "indovina:gioco", indovina.prendi_formspec(nome))
 end
 
-minetest.register_chatcommand("game", {
+minetest.register_chatcommand("gioco", {
     func = function(name)
-        guessing.show_to(name)
+        indovina.mostra_a(name)
     end,
 })
 ```
 
-The show_formspec function accepts a player name, the formspec name, and the
-formspec itself. The formspec name should be a valid itemname, ie: in the format
-`modname:itemname`.
+La funzione `show_formspec` prende il nome del giocatore, il nome del formspec e il formspec stesso.
+Il nome di quest'ultimo dovrebbe seguire il formato del nome degli oggetti, tipo `nomemod:nomeoggetto`.
 
-
-### Padding and Spacing
+### Imbottitura e spaziatura
 
 <figure class="right_image">
     <img src="{{ page.root }}/static/formspec_padding_spacing.png" alt="Padding and spacing">
     <figcaption>
-        The guessing game formspec.
+        Il formspec del gioco dell'indovinare un numero
     </figcaption>
 </figure>
 
-Padding is the gap between the edge of the formspec and its contents, or between unrelated
-elements, shown in red. Spacing is the gap between related elements, shown in blue.
+L'imbottitura (*padding*) è lo spazio che intercorre tra il bordo del formspec e i suoi contenuti, o tra elementi non in relazione fra loro - mostrato in rosso.
+La spaziatura (*spacing*) è invece lo spazio tra elementi in comune - mostrata in blu.
 
-It is fairly standard to have a padding of `0.375` and a spacing of `0.25`.
+È abbastanza uno standard avere un'imbottitura di `0.375` e una spaziatura di `0.25`.
 
 <div style="clear: both;"></div>
 
 
-### Receiving Formspec Submissions
+### Ricevere i moduli di compilazione
 
-When `show_formspec` is called, the formspec is sent to the client to be displayed.
-For formspecs to be useful, information needs to be returned from the client to server.
-The method for this is called formspec field submission, and for `show_formspec`, that
-submission is received using a global callback:
+Quando `show_formspec` viene chiamato, il formspec viene inviato al client per essere visualizzato.
+Per far sì che i formspec siano utili, le informazioni devono essere ritornate dal client al server.
+Il metodo per fare ciò è chiamato Campo di Compilazione (*formspec field submission*), e per `show_formspec` quel campo viene ottenuto usando un callback globale:
 
 ```lua
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-    if formname ~= "guessing:game" then
+    if formname ~= "indovina:gioco" then
         return
     end
 
-    if fields.guess then
-        local pname = player:get_player_name()
-        minetest.chat_send_all(pname .. " guessed " .. fields.number)
+    if fields.indovina then
+        local p_name = player:get_player_name()
+        minetest.chat_send_all(p_name .. " ha tentato di indovinare con il numero " .. fields.numero)
     end
 end)
 ```
 
-The function given in minetest.register_on_player_receive_fields is called
-every time a user submits a form. Most callbacks will need to check the formname given
-to the function, and exit if it is not the right form; however, some callbacks
-may need to work on multiple forms, or on all forms.
+La funzione data in `minetest.register_on_player_receive_fields` è chiamata ogni volta che un utente invia un modulo.
+La maggior parte dei callback necessiteranno di controllare il nome fornito alla funzione, e uscire se non è quello esatto; tuttavia, alcuni potrebbero necessitare di operare su più moduli, se non addirittura su tutti.
 
-The `fields` parameter to the function is a table of the values submitted by the
-user, indexed by strings. Named elements will appear in the field under their own
-name, but only if they are relevent for the event that caused the submission.
-For example, a button element will only appear in fields if that particular button
-was pressed.
+Il parametro `fields` è una tabella di tutti i valori inviati dall'utente, indicizzati per stringhe.
+I nomi degli elementi appariranno nel campo con il loro nome, ma solo se sono rilevanti per l'evento che ha causato l'invio.
+Per esempio, un elemento "pulsante" apparirà nei campi solo se quel particolare pulsante è stato premuto.
 
 {% include notice.html notice=page.submit_vuln %}
 
-So, now the formspec is sent to the client and the client sends information back.
-The next step is to somehow generate and remember the target value, and to update
-the formspec based on guesses. The way to do this is using a concept called
-"contexts".
+Quindi, ora il formspec è stato inviato al client e il client ritorna quelle informazioni.
+Il prossimo passaggio è generare e ricordare il valore ricevuto, e aggiornare il formspec basandosi sui tentativi.
+Il modo per fare ciò è usare un concetto chiamato "contesto".
 
 
-### Contexts
+### Contesti
 
-In many cases you want minetest.show_formspec to give information
-to the callback which you don't want to send to the client. This might include
-what a chat command was called with, or what the dialog is about. In this case,
-the target value that needs to be remembered.
+In molti casi si può desiderare che le informazioni passate da `show_formspec` al callback non raggiungano il client.
+Ciò potrebbe includere con cosa è stato chiamato un comando via chat, o di cosa tratta la finestra di dialogo.
+In questo caso, il valore che si necessita di ricordare.
 
-A context is a per-player table to store information, and the contexts for all
-online players are stored in a file-local variable:
+Un contesto (*context*) è una tabella assegnata a ogni giocatore per immagazzinare informazioni, e i contesti di tutti i giocatori sono
+salvati in una variabile locale di file:
 
 ```lua
-local _contexts = {}
-local function get_context(name)
-    local context = _contexts[name] or {}
-    _contexts[name] = context
-    return context
+local _contesti = {}
+local function prendi_contesto(nome)
+    local contesto = _contesto[nome] or {}
+    _contesti[nome] = contesto
+    return contesto
 end
 
 minetest.register_on_leaveplayer(function(player)
@@ -270,83 +226,78 @@ minetest.register_on_leaveplayer(function(player)
 end)
 ```
 
-Next, we need to modify the show code to update the context
-before showing the formspec:
+Ora abbiamo bisogno di modificare il codice da mostrare, per aggiornare il contesto prima di mostrare il formspec:
 
 ```lua
-function guessing.show_to(name)
-    local context = get_context(name)
-    context.target = context.target or math.random(1, 10)
+function indovina.mostra_a(nome)
+    local contesto = prendi_contesto(nome)
+    contesto.soluzione = contesto.soluzione or math.random(1, 10)
 
-    local fs = guessing.get_formspec(name, context)
-    minetest.show_formspec(name, "guessing:game", fs)
+    local formspec = indovina.prendi_formspec(nome, contesto)
+    minetest.show_formspec(nome, "indovina:gioco", formspec)
 end
 ```
 
-We also need to modify the formspec generation code to use the context:
+Abbiamo anche bisogno di modificare la generazione del formspec per usare il contesto:
 
 ```lua
-function guessing.get_formspec(name, context)
-    local text
-    if not context.guess then
-        text = "I'm thinking of a number... Make a guess!"
-    elseif context.guess == context.target then
-        text = "Hurray, you got it!"
-    elseif context.guess > context.target then
-        text = "To high!"
+function indovina.prendi_formspec(nome, contesto)
+    local testo
+    if not contesto.tentativo then
+        testo = "Sto pensando a un numero... Prova a indovinare!"
+    elseif contesto.tentativo == contesto.soluzione then
+        testo = "Yeee, hai indovinato!"
+    elseif contesto.tentativo > contesto.soluzione then
+        testo = "Troppo alto!"
     else
-        text = "To low!"
+        testo = "Troppo basso!"
     end
 ```
 
-Note that it's good practice for get_formspec to only read the context, and not
-update it at all. This can make the function simpler, and also easier to test.
+Tieni a mente che quando si ottiene il formspec è buona norma leggerne il contesto, senza però aggiornalo.
+Questo può rendere la funzione più semplice, e anche più facile da testare.
 
-And finally, we need to update the handler to update the context with the guess:
+E in ultimo, abbiamo bisogno di aggiornare il contesto con il tentativo del giocatore:
 
 ```lua
-if fields.guess then
-    local name = player:get_player_name()
-    local context = get_context(name)
-    context.guess = tonumber(fields.number)
-    guessing.show_to(name)
+if fields.indovina then
+    local nome = player:get_player_name()
+    local contesto = prendi_contesto(nome)
+    contesto.tentativo = tonumber(fields.numero)
+    indovina.mostra_a(nome)
 end
 ```
 
+## Ricavare un formspec
 
-## Formspec Sources
+Ci sono tre diversi modi per far sì che un formspec sia consegnato al client:
 
-There are three different ways that a formspec can be delivered to the client:
+* [show_formspec](#esempio-indovina-un-numero): il metodo usato qui sopra. I campi sono ottenuti tramite `register_on_player_receive_fields`;
+* [Metadati di un nodo](#formspec-nei-nodi): si aggiunge il formspec nel nodo tramite metadati, che viene mostrato *immediatamente* al giocatore che preme il nodo col tasto destro.
+      I campi vengono ricevuti attraverso un metodo nella definizione del nodo chiamato `on_receive_fields`.
+* [Inventario del giocatore](#inventario-del-giocatore): il formspec viene inviato al client in un certo momento, e mostrato immediatamente quando il giocatore preme "I".
+      I campi vengono ricevuti tramite `register_on_player_receive_fields`.
 
-* [show_formspec](#guessing-game): the method used above, fields are received by register_on_player_receive_fields.
-* [Node Meta Formspecs](#node-meta-formspecs): the node contains a formspec in its meta data, and the client
-     shows it *immediately* when the player rightclicks. Fields are received by a
-     method in the node definition called `on_receive_fields`.
-* [Player Inventory Formspecs](#player-inventory-formspecs): the formspec is sent to the client at some point, and then
-     shown immediately when the player presses `i`. Fields are received by
-     register_on_player_receive_fields.
+### Formspec nei nodi
 
-### Node Meta Formspecs
-
-minetest.show_formspec is not the only way to show a formspec; you can also
-add formspecs to a [node's metadata](node_metadata.html). For example,
-this is used with chests to allow for faster opening times -
-you don't need to wait for the server to send the player the chest formspec.
+`minetest.show_formspec` non è l'unico modo per mostrare un formspec; essi possono infatti essere aggiunti anche ai [metadati di un nodo](node_metadata.html).
+Per esempio, questo è usato con le casse per permettere tempi più veloci d'apertura - non si ha bisogno di aspettare che il server invii il formspec della cassa al giocatore.
 
 ```lua
-minetest.register_node("mymod:rightclick", {
-    description = "Rightclick me!",
-    tiles = {"mymod_rightclick.png"},
+minetest.register_node("miamod:tastodestro", {
+    description = "Premimi col tasto destro del mouse!",
+    tiles = {"miamod_tastodestro.png"},
     groups = {cracky = 1},
     after_place_node = function(pos, placer)
-        -- This function is run    when the chest node is placed.
-        -- The following code sets the formspec for chest.
-        -- Meta is a way of storing data onto a node.
+        -- Questa funzione è eseguita quando viene piazzato il nodo.
+        -- Il codice che segue imposta il formspec della cassa.
+        -- I metadati sono un modo per immagazzinare dati nel nodo.
 
         local meta = minetest.get_meta(pos)
         meta:set_string("formspec",
+                "formspec_version[3]" ..
                 "size[5,5]"..
-                "label[1,1;This is shown on right click]"..
+                "label[1,1;Questo è mostrato al premere col destro]"..
                 "field[1,2;2,1;x;x;]")
     end,
     on_receive_fields = function(pos, formname, fields, player)
@@ -356,30 +307,22 @@ minetest.register_node("mymod:rightclick", {
 })
 ```
 
-Formspecs set this way do not trigger the same callback. In order to
-receive form input for meta formspecs, you must include an
-`on_receive_fields` entry when registering the node.
+I formspec impostati in questo modo non innescano lo stesso callback.
+Per far in modo di ricevere il modulo di input per i formspec nei nodi, bisogna includere una voce `on_receive_fields` al registrare il nodo.
 
-This style of callback triggers when you press enter
-in a field, which is impossible with `minetest.show_formspec`;
-however, this kind of form can only be shown by right-clicking on a
-node. It cannot be triggered programmatically.
+Questo stile di callback viene innescato al premere invio in un campo, che è possibile grazie a `minetest.show_formspec`; tuttavia, questi tipi di moduli possono essere mostrati solo
+tramite il premere col tasto destro del mouse su un nodo. Non è possibile farlo programmaticamente.
 
-### Player Inventory Formspecs
+### Inventario del giocatore
 
-The player inventory formspec is the one shown when the player presses i.
-The global callback is used to receive events from this formspec, and the
-formname is `""`.
+L'inventario del giocatore è un formspec, che viene mostrato al premere "I".
+Il callback globale viene usato per ricevere eventi dall'inventario, e il suo nome è `""`.
 
-There are a number of different mods which allow multiple mods to customise
-the player inventory. The officially recommended mod is
-[Simple Fast Inventory (sfinv)](sfinv.html), and is included in Minetest Game.
+Ci sono svariate mod che permettono ad altrettante mod di personalizzare l'inventario del giocatore.
+La mod ufficialmente raccomandata è [Simple Fast Inventory (sfinv)](sfinv.html), ed è inclusa in Minetest Game.
 
+### Il tuo turno
 
-### Your Turn
-
-* Extend the Guessing Game to keep track of each player's top score, where the
-  top score is how many guesses it took.
-* Make a node called "Inbox" where users can open up a formspec and leave messages.
-  This node should store the placers' name as `owner` in the meta, and should use
-  `show_formspec` to show different formspecs to different players.
+* Estendi l'indovina il numero per far in modo che tenga traccia del risultato migliore di ogni giocatore, dove con "risultato migliore" si intende il minor numero di tentativi per indovinare.
+* Crea un nodo chiamato "Casella delle lettere" dove gli utenti possono aprire un formspec e lasciare messaggi.
+  Questo nodo dovrebbe salvare il nome del mittente come `owner` nei metadati, e dovrebbe usare `show_formspec` per mostrare formspec differenti a giocatori differenti.

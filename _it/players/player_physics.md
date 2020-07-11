@@ -1,76 +1,64 @@
 ---
-title: Player Physics
+title: Fisica del giocatore
 layout: default
 root: ../..
 idx: 4.4
-redirect_from: /en/chapters/player_physics.html
+redirect_from: /it/chapters/player_physics.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Player physics can be modified using physics overrides.
-Physics overrides can set the walking speed, jump speed,
-and gravity constants.
-Physics overrides are set on a player-by-player basis
-and are multipliers.
-For example, a value of 2 for gravity would make gravity twice as strong.
+La fisica del giocatore può essere modificata usando le sovrascritture apposite (*physics ovverrides*).
+Esse sono dei moltiplicatori che servono per impostare la velocità di movimento, del salto, o la gravità del singolo giocatore.
+Per esempio, un valore di 2 sulla gravità, renderà la gravità di un utente due volte più forte.
 
-- [Basic Example](#basic-example)
-- [Available Overrides](#available-overrides)
-  - [Old Movement Behaviour](#old-movement-behaviour)
-- [Mod Incompatibility](#mod-incompatibility)
-- [Your Turn](#your-turn)
+- [Esempio base](#esempio-base)
+- [Sovrascritture disponibili](#sovrascritture-disponibili)
+  - [Vecchio sistema di movimento](#vecchio-sistema-di-movimento)
+- [Incompatibilità tra mod](#incompatibilita-tra-mod)
+- [Il tuo turno](#il-tuo-turno)
 
-## Basic Example
+## Esempio base
 
-Here is an example of how to add an antigravity command, which
-puts the caller in low G:
+Segue l'esempio di un comando di antigravità:
 
 ```lua
-minetest.register_chatcommand("antigravity", {
+minetest.register_chatcommand("antigrav", {
     func = function(name, param)
-        local player = minetest.get_player_by_name(name)
-        player:set_physics_override({
-            gravity = 0.1, -- set gravity to 10% of its original value
+        local giocatore = minetest.get_player_by_name(name)
+        giocatore:set_physics_override({
+            gravity = 0.1, -- imposta la gravità al 10% del suo valore originale
                            -- (0.1 * 9.81)
         })
     end,
 })
 ```
 
-## Available Overrides
+## Sovrascritture disponibili
 
-`player:set_physics_override()` is given a table of overrides.\\
-According to [lua_api.txt]({{ page.root }}/lua_api.html#player-only-no-op-for-other-objects),
-these can be:
+`set_physics_override()` è una tabella. Stando a [lua_api.txt]({{ page.root }}/lua_api.html#player-only-no-op-for-other-objects), le chiavi possono essere:
 
-* speed: multiplier to default walking speed value (default: 1)
-* jump: multiplier to default jump value (default: 1)
-* gravity: multiplier to default gravity value (default: 1)
-* sneak: whether the player can sneak (default: true)
+* `speed`: moltiplicatore della velocità di movimento (predefinito: 1)
+* `jump`: moltiplicatore del salto (predefinito: 1)
+* `gravity`: moltiplicatore della gravità (predefinito: 1)
+* `sneak`: se il giocatore può camminare di soppiatto o meno (predefinito: true)
 
-### Old Movement Behaviour
+### Vecchio sistema di movimento
 
-Player movement prior to the 0.4.16 release included the sneak glitch, which
-allows various movement glitches, including the ability
-to climb an 'elevator' made from a certain placement of nodes by sneaking
-(pressing shift) and pressing space to ascend. Though the behaviour was
-unintended, it has been preserved in overrides due to its use on many servers.
+Il movimento dei giocatori prima della versione 0.4.16 includeva il cosiddetto *sneak glitch*, il quale permetteva vari glitch di movimento come l'abilità di scalare un "ascensore" fatta di certi blocchi premendo shift (la camminata di soppiatto) e salto. Nonostante non fosse una funzionalità voluta, è stata mantenuta nelle sovrascritture dato il suo uso in molti server.
 
-Two overrides are needed to fully restore old movement behaviour:
+Per ripristinare del tutto questo comportamento servono due chiavi:
 
-* new_move: whether the player uses new movement (default: true)
-* sneak_glitch: whether the player can use 'sneak elevators' (default: false)
+* `new_move`: se usare o meno il nuovo sistema di movimento (predefinito: true)
+* `sneak_glitch`: se il giocatore può usare o meno il glitch dell'ascensore (default: false)
 
-## Mod Incompatibility
+## Incompatibilità tra mod
 
-Please be warned that mods which override the same physics value of a player tend
-to be incompatible with each other. When setting an override, it overwrites
-any overrides that have been set before. This means that if multiple overrides set a
-player's speed, only the last one to run will be in effect.
+Tieni a mente che le mod che sovrascrivono la stessa proprietà fisica di un giocatore tendono a essere incompatibili tra di loro.
+Quando si imposta una sovrascrittura, sovrascriverà qualsiasi altro suo simile impostato in precedenza: ciò significa che se la velocità di movimento di un giocatore viene cambiata più volte, solo l'ultimo valore verrà preso in considerazione.
 
-## Your Turn
+## Il tuo turno
 
-* **Sonic**: Set the speed multiplier to a high value (at least 6) when a player joins the game.
-* **Super bounce**: Increase the jump value so that the player can jump 20 metres (1 metre is 1 node).
-* **Space**: Make gravity decrease as the player gets higher.
+* **Sonic**: Imposta il moltiplicatore di velocità a un valore elevato (almeno 6) quando un giocatore entra in gioco;
+* **Super rimbalzo**: Aumenta il valore del salto in modo che il giocatore possa saltare 20 metri (1 cubo = 1 metro);
+* **Space**: Fai in modo che la gravità diminuisca man mano che si sale di altitudine.
