@@ -1,77 +1,67 @@
 ---
-title: Lua Voxel Manipulators
+title: Manipolatori di voxel Lua
 layout: default
 root: ../..
 idx: 6.2
-description: Learn how to use LVMs to speed up map operations.
+description: Impara come usare gli LVM per accelerare le operazioni nella mappa.
 redirect_from:
-  - /en/chapters/lvm.html
-  - /en/map/lvm.html
+  - /it/chapters/lvm.html
+  - /it/map/lvm.html
 mapgen_object:
     level: warning
-    title: LVMs and Mapgen
-    message: Don't use `minetest.get_voxel_manip()` with mapgen, as it can cause glitches.
-            Use `minetest.get_mapgen_object("voxelmanip")` instead.
+    title: LVM e generatore mappa
+    message: Non usare `minetest.get_voxel_manip()` con il generatore mappa, in quanto può causare glitch.
+            Usa invece `minetest.get_mapgen_object("voxelmanip")`.
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-The functions outlined in the [Basic Map Operations](environment.html) chapter
-are convenient and easy to use, but for large areas they are inefficient.
-Every time you call `set_node` or `get_node`, your mod needs to communicate with
-the engine. This results in constant individual copying operations between the
-engine and your mod, which is slow and will quickly decrease the performance of
-your game. Using a Lua Voxel Manipulator (LVM) can be a better alternative.
+Le funzioni introdotte nel capitolo [Mappa: operazioni base](environment.html) sono comode e facili da usare, ma per le grandi aree non sono efficienti.
+Ogni volta che `set_node` e `get_node` vengono chiamati da una mod, la mod deve comunicare con il motore di gioco.
+Ciò risulta in una costante copia individuale dei singoli nodi, che è lenta e abbasserà notevolmente le performance del gioco.
+Usare un Manipolatore di Voxel Lua (*Lua Voxel Manipulator*, da qui LVM) può essere un'alternativa migliore.
+- [Concetti](#concetti)
+- [Lettura negli LVM](#lettura-negli-lvm)
+- [Lettura dei nodi](#lettura-dei-nodi)
+- [Scrittura dei nodi](#scrittura-dei-nodi)
+- [Esempio](#esempio)
+- [Il tuo turno](#il-tuo-turno)
 
-- [Concepts](#concepts)
-- [Reading into the LVM](#reading-into-the-lvm)
-- [Reading Nodes](#reading-nodes)
-- [Writing Nodes](#writing-nodes)
-- [Example](#example)
-- [Your Turn](#your-turn)
+## Concetti
 
-## Concepts
+Un LVM permette di caricare grandi pezzi di mappa nella memoria della mod che ne ha bisogno.
+Da lì si possono leggere e modificare i dati immagazzinati senza dover interagire ulteriormente col motore di gioco, e senza eseguire callback; in altre parole, l'operazione risulta molto più veloce.
+Una volta fatto ciò, si può passare l'area modificata al motore di gioco ed eseguire eventuali calcoli riguardo la luce.
 
-An LVM allows you to load large areas of the map into your mod's memory.
-You can then read and write this data without further interaction with the
-engine and without running any callbacks, which means that these
-operations are very fast. Once done, you can then write the area back into
-the engine and run any lighting calculations.
+## Lettura negli LVM
 
-## Reading into the LVM
-
-You can only load a cubic area into an LVM, so you need to work out the minimum
-and maximum positions that you need to modify. Then you can create and read into
-an LVM. For example:
+Si possono caricare solamente aree cubiche negli LVM, quindi devi capire da te quali sono le posizioni minime e massime che ti servono per l'area da modificare.
+Fatto ciò, puoi creare l'LVM:
 
 ```lua
 local vm         = minetest.get_voxel_manip()
 local emin, emax = vm:read_from_map(pos1, pos2)
 ```
 
-For performance reasons, an LVM will almost never read the exact area you tell it to.
-Instead, it will likely read a larger area. The larger area is given by `emin` and `emax`,
-which stand for *emerged min pos* and *emerged max pos*. An LVM will load the area
-it contains for you - whether that involves loading from memory, from disk, or
-calling the map generator.
+Per questioni di performance, un LVM non leggerà quasi mai l'area esatta che gli è stata passata.
+Al contrario, è molto probabile che ne leggerà una maggiore. Quest'ultima è data da `emin` ed `emax`, che stanno per posizione minima/massima emersa (*emerged min/max pos*).
+Inoltre, un LVM caricherà in automatico l'area passatagli - che sia da memoria, da disco o dal generatore di mappa.
 
 {% include notice.html notice=page.mapgen_object %}
 
-## Reading Nodes
+## Lettura dei nodi
 
-To read the types of nodes at particular positions, you'll need to use `get_data()`.
-This returns a flat array where each entry represents the type of a
-particular node.
+Per leggere il tipo dei nodi in posizioni specifiche, avrai bisogno di usare `get_data()`.
+Questo metodo ritorna un array monodimensionale dove ogni voce rappresenta il tipo.
 
 ```lua
 local data = vm:get_data()
 ```
 
-You can get param2 and lighting data using the methods `get_light_data()` and `get_param2_data()`.
+Si possono ottenere param2 e i dati della luce usando i metodi `get_light_data()` e `get_param2_data()`.
 
-You'll need to use `emin` and `emax` to work out where a node is in the flat arrays
-given by the above methods. There's a helper class called `VoxelArea` which handles
-the calculation for you.
+Avrai bisogno di usare `emin` e `emax` per capire dove si trova un nodo nei metodi sopraelencati.
+C'è una classe di supporto per queste cose chiamate `VoxelArea` che gestisce i calcoli al posto tuo.
 
 ```lua
 local a = VoxelArea:new{
@@ -79,103 +69,91 @@ local a = VoxelArea:new{
     MaxEdge = emax
 }
 
--- Get node's index
+-- Ottiene l'indice del nodo
 local idx = a:index(x, y, z)
 
--- Read node
+-- Legge il nodo
 print(data[idx])
 ```
 
-When you run this, you'll notice that `data[vi]` is an integer. This is because
-the engine doesn't store nodes using strings, for performance reasons.
-Instead, the engine uses an integer called a content ID.
-You can find out the content ID for a particular type of node with
-`get_content_id()`. For example:
+All'eseguire ciò, si noterà che `data[idx]` è un intero.
+Questo perché il motore di gioco non salva i nodi come stringhe per motivi di performance; al contrario, usa un intero chiamato "ID di contenuto" (*content ID*).
+Per scoprire qual è l'ID assegnato a un tipo di nodo, si usa `get_content_id()`.
+Per esempio:
 
 ```lua
-local c_stone = minetest.get_content_id("default:stone")
+local c_pietra = minetest.get_content_id("default:stone")
 ```
 
-You can then check whether the node is stone:
+Si può ora controllare se un nodo è effettivamente di pietra:
 
 ```lua
 local idx = a:index(x, y, z)
-if data[idx] == c_stone then
-    print("is stone!")
+if data[idx] == c_pietra then
+    print("è pietra!")
 end
 ```
 
-It is recommended that you find and store the content IDs of nodes types
-at load time because the IDs of a node type will never change. Make sure to store
-the IDs in a local variable for performance reasons.
+Si consiglia di ottenere e salvare (in una variabile locale) gli ID di contenuto al caricare della mod in quanto questi non possono cambiare.
 
-Nodes in an LVM data array are stored in reverse co-ordinate order, so you should
-always iterate in the order `z, y, x`. For example:
+Le coordinate dei nodi nell'array di un LVM sono salvate in ordine inverso (`z, y, x`), quindi se le si vuole iterare, si tenga presente che si inizierà dalla Z:
 
 ```lua
 for z = min.z, max.z do
     for y = min.y, max.y do
         for x = min.x, max.x do
-            -- vi, voxel index, is a common variable name here
-            local vi = a:index(x, y, z)
-            if data[vi] == c_stone then
-                print("is stone!")
+            local idx = a:index(x, y, z)
+            if data[idx] == c_pietra then
+                print("è pietra!")
             end
         end
     end
 end
 ```
 
-The reason for this touches on the topic of computer architecture. Reading from RAM is rather
-costly, so CPUs have multiple levels of caching. If the data that a process requests
-is in the cache, it can very quickly retrieve it. If the data is not in the cache,
-then a cache miss occurs and it will fetch the data it needs from RAM. Any data
-surrounding the requested data is also fetched and then replaces the data in the cache. This is
-because it's quite likely that the process will ask for data near that location again. This means
-a good rule of optimisation is to iterate in a way that you read data one after
-another, and avoid *cache thrashing*.
+Per capire la ragione di tale iterazione, bisogna parlare un attimo di architettura dei computer: leggere dalla RAM - la memoria principale - è alquanto dispendioso, quindi i processori hanno molteplici livelli di memoria a breve termine (la *cache*).
+Se i dati richiesti da un processo sono in quest'ultima memoria, si possono ottenere velocemente.
+Al contrario, se i dati lì non ci sono, verranno pescati dalla RAM *e* inseriti in quella a breve termine, nel caso dovessero servire di nuovo.
+Questo significa che una buona regola per l'ottimizzazione è quella di iterare in modo che i dati vengano letti in sequenza, evitando di arrivare fino alla RAM ogni volta (*cache thrashing*).
 
-## Writing Nodes
+## Scrittura dei nodi
 
-First, you need to set the new content ID in the data array:
+Prima di tutto, bisogna impostare il nuovo ID nell'array:
 
 ```lua
 for z = min.z, max.z do
     for y = min.y, max.y do
         for x = min.x, max.x do
-            local vi = a:index(x, y, z)
-            if data[vi] == c_stone then
-                data[vi] = c_air
+            local idx = a:index(x, y, z)
+            if data[idx] == c_pietra then
+                data[idx] = c_aria
             end
         end
     end
 end
 ```
 
-When you finish setting nodes in the LVM, you then need to upload the data
-array to the engine:
+Una volta finito con le operazioni nell'LVM, bisogna passare l'array al motore di gioco:
 
 ```lua
 vm:set_data(data)
 vm:write_to_map(true)
 ```
 
-For setting lighting and param2 data, use the appropriately named
-`set_light_data()` and `set_param2_data()` methods.
+Per la luce e param2, invece si usano `set_light_data()` e `set_param2_data()`.
 
-`write_to_map()` takes a Boolean which is true if you want lighting to be
-calculated. If you pass false, you need to recalculate lighting at a future
-time using `minetest.fix_light`.
+`write_to_map()` richiede un booleano che è `true` se si vuole che venga calcolata anche la luce. 
+Se si passa `false` invece, ci sarà bisogno di ricalcolarla in un secondo tempo usando `minetest.fix_light`.
 
-## Example
+## Esempio
 
 ```lua
--- Get content IDs during load time, and store into a local
-local c_dirt  = minetest.get_content_id("default:dirt")
-local c_grass = minetest.get_content_id("default:dirt_with_grass")
+-- ottiene l'ID di contenuto al caricare della mod, salvandolo in variabili locali
+local c_terra  = minetest.get_content_id("default:dirt")
+local c_erba = minetest.get_content_id("default:dirt_with_grass")
 
-local function grass_to_dirt(pos1, pos2)
-    -- Read data into LVM
+local function da_erba_a_terra(pos1, pos2)
+    -- legge i dati nella LVM
     local vm = minetest.get_voxel_manip()
     local emin, emax = vm:read_from_map(pos1, pos2)
     local a = VoxelArea:new{
@@ -184,30 +162,27 @@ local function grass_to_dirt(pos1, pos2)
     }
     local data = vm:get_data()
 
-    -- Modify data
+    -- modifica i dati
     for z = pos1.z, pos2.z do
         for y = pos1.y, pos2.y do
             for x = pos1.x, pos2.x do
-                local vi = a:index(x, y, z)
-                if data[vi] == c_grass then
-                    data[vi] = c_dirt
+                local idx = a:index(x, y, z)
+                if data[idx] == c_erba then
+                    data[idx] = c_terra
                 end
             end
         end
     end
 
-    -- Write data
+    -- scrive i dati
     vm:set_data(data)
     vm:write_to_map(true)
 end
 ```
 
-## Your Turn
+## Il tuo turno
 
-* Create `replace_in_area(from, to, pos1, pos2)`, which replaces all instances of
-  `from` with `to` in the area given, where `from` and `to` are node names.
-* Make a function which rotates all chest nodes by 90&deg;.
-* Make a function which uses an LVM to cause mossy cobble to spread to nearby
-  stone and cobble nodes.
-  Does your implementation cause mossy cobble to spread more than a distance of one node each
-  time? If so, how could you stop this?
+* Crea una funzione `rimpiazza_in_area(da, a, pos1, pos2)`, che sostituisce tutte le istanze di `da` con `a` nell'area data, dove `da` e `a` sono i nomi dei nodi;
+* Crea una funzione che ruota tutte le casse di 90&deg;;
+* Crea una funzione che usa un LVM per far espandere i nodi di muschio sui nodi di pietra e pietrisco confinanti.
+  La tua implementazione fa espandere il muschio di più di un blocco alla volta? Se sì, come puoi prevenire ciò?
