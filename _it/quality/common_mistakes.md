@@ -1,72 +1,67 @@
 ---
-title: Common Mistakes
+title: Errori comuni
 layout: default
 root: ../..
 idx: 8.1
-redirect_from: /en/chapters/common_mistakes.html
+redirect_from: /it/chapters/common_mistakes.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-This chapter details common mistakes, and how to avoid them.
+Questo capitolo illustra gli errori più comuni e come evitarli.
 
-- [Never Store ObjectRefs (ie: players or entities)](#never-store-objectrefs-ie-players-or-entities)
-- [Don't Trust Formspec Submissions](#dont-trust-formspec-submissions)
-- [Set ItemStacks After Changing Them](#set-itemstacks-after-changing-them)
+- [Non salvare mai ObjectRef (giocatori ed entità)](#non-salvare-mai-objectref-giocatori-ed-entita)
+- [Non fidarti dei campi dei formspec](#non-fidarti-dei-campi-dei-formspec)
+- [Imposta gli ItemStack dopo averli modificati](#imposta-gli-itemstack-dopo-averli-modificati)
 
-## Never Store ObjectRefs (ie: players or entities)
+## Non salvare mai ObjectRef (giocatori ed entità)
 
-If the object an ObjectRef represents is deleted - for example, if the player goes
-offline or the entity is unloaded - then calling methods on that object
-will result in a crash.
+Se l'oggetto rappresentato da un ObjectRef viene rimosso - per esempio quando il giocatore si disconnette o un'entità viene rimossa dalla memoria - chiamare metodi su quell'oggetto causerà la chiusura improvvisa del server (*crash*).
 
-For example, don't do this:
+Sbagliato:
 
 ```lua
 minetest.register_on_joinplayer(function(player)
     local function func()
-        local pos = player:get_pos() -- BAD!
-        -- `player` is stored then accessed later.
-        -- If the player leaves in that second, the server *will* crash.
+        local pos = player:get_pos() -- MALE!
+        -- `player` viene salvato per essere utilizzato dopo.
+        -- Se il giocatore si disconnette, il server crasha
     end
 
     minetest.after(1, func)
 
     foobar[player:get_player_name()] = player
-    -- RISKY
-    -- It's not recommended to do this.
-    -- Use minetest.get_connected_players() and
-    -- minetest.get_player_by_name() instead.
+    -- RISCHIOSO
+    -- Non è consigliato fare così.
+    -- Usa invece minetest.get_connected_players() e minetest.get_player_by_name().
 end)
 ```
 
-Do this instead:
+Giusto:
 
 ```lua
 minetest.register_on_joinplayer(function(player)
     local function func(name)
-        -- Attempt to get the ref again
+        -- Tenta di ottenere il riferimento
         local player = minetest.get_player_by_name(name)
 
-        -- Check that the player is still online
+        -- Controlla che il giocatore sia online
         if player then
-            -- Yay! This is fine
+            -- è online, procedo
             local pos = player:get_pos()
         end
     end
 
-    -- Pass the name into the function
+    -- Passa il nome nella funzione
     minetest.after(1, func, player:get_player_name())
 end)
 ```
 
-## Don't Trust Formspec Submissions
+## Non fidarti dei campi dei formspec
 
-Malicious clients can submit formspecs whenever they like, with
-whatever content they like.
+Client malevoli possono compilare i campi nei formspec quando vogliono, con qualsiasi contenuto vogliono.
 
-For example, the following code has a vulnerability which allows players to
-give themselves moderator privileges:
+Per esempio, il seguente codice presenta una vulnerabilità che permette ai giocatori di assegnarsi da soli il privilegio di moderatore:
 
 ```lua
 local function show_formspec(name)
@@ -76,15 +71,15 @@ local function show_formspec(name)
 
     minetest.show_formspec(name, "modman:modman", [[
         size[3,2]
-        field[0,0;3,1;target;Name;]
-        button_exit[0,1;3,1;sub;Promote]
+        field[0,0;3,1;target;Nome;]
+        button_exit[0,1;3,1;sub;Promuovi]
     ]])
     return true
 })
 
 minetest.register_on_player_receive_fields(function(player,
         formname, fields)
-    -- BAD! Missing privilege check here!
+    -- MALE! Manca il controllo dei privilegi!
 
     local privs = minetest.get_player_privs(fields.target)
     privs.kick  = true
@@ -94,7 +89,7 @@ minetest.register_on_player_receive_fields(function(player,
 end)
 ```
 
-Add a privilege check to solve this:
+Aggiungi un controllo dei privilegi per ovviare:
 
 ```lua
 minetest.register_on_player_receive_fields(function(player,
@@ -107,61 +102,51 @@ minetest.register_on_player_receive_fields(function(player,
 end)
 ```
 
-## Set ItemStacks After Changing Them
+## Imposta gli ItemStack dopo averli modificati
 
-Have you noticed that it's simply called an `ItemStack` in the API, not an `ItemStackRef`,
-similar to `InvRef`? This is because an `ItemStack` isn't a reference - it's a
-copy. Stacks work on a copy of the data rather than the stack in the inventory.
-This means that modifying a stack won't actually modify that stack in the inventory.
+Se ci si fa caso, nella documentazione si parla di `ItemStack` e non `ItemStackRef`.
+Questo perché gli ItemStack NON sono un riferimento, bensì una copia.
+Questo vuol dire che modificando la copia, non si modificherà in automatico anche l'originale.
 
-For example, don't do this:
-
-```lua
-local inv = player:get_inventory()
-local stack = inv:get_stack("main", 1)
-stack:get_meta():set_string("description", "Partially eaten")
--- BAD! Modification will be lost
-```
-
-Do this instead:
+Sbagliato:
 
 ```lua
 local inv = player:get_inventory()
-local stack = inv:get_stack("main", 1)
-stack:get_meta():set_string("description", "Partially eaten")
-inv:set_stack("main", 1, stack)
--- Correct! Item stack is set
+local pila = inv:get_stack("main", 1)  -- lo copio
+pila:get_meta():set_string("description", "Un po' smangiucchiato")
+-- MALE! Le modifiche saranno perse
 ```
 
-The behaviour of callbacks is slightly more complicated. Modifying an `ItemStack` you
-are given will change it for the caller too, and any subsequent callbacks. However,
-it will only be saved in the engine if the callback caller sets it.
+Giusto:
+
+```lua
+local inv = player:get_inventory()
+local pila = inv:get_stack("main", 1)  -- lo copio
+pila:get_meta():set_string("description", "Un po' smangiucchiato")
+inv:set_stack("main", 1, pila)
+-- Corretto! L'ItemStack è stato cambiato con la copia
+```
+
+Il comportamento dei callback è leggermente più complicato.
 
 ```lua
 minetest.register_on_item_eat(function(hp_change, replace_with_item,
         itemstack, user, pointed_thing)
-    itemstack:get_meta():set_string("description", "Partially eaten")
-    -- Almost correct! Data will be lost if another
-    -- callback cancels the behaviour
+    itemstack:get_meta():set_string("description", "Un po' smangiucchiato")
+    -- Quasi corretto! I dati saranno persi se un altro callback annulla questa chiamata
 end)
 ```
 
-If no callbacks cancel this, the stack will be set and the description will be updated,
-but if a callback does cancel this, then the update may be lost.
+Se nessun callback cancella l'operazione, la pila sarà impostata e la descrizione aggiornata; ma se un callback effettivamente cancella l'operazione, l'aggiornamento potrebbe andar perduto.
 
-It's better to do this instead:
+È meglio quindi fare così:
 
 ```lua
 minetest.register_on_item_eat(function(hp_change, replace_with_item,
         itemstack, user, pointed_thing)
-    itemstack:get_meta():set_string("description", "Partially eaten")
+    itemstack:get_meta():set_string("description", "Un po' smangiucchiato")
     user:get_inventory():set_stack("main", user:get_wield_index(),
             itemstack)
-    -- Correct, description will always be set!
+    -- Corretto! La descrizione verrà sempre aggiornata
 end)
 ```
-
-If the callbacks cancel or the callback runner doesn't set the stack,
-then the update will still be set.
-If the callbacks or the callback runner set the stack, then the use of
-set_stack doesn't matter.
