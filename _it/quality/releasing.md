@@ -1,177 +1,147 @@
 ---
-title: Releasing a Mod
+title: Rilasciare una mod
 layout: default
 root: ../..
 idx: 8.6
-redirect_from: /en/chapters/releasing.html
+redirect_from: /it/chapters/releasing.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Releasing, or publishing, a mod allows other people to make use of it. Once a mod has been
-released it might be used in singleplayer games or on servers, including public servers.
+Rilasciare (o pubblicare) una mod permette ad altre persone di poterne usufruire.
+Una volta che una mod è stata rilasciata potrebbe venir usata nelle partite locali (a giocatore singolo) o nei server, inclusi quelli pubblici.
 
-- [License Choices](#license-choices)
-  - [LGPL and CC-BY-SA](#lgpl-and-cc-by-sa)
+- [Scegliere la licenza](#scegliere-la-licenza)
+  - [LGPL e CC-BY-SA](#lgpl-e-cc-by-sa)
   - [CC0](#cc0)
   - [MIT](#mit)
-- [Packaging](#packaging)
+- [Impacchettare](#impacchettare)
   - [README.txt](#readmetxt)
   - [description.txt](#descriptiontxt)
   - [screenshot.png](#screenshotpng)
-- [Uploading](#uploading)
-  - [Version Control Systems](#version-control-systems)
-  - [Forum Attachments](#forum-attachments)
-- [Forum Topic](#forum-topic)
-  - [Subject](#subject)
+- [Caricare](#caricare)
+  - [Sistemi di Controllo Versione](#sistemi-di-controllo-versione)
+  - [Allegati sul forum](#allegati-sul-forum)
+- [Creare la discussione sul forum](#creare-la-discussione-sul-forum)
+  - [Titolo](#titolo)
 
-## License Choices
+## Scegliere la licenza
 
-You need to specify a license for your mod. This is important because it tells other
-people the ways in which they are allowed to use your work. If your mod doesn't have
-a license, people won't know whether they are allowed to modify, distribute or use your
-mod on a public server.
+Avrai bisogno di specificare una licenza per la tua mod.
+Questo è importante perché dice alle altre persone cosa possono e non possono fare col tuo lavoro.
+Se una mod non ha una licenza, la gente non saprà cosa sarà autorizzata a modificare, distribuire o se potrà usarla su un server pubblico.
 
-Your code and your art need different things from the licenses they use. For example,
-Creative Commons licenses shouldn't be used with source code,
-but can be suitable choices for artistic works such as images, text and meshes.
+Le licenze variano anche a seconda di cosa si vuole tutelare: per esempio, le Creative Commons non dovrebbero essere usate per il codice sorgente, ma sono un'ottima opzione per cose come immagini, testi e modelli 3D.
 
-You are allowed any license; however, mods which disallow derivatives are banned from the
-official Minetest forum. (For a mod to be allowed on the forum, other developers must be
-able to modify it and release the modified version.)
+Puoi adottare la licenza che preferisci; tuttavia, sappi che le mod con licenze che ne vietano lavori derivati sono bandite dal forum ufficiale di Minetest (in altre parole, per essere consentita sul forum, gli altri sviluppatori devono poter essere in grado di modificarla e rilasciarne la versione modificata).
 
-Please note that **public domain is not a valid licence**, because the definition varies
-in different countries.
+Tieni anche a mente che **la licenza di pubblico dominio non è una licenza valida**, perché la sua definizione varia da stato a stato.
 
-### LGPL and CC-BY-SA
+### LGPL e CC-BY-SA
 
-This is a common license combination in the Minetest community, and is what
-Minetest and Minetest Game use.
-You license your code under LGPL 2.1 and your art under CC-BY-SA.
-This means that:
+Questa è la combinazione più comune nella comunità di Minetest, nonché quella usata sia da Minetest che da Minetest Game.
+Si imposta il codice sotto LGPL 2.1 e i contenuti artistici sotto CC-BY-SA.
+Ciò significa che:
 
-* Anyone can modify, redistribute and sell modified or unmodified versions.
-* If someone modifies your mod, they must give their version the same license.
-* Your copyright notice must be kept.
+* Chiunque può modificare, ridistribuire e vendere versioni modificate e non;
+* Se qualcuno modifica la tua mod, deve adottare la stessa licenza;
+* Devono citare l'autore originale.
 
 ### CC0
 
-These licenses allow anyone to do what they want with your mod,
-which means they can modify, redistribute, sell, or leave-out attribution.
-These licenses can be used for both code and art.
+Queste licenze permettono a chiunque di fare quello che gli va - incluso il non citare l'autore - e possono essere usate sia per il codice che per i contenuti artistici.
 
-It is important to note that WTFPL is strongly discouraged and people may
-choose not to use your mod if it has this license.
+È importante sottolineare che la WTFPL (*do What The Fuck you want to Public License*, la "facci il cazzo che ti pare") è caldamente *s*consigliata, e alcune persone potrebbero decidere di non usare la tua mod se ha questa licenza.
 
 ### MIT
 
-This is a common license for mod code. The only restriction it places on users
-of your mod is that they must include the same copyright notice and license
-in any copies of the mod or of substantial parts of the mod.
+Questa è una licenza comune per il codice.
+La differenza con la LGPL è che le copie derivate in questo caso non devono per forza essere libere (i primi 2 punti della LGPL/GPL), bensì può essere trasformato in codice proprietario.
 
-## Packaging
+## Impacchettare
 
-There are some files that are recommended to include in your mod
-before you release it.
+Ci sono alcuni file che è consigliato includere nella propria mod prima di rilasciarla.
 
 ### README.txt
 
-The README file should state:
+Il README dovrebbe dichiarare:
 
-* What the mod does.
-* What the license is.
-* What dependencies there are.
-* How to install the mod.
-* Current version of the mod.
-* Optionally, the where to report problems or get help.
+* Cosa fa la mod;
+* Che licenza ha;
+* Quali dipendenze richiede;
+* Come installare la mod;
+* Versione corrente della mod;
+* Eventualmente, dove segnalare i problemi o comunque richiedere aiuto.
 
 ### description.txt
 
-This should explain what your mod does. Be concise without being vague.
-It should be short because it will be displayed in the content installer which has
-limited space.
+Questo file spiega cosa fa la mod.
+Cerca di essere preciso e coinciso: dovrebbe essere breve perché il contenuto verrà mostrato nell'installer del motore di gioco, che ha uno spazio limitato.
 
-Good example:
+Per esempio, consigliato:
 
-    Adds soup, cakes, bakes and juices.
+    Aggiunge zuppa, torte, pane e succhi.
 
-Avoid this:
+Sconsigliato:
 
-    (BAD)  The food mod for Minetest.
+    Cibo per Minetest.
 
 ### screenshot.png
 
-Screenshots should be 3:2 (3 pixels of width for every 2 pixels of height)
-and have a minimum size of 300 x 200px.
+Gli screenshot dovrebbero essere in proporzione 3:2 e avere una grandezza minima di 300x200px.
 
-The screenshot is displayed in the mod store.
+Lo screen verrà mostrato nel bazar delle mod (sono tutte gratuite).
 
-## Uploading
+## Caricare
 
-So that a potential user can download your mod, you need to upload it somewhere
-publicly accessible. There are several ways to do this, but you should use the
-approach that works best for you, as long as it meets these requirements, and any
-others which may be added by forum moderators:
+Per far sì che un potenziale utente possa scaricare la tua mod, c'è bisogno di caricarla in uno spazio pubblico.
+Ci sono svariati modi per fare ciò quindi usa l'approccio che ritieni più opportuno; l'importante è che esso rispetti i requisiti qui elencati, ed eventuale richieste aggiuntive aggiunta dai moderatori del forum:
 
-* **Stable**      - The hosting website should be unlikely to shut down without warning.
-* **Direct link** - You should be able to click a link on the forum and download the file
-                   without having to view another page.
-* **Virus Free**  - Mods with malicious content will be removed from the forum.
+* **Stabile**      - Il sito che conterrà il file non dovrebbe essere propenso a morire da un momento all'altro senza preavviso;
+* **Link diretto** - Dovresti essere in grado di cliccare su un link sul forum e scaricare il file senza il bisogno di dover passare per altre pagine;
+* **Senza virus**  - Le mod con contenuti malevoli saranno rimosse dal forum.
 
-### Version Control Systems
+### Sistemi di Controllo Versione
 
-It is recommended that you use a version control system which:
+È consigliato usare un sistema di controllo versione che:
 
-* Allows other developers to easily submit changes.
-* Allows the code to be previewed before downloading.
-* Allows users to submit bug reports.
+* Permetta agli altri sviluppatori di inviare le loro modifiche facilmente;
+* Permetta al codice di essere visualizzato prima di essere scaricato;
+* Permetta agli utenti di fare segnalazioni (bug, domande ecc).
 
-The majority of Minetest modders use GitHub as a website to host their code,
-but alternatives are possible.
+La maggior parte dei creatori di mod su Minetest usa GitHub o GitLab come sito per ospitare il loro codice, ma esistono anche altre opzioni.
 
-Using a GitHub can be difficult at first. If you need help with this, for
-information on using GitHub, please see:
+Usare siti come GitHub e GitLab può essere difficile all'inizio.
+Se hai bisogno di una mano e mastichi l'inglese, prova a dare un occhio a [Pro Git book](http://git-scm.com/book/en/v1/Getting-Started) - gratis da leggere online.
 
-* [Pro Git book](http://git-scm.com/book/en/v1/Getting-Started) - Free to read online.
-* [GitHub for Windows app](https://help.github.com/articles/getting-started-with-github-for-windows/) -
-Using a graphical interface on Windows to upload your code.
+### Allegati sul forum
 
-### Forum Attachments
+Un'alternativa all'usare un sistema di controllo versione è il caricare le mod come allegati sul forum.
+Questo può essere fatto alla creazione della discussione nella sezione delle mod (spiegato sotto).
 
-As an alternative to using a version management system, you can use forum attachments to share
-your mods. This can be done when creating a mod's forum topic (covered below).
+Prima di tutto, avrai bisogno di creare uno zip con i file della mod (il procedimento varia da sistema operativo a sistema operativo, ma solitamente si parla di premere il tasto destro su uno dei file dopo averli selezionati tutti).
 
-You need to zip the files for the mod into a single file. How to do this varies from
-operating system to operating system.
-This is nearly always done using the right click menu after selecting all files.
-
-When making a forum topic, on the "Create a Topic" page (see below), go to the
-"Upload Attachment" tab at the bottom.
-Click "Browse" and select the zipped file. It is recommended that you
-enter the version of your mod in the comment field.
+Quando crei una discussione sul forum - nella pagina "Create a Topic" illustrata sotto - vai alla "Upload Attachment" situata in basso.
+Clicca poi su "Browse", selezionando il file zip.
+È inoltre consigliato specificare la versione della mod nel campo dei commenti ("File comment").
 
 <figure>
     <img src="{{ page.root }}/static/releasing_attachments.png" alt="Upload Attachment">
     <figcaption>
-        Upload Attachment tab.
+        La scheda Upload Attachment.
     </figcaption>
 </figure>
 
-## Forum Topic
+## Creare la discussione sul forum
 
-You can now create a forum topic. You should create it in
-the ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (Work In Progress)
-forum.\\
-When you no longer consider your mod a work in progress, you can
-[request that it be moved](https://forum.minetest.net/viewtopic.php?f=11&t=10418)
-to "Mod Releases."
+Puoi ora creare la discussione nella sezione ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (WIP sta per *Work In Progress*, lavori in corso).\\
+Quando ritieni che la tua mod abbia raggiunto la sua prima versione ufficiale, puoi [richiedere (in inglese) che venga spostata](https://forum.minetest.net/viewtopic.php?f=11&t=10418) in "Mod Releases".
 
-The forum topic should contain similar content to the README, but should
-be more promotional and also include a link to download the mod.
-It's a good idea to include screenshots of your mod in action, if possible.
+La discussione dovrebbe contenere contenuti simili al README, con giusto un po' più di coinvolgimento e il link per scaricare la mod.
+È buona cosa aggiungere anche degli eventuali screenshot per far capire al volo cosa fa la mod, se possibile.
 
-The Minetest forum uses bbcode for formatting. Here is an example for a
-mod named superspecial:
+La formattazione del forum di Minetest è in bbcode.
+Segue un esempio di una mod chiamata "superspecial" (si è tenuto l'esempio in inglese dato che bisogna scrivere appunto in inglese sul forum, NdT):
 
 
     Adds magic, rainbows and other special things.
@@ -199,16 +169,15 @@ mod named superspecial:
     For further information or help see:
     [url]https://wiki.minetest.net/Installing_Mods[/url]
 
-If you modify the above example for your mod topic, remember to
-change "superspecial" to the name of your mod.
+Se hai intenzione di usare questo esempio per la tua mod, ricordati ovviamente di cambiare "superspecial" con il nome vero e proprio.
 
-### Subject
+### Titolo
 
-The subject of topic must be in one of these formats:
+Il titolo della discussione deve seguire uno dei seguenti formati:
 
-* [Mod] Mod Title [modname]
-* [Mod] Mod Title [version number] [modname]
+* [Mod] Nome mod [nomemod]
+* [Mod] Nome mod [numero versione] [nomemod]
 
-For example:
+Per esempio:
 
-* [Mod] More Blox [0.1] [moreblox]
+* [Mod] Blocchi pazzi [0.1] [blocchipazzi]
