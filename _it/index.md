@@ -12,7 +12,7 @@ idx: 0.1
 
     <span>di <a href="https://rubenwardy.com" rel="author">rubenwardy</a></span>
     <span>con modifiche di <a href="http://rc.minetest.tv/">Shara</a></span>
-    <span>traduzione italiana di <a href="https://gitlab.com/zughy-friends-minetest">Zughy</a></span>
+    <span>traduzione italiana di <a href="https://liberapay.com/Zughy/">Zughy</a></span>
 </header>
 
 ## Introduzione
