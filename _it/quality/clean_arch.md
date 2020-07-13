@@ -1,253 +1,209 @@
 ---
-title: Intro to Clean Architectures
+title: Introduzione alle architetture pulite
 layout: default
 root: ../..
 idx: 8.4
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Once your mod reaches a respectable size, you'll find it harder and harder to
-keep the code clean and free of bugs. This is an especially big problem when using
-a dynamically typed language like Lua, given that the compiler gives you very little
-compiler-time help when it comes to things like making sure that types are used correctly.
+Una volta che una mod raggiunge dimensioni considerevoli, sarà sempre più difficile mantenerne il codice pulito e privo di errori.
+Questo è un grosso problema soprattutto quando si usa un linguaggio dinamico come Lua, considerando che il compilatore restituisce pochissimi aiuti quando si tratta di cose come l'assicurarsi di non aver fatto errori di battitura.
 
-This chapter covers important concepts needed to keep your code clean,
-and common design patterns to achieve that. Please note that this chapter isn't
-meant to be prescriptive, but to instead give you an idea of the possibilities.
-There is no one good way of designing a mod, and good mod design is very subjective.
+Questo capitolo si occupa di concetti importanti, necessari per mantenere il codice pulito, e di strutture utili per realizzarli.
+Tieni a mente che lo scopo del capitolo non è quello di essere LA bibbia, bensì di dare un'idea su come muoversi.
+Non c'è il modo giusto e il modo sbagliato per ideare una mod, in quanto il loro design è alquanto soggettivo.
 
-- [Cohesion, Coupling, and Separation of Concerns](#cohesion-coupling-and-separation-of-concerns)
-- [Observer](#observer)
-- [Model-View-Controller](#model-view-controller)
-  - [API-View](#api-view)
-- [Conclusion](#conclusion)
+- [Coesione, dipendenze, e separazione degli ambiti](#coesione-dipendenze-e-separazione-degli-ambiti)
+- [Osservatore](#osservatore)
+- [Modello-Vista-Controllo](#modello-vista-controllo)
+  - [API-Vista](#api-vista)
+- [Conclusione](#conclusione)
 
 
-## Cohesion, Coupling, and Separation of Concerns
+## Coesione, dipendenze, e separazione degli ambiti
 
-Without any planning, a programming project will tend to gradually descend into
-spaghetti code. Spaghetti code is characterised by a lack of structure - all the
-code is thrown in together with no clear boundaries. This ultimately makes a
-project completely unmaintainable, ending in its abandonment.
+Senza alcuna pianificazione, il codice di un progetto diverrà man mano un bel fritto misto (o quello che gli inglesi definiscono *spaghetti code*).
+Ovvero, mancherà di struttura perché ne è stata fatta un'accozzaglia senza chiare delimitazioni.
+Sul lungo corso il progetto diverrà ingestibile, concludendosi con il suo abbandono.
 
-The opposite of this is to design your project as a collection of interacting
-smaller programs or areas of code. <!-- Weird wording? -->
+Per evitare ciò, è buona cosa ideare il proprio progetto come un insieme di piccole aree di codice che interagiscono tra di loro.
 
-> Inside every large program, there is a small program trying to get out.
+> All'interno di ogni grande programma, c'è un programma più piccolo che cerca di scappare.
 >
 >  --C.A.R. Hoare
 
-This should be done in such a way that you achieve Separation of Concerns -
-each area should be distinct and address a separate need or concern.
+Questo dovrebbe essere fatto in modo tale da ottenere una "separazione degli ambiti" (*Separation of Concerns*), dove ogni area dovrebe essere distinta e occuparsi di un bisogno specifico.
 
-These programs/areas should have the following two properties:
+Questi programmi/aree dovrebbero avere le due seguenti proprietà:
 
-* **High Cohesion** - the area should be closely/tightly related.
-* **Low Coupling** - keep dependencies between areas as low as possible, and avoid
-relying on internal implementations. It's a very good idea to make sure you have
-a low amount of coupling, as this means that changing the APIs of certain areas
-will be more feasible.
+* **Alta coesione** - ciò che succede nell'area dovrebbe essere strettamente legato.
+* **Basse dipendenze** - mantenere le dipendenze tra un'area e l'altra più basse possibili, ed evitare di affidarsi a implementazioni interne.
+  È davvero ottimo assicurarsi di ciò, in quanto cambiare le API di certe aree risulterà più fattibile.
 
-Note that these apply both when thinking about the relationship between mods,
-and the relationship between areas inside a mod.
+Tieni a mente che ciò si applica sia nella relazione tra una mod e l'altra, che in quella tra le varie aree all'interno della stessa mod.
 
+## Osservatore
 
-## Observer
+Una maniera semplice per separare le aree di codice è usare lo schema dell'Osservatore (*Observer pattern*).
 
-A simple way to separate different areas of code is to use the Observer pattern.
+Si prenda l'esempio di sbloccare un trofeo quando un giocatore uccide per la prima volta un mostro raro.
+L'approccio ingenuo è quello di avere il codice del trofeo nella funzione di uccisione del mostro, controllando il suo nome e sbloccando il trofeo se coincide.
+Questa è però una cattiva idea, in quanto rende il mob dipendente dal codice dei trofei.
+Se si contiuasse su questa strada - per esempio aggiungendo l'esperienza ottenuta uccidendo il mob - si finirebbe con l'avere un sacco di dipendenze alla rinfusa.
 
-Let's take the example of unlocking an achievement when a player first kills a
-rare animal. The naïve approach would be to have achievement code in the mob
-kill function, checking the mob name and unlocking the award if it matches.
-This is a bad idea, however, as it makes the mobs mod coupled to the achievements
-code. If you kept on doing this - for example, adding XP to the mob death code -
-you could end up with a lot of messy dependencies.
-
-Enter the Observer pattern. Instead of the mymobs mod caring about awards,
-the mymobs mod exposes a way for other areas of code to register their
-interest in an event and receive data about the event.
+Lo schema dell'Osservatore dice invece di far esporre alla mod del mostro un modo per far sì che altre aree di codice possano inserire comodamente dei comportamenti extra e ricevere informazioni riguardo all'evento.
 
 ```lua
-mymobs.registered_on_death = {}
-function mymobs.register_on_death(func)
-    table.insert(mymobs.registered_on_death, func)
+mieimob.registered_on_death = {}
+function mieimob.register_on_death(func)
+    table.insert(mieimob.registered_on_death, func)
 end
 
--- in mob death code
-for i=1, #mymobs.registered_on_death do
-    mymobs.registered_on_death[i](entity, reason)
+-- nel codice della morte del mob
+for i=1, #mieimob.registered_on_death do
+    mieimob.registered_on_death[i](entity, reason)
 end
 ```
 
-Then the other code registers its interest:
+Quindi l'altro codice registra ciò che gli serve:
 
 ```lua
-mymobs.register_on_death(function(mob, reason)
+mieimob.register_on_death(function(mob, reason)
     if reason.type == "punch" and reason.object and
             reason.object:is_player() then
-        awards.notify_mob_kill(reason.object, mob.name)
+        trofei.avvisa_morte_mostro(reason.object, mob.name)
     end
 end)
 ```
 
-You may be thinking - wait a second, this looks awfully familiar. And you're right!
-The Minetest API is heavily Observer-based to stop the engine having to care about
-what is listening to something.
+Potresti star pensando "aspetta un secondo, questo mi sembra terribilmente familiare".
+E hai ragione! L'API di Minetest è molto incentrata sull'Osservatore, per far in modo che il motore di gioco non debba preoccuparsi di cosa è in ascolto di cosa.
 
+## Modello-Vista-Controllo
 
-## Model-View-Controller
+Nel prossimo capitolo discuteremo di come testare automaticamente il codice, e uno dei problemi che riscontreremo sarà come separare il più possibile la logica (calcoli, cosa bisognerebbe fare) dalle chiamate alle API (`minetest.*`, altre mod).
 
-In the next chapter, we will discuss how to automatically test your
-code and one of the problems we will have is how to separate your logic
-(calculations, what should be done) from API calls (`minetest.*`, other mods)
-as much as possible.
+Un modo per fare ciò è pensare a:
 
-One way to do this is to think about:
+* Che **dati** si hanno;
+* Che **azioni** si possono eseguire con quei dati;
+* Come gli **eventi** (come formspec, pugni ecc.) inneschino queste azioni, e come quest'ultime abbiano conseguenze nel motore di gioco.
 
-* What **data** you have.
-* What **actions** you can take with this data.
-* How **events** (ie: formspec, punches, etc) trigger these actions, and how
-  these actions cause things to happen in the engine.
+Prendiamo come esempio una mod di protezione del terreno.
+I dati di cui si dispone sono quelli delle aree e i metadati ad esse associati.
+Le azioni richieste sono `crea`, `modifica` o `cancella`.
+Gli eventi che richiamano le azioni sono invece comandi via chat e formspec.
 
-Let's take an example of a land protection mod. The data you have is the areas
-and any associated metadata. Actions you can take are `create`, `edit`, or
-`delete`. The events that trigger these actions are chat commands and formspec
-receive fields. These are 3 areas that can usually be separated pretty well.
+Durante i test sarà possibile assicurarsi che un'azione, quando richiamata, faccia quello che deve fare ai dati.
+Non c'è bisogno di testare l'evento che chiama l'azione (ciò richiederebbe usare l'API di Minetest, e l'area di codice dovrebbe comunque rimanere quanto più piccola possibile).
 
-In your tests, you will be able to make sure that an action when triggered does
-the right thing to the data. You won't need to test that an event calls an
-action (as this would require using the Minetest API, and this area of code
-should be made as small as possible anyway.)
-
-You should write your data representation using Pure Lua. "Pure" in this context
-means that the functions could run outside of Minetest - none of the engine's
-functions are called.
+Si dovrebbe scrivere la rappresentazione dei dati usando Lua puro.
+"Puro" in questo contesto significa che le funzioni potrebbero venir eseguite al di fuori di Minetest - nessuna delle funzioni del motore di gioco vengono chiamate.
 
 ```lua
--- Data
-function land.create(name, area_name)
-    land.lands[area_name] = {
-        name  = area_name,
-        owner = name,
-        -- more stuff
+-- Dati
+function terreno.crea(nome, nome_area)
+    terreno.terreni[nome_area] = {
+        nome  = nome_area,
+        owner = nome,
+        -- altre cose
     }
 end
 
-function land.get_by_name(area_name)
-    return land.lands[area_name]
+function terreno.ottieni_da_nome(nome_area)
+    return terreno.terreni[nome_area]
 end
 ```
 
-Your actions should also be pure, but calling other functions is more
-acceptable than in the above.
+Anche le azioni dovrebbero essere pure, ma chiamare altre funzioni è più accettato che il comportamento qui sopra.
 
 ```lua
--- Controller
-function land.handle_create_submit(name, area_name)
-    -- process stuff
-    -- (ie: check for overlaps, check quotas, check permissions)
+-- Controllo
+function terreno.gestore_invio_crea(nome, nome_area)
+    -- processa cose
+    -- (tipo controllare se ci sono sovrapposizioni, controllo dei permessi ecc)
 
-    land.create(name, area_name)
+    terreno.crea(nome, nome_area)
 end
 
-function land.handle_creation_request(name)
-    -- This is a bad example, as explained later
-    land.show_create_formspec(name)
+function terreno.gestore_richiesta_crea(nome)
+    -- questo è un cattivo esempio, come spiegato poco più avanti
+    terreno.mostra_formspec_crea(nome)
 end
 ```
 
-Your event handlers will have to interact with the Minetest API. You should keep
-the number of calculations to a minimum, as you won't be able to test this area
-very easily.
+I gestori degli eventi dovranno interagire con la API di Minetest.
+Il numero di calcoli dovrebbero essere minimizzati il più possibile, in quanto non sarà fattibile testare quest'area così facilmente.
 
 ```lua
--- View
-function land.show_create_formspec(name)
-    -- Note how there's no complex calculations here!
+-- Vista
+function terreno.mostra_formspec_crea(nome)
+    -- nota come qui non ci siano calcoli complessi!
     return [[
         size[4,3]
-        label[1,0;This is an example]
-        field[0,1;3,1;area_name;]
-        button_exit[0,2;1,1;exit;Exit]
+        label[1,0;Questo è un esempio]
+        field[0,1;3,1;nome_area;]
+        button_exit[0,2;1,1;esci;Esci]
     ]]
 end
 
 minetest.register_chatcommand("/land", {
-    privs = { land = true },
+    privs = { terreno = true },
     func = function(name)
-        land.handle_creation_request(name)
+        land.gestore_richiesta_crea(name)
     end,
 })
 
 minetest.register_on_player_receive_fields(function(player,
             formname, fields)
-    land.handle_create_submit(player:get_player_name(),
-            fields.area_name)
+    terreno.gestore_invio_crea(player:get_player_name(),
+            fields.nome_area)
 end)
 ```
 
-The above is the Model-View-Controller pattern. The model is a collection of data
-with minimal functions. The view is a collection of functions which listen to
-events and pass it to the controller, and also receives calls from the controller to
-do something with the Minetest API. The controller is where the decisions and
-most of the calculations are made.
+L'approccio adottato qui in alto è la struttura Modello-Vista-Controllo (MVC).
+Il modello è un insieme di dati aventi funzioni minime.
+La vista è un insieme di funzioni che sono in ascolto di eventi per passarli al controllo, e che riceve inoltre chiamate dal controllo per fare qualcosa con l'API di Minetest.
+Il controllo è dove le decisioni vengono prese e la maggior parte delle operazioni eseguite.
 
-The controller should have no knowledge about the Minetest API - notice how
-there are no Minetest calls or any view functions that resemble them.
-You should *NOT* have a function like `view.hud_add(player, def)`.
-Instead, the view defines some actions that the controller can tell the view to do,
-like `view.add_hud(info)` where info is a value or table which doesn't relate
-to the Minetest API at all.
+Il controllo non dovrebbe avere nessuna conoscenza riguardo l'API di Minetest - nota come non ci siano chiamate a Minetest o funzioni nella vista che le ricordino.
+*NON* dovresti, quindi, avere una funzione come `vista.hud_aggiungi(giocatore, def)`.
+Al contrario, la vista definisce alcune azioni che il controllo può dirle di fare, come `vista.hud_aggiungi(info)` dove `info` è un valore o una tabella che non è imparentata in alcun modo con l'API di Minetest.
 
 <figure class="right_image">
     <img
         width="100%"
         src="{{ page.root }}/static/mvc_diagram.svg"
-        alt="Diagram showing a centered text element">
+        alt="Diagramma che mostra la struttura MVC (Modello-Vista-Controllo)">
 </figure>
 
-It is important that each area only communicates with its direct neighbours,
-as shown above, in order to reduce how much you need to change if you modify
-an area's internals or externals. For example, to change the formspec you
-would only need to edit the view. To change the view API, you would only need to
-change the view and the controller, but not the model at all.
+È importante che ogni area comunichi soltanto con i suoi diretti vicini, per ridurre il più possibile la quantità di codice da cambiare al modificare qualcosa.
+Per esempio, per cambiare il formspec avrai bisogno di modificare solo la vista.
+Per cambiare la API della vista, la vista e il controllo - ma non il modello.
 
-In practice, this design is rarely used because of the increased complexity
-and because it doesn't give many benefits for most types of mods. Instead,
-you will commonly see a less formal and strict kind of design -
-variants of the API-View.
+In pratica, questo approccio è raramente utilizzato per via della sua alta complessità e perché non dà molti benefici alla maggior parte delle mod.
+Al contrario, un approccio più comune e leggermente meno rigido è quello API-Vista.
 
 
-### API-View
+### API-Vista
 
-In an ideal world, you'd have the above 3 areas perfectly separated with all
-events going into the controller before going back to the normal view. But
-this isn't the real world. A good compromise is to reduce the mod into two
-parts:
+In un mondo ideale, si avrebbero le 3 aree MVC perfettamente separate... ma siamo nel mondo reale.
+Un buon compromesso è ridurre la mod in due parti:
 
-* **API** - This was the model and controller above. There should be no uses of
-    `minetest.` here.
-* **View** - This was also the view above. It's a good idea to structure this into separate
-    files for each type of event.
+* **API** - modello + controllo. Non ci dovrebbe essere nessun uso di `minetest.` nella API.
+* **Vista** - la vista, esattamente come quella spiegata sopra.
+  È buona norma strutturare questa parte in file separati per ogni tipo di evento.
 
-rubenwardy's [crafting mod](https://github.com/rubenwardy/crafting) roughly
-follows this design. `api.lua` is almost all pure Lua functions handling the data
-storage and controller-style calculations. `gui.lua` is the view for formspecs
-and formspec submission, and `async_crafter.lua` is the view and controller for
-a node formspec and node timers.
+La [crafting mod](https://github.com/rubenwardy/crafting) di rubenwardy segue ben o male questo schema: `api.lua` è quasi tutto puro Lua che gestisce lo spazio d'archiviazione e i calcoli che farebbe il controllo, `gui.lua` mostra e invia i formspec, e `async_crafter.lua` è la vista e il controllo dei timer e i formspec nei nodi.
 
-Separating the mod like this means that you can very easily test the API part,
-as it doesn't use any Minetest APIs - as shown in the
-[next chapter](unit_testing.html) and seen in the crafting mod.
+Separare la mod in questa maniera permette di testare molto facilmente la API, in quanto non passa per quella di Minetest - come mostrato nel [prossimo capitolo](unit_testing.html).
 
 
-## Conclusion
+## Conclusione
 
-Good code design is subjective, and highly depends on the project you're making. As a
-general rule, try to keep cohesion high and coupling low. Phrased differently,
-keep related code together and unrelated code apart, and keep dependencies simple.
+Cosa sia del buon codice è soggettivo, e dipende altamente dal progetto che si vuole realizzare.
+Come regola generale, cerca di tenere un'alta coesione (parti di codice tra loro connesse vicine) e poche dipendenze.
 
-I highly recommend reading the [Game Programming Patterns](http://gameprogrammingpatterns.com/)
-book. It's freely available to [read online](http://gameprogrammingpatterns.com/contents.html)
-and goes into much more detail on common programming patterns relevant to games.
+Suggerisco caldamente, per chi mastica l'inglese, di leggere il libro [Game Programming Patterns](http://gameprogrammingpatterns.com/).
+Lo si può leggere gratuitamente [online](http://gameprogrammingpatterns.com/contents.html) e descrive molto più nel dettaglio gli approcci di programmazione da tenere quando si parla di videogiochi.
