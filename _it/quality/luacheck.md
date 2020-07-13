@@ -1,64 +1,61 @@
 ---
-title: Automatic Error Checking
+title: Controllo automatico degli errori
 layout: default
 root: ../..
 idx: 8.2
-description: Use LuaCheck to find errors
-redirect_from: /en/chapters/luacheck.html
+description: Usa LuaCheck per trovare eventuali errori
+redirect_from: /it/chapters/luacheck.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-In this chapter, you will learn how to use a tool called LuaCheck to automatically
-scan your mod for any mistakes. This tool can be used in combination with your
-editor to provide alerts to any mistakes.
+In questo capitolo, imparerai come usare uno strumento chiamato LuaCheck per scansionare automaticamente le tue mod alla ricerca di eventuali errori.
+LuaCheck può essere usato in combinazione con l'editor per fornire avvertimenti vari.
 
-- [Installing LuaCheck](#installing-luacheck)
+- [Installare LuaCheck](#installare-luacheck)
   - [Windows](#windows)
   - [Linux](#linux)
-- [Running LuaCheck](#running-luacheck)
-- [Configuring LuaCheck](#configuring-luacheck)
-  - [Troubleshooting](#troubleshooting)
-- [Using with editor](#using-with-editor)
-- [Checking Commits with Travis](#checking-commits-with-travis)
+- [Eseguire LuaCheck](#eseguire-luacheck)
+- [Configurare LuaCheck](#configurare-luacheck)
+  - [Risoluzione problemi](#risoluzione-problemi)
+- [Uso nell'editor](#uso-nelleditor)
+- [Controllare i commit con Travis](#controllare-i-commit-con-travis)
 
-## Installing LuaCheck
+## Installare LuaCheck
 
 ### Windows
 
-Simply download luacheck.exe from
-[the Github Releases page](https://github.com/mpeterv/luacheck/releases).
+Basta scaricare luacheck.exe dall'apposita [pagina delle release su Github](https://github.com/mpeterv/luacheck/releases).
 
 ### Linux
 
-First, you'll need to install LuaRocks:
+Per prima cosa, avrai bisogno di installare LuaRocks:
 
     sudo apt install luarocks
 
-You can then install LuaCheck globally:
+Poi va installato globalmente LuaCheck:
 
     sudo luarocks install luacheck
 
-Check that it's installed with the following command:
+Per controllare che sia stato installato correttamente, fai:
 
     luacheck -v
 
-## Running LuaCheck
+## Eseguire LuaCheck
 
-The first time you run LuaCheck, it will probably pick up a lot of false
-errors. This is because it still needs to be configured.
+La prima volta che si esegue LuaCheck, segnalerà probabilmente un sacco di falsi errori.
+Questo perché ha ancora bisogno di essere configurato.
 
-On Windows, open powershell or bash in the root folder of your project
-and run `path\to\luacheck.exe .`
+Su Windows, apri la powershell o la bash nella cartella principale del tuo progetto ed esegui `path\to\luacheck.exe .`
 
-On Linux, run `luacheck .` whilst in the root folder of your project.
+Su Linux, esegui `luacheck .` nella cartella principale del progetto.
 
-## Configuring LuaCheck
+## Configurare LuaCheck
 
-Create a file called .luacheckrc in the root of your project. This could be the
-root of your game, modpack, or mod.
+Crea un file chiamato .luacheckrc nella cartella principale del tuo progetto.
+Questa può essere quella di un gioco, di una modpack o di una mod.
 
-Put the following contents in it:
+Inserisci il seguente codice all'interno:
 
 ```lua
 unused_args = false
@@ -81,47 +78,40 @@ read_globals = {
 }
 ```
 
-Next, you'll need to test that it works by running LuaCheck. You should get a lot
-fewer errors this time. Starting at the first error you get, modify the code to
-remove the issue, or modify the configuration if the code is correct. See the list
-below.
+Poi, avrai bisogno di assicurarti che funzioni eseguendo LuaCheck: dovresti ottenere molti meno errori questa volta.
+Partendo dal primo errore, modifica il codice per risolvere il problema, o modifica la configurazione di LuaCheck se il codice è corretto.
+Dai un occhio alla lista sottostante.
 
-### Troubleshooting
+### Risoluzione problemi
 
-* **accessing undefined variable foobar** - If `foobar` is meant to be a global,
-  add it to `read_globals`. Otherwise, add any missing `local`s to the mod.
-* **setting non-standard global variable foobar** - If `foobar` is meant to be a global,
-  add it to `globals`. Remove from `read_globals` if present.
-  Otherwise, add any missing `local`s to the mod.
-* **mutating read-only global variable 'foobar'** - Move `foobar` from `read_globals` to
-  `globals`, or stop writing to foobar.
+* **accessing undefined variable foobar** - Se `foobar` dovrebbe essere una variabile globale, aggiungila a `read_globals`.
+  Altrimenti, manca un `local` vicino a `foobar`.
+* **setting non-standard global variable foobar** - Se `foobar` dovrebbe essere una variabile globale, aggiungila a `globals`.
+  Rimuovila da `read_globals` se presente.
+  Altrimenti, manca un `local` vicino a `foobar`.
+* **mutating read-only global variable 'foobar'** - Sposta `foobar` da `read_globals` a `globals`, o smetti di modificare `foobar`.
 
-## Using with editor
+## Uso nell'editor
 
-It is highly recommended that you find and install a plugin for your editor of choice
-to show you errors without running a command. Most editors will likely have a plugin
-available.
+È caldamente consigliato installare un'estensione per il tuo editor di fiducia che ti mostri gli errori senza eseguire alcun comando.
+Queste sono disponibili nella maggior parte degli editor, come:
 
-* **Atom** - `linter-luacheck`.
-* **VSCode** - Ctrl+P, then paste: `ext install dwenegar.vscode-luacheck`
-* **Sublime** - Install using package-control:
+* **Atom** - `linter-luacheck`;
+* **VSCode** - Ctrl+P, poi incolla: `ext install dwenegar.vscode-luacheck`;
+* **Sublime** - Installala usando package-control:
         [SublimeLinter](https://github.com/SublimeLinter/SublimeLinter),
         [SublimeLinter-luacheck](https://github.com/SublimeLinter/SublimeLinter-luacheck).
 
-## Checking Commits with Travis
+## Controllare i commit con Travis
 
-If your project is public and is on Github, you can use TravisCI - a free service
-to run jobs on commits to check them. This means that every commit you push will
-be checked against LuaCheck, and a green tick or red cross will be displayed next to them
-depending on whether LuaCheck finds any mistakes. This is especially helpful for
-when your project receives a pull request - you'll be able to see the LuaCheck output
-without downloading the code.
+Se il tuo progetto è pubblico ed è su Github, puoi usare TravisCI - un servizio gratuito per eseguire controlli sui commit.
+Questo significa che ogni commit pushato verrà controllato secondo le impostazioni di LuaCheck, e una spunta verde o una X rossa appariranno al suo fianco per segnalare se sono stati trovati errori o meno.
+Ciò è utile soprattutto per quando il tuo progetto riceve una richiesta di modifica (*pull request*) per verificare se il codice è scritto bene senza doverlo scaricare.
 
-First, you should visit [travis-ci.org](https://travis-ci.org/) and sign in with
-your Github account. Then find your project's repo in your Travis profile,
-and enable Travis by flipping the switch.
+Prima di tutto, vai su [travis-ci.org](https://travis-ci.org/) ed esegui l'accesso con il tuo account Github.
+Dopodiché cerca la repo del tuo progetto nel tuo profilo Travis, e abilita Travis cliccando sull'apposito bottone.
 
-Next, create a file called .travis.yml with the following content:
+Poi, crea un file chiamato `.travis.yml` con il seguente contenuto:
 
 ```yml
 language: generic
@@ -138,15 +128,14 @@ notifications:
   email: false
 ```
 
-If your project is a game rather than a mod or mod pack,
-change the line after `script:` to:
+Se il tuo progetto è un gioco piuttosto che una mod o un pacchetto di mod, cambia la riga dopo `script:` con:
 
 ```yml
 - $HOME/.luarocks/bin/luacheck mods/
 ```
 
-Now commit and push to Github. Go to your project's page on Github, and click
-'commits'. You should see an orange disc next to the commit you just made.
-After awhile it should change either into a green tick or a red cross depending on the
-outcome of LuaCheck. In either case, you can click the icon to see the build logs
-and the output of LuaCheck.
+Ora esegui il commit e il push su Github.
+Vai alla pagina del tuo progetto e clicca su "commits".
+Dovresti vedere un cerchietto arancione di fianco al commit che hai appena fatto.
+Dopo un po' di tempo il cerchietto dovrebbe cambiare in una spunta verde o in una X rossa (a seconda dell'esito, come detto prima).
+In entrambi i casi, puoi cliccare l'icona per vedere il resoconto dell'operazione e l'output di LuaCheck.
