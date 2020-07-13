@@ -1,43 +1,36 @@
 ---
-title: Security
+title: Sicurezza
 layout: default
 root: ../..
 idx: 8.3
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
-Security is very important in making sure that your mod doesn't cause the server
-owner to lose data or control.
+La sicurezza è molto importante per evitare che una mod permetta di far perdere il controllo del server al suo proprietario.
 
-- [Core Concepts](#core-concepts)
-- [Formspecs](#formspecs)
-  - [Never Trust Submissions](#never-trust-submissions)
-  - [Time of Check isn't Time of Use](#time-of-check-isnt-time-of-use)
-- [(Insecure) Environments](#insecure-environments)
+- [Concetti fondamentali](#concetti-fondamentali)
+- [Formspec](#formspec)
+  - [Non fidarsi mai dei campi dei formspec](#non-fidarsi-mai-dei-campi-dei-formspec)
+  - [Il momento per controllare non è il momento dell'uso (Time of Check is not Time of Use)](#il-momento-per-controllare-non-e-il-momento-delluso-time-of-check-is-not-time-of-use)
+- [Ambienti (non sicuri)](#ambienti-non-sicuri)
 
-## Core Concepts
+## Concetti fondamentali
 
-The most important concept in security is to **never trust the user**.
-Anything the user submits should be treated as malicious.
-This means that you should always check that the information they
-enter is valid, that the user has the correct permissions,
-and that they are otherwise allowed to do that action
-(ie: in range or an owner).
+Il concetto più importante quando si parla di sicurezza è **non fidarsi mai dell'utente**.
+Ogni cosa che l'utente può inviare al server deve essere trattata come malevola.
+Questo significa che dovresti sempre controllare che le informazioni da loro immesse siano valide, che abbiano i privilegi necessari e che siano autorizzati a fare determinate azioni.
 
-A malicious action isn't necessarily the modification or destruction of data,
-but can be accessing sensitive data, such as password hashes or
-private messages.
-This is especially bad if the server stores information such as emails or ages,
-which some may do for verification purposes.
+Un'azione malevola non è necessariamente la modifica o la distruzione di dati, ma può essere anche l'accedere a dati sensibili, come gli hash delle password o i messaggi privati.
+Questo è grave soprattutto se il server possiede informazioni sugli utenti come le loro e-mail o la loro età, che alcuni potrebbero richiedere per questioni di verifica.
 
-## Formspecs
+## Formspec
 
-### Never Trust Submissions
+### Non fidarsi mai dei campi dei formspec
 
-Any users can submit almost any formspec with any values at any time.
+Qualsiasi utente può inviare qualsiasi formspec con i valori che preferisce quando preferisce.
 
-Here's some real code found in a mod:
+Segue del codice trovato realmente in una mod:
 
 ```lua
 minetest.register_on_player_receive_fields(function(player,
@@ -54,57 +47,47 @@ minetest.register_on_player_receive_fields(function(player,
 end
 ```
 
-Can you spot the problem? A malicious user could submit a formspec containing
-their own position values, allowing them to teleport to anywhere they wish to.
-This could even be automated using client modifications to essentially replicate
-the `/teleport` command with no need for a privilege.
+Riesci a vedere il problema? Un utente malintenzionato potrebbe inviare un formspec contenente la propria posizione, permettendogli di venire teletrasportato dovunque vuole.
+Addirittura il tutto potrebbe essere automatizzato usando modifiche del client per replicare il comportamento di `/teleport` senza aver bisogno di alcun privilegio.
 
-The solution for this kind of issue is to use a
-[Context](../players/formspecs.html#contexts), as shown previously in
-the Formspecs chapter.
+La soluzione per questo tipo di problematica è usare un [Contesto](../players/formspecs.html#contexts), come mostrato precedentemente nel capitolo dei Formspec.
 
-### Time of Check isn't Time of Use
+### Il momento per controllare non è il momento dell'uso (Time of Check is not Time of Use)
 
-Any users can submit any formspec with any values at any time, except where the
-engine forbids it:
+Qualsiasi utente può inviare qualsiasi formspec con i valori che preferisce quando preferisce, sì: a meno che il motore di gioco non glielo impedisca:
 
-* A node formspec submission will be blocked if the user is too far away.
-* From 5.0 onward, named formspecs will be blocked if they haven't been shown yet.
+* L'invio dei formspec di un nodo vengono bloccati se l'utente è troppo distante;
+* Dalla 5.0 in poi, i formspec con un nome sono bloccati se non sono stati ancora mostrati.
 
-This means that you should check in the handler that the user meets the
-conditions for showing the formspec in the first place, as well as any
-corresponding actions.
+Questo significa che dovresti controllare che l'utente soddisfi i requisiti per visualizzare il formspec in primis, esattamente come per ogni azione corrispondente.
 
-The vulnerability caused by checking for permissions in the show formspec but not
-in the handle formspec is called Time Of Check is not Time Of Use (TOCTOU).
+La vulnerabilità causata dal controllare i privilegi nel `show_formspec` ma non nella gestione del formspec in primis è chiamata *Time Of Check is not Time Of Use* (Il momento per controllare non è il momento dell'uso), o più brevemente TOCTOU.
 
 
-## (Insecure) Environments
+## Ambienti (non sicuri)
 
-Minetest allows mods to request an unsandboxed environment, giving them access
-to the full Lua API.
+Minetest permette alle mod di richiedere ambienti senza limiti, dando loro accesso all'intera API Lua.
 
-Can you spot the vulnerability in the following?
+Riesci a individuare la vulnerabilità in questo pezzo di codice??
 
 ```lua
 local ie = minetest.request_insecure_environment()
 ie.os.execute(("path/to/prog %d"):format(3))
 ```
 
-`string.format` is a function in the global shared table `string`.
-A malicious mod could override this function and pass stuff to os.execute:
+`string.format` è una funzione nella tabella globale condivisa `string`.
+Una mod malevola potrebbe sovrascrivere questa funzione e passare "cose" a `os.execute`:
 
 ```lua
 string.format = function()
-    return "xdg-open 'http://example.com'"
+    return "xdg-open 'http://esempio.com'"
 end
 ```
 
-The mod could pass something much more malicious than opening a website, such
-as giving a remote user control over the machine.
+La mod potrebbe passare qualcosa di molto più malevolo dell'apertura di un sito, come dare il controllo remoto della macchina al malintenzionato in questione.
 
-Some rules for using an insecure environment:
+Alcune regole per usare un ambiente non sicuro:
 
-* Always store it in a local and never pass it into a function.
-* Make sure you can trust any input given to an insecure function, to avoid the
-  issue above. This means avoiding globally redefinable functions.
+* Tenerlo sempre in una variabile locale e non passarlo mai a una funzione;
+* Assicurarsi di potersi fidare di qualsiasi input eseguita in una funzione insicura, per evitare il problema sopracitato.
+  Questo significa evitare funzioni globali ridefinibili.
