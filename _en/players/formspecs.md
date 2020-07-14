@@ -3,6 +3,7 @@ title: GUIs (Formspecs)
 layout: default
 root: ../..
 idx: 4.5
+description: Learn how to display GUIs using formspecs
 redirect_from: /en/chapters/formspecs.html
 submit_vuln:
     level: warning
@@ -74,9 +75,8 @@ on multiple lines, like so:
 
 Elements are items such as text boxes or buttons, or can be metadata such
 as size or background. You should refer to
-[lua_api.txt](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt#L1019)
-for a list of all possible elements. Search for "Formspec" to locate the correct
-part of the document.
+[lua_api.txt](../../lua_api.html#elements)
+for a list of all possible elements.
 
 
 ### Header
@@ -87,7 +87,7 @@ game-wide theme should be applied.
 
 The elements in the header must be defined in a specific order, otherwise you
 will see an error. This order is given in the above paragraph, and, as always,
-documented in [lua_api.txt](../../lua_api.html#sizewhfixed_size)
+documented in [lua_api.txt](../../lua_api.html#sizewhfixed_size).
 
 The size is in formspec slots - a unit of measurement which is roughly
 around 64 pixels, but varies based on the screen density and scaling
@@ -175,7 +175,7 @@ minetest.register_chatcommand("game", {
 })
 ```
 
-The show_formspec function accepts a player name, the formspec name, and the
+The `show_formspec` function accepts a player name, the formspec name, and the
 formspec itself. The formspec name should be a valid itemname, ie: in the format
 `modname:itemname`.
 
@@ -217,7 +217,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 ```
 
-The function given in minetest.register_on_player_receive_fields is called
+The function given in `minetest.register_on_player_receive_fields` is called
 every time a user submits a form. Most callbacks will need to check the formname given
 to the function, and exit if it is not the right form; however, some callbacks
 may need to work on multiple forms, or on all forms.
@@ -282,13 +282,13 @@ function guessing.get_formspec(name, context)
     elseif context.guess == context.target then
         text = "Hurray, you got it!"
     elseif context.guess > context.target then
-        text = "To high!"
+        text = "Too high!"
     else
-        text = "To low!"
+        text = "Too low!"
     end
 ```
 
-Note that it's good practice for get_formspec to only read the context, and not
+Note that it's good practice for `get_formspec` to only read the context, and not
 update it at all. This can make the function simpler, and also easier to test.
 
 And finally, we need to update the handler to update the context with the guess:
@@ -307,17 +307,17 @@ end
 
 There are three different ways that a formspec can be delivered to the client:
 
-* [show_formspec](#guessing-game): the method used above, fields are received by register_on_player_receive_fields.
+* [show_formspec](#guessing-game): the method used above, fields are received by `register_on_player_receive_fields`.
 * [Node Meta Formspecs](#node-meta-formspecs): the node contains a formspec in its meta data, and the client
      shows it *immediately* when the player rightclicks. Fields are received by a
      method in the node definition called `on_receive_fields`.
 * [Player Inventory Formspecs](#player-inventory-formspecs): the formspec is sent to the client at some point, and then
      shown immediately when the player presses `i`. Fields are received by
-     register_on_player_receive_fields.
+     `register_on_player_receive_fields`.
 
 ### Node Meta Formspecs
 
-minetest.show_formspec is not the only way to show a formspec; you can also
+`minetest.show_formspec` is not the only way to show a formspec; you can also
 add formspecs to a [node's metadata](node_metadata.html). For example,
 this is used with chests to allow for faster opening times -
 you don't need to wait for the server to send the player the chest formspec.

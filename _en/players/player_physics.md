@@ -3,6 +3,7 @@ title: Player Physics
 layout: default
 root: ../..
 idx: 4.4
+description: Learn how to make a player run faster, jump higher or simply float
 redirect_from: /en/chapters/player_physics.html
 ---
 
