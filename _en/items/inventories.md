@@ -191,7 +191,7 @@ because the code behind the window determines the width to use.
 ```lua
 if inv:set_size("main", 32) then
     inv:set_width("main", 8)
-    print("size:  " .. inv.get_size("main"))
+    print("size:  " .. inv:get_size("main"))
     print("width: " .. inv:get_width("main"))
 else
     print("Error! Invalid itemname or size to set_size()")
