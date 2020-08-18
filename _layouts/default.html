@@ -17,12 +17,12 @@ layout: compress
 	<link rel="stylesheet" href="{{ page.root }}/static/style.css">
 </head>
 <body>
-	{% assign pathsplit = page.dir | split: '/' %}
-	{% assign language = pathsplit[1] %}
+	{% assign pathsplit = page.path | split: '/' %}
 
-	{% if language == "en" %}
-		{% assign links = site.en | sort: "idx" %}
-	{% else if language == "it" %}
+	{% assign language = pathsplit[0] %}
+
+	{% if language == "_it" %}
+		{% assign language = "it" %}
 		{% assign links = site.it | sort: "idx" %}
 	{% else %}
 		{% assign language = "en" %}

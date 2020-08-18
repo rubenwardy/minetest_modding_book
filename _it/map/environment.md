@@ -1,5 +1,5 @@
 ---
-title: Mappa: operazioni base 
+title: "Mappa: operazioni base"
 layout: default
 root: ../..
 idx: 3.1
@@ -30,7 +30,7 @@ essere né attraversati né selezionati. Gli spazi vuoti delle aree già caricat
 nodi invisibili e attraversabili.
 
 Spesso, ci si rifà ai blocchi caricati (attenzione! Blocco non vuol dire nodo, come detto qui sopra!) chiamandoli *blocchi attivi*.
-I blocchi attivi possono essere letti e sovrascritti dalle mod o dai giocatori, e contenere entità attive. 
+I blocchi attivi possono essere letti e sovrascritti dalle mod o dai giocatori, e contenere entità attive.
 Anche il motore di gioco esegue operazioni sulla mappa, come il calcolare la fisica dei liquidi.
 
 I Blocchi Mappa possono essere sia caricati dal database del mondo che generati.
