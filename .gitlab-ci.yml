@@ -1,29 +1,32 @@
-image: ruby:2.6
+image: jekyll/jekyll:4
 
 variables:
   JEKYLL_ENV: production
   LC_ALL: C.UTF-8
 
 before_script:
-  - gem install bundler jekyll
-  - bundle install
+  - rm Gemfile.lock
 
 test:
   stage: test
+  interruptible: true
   script:
-  - bundle exec jekyll build -d test
+    - bundle exec jekyll build -d test
   artifacts:
     paths:
-    - test
+      - test
   except:
-  - master
+    - master
 
 pages:
   stage: deploy
+  interruptible: true
+  before_script:
+    - rm Gemfile.lock
   script:
-  - bundle exec jekyll build -d public
+    - bundle exec jekyll build -d public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master
