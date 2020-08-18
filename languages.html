@@ -1,0 +1,24 @@
+---
+title: Languages
+layout: base
+root: .
+---
+
+<main>
+	<article>
+		<h1>Minetest Modding Book</h1>
+
+		<h2>Choose a Language</h2>
+
+		<ul>
+			{% for lang in site.data.languages %}
+				<li><a href="{{ lang.code }}/index.html">{{ lang.name }}</a></li>
+			{% endfor %}
+		</ul>
+
+	</article>
+
+	<footer>
+		&copy; 2014-20
+	</footer>
+</main>

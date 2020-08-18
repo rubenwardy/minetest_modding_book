@@ -1,0 +1,24 @@
+---
+layout: compress
+---
+
+<!doctype html>
+<html>
+<head>
+	<title>{% if page.homepage %}{% else %}{{ page.title }} - {% endif %}Minetest Modding Book</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<meta name="description" content="An easy guide to learn how to create mods for Minetest">
+	<meta name="keywords" content="Minetest, modding, book, tutorial, guide, easy">
+	<meta name="author" content="rubenwardy">
+	<meta name="flattr:id" content="gl763e">
+
+	<style>body,html,nav{background:#333}nav,nav li,nav li a{display:block}body,html,main,nav li{margin:0;padding:0}main,nav{position:absolute;top:0}body,html{font-size:17px;color:#000}#container{width:100%;max-width:1100px;margin:auto;position:relative}nav{left:0;width:280px;list-style:none;color:#fff}nav li a{padding:5px;color:#ccc;text-decoration:none}main{left:280px;right:0}article{background:#fff;padding:0 20px 20px}</style>
+	<link rel="stylesheet" href="{{ page.root }}/static/style.css?v=2">
+</head>
+<body>
+	<div id="container">
+		{{ content }}
+	</div>
+</body>
+</html>

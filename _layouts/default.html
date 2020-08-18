@@ -1,90 +1,75 @@
 ---
-layout: compress
+layout: base
 ---
 
-<!doctype html>
-<html>
-<head>
-	<title>{% if page.homepage %}{% else %}{{ page.title }} - {% endif %}Minetest Modding Book</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width">
-	<meta name="description" content="An easy guide to learn how to create mods for Minetest">
-	<meta name="keywords" content="Minetest, modding, book, tutorial, guide, easy">
-	<meta name="author" content="rubenwardy">
-	<meta name="flattr:id" content="gl763e">
+{% assign pathsplit = page.path | split: '/' %}
 
-	<style>body,html,nav{background:#333}nav,nav li,nav li a{display:block}body,html,main,nav li{margin:0;padding:0}main,nav{position:absolute;top:0}body,html{font-size:17px;color:#000}#container{width:100%;max-width:1100px;margin:auto;position:relative}nav{left:0;width:280px;list-style:none;color:#fff}nav li a{padding:5px;color:#ccc;text-decoration:none}main{left:280px;right:0}article{background:#fff;padding:0 20px 20px}</style>
-	<link rel="stylesheet" href="{{ page.root }}/static/style.css">
-</head>
-<body>
-	{% assign pathsplit = page.path | split: '/' %}
+{% assign language = pathsplit[0] %}
 
-	{% assign language = pathsplit[0] %}
+{% if language == "_it" %}
+	{% assign language = "it" %}
+	{% assign links = site.it | sort: "idx" %}
+{% else %}
+	{% assign language = "en" %}
+	{% assign links = site.en | sort: "idx" %}
+{% endif %}
 
-	{% if language == "_it" %}
-		{% assign language = "it" %}
-		{% assign links = site.it | sort: "idx" %}
-	{% else %}
-		{% assign language = "en" %}
-		{% assign links = site.en | sort: "idx" %}
-	{% endif %}
+{% assign num = 0 %}
 
-	{% assign num = 0 %}
+<nav>
+	{% for link in links %}
+		{% assign idsplit = link.id | split: '/' %}
+		{% assign section = idsplit[2] %}
+		<li>
+			<a href="{{ page.root }}{{ link.url }}"
+					class="{% if page.title == link.title %}selected{% endif %}{% if section != last_section and section != 'index' %} hr {% endif %}">
+				{% if section != "index" %}{{ num }} - {% endif %}
+				{{ link.title }}
+			</a>
+		</li>
 
-	<div id="container">
-		<nav>
-			{% for link in links %}
-				{% assign idsplit = link.id | split: '/' %}
-				{% assign section = idsplit[2] %}
-				<li>
-					<a href="{{ page.root }}{{ link.url }}"
-							class="{% if page.title == link.title %}selected{% endif %}{% if section != last_section and section != 'index' %} hr {% endif %}">
-						{% if section != "index" %}{{ num }} - {% endif %}
-						{{ link.title }}
-					</a>
-				</li>
+		{% assign last_section = section %}
+		{% assign num = num | plus:1 %}
+	{% endfor %}
 
-				{% assign last_section = section %}
-				{% assign num = num | plus:1 %}
-			{% endfor %}
+	<li><a href="{{ page.root }}/lua_api.html" class="hr">Lua Modding API Reference</a></li>
+	<li><a href="https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip">Download Examples</a></li>
+</nav>
 
-			<li><a href="{{ page.root }}/lua_api.html" class="hr">Lua Modding API Reference</a></li>
-			<li><a href="https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip">Download Examples</a></li>
-		</nav>
+<main>
+	<article {% if page.homepage %}class="homepage"{% endif %}>
+		<a href="{{ page.root }}/languages.html" class="language-switcher">
+			<img src="{{ page.root }}/static/languages.svg" alt="Choose a language">
+			<span>{{ language }}</span>
+		</a>
 
-			<main>
-				<article {% if page.homepage %}class="homepage"{% endif %}>
-					{% if page.no_header %}{% else %}<h1>{{ page.title }}</h1>{% endif %}
-					{{ content }}
-				</article>
+		{% if page.no_header %}{% else %}<h1>{{ page.title }}</h1>{% endif %}
+		{{ content }}
+	</article>
 
+	{% for link in links  %}
+		{% if link.title == page.title %}
+			{% unless forloop.first %}
+				{% assign prev = tmpprev %}
+			{% endunless %}
+			{% unless forloop.last %}
+				{% assign next = links[forloop.index] %}
+			{% endunless %}
+		{% endif %}
+		{% assign tmpprev = link %}
+	{% endfor %}
 
-				{% for link in links  %}
-					{% if link.title == page.title %}
-						{% unless forloop.first %}
-							{% assign prev = tmpprev %}
-						{% endunless %}
-						{% unless forloop.last %}
-							{% assign next = links[forloop.index] %}
-						{% endunless %}
-					{% endif %}
-					{% assign tmpprev = link %}
-				{% endfor %}
+	<ul class="prevnext">
+		<li>{% if prev %}<a href="{{ page.root }}{{ prev.url}}">&lt; {{ prev.title }}</a>{% endif %}</li>
+		<li>{% if next %}<a href="{{ page.root }}{{ next.url}}">{{ next.title }} &gt;</a>{% endif %}</li>
+	</ul>
 
-				<ul class="prevnext">
-					<li>{% if prev %}<a href="{{ page.root }}{{ prev.url}}">&lt; {{ prev.title }}</a>{% endif %}</li>
-					<li>{% if next %}<a href="{{ page.root }}{{ next.url}}">{{ next.title }} &gt;</a>{% endif %}</li>
-				</ul>
-
-				<footer>
-					&copy; 2014-20 |
-					Helpful? Consider
-					<a href="https://rubenwardy.com/donate/">donating</a>
-					to support my work.
-				</footer>
-			</article>
-		</main>
-		<script async src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-		<script async src="{{ page.root }}/static/script.js"></script>
-	</body>
-	</html>
+	<footer>
+		&copy; 2014-20
+		{% if language == "en" %}
+			| Helpful? Consider
+			<a href="https://rubenwardy.com/donate/">donating</a>
+			to support my work.
+		{% endif %}
+	</footer>
+</main>

@@ -83,6 +83,24 @@ article {
 	// text-align: justify;
 }
 
+.language-switcher {
+	display: flex;
+	align-items: center;
+	float: right;
+	color: black;
+	text-decoration: none;
+	padding-top: 0.3rem;
+
+	img, span {
+		display: inline-block;
+	}
+
+	img {
+		height: 1.2em;
+		padding-right: 0.3em;
+	}
+}
+
 footer {
 	margin: 0 0 20px 0;
 	padding: 1em 1.5em;

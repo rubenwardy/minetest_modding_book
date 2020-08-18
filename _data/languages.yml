@@ -1,6 +1,9 @@
+# cta = call to action (used when prompting user their language is available)
+
 - code: en
   name: English (UK)
   cta: This book is available in English
+
 - code: it
   name: Italiano
   cta: Questo libro è disponibile in italiano
