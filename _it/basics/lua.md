@@ -9,8 +9,7 @@ redirect_from: /it/chapters/lua.html
 
 ## Introduzione  <!-- omit in toc -->
 
-In questo capitolo parleremo della programmazione in Lua, degli strumenti necessari,
-e tratteremo alcune tecniche che troverai probabilmente utili.
+In questo capitolo parleremo della programmazione in Lua, degli strumenti necessari, e tratteremo alcune tecniche che troverai probabilmente utili.
 
 - [Editor di codice](#editor-di-codice)
 - [Programmare in Lua](#programmare-in-lua)
@@ -27,8 +26,7 @@ e tratteremo alcune tecniche che troverai probabilmente utili.
 ## Editor di codice
 
 Un editor di codice con evidenziamento delle parole chiave è sufficiente per scrivere script in Lua.
-L'evidenziamento assegna colori diversi a parole e caratteri diversi a seconda del loro significato.
-Questo ti permette di individuare più facilmente eventuali errori.
+L'evidenziamento assegna colori diversi a parole e caratteri diversi a seconda del loro significato, permettendo di individuare più facilmente eventuali errori.
 
 ```lua
 function ctf.post(team,msg)
@@ -47,7 +45,7 @@ end
 ```
 
 Per esempio, parole chiave come if, then, end e return sono evidenziate nel passaggio qui sopra.
-table.insert è invece una funzione base che deriva direttamente da Lua.
+Lo stesso vale per le funzioni interne di Lua come table.insert.
 
 Segue una lista di editor noti che si prestano bene per programmare in Lua.
 Non sono, ovviamente, gli unici esisteneti.
@@ -62,13 +60,12 @@ Non sono, ovviamente, gli unici esisteneti.
 
 I programmi sono una serie di comandi che vengono eseguiti uno dopo l'altro.
 Chiamiamo questi comandi "istruzioni".
-Il flusso del programma è il come queste istruzioni vengono eseguite.
-Differenti tipi di flusso ti permettono di saltare o meno serie di comandi.
-Ci sono tre tipi di flusso:
+Il flusso del programma è il come queste istruzioni vengono eseguite, e a differenti tipi di flusso corrispondono comportamenti diversi.
+Essi possono essere:
 
-* Sequenziale: esegue un'istruzione dopo l'altra, senza salti.
-* Selettivo: salta alcune sequenze a seconda delle condizioni.
-* Iterante: ripete ciclicamente. Continua a eseguire le stesse istruzioni
+* Sequenziali: eseguono un'istruzione dopo l'altra, senza salti.
+* Selettivi: saltano alcune sequenze a seconda delle condizioni.
+* Iteranti: ripetono ciclicamente. Continuano a eseguire le stesse istruzioni
   finché una condizione non è soddisfatta.
 
 Quindi, come vengono rappresentate le istruzioni in Lua?
@@ -83,21 +80,16 @@ print("La somma è ".. risultato)
 
 Whoa, cos'è appena successo?
 
-a, b, e risultato sono *variabili*. Le variabili locali si dichiarano
-tramite l'uso della parola chiave local, e assegnando loro un valore iniziale.
-Local sarà discussa in un attimo, in quanto parte di un concetto molto importante
-chiamato *portata*.
+a, b, e risultato sono *variabili*. Le variabili locali si dichiarano tramite l'uso della parola chiave local (che vedremo tra poco), e assegnando eventualmente loro un valore iniziale.
 
 Il simbolo `=` significa *assegnazione*, quindi `risultato = a + b` significa impostare "risultato" ad a + b.
-I nomi delle variabili possono essere più lunghi di un carattere, al contrario che in matematica, come
-visto nella variabile "risultato".
-Vale anche la pena notare che Lua è *case-sensitive* (differenzia maiscuole da minuscole); 
+Per quanto riguarda i nomi delle variabili, essi possono essere più lunghi di un carattere - al contrario che in matematica - come visto in "risultato", e vale anche la pena notare che Lua è *case-sensitive* (differenzia maiuscole da minuscole); 
 A è una variabile diversa da a.
 
 ### Tipi di variabili
 
 Una variabile può equivalere solo a uno dei seguenti tipi e può cambiare tipo dopo l'assegnazione.
-È buona pratica assicurarsi che una variabile sia sempre solo o nil o diversa da nil.
+È buona pratica assicurarsi che sia sempre solo o nil o diversa da nil.
 
 | Tipo     | Descrizione                     | Esempio        |
 |----------|---------------------------------|----------------|
@@ -123,7 +115,8 @@ Lista non esaustiva, ce ne sono altri
 
 ### Selezione
 
-La selezione più basica è il costrutto if. Si presenta così:
+La selezione più basica è il costrutto if.
+Si presenta così:
 
 ```lua
 local random_number = math.random(1, 100) -- Tra 1 e 100.
@@ -134,9 +127,9 @@ else
 end
 ```
 
-Questo esempio genera un numero casuale tra 1 e 100. Stampa poi
-"Woohoo!" se il numero è superiore a 50, altrimenti stampa "No!".
-Cos'altro puoi usare oltre a '>'?
+Questo esempio genera un numero casuale tra 1 e 100.
+Stampa poi "Woohoo!" se il numero è superiore a 50, altrimenti stampa "No!".
+Cos'altro si può usare oltre a '>'?
 
 ### Operatori logici
 
@@ -152,7 +145,7 @@ Cos'altro puoi usare oltre a '>'?
 | A or B  | O (almeno uno dei due vero)          | (2 > 1) or (1 == 2) (true), (2 > 4) or (1 == 3) (false)     |
 | not A   | non vero                             | not (1 == 2)  (true), not (1 == 1)  (false)                 |
 
-La lista non è esaustiva, e puoi inoltre combinare gli operatori in questo modo:
+La lista non è esaustiva, e gli operatori possono essere combinati, come da esempio:
 
 ```lua
 if not A and B then
@@ -162,8 +155,7 @@ end
 
 Che stampa "Yay!" se A è falso e B vero.
 
-Gli operatori logici e matematici funzionano esattamente allo stesso modo;
-entrambi accettano input e ritornano un valore che può essere immagazzinato.
+Gli operatori logici e matematici funzionano esattamente allo stesso modo; entrambi accettano input e ritornano un valore che può essere immagazzinato.
 
 ```lua
 local A = 5
@@ -175,16 +167,12 @@ end
 
 ## Programmare
 
-Programmare è l'azione di prendere un problema, come ordinare una lista di oggetti,
-e tramutarlo in dei passaggi che il computer può comprendere.
+Programmare è l'azione di prendere un problema, come ordinare una lista di oggetti, e tramutarlo in dei passaggi che il computer può comprendere.
 
-Insegnarti i processi logici della programmazione non rientra nell'ambito di questo libro;
-tuttavia, i seguenti siti sono alquanto utili per approfondire l'argomento:
+Insegnarti i processi logici della programmazione non rientra nell'ambito di questo libro; tuttavia, i seguenti siti sono alquanto utili per approfondire l'argomento:
 
-* [Codecademy](http://www.codecademy.com/) è una delle migliori risorse per
-  imparare a 'programmare'; offre un'esperienza guidata interattiva.
-* [Scratch](https://scratch.mit.edu) è una buona risorsa quando si comincia
-  dalle basi assolute, imparando le tecniche di problem solving necessarie per programmare.\\
+* [Codecademy](http://www.codecademy.com/) è una delle migliori risorse per imparare come scrivere codice; offre un'esperienza guidata interattiva.
+* [Scratch](https://scratch.mit.edu) è una buona risorsa quando si comincia dalle basi assolute, imparando le tecniche di problem solving necessarie per la programmazione.\\
   Scratch è **ideato per insegnare ai bambini** e non è un linguaggio serio di programmazione.
 
 ## Portata locale e globale
@@ -240,11 +228,10 @@ one()
 two()
 ```
 
-dump() è una funzione che può trasformare qualsiasi variabile in una stringa, cosicché
-il programmatore possa vedere cosa rappresenta. La variabile foo sarà stampata come
-"bar", virgolette incluse (che dimostrano che è una stringa).
+dump() è una funzione che può trasformare qualsiasi variabile in una stringa, cosicché il programmatore possa vedere cosa rappresenta.
+In questo caso `foo` sarà stampata come "bar", virgolette incluse (che dimostrano che è una stringa).
 
-L'esempio precedente non è buona programmazione e Minetest, infatti, avviserà di ciò:
+L'esempio precedente non è tuttavia buona norma e Minetest, infatti, ci avviserà di ciò:
 
     Assignment to undeclared global 'foo' inside function at init.lua:2
 
@@ -264,12 +251,10 @@ two()
 ```
 
 Ricorda che nil significa **non inizializzato**.
-Ovvero la variabile non è stata ancora assegnata a un valore, 
-non esiste o è stata deinizializzata (cioè impostata a nil)
+Ovvero la variabile non è stata ancora assegnata a un valore, non esiste o è stata deinizializzata (cioè impostata a nil)
 
-La stessa cosa vale per le funzioni. Le funzioni sono variabili di tipo speciale,
-e dovrebbero essere dichiarate locali, in quanto altre mod potrebbero sennò avere funzioni
-con lo stesso nome.
+La stessa cosa vale per le funzioni.
+Le funzioni sono variabili di tipo speciale, e dovrebbero essere dichiarate locali, in quanto altre mod potrebbero sennò avere funzioni con lo stesso nome.
 
 ```lua
 local function foo(bar)
@@ -310,5 +295,4 @@ print(ret) -- Hello world!
 ```
 
 Nei capitoli seguenti si parlerà nel dettaglio di come suddividere il codice di una mod.
-Tuttavia, per ora l'approccio semplicistico è di avere file differenti per diversi tipi di cose
-— nodi.lua, craft.lua, oggetti.lua ecc.
+Tuttavia, per ora l'approccio semplicistico è di avere file differenti per diversi tipi di cose — nodi.lua, craft.lua, oggetti.lua ecc.

@@ -9,13 +9,10 @@ redirect_from: /it/chapters/creating_textures.html
 
 ## Introduzione <!-- omit in toc -->
 
-Essere in grado di creare e ottimizare le texture è un'abilità alquanto utile quando si sviluppa
-per Minetest.
-Ci sono molti approcci sul come creare texture in pixel art, e capire questi approcci
-migliorerà nettamente la qualità dei tuoi lavori.
+Essere in grado di creare e ottimizare le texture è un'abilità alquanto utile quando si sviluppa per Minetest.
+Ci sono molti approcci sul come creare texture in pixel art, e capire questi approcci migliorerà nettamente la qualità dei tuoi lavori.
 
-Fornire spiegazioni dettagliate non rientra tuttavia nell'ambito di questo libro:
-verranno quindi trattate solo le tecniche più semplici.
+Fornire spiegazioni dettagliate non rientra tuttavia nell'ambito di questo libro: verranno quindi trattate solo le tecniche più semplici.
 Se si vuole approfondire, ci sono comunque molti [buoni tutorial online](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial) disponibili, che si occupano di pixel art in modo molto più dettagliato.
 
 - [Tecniche](#tecniche)
@@ -31,17 +28,14 @@ Se si vuole approfondire, ci sono comunque molti [buoni tutorial online](http://
 ### Usare la matita
 
 Lo strumento matita è disponibile nella maggior parte dei programmi di disegno.
-Quando viene impostato alla dimensione minima, ti permette di disegnare un pixel alla volta
-senza alterare le atre parti dell'immagine.
-Manipolando i singoli pixel si possono creare texture chiare e nette senza alcuna
-sfocatura non voluta, dando inoltre un alto livello di precisione e controllo.
+Quando viene impostato alla dimensione minima, permette di disegnare un pixel alla volta senza alterare le atre parti dell'immagine.
+Manipolando i singoli pixel si possono creare texture chiare e nette senza alcuna sfocatura non voluta, dando inoltre un alto livello di precisione e controllo.
 
 ### Piastrellatura (tiling)
 
 Le texture usate per i nodi dovrebbero generalmente essere progettate per ripetersi come
 delle piastrelle.
-Questo significa che quando piazzi più nodi con la stessa texture vicini, i bordi dovranno
-allinearsi correttamente creando un effetto di continuità.
+Questo significa che quando piazzi più nodi con la stessa texture vicini, i bordi dovranno allinearsi correttamente creando un effetto di continuità.
 
 <!-- IMAGE NEEDED - cobblestone that tiles correctly -->
 
@@ -52,10 +46,8 @@ gradevole da vedere.
 
 ### Trasparenza
 
-La trasparenza è importante quando si creano texture per pressoché tutti gli
-oggetti fabbricabili e per alcuni nodi, come il vetro.
-Non tutti i programmi supportano la trasparenza, perciò assicurati di sceglierne
-uno adatto ai tipi di texture che vuoi creare.
+La trasparenza è importante quando si creano texture per pressoché tutti gli oggetti fabbricabili e per alcuni nodi, come il vetro.
+Non tutti i programmi supportano la trasparenza, perciò assicurati di sceglierne uno adatto ai tipi di texture che vuoi creare.
 
 ## Programmi
 
@@ -69,8 +61,7 @@ tuttavia se la trasparenza è un requisito nelle tue texture dovresti guardare o
 ### GIMP
 
 GIMP viene impiegato spesso nella comunità di Minetest.
-Ha una curva di apprendimento alquanto alta, dato che molte delle sue funzioni
-non risultano ovvie nell'immediato.
+Ha una curva di apprendimento alquanto alta, dato che molte delle sue funzioni non risultano ovvie nell'immediato.
 
 Quando usi GIMP, puoi selezionare la matita dalla Barra degli Strumenti:
 

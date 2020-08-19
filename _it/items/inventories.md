@@ -13,8 +13,7 @@ redirect_from:
 
 ## Introduzione  <!-- omit in toc -->
 
-In questo capitolo, imparerai come usare e manipolare gli inventari, siano essi quelli
-di un giocatore, di un nodo o a sé stanti.
+In questo capitolo, imparerai come usare e manipolare gli inventari, siano essi quelli di un giocatore, di un nodo o a sé stanti.
 
 - [Cosa sono gli ItemStack e gli inventari?](#cosa-sono-gli-itemstack-e-gli-inventari)
 - [ItemStack](#itemstack)
@@ -31,21 +30,17 @@ di un giocatore, di un nodo o a sé stanti.
 
 ## Cosa sono gli ItemStack e gli inventari?
 
-Un ItemStack (*pila di oggetti*) è il dato dietro una singola cella di un inventario.
+Un ItemStack ( lett. "pila di oggetti") è il dato dietro una singola cella di un inventario.
 
-Un *inventario* è una collezione di *liste* apposite, ognuna delle quali è una griglia
-2D di ItemStack.
-Lo scopo di un inventario è quello di raggruppare più liste in un singolo oggetto (l'inventario appunto),
-in quanto a ogni giocatore e a ogni nodo può essere associato massimo un inventario.
+Un *inventario* è una collezione di *liste* apposite, ognuna delle quali è una griglia 2D di ItemStack.
+Lo scopo di un inventario è quello di raggruppare più liste in un singolo oggetto (l'inventario appunto), in quanto a ogni giocatore e a ogni nodo ne può essere associato massimo uno.
 
 ## ItemStack
 
 Gli ItemStack sono composti da quattro parametri: nome, quantità, durabilità e metadati.
 
-Il nome dell'oggetto può essere il nome di un oggetto registrato, di uno sconosciuto (non registrato)
-o un alias.
-Gli oggetti sconosciuti sono tipici di quando si disinstallano le mod, o quando le mod rimuovono
-degli oggetti senza nessun accorgimento, tipo senza registrarne un alias.
+Il nome dell'oggetto può essere il nome di un oggetto registrato, di uno sconosciuto (non registrato) o un alias.
+Gli oggetti sconosciuti sono tipici di quando si disinstallano le mod, o quando le mod rimuovono degli oggetti senza nessun accorgimento, tipo senza registrarne un alias.
 
 ```lua
 print(stack:get_name())
@@ -57,17 +52,12 @@ end
 ```
 
 La quantità sarà sempre 0 o maggiore.
-Durante una normale sessione di gioco, la quantità non dovrebbe mai essere maggiore della dimensione
-massima della pila dell'oggetto - `stack_max`.
-Tuttavia, comandi da amministratore e mod fallate potrebbero portare a oggetti impilati che superano
-la grandezza massima.
+Durante una normale sessione di gioco, la quantità non dovrebbe mai essere maggiore della dimensione massima della pila dell'oggetto - `stack_max`.
+Tuttavia, comandi da amministratore e mod fallate potrebbero portare a oggetti impilati che superano la grandezza massima.
 
 ```lua
 print(stack:get_stack_max())
 ```
-
-
-
 
 Un ItemStack può essere vuoto, nel qual caso avrà come quantità 0.
 
@@ -76,7 +66,7 @@ print(stack:get_count())
 stack:set_count(10)
 ```
 
-Gli ItemStack possono essere creati in diversi modi usando la funzione ItemStack.
+Gli ItemStack possono poi essere creati in diversi modi usando l'omonima funzione.
 
 ```lua
 ItemStack() -- name="", count=0
@@ -87,8 +77,7 @@ ItemStack({ name = "default:wood", count = 10 })
 
 I metadati di un oggetto sono una o più coppie chiave-valore custodite in esso.
 Chiave-valore significa che si usa un nome (la chiave) per accedere al dato corrispettivo (il valore).
-Alcune chiavi hanno significati predefiniti, come `description` che è usato per specificare la descrizione
-di una pila di oggetti.
+Alcune chiavi hanno significati predefiniti, come `description` che è usato per specificare la descrizione di una pila di oggetti.
 Questo sarà trattato più in dettaglio nel capitolo Storaggio e Metadati.
 
 ## Collocazione inventari
@@ -105,8 +94,7 @@ local inv = minetest.get_inventory({ type="node", pos={x=1, y=2, z=3} })
 ```
 
 L'esempio in alto ottiene il *riferimento a un inventario*, comunemente definito *InvRef*.
-Questi riferimenti sono usati per manipolare l'inventario, e son chiamati così perché i dati 
-non sono davvero salvati dentro all'oggetto (in questo caso "inv"), bensì *puntano* a quei dati.
+Questi riferimenti sono usati per manipolare l'inventario, e son chiamati così perché i dati non sono davvero salvati dentro all'oggetto (in questo caso "inv"), bensì *puntano* a quei dati.
 In questo modo, modificando "inv", stiamo in verità modificando l'inventario.
 
 La collocazione di tali riferimenti può essere ottenuta nel seguente modo:
@@ -115,8 +103,8 @@ La collocazione di tali riferimenti può essere ottenuta nel seguente modo:
 local location = inv:get_location()
 ```
 
-Gli inventari dei giocatori si ottengono in maniera simile, oppure usando il riferimento
-a un giocatore (*PlayerRef*). In entrambi casi, il giocatore deve essere connesso.
+Gli inventari dei giocatori si ottengono in maniera simile, oppure usando il riferimento a un giocatore (*PlayerRef*).
+In entrambi casi, il giocatore deve essere connesso.
 
 ```lua
 local inv = minetest.get_inventory({ type="player", name="player1" })
@@ -124,8 +112,7 @@ local inv = minetest.get_inventory({ type="player", name="player1" })
 local inv = player:get_inventory()
 ```
 
-Gli inventari separati, infine, sono quelli non collegati né a nodi né a giocatori,
-e al contrario degli altri, vengono persi dopo un riavvio.
+Gli inventari separati, infine, sono quelli non collegati né a nodi né a giocatori, e al contrario degli altri, vengono persi dopo un riavvio.
 
 ```lua
 local inv = minetest.get_inventory({
@@ -138,9 +125,8 @@ Un'ulteriore differenza, è che gli inventari separati devono essere creati prim
 minetest.create_detached_inventory("inventory_name")
 ```
 
-La funzione create_detached_inventory accetta 3 parametri, di cui solo il primo - il nome - è necessario.
-Il secondo parametro prende una tabella di callback, che possono essere utilizzati
-per controllare come i giocatori interagiscono con l'inventario:
+La funzione `create_detached_inventory` accetta 3 parametri, di cui solo il primo - il nome - è necessario.
+Il secondo parametro prende una tabella di callback, che possono essere utilizzati per controllare come i giocatori interagiscono con l'inventario:
 
 ```lua
 -- Input only detached inventory
@@ -165,22 +151,18 @@ minetest.create_detached_inventory("inventory_name", {
 })
 ```
 
-I callback dei permessi - quelle che iniziano con `allow_` - ritornano il numero
-degli oggetti da trasferire, e si usa -1 per impedirne del tutto l'azione.
+I callback dei permessi - quelle che iniziano con `allow_` - ritornano il numero degli oggetti da trasferire, e si usa -1 per impedirne del tutto l'azione.
 
 I callback delle azioni - quelle che iniziano con `on_` - non ritornano invece alcun valore.
 
 ## Liste
 
 Le liste negli inventari permettono di disporre più griglie nello stesso luogo (l'inventario).
-Esse sono particolarmente utili per il giocatore, e infatti di base ogni gioco possiede già
-delle liste come *main* per il corpo principale dell'inventario e *craft* per l'area di fabbricazione.
+Esse sono particolarmente utili per il giocatore, e infatti di base ogni gioco possiede già delle liste come *main* per il corpo principale dell'inventario e *craft* per l'area di fabbricazione.
 
 ### Dimensione e ampiezza
 
-Le liste hanno una dimensione, equivalente al numero totale di celle nella griglia, e un'ampiezza,
-che è usata esclusivamente dentro il motore di gioco: quando viene disegnato un inventario in una finestra, 
-infatti, il codice dietro di essa già determina che ampiezza usare.
+Le liste hanno una dimensione, equivalente al numero totale di celle nella griglia, e un'ampiezza, che è usata esclusivamente dentro il motore di gioco: quando viene disegnato un inventario in una finestra, infatti, il codice dietro di essa già determina che ampiezza usare.
 
 ```lua
 if inv:set_size("main", 32) then
@@ -192,10 +174,8 @@ else
 end
 ```
 
-`set_size` non andrà in porto e ritornerà "false" se il nome della lista o la dimensione dichiarata
-non risultano valide.
-Per esempio, la nuova dimensione potrebbe essere troppo piccola per contenere gli oggetti attualmente
-presenti nell'inventario.
+`set_size` non andrà in porto e ritornerà "false" se il nome della lista o la dimensione dichiarata non risultano valide.
+Per esempio, la nuova dimensione potrebbe essere troppo piccola per contenere gli oggetti attualmente presenti nell'inventario.
 
 ### Controllare il contenuto
 
@@ -219,8 +199,8 @@ end
 
 ### Aggiungere a una lista
 
-Per aggiungere degli oggetti a una lista (in questo caso "main") usiamo `add_item`. Nell'esempio
-sottostante ci accertiamo anche di rispettare la dimensione:
+Per aggiungere degli oggetti a una lista (in questo caso "main") usiamo `add_item`.
+Nell'esempio sottostante ci accertiamo anche di rispettare la dimensione:
 
 ```lua
 local stack    = ItemStack("default:stone 99")
@@ -248,8 +228,7 @@ Puoi modificare le singole pile prima ottenendole:
 local stack = inv:get_stack(listname, 0)
 ```
 
-E poi modificandole impostando le nuove proprietà o usando i metodi che
-rispettano `stack_size`:
+E poi modificandole impostando le nuove proprietà o usando i metodi che rispettano `stack_size`:
 
 ```lua
 local pila          = ItemStack("default:stone 50")
@@ -267,8 +246,7 @@ print("Hai " .. pila:get_count() .. " oggetti")
 ```
 
 `add_item` aggiungerà gli oggetti all'ItemStack e ritornerà quelli in eccesso.
-`take_item` rimuoverà gli oggetti indicati (o meno se ce ne sono meno), e ritornerà
-l'ammontare rimosso.
+`take_item` rimuoverà gli oggetti indicati (o meno se ce ne sono meno), e ritornerà l'ammontare rimosso.
 
 Infine, si imposta la pila modificata:
 
@@ -278,9 +256,8 @@ inv:set_stack(listname, 0, pila)
 
 ## Usura
 
-Gli strumenti possono avere un livello di usura; l'usura è rappresentata da un barra progressiva
-e fa rompere lo strumento quando completamente logorato.
-L'usura è un numero da 0 a 65535; più è alto, più è consumato l'oggetto.
+Gli strumenti possono avere un livello di usura; essa è rappresentata da un barra progressiva e fa rompere lo strumento quando completamente logorato.
+Nello specifico, l'usura è un numero da 0 a 65535: più è alto, più è consumato l'oggetto.
 
 Il livello di usura può essere manipolato usando `add_wear()`, `get_wear()`, e `set_wear(wear)`.
 
@@ -293,7 +270,7 @@ local usi_massimi = 10
 pila:add_wear(65535 / (usi_massimi - 1))
 ```
 
-Quando scavi un nodo, l'incremento di usura di uno strumento dipende da che tipo di nodo è.
+Quando si scava un nodo, l'incremento di usura di uno strumento dipende da che tipo di nodo è.
 Di conseguenza, `usi_massimi` varia a seconda di cos'è stato scavato.
 
 ## Tabelle Lua
@@ -334,10 +311,8 @@ La tabella di liste ritornata da `get_lists()` sarà nel seguente formato:
 
 `get_list()` ritornerà una lista singola fatta di ItemStack.
 
-Una cosa importante da sottolineare è che i metodi `set` qui in alto non cambiano
-la dimensione delle liste.
-Questo significa che si può svuotare una lista dichiarandola uguale a una tabella vuota,
-e la sua dimensione tuttavia non cambierà:
+Una cosa importante da sottolineare è che i metodi `set` qui in alto non cambiano la dimensione delle liste.
+Questo significa che si può svuotare una lista dichiarandola uguale a una tabella vuota, e la sua dimensione tuttavia non cambierà:
 
 ```lua
 inv:set_list("main", {})

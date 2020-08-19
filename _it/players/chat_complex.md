@@ -9,7 +9,7 @@ redirect_from: /it/chapters/chat_complex.html
 
 ## Introduzione <!-- omit in toc -->
 
-Questo capitolo ti mostrerà come creare comandi complessi con ChatCmdBuilder, come `/msg <nome> <messaggio>`, `/team entra <nometeam>` or `/team esci <nometeam>`.
+Questo capitolo ti mostrerà come creare comandi complessi con ChatCmdBuilder, come `/msg <nome> <messaggio>`, `/team entra <nometeam>` o `/team esci <nometeam>`.
 
 Tieni conto che ChatCmdBuilder è una libreria creata dall'autore di questo libro, e che molti modder tendono a usare il metodo illustrato nel capitolo [Chat e comandi](chat.html#complex-subcommands).
 

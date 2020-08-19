@@ -28,19 +28,15 @@ Saper registrare nuovi nodi, oggetti fabbricabili e conseguenti ricette, è un r
 ## Cosa sono i nodi e gli oggetti?
 
 Nodi, oggetti fabbricabili e strumenti sono tutti oggetti.
-Un oggetto è qualcosa che può essere trovato in un inventario —
-anche se potrebbe non risultare possibile durante una normale sessione di gioco.
+Un oggetto è qualcosa che può essere trovato in un inventario — anche se potrebbe non risultare possibile durante una normale sessione di gioco.
 
 Un nodo è un oggetto che può essere piazzato o trovato nel mondo.
-Ogni coordinata nel mondo deve essere occupata da un unico nodo —
-ciò che appare vuoto è solitamente un nodo d'aria.
+Ogni coordinata nel mondo deve essere occupata da un unico nodo — ciò che appare vuoto è solitamente un nodo d'aria.
 
-Un oggetto fabbricabile (*craftitem*) non può essere invece piazzato, potendo apparire solo negli inventari
-o come oggetto rilasciato nel mondo.
+Un oggetto fabbricabile (*craftitem*) non può essere invece piazzato, potendo apparire solo negli inventari o come oggetto rilasciato nel mondo.
 
 Uno strumento (*tool*) può usurarsi e solitamente non possiede la capacità di scavare.
-In futuro, è probabile che gli oggetti fabbricabili e gli strumenti verranno fusi in un unico tipo,
-in quanto la distinzione fra di essi è alquanto artificiosa.
+In futuro, è probabile che gli oggetti fabbricabili e gli strumenti verranno fusi in un unico tipo, in quanto la distinzione fra di essi è alquanto artificiosa.
 
 ## Registrare gli oggetti
 
@@ -60,32 +56,30 @@ Ogni oggetto ha un nome usato per riferirsi a esso, che dovrebbe seguire la segu
 
     nomemod:nomeoggetto
 
-Il nomemod equivale appunto al nome della mod che registra l'oggetto, e nomeoggetto è
-il nome che si vuole assegnare a quest'ultimo.
-Il nome dell'oggetto dovrebbe essere inerente a quello che rappresenta e deve essere unico nella mod.
+`nomemod` equivale appunto al nome della mod che registra l'oggetto, e `nomeoggetto` è il nome che si vuole assegnare a quest'ultimo.
+Esso dovrebbe essere inerente a quello che rappresenta e deve essere unico nella mod.
 
 Gli oggetti possono anche avere degli *alias* che puntano al loro nome.
 Un *alias* è uno pseudonimo che dice al motore di gioco di trattarlo come se fosse il nome a cui punta.
 Ciò è comunemente usato in due casi:
 
 * Rinominare gli oggetti rimossi in qualcos'altro.
-  Ci potrebbero essere nodi sconosciuti nel mondo e negli inventari se un oggetto
-  viene rimosso da una mod senza nessun codice per gestirlo.
-  È importante evitare di assegnare come alias nomi di nodi inottenibili già esistenti 
-  al nodo rimosso, se quest'ultimo poteva essere ottenuto.
-* Aggiungere una scorciatoia. `/giveme dirt` è più semplice di `/giveme default:dirt`.
+  Ci potrebbero essere nodi sconosciuti nel mondo e negli inventari se un oggetto viene rimosso da una mod senza nessun codice per gestirlo.
+  È importante evitare di assegnare come alias nomi di nodi inottenibili già esistenti al nodo rimosso, se quest'ultimo poteva essere ottenuto.
+* Aggiungere una scorciatoia.
+  `/giveme dirt` è più semplice di `/giveme default:dirt`.
 
 Registrare un alias è alquanto semplice.
-Un buon modo per ricordarne il funzionamento è `da → a`, dove *da*
-è l'alias e *a* è il nome dell'oggetto a cui punta.
 
 ```lua
 minetest.register_alias("dirt", "default:dirt")
 ```
 
-Le mod devono assicurarsi di elaborare gli alias prima di occuparsi direttamente
-del nome dell'oggeto, in quanto l'engine non lo fa di suo.
-Ciò è comunque molto semplice:
+Un buon modo per ricordarne il funzionamento è `da → a`, dove *da*
+è l'alias e *a* è il nome dell'oggetto a cui punta.
+
+Le mod devono inoltre assicurarsi di elaborare gli alias prima di occuparsi direttamente del nome dell'oggeto, in quanto l'engine non lo fa di suo.
+Anche in questo caso non è difficile:
 
 ```lua
 itemname = minetest.registered_aliases[itemname] or itemname
@@ -93,17 +87,13 @@ itemname = minetest.registered_aliases[itemname] or itemname
 
 ### Texture
 
-Per convenzione le texture andrebbero messe nella cartella textures/ con nomi che seguono la struttura
-`nomemod_nomeoggetto.png`.\\
-Le immagini in JPEG sono supportate, ma non supportano la trasparenza e sono generalmente
-di cattiva qualità nelle basse risoluzioni.
+Per convenzione le texture andrebbero messe nella cartella textures/ con nomi che seguono la struttura `nomemod_nomeoggetto.png`.\\
+Le immagini in JPEG sono supportate, ma non supportano la trasparenza e sono generalmente di cattiva qualità nelle basse risoluzioni.
 Si consiglia quindi il formato PNG.
 
 Le texture su Minetest sono generalmente 16x16 pixel.
-Possono essere di qualsiasi dimensione, ma è buona norma che rientrino nelle potenze di 2,
-per esempio 16, 32, 64 o 128.
-Questo perché dimensioni differenti potrebbero non essere supportate dai vecchi dispositivi,
-comportando una diminuzione delle performance.
+Possono essere di qualsiasi dimensione, ma è buona norma che rientrino nelle potenze di 2, per esempio 16, 32, 64 o 128.
+Questo perché dimensioni differenti potrebbero non essere supportate dai vecchi dispositivi, comportando una diminuzione delle performance.
 
 ## Registrare un nodo base
 
@@ -139,19 +129,18 @@ minetest.register_node("miamod:diamante", {
     is_ground_content = true,
     groups = {cracky = 3},
     drop = "miamod:diamante_frammenti"
-    -- ^  Al posto di rilasciare diamanti, rilascia miamod:diamante_frammenti
+    -- ^  Al posto di far cadere diamanti, fa cadere miamod:diamante_frammenti
 })
 ```
 
-L'attributo is_ground_content è essenziale per ogni nodo che si vuole far apparire sottoterra
-durante la generazione della mappa.
+L'attributo is_ground_content è essenziale per ogni nodo che si vuole far apparire sottoterra durante la generazione della mappa.
 Le caverne vengono scavate nel mondo dopo che tutti gli altri nodi nell'area sono stati generati.
 
 ## Azioni e callback
 
 Minetest usa ampiamente una struttura per il modding incentrata sui callback (richiami).
-I callback possono essere inseriti nella tabella di definizioni dell'oggetto per permettere una
-risposta a vari tipi di eventi generati dall'utente.
+I callback possono essere inseriti nella tabella di definizioni dell'oggetto per permettere una risposta a vari tipi di eventi generati dall'utente.
+Vediamone un esempio.
 
 ### on_use
 
@@ -167,14 +156,11 @@ minetest.register_craftitem("miamod:fangotorta", {
 })
 ```
 
-Il numero fornito alla funzione minetest.item_eat è il numero di punti salute ripristinati al
-consumare il cibo.
+Il numero fornito alla funzione minetest.item_eat è il numero di punti salute ripristinati al consumare il cibo.
 In gioco ogni cuore equivale a due punti.
-Un giocatore ha solitamente un massimo di 10 cuori, ovvero 20 punti salute.
-Quest'ultimi non devono per forza essere interi, bensì possono anche essere decimali.
+Un giocatore ha solitamente un massimo di 10 cuori, ovvero 20 punti salute, e quest'ultimi non devono per forza essere interi - ovvero decimali.
 
-minetest.item_eat() è una funzione che ritorna un'altra funzione, in questo caso
-quindi impostandola come callback di on_use.
+`minetest.item_eat()` è una funzione che ritorna un'altra funzione, in questo caso quindi impostandola come callback di on_use.
 Ciò significa che il codice in alto è alquanto simile al seguente:
 
 ```lua
@@ -200,14 +186,12 @@ Ci sono diversi tipi di ricette di fabbricazione disponibili, indicate dalla pro
 * fuel - Definisce gli oggetti che possono alimentare il fuoco nella fornace.
 * tool_repair - Definisce gli oggetti che possono essere riparati.
 
-Le ricette di fabbricazione non sono oggetti, perciò non usano nomi oggetto per
-identificare in maniera univoca se stesse
+Le ricette di fabbricazione non sono oggetti, perciò non usano nomi oggetto per identificare in maniera univoca se stesse.
 
 ### Fisse (shaped)
 
-Le ricette fisse avvengono quando gli ingredienti devono essere nella forma o sequenza
-corretta per funzionare. Nell'esempio sotto, i frammenti necessitano di essere in
-in una figura a forma di sedia per poter fabbricare appunto 99 sedie.
+Le ricette fisse avvengono quando gli ingredienti devono essere nella forma o sequenza corretta per funzionare.
+Nell'esempio sotto, i frammenti necessitano di essere in una figura a forma di sedia per poter fabbricare appunto 99 sedie.
 
 ```lua
 minetest.register_craft({
@@ -222,8 +206,7 @@ minetest.register_craft({
 ```
 
 Una cosa da tener presente è la colonna vuota sulla parte destra.
-Questo significa che ci *deve* essere una colonna vuota a destra della forma, altrimenti
-ciò non funzionerà.
+Questo significa che ci *deve* essere una colonna vuota a destra della forma, altrimenti ciò non funzionerà.
 Se invece la colonna non dovesse servire, basta ometterla in questo modo:
 
 ```lua
@@ -237,13 +220,11 @@ minetest.register_craft({
 })
 ```
 
-Il campo type non è davvero necessario per le ricette fisse, in quanto sono
-il tipo di base.
+Il campo type non è davvero necessario per le ricette fisse, in quanto sono il tipo di base.
 
 ### Informi (shapeless)
 
-Le ricette informi sono ricette che vengono usate quando non importa
-dove sono posizionati gli ingredienti, ma solo che ci siano.
+Le ricette informi sono ricette che vengono usate quando non importa dove sono posizionati gli ingredienti, ma solo che ci siano.
 
 ```lua
 minetest.register_craft({
@@ -259,9 +240,7 @@ minetest.register_craft({
 
 ### Cottura (cooking) e carburante (fuel)
 
-Le ricette di tipo "cottura" non vengono elaborate nella griglia di fabbricazione,
-bensì nelle fornaci o in qualsivoglia altro strumento di cottura che può essere trovato
-nelle mod.
+Le ricette di tipo "cottura" non vengono elaborate nella griglia di fabbricazione, bensì nelle fornaci o in qualsivoglia altro strumento di cottura che può essere trovato nelle mod.
 
 ```lua
 minetest.register_craft({
@@ -272,17 +251,13 @@ minetest.register_craft({
 })
 ```
 
-L'unica vera differenza nel codice è che in questo la ricetta non è una tabella (tra parentesi graffe),
-bensì un singolo oggetto.
-Le ricette di cottura dispongono anche di un parametro aggiuntivo "cooktime"
-che indica in secondi quanto tempo ci impiega l'oggetto a cuocersi.
+L'unica vera differenza nel codice è che in questo la ricetta non è una tabella (tra parentesi graffe), bensì un singolo oggetto.
+Le ricette di cottura dispongono anche di un parametro aggiuntivo "cooktime" che indica in secondi quanto tempo ci impiega l'oggetto a cuocersi.
 Se non è impostato, di base è 3.
 
-La ricetta qui sopra genera un'unità di frammenti di diamante dopo 10 secondi quando
-il blocco di carbone (coalblock) è nello slot di input, con un qualche tipo di carburante sotto di esso.
+La ricetta qui sopra genera un'unità di frammenti di diamante dopo 10 secondi quando il blocco di carbone (`coalblock`) è nello slot di input, con un qualche tipo di carburante sotto di esso.
 
-Il tipo "carburante" invece funge da accompagnamento alle ricette di cottura,
-in quanto definisce cosa può alimentare il fuoco.
+Il tipo "carburante" invece funge da accompagnamento alle ricette di cottura, in quanto definisce cosa può alimentare il fuoco.
 
 ```lua
 minetest.register_craft({
@@ -292,14 +267,13 @@ minetest.register_craft({
 })
 ```
 
-Esso non ha un output come le altre ricette, e possiede un tempo di arsura (burntime)
-che definisce in secondi per quanto alimenterà la fiamma. In questo caso, 300 secondi!
+Esso non ha un output come le altre ricette, e possiede un tempo di arsura (`burntime`) che definisce in secondi per quanto alimenterà la fiamma.
+In questo caso, 300 secondi!
 
 ## Gruppi
 
 Gli oggetti possono essere membri di più gruppi, e i gruppi possono avere più membri.
-Essi sono definiti usando la proprietà `groups` nella tabella di definizione,
-e possiedono un valore associato.
+Essi sono definiti usando la proprietà `groups` nella tabella di definizione, e possiedono un valore associato.
 
 ```lua
 groups = {cracky = 3, wood = 1}
@@ -307,8 +281,7 @@ groups = {cracky = 3, wood = 1}
 
 Ci sono diverse ragioni per cui usare i gruppi.
 In primis, vengono utilizzati per descrivere proprietà come friabilità e infiammabilità.
-In secundis, possono essere usati in una ricetta al posto di un nome oggetto per permettere
-a qualsiasi oggetto nel gruppo di essere utilizzato.
+In secundis, possono essere usati in una ricetta al posto di un nome oggetto per permettere a qualsiasi oggetto nel gruppo di essere utilizzato.
 
 ```lua
 minetest.register_craft({
@@ -320,11 +293,9 @@ minetest.register_craft({
 
 ## Strumenti, Capacità e Friabilità
 
-Le friabilità sono dei gruppi particolari utilizzati per definire la resistenza di un nodo
-quando scavato con un determinato strumento.
+Le friabilità sono dei gruppi particolari utilizzati per definire la resistenza di un nodo quando scavato con un determinato strumento.
 Una friabilità elevata equivale a una maggior facilità e velocità nel romperlo.
-È possibile combinarne di più tipi per permettere al nodo di essere distrutto da più tipi di strumento.
-Un nodo senza friabilità non può essere distrutto da nessuno strumento.
+È possibile combinarne di più tipi per permettere al nodo di essere distrutto da più tipi di strumento, mentre un nodo senza friabilità non può essere distrutto da nessuno strumento.
 
 | Gruppo  | Miglior strumento | Descrizione |
 |---------|-------------------|-------------|
@@ -337,15 +308,11 @@ Un nodo senza friabilità non può essere distrutto da nessuno strumento.
 | oddly_breakable_by_hand | *qualsiasi* | Torce e simili — molto veloci da rompere |
 
 
-Ogni strumento possiede poi delle capacità (capability).
-Una capacità include una lista di friabilità supportate, e proprietà associate
-per ognuna di esse come la velocità di scavata e il livello di usura.
-Gli strumenti possono anche avere una durezza massima supportata per ogni tipo;
-ciò serve a prevenire che strumenti più deboli possano rompere nodi meno friabili.
-È poi molto comune che uno strumento includa tutte le friabilità nelle sue capacità,
-con quelle meno adatte equivalenti a proprietà inefficienti.
-Se l'oggetto impugnato dal giocatore non ha una capacità esplicitata,
-verrà allora usata quella della mano.
+Ogni strumento possiede poi delle capacità (*capability*).
+Una capacità include una lista di friabilità supportate, e proprietà associate per ognuna di esse come la velocità di scavata e il livello di usura.
+Gli strumenti possono anche avere una durezza massima supportata per ogni tipo; ciò serve a prevenire che strumenti più deboli possano rompere nodi meno friabili.
+È poi molto comune che uno strumento includa tutte le friabilità nelle sue capacità, con quelle meno adatte equivalenti a proprietà inefficienti.
+Se l'oggetto impugnato dal giocatore non ha una capacità esplicitata, verrà allora usata quella della mano.
 
 ```lua
 minetest.register_tool("miamod:strumento", {
@@ -365,6 +332,5 @@ minetest.register_tool("miamod:strumento", {
     },
 })
 ```
-I gruppi limite (groupcaps) sono una lista delle friabilità supportate dallo strumento.
-I gruppi di danno invece (damage_groups) servono a controllare come uno strumento (esterno) danneggia
-quell'oggetto. Quest'ultimi verranno discussi in seguito nel capitolo Oggetti, Giocatori e Entità.
+I gruppi limite (`groupcaps`) sono una lista delle friabilità supportate dallo strumento.
+I gruppi di danno invece (`damage_groups`) servono a controllare come uno strumento (esterno) danneggia quell'oggetto. Quest'ultimi verranno discussi in seguito nel capitolo Oggetti, Giocatori e Entità.

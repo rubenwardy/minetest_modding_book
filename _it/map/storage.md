@@ -9,7 +9,7 @@ redirect_from:
   - /it/map/node_metadata.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
 In questo capitolo imparerai i vari modi per immagazzinare dati.
 

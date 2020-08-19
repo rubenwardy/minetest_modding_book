@@ -10,21 +10,14 @@ redirect_from: /it/chapters/node_drawtypes.html
 ## Introduzione <!-- omit in toc -->
 
 Il metodo col quale un nodo viene disegnato in gioco è chiamato *drawtype*. 
-Ci sono diversi tipi di drawtype: il loro comportamento è determinato dalle proprietà 
-impostate durante la definizione del tipo di nodo. 
-Queste proprietà sono fisse, uguali per tutte le istanze, tuttavia
-è possibile manipolarne alcune per singolo nodo usando una cosa chiamata `param2`.
+Ci sono diversi tipi di drawtype: il loro comportamento è determinato dalle proprietà impostate durante la definizione del tipo di nodo. 
+Queste proprietà sono fisse, uguali per tutte le istanze, tuttavia è possibile manipolarne alcune per singolo nodo usando una cosa chiamata `param2`.
 
-Il concetto di nodo è stato introdotto nello scorso capitolo, ma non è mai stata
-data una definizione completa.
-Il mondo di Minetest è una griglia 3D: un nodo è un punto di quella griglia ed è composto
-da un tipo (name) e due parametri (param1 e param2).
-Non farti inoltre ingannare dalla funzione `minetest.register_node`, in quanto è un po' fuorviante:
-essa non registra infatti un nuovo nodo (c'è solo una definizione di nodo), bensì un nuovo *tipo* di nodo.
+Il concetto di nodo è stato introdotto nello scorso capitolo, ma non è mai stata data una definizione completa.
+Il mondo di Minetest è una griglia 3D: un nodo è un punto di quella griglia ed è composto da un tipo (`name`) e due parametri (`param1` e `param2`).
+Non farti inoltre ingannare dalla funzione `minetest.register_node`, in quanto è un po' fuorviante: essa non registra infatti un nuovo nodo (c'è solo una definizione di nodo), bensì un nuovo *tipo* di nodo.
 
-I parametri sono infine usati per controllare come un nodo viene renderizzato individualmente:
-`param1` immagazzina le proprietà di luce, mentre il ruolo di `param2` dipende dalla
-proprietà `paramtype2`, la quale è situata nella definizione dei singoli tipi di nodi.
+I parametri sono infine usati per controllare come un nodo viene renderizzato individualmente: `param1` immagazzina le proprietà di luce, mentre il ruolo di `param2` dipende dalla proprietà `paramtype2`, la quale è situata nella definizione dei singoli tipi.
 
 - [Nodi cubici: normali e a facciate piene](#nodi-cubici-normali-e-a-facciate-piene)
 - [Nodi vitrei](#nodi-vitrei)
@@ -50,14 +43,12 @@ proprietà `paramtype2`, la quale è situata nella definizione dei singoli tipi 
     </figcaption>
 </figure>
 
-Il drawtype normale è tipicamente usato per renderizzare un nodo cubico.
-Se il lato di uno di questi nodi tocca un nodo solido, allora quel lato non sarà renderizzato,
-risultando in un grande guadagno sulle prestazioni.
+Il *drawtype* normale è tipicamente usato per renderizzare un nodo cubico.
+Se il lato di uno di questi nodi tocca un nodo solido, allora quel lato non sarà renderizzato, risultando in un grande guadagno sulle prestazioni.
 
-Al contrario, i drawtype a facciate piene (allfaces) renderizzeranno comunque il lato interno quando
-è contro un nodo solido. Ciò è buono per quei nodi con facce in parte trasparenti come
-le foglie. Puoi inoltre usare il drawtype `allfaces_optional` per permettere agli utenti 
-di fare opt-out dal rendering più pesante, facendo comportare il nodo come se fosse di tipo normale.
+Al contrario, i *drawtype* a facciate piene (*allfaces*) renderizzeranno comunque il lato interno quando è contro un nodo solido.
+Ciò è buono per quei nodi con facce in parte trasparenti come le foglie.
+Puoi inoltre usare il drawtype `allfaces_optional` per permettere agli utenti di fare opt-out dal rendering più pesante, facendo comportare il nodo come se fosse di tipo normale.
 
 ```lua
 minetest.register_node("miamod:diamante", {
@@ -77,10 +68,8 @@ Attenzione: il drawtype normale è quello predefinito, quindi non c'è bisogno d
 
 ## Nodi vitrei
 
-La differenza tra i nodi vitrei (glasslike) e quelli normali è che piazzando i primi vicino a un
-nodo normale, non nasconderanno il lato di quest'ultimo.
-Questo è utile in quanto i nodi vitrei tendono a essere trasparenti, perciò permettono
-di vedere attraverso.
+La differenza tra i nodi vitrei (*glasslike*) e quelli normali è che piazzando i primi vicino a un nodo normale, non nasconderanno il lato di quest'ultimo.
+Questo è utile in quanto i nodi vitrei tendono a essere trasparenti, perciò permettono di vedere attraverso.
 
 <figure>
     <img src="{{ page.root }}//static/drawtype_glasslike_edges.png" alt="Bordi vitrei">
@@ -104,8 +93,7 @@ minetest.register_node("default:obsidian_glass", {
 
 ### Vitreo incorniciato
 
-Questa opzione crea un solo bordo lungo tutto l'insieme di nodi, al posto di
-crearne più per singolo nodo.
+Questa opzione crea un solo bordo lungo tutto l'insieme di nodi, al posto di crearne più per singolo nodo.
 
 <figure>
     <img src="{{ page.root }}//static/drawtype_glasslike_framed.png" alt="Bordi vitrei incorniciati">
@@ -127,11 +115,11 @@ minetest.register_node("default:glass", {
 })
 ```
 
-Puoi inoltre usare il drawtype glasslike_framed_optional per permettere un opt-in all'utente.
+Puoi inoltre usare il *drawtype* `glasslike_framed_optional` per permettere un opt-in all'utente.
 
 ## Nodi d'aria
 
-I nodi d'aria (airlike) non sono renderizzati e perciò non hanno texture.
+I nodi d'aria (*airlike*) non sono renderizzati e perciò non hanno texture.
 
 ```lua
 minetest.register_node("miaaria:aria", {
@@ -155,21 +143,20 @@ minetest.register_node("miaaria:aria", {
 
 ## Luce e propagazione solare
 
-La luce di un nodo è salvata in param1. Per capire come ombreggiare
-il lato di un nodo, viene utilizzato il valore di luminosità dei nodi adiacenti.
+La luce di un nodo è salvata in `param1`.
+Per capire come ombreggiare il lato di un nodo, viene utilizzato il valore di luminosità dei nodi adiacenti.
 Questo comporta un blocco della luce da parte dei nodi solidi.
 
 Di base, non viene salvata la luce in nessun nodo né nelle sue istanze.
-È invece solitamente preferibile farla passare in tipi quali quelli d'aria e
-vitrei. Per fare ciò, ci sono due proprietà che devono essere definite:
+È invece solitamente preferibile farla passare in tipi quali quelli d'aria e vitrei.
+Per fare ciò, ci sono due proprietà che devono essere definite:
 
 ```lua
 paramtype = "light",
 sunlight_propagates = true,
 ```
 
-La prima riga dice a param1 di immagazzinare l'indice di luminosità.
-La seconda riga invece permette alla luce del sole di propagarsi attraverso il nodo senza diminuire il suo valore.
+La prima riga dice a `param1` di immagazzinare l'indice di luminosità, mentre la seconda permette alla luce del sole di propagarsi attraverso il nodo senza diminuire il proprio valore.
 
 ## Nodi liquidi
 
@@ -180,8 +167,7 @@ La seconda riga invece permette alla luce del sole di propagarsi attraverso il n
     </figcaption>
 </figure>
 
-Ogni tipo di liquido richiede due definizioni di nodi: una per la sorgente e l'altra
-per il liquido che scorre.
+Ogni tipo di liquido richiede due definizioni di nodi: una per la sorgente e l'altra per il liquido che scorre.
 
 ```lua
 -- Alcune proprietà sono state rimosse perché non
@@ -261,8 +247,7 @@ Guarda default:water_flowing nella mod default di minetest_game per un esempio c
     </figcaption>
 </figure>
 
-I nodi complessi (nodebox) ti permettono di creare un nodo che non è cubico, bensì un insieme
-di più cuboidi.
+I nodi complessi (*nodebox*) ti permettono di creare un nodo che non è cubico, bensì un insieme di più cuboidi.
 
 ```lua
 minetest.register_node("stairs:stair_stone", {
@@ -278,27 +263,22 @@ minetest.register_node("stairs:stair_stone", {
 })
 ```
 
-La parte più importable è la tabella node_box:
+La parte più importante è la tabella `node_box`:
 
 ```lua
 {-0.5, -0.5, -0.5,       0.5,    0,  0.5},
 {-0.5,    0,    0,       0.5,  0.5,  0.5}
 ```
 
-Ogni riga corrisponde a un cuboide e l'insieme delle righe forma il nodo complesso:
-i primi tre numeri sono le coordinate (da -0.5 a 0.5) dell'angolo davanti in basso a sinistra,
-mentre gli altri tre equivalgono all'angolo opposto.
+Ogni riga corrisponde a un cuboide e l'insieme delle righe forma il nodo complesso: i primi tre numeri sono le coordinate (da -0.5 a 0.5) dell'angolo davanti in basso a sinistra, mentre gli altri tre equivalgono all'angolo opposto.
 Essi sono in formato X, Y, Z, dove Y indica il sopra.
 
 
-Puoi usare [NodeBoxEditor](https://forum.minetest.net/viewtopic.php?f=14&t=2840) per
-creare nodi complessi più facilmente, in quanto permette di vedere in tempo reale le modifiche
-sul nodo che si sta modellando.
+Puoi usare [NodeBoxEditor](https://forum.minetest.net/viewtopic.php?f=14&t=2840) per creare nodi complessi più facilmente, in quanto permette di vedere in tempo reale le modifiche sul nodo che si sta modellando.
 
 ### Nodi complessi a muro
 
-Certe volte si vogliono avere nodi complessi che cambiano a seconda della loro posizione
-sul pavimento, sul muro e sul soffitto, come le torce.
+Certe volte si vogliono avere nodi complessi che cambiano a seconda della loro posizione sul pavimento, sul muro e sul soffitto, come le torce.
 
 ```lua
 minetest.register_node("default:sign_wall", {
@@ -326,13 +306,11 @@ minetest.register_node("default:sign_wall", {
 
 ## Nodi mesh
 
-Mentre i nodi complessi sono generalmente più semplici da fare, essi sono limitati
-in quanto possono essere composti solo da cuboidi. I nodi complessi sono anche non ottimizzati:
-le facce interne, infatti, saranno comunque renderizzate, anche quando completamente nascoste.
+Mentre i nodi complessi sono generalmente più semplici da fare, essi sono limitati in quanto possono essere composti solo da cuboidi.
+I nodi complessi sono anche non ottimizzati: le facce interne, infatti, saranno comunque renderizzate, anche quando completamente nascoste.
 
-Una faccia è una superficie piatta di una mesh. Una faccia interna appare quando le
-facce di due nodi complessi si sovrappongono, rendendo invisibili parti del modello
-ma renderizzandole comunque.
+Una faccia è una superficie piatta di una mesh.
+Una faccia interna appare quando le facce di due nodi complessi si sovrappongono, rendendo invisibili parti del modello ma renderizzandole comunque.
 
 Puoi registrare un nodo mesh come segue:
 
@@ -351,17 +329,15 @@ minetest.register_node("miamod:meshy", {
 ```
 
 Assicurati che la mesh sia presente nella cartella `models`.
-La maggior parte delle volte la mesh dovrebbe essere nella cartella della tua mod, tuttavia
-è ok condividere una mesh fornita da un'altra mod dalla quale dipendi.
-Per esempio, una mod che aggiunge più tipi di mobili potrebbe usfruire di un modello
-fornito da una mod di mobili base.
+La maggior parte delle volte la mesh dovrebbe essere nella cartella della tua mod, tuttavia è ok condividere una mesh fornita da un'altra mod dalla quale dipendi.
+Per esempio, una mod che aggiunge più tipi di mobili potrebbe usfruire di un modello fornito da una mod di mobili base.
 
 ## Nodi insegna
 
-I nodi insegna (signlike) sono nodi piatti che possono essere affissi sulle facce di altri nodi.
+I nodi insegna (*signlike*) sono nodi piatti che possono essere affissi sulle facce di altri nodi.
 
-Al contrario del loro nome, i cartelli non rientrano nei nodi insegna bensì nei nodi complessi,
-per fornire un effetto 3D. I tipi insegna tuttavia, sono comunemente usati dalle scale a pioli.
+Al contrario del loro nome, i cartelli non rientrano nei nodi insegna bensì in quelli complessi, per fornire un effetto 3D.
+I tipi insegna tuttavia, sono comunemente usati dalle scale a pioli.
 
 ```lua
 minetest.register_node("default:ladder_wood", {
@@ -387,7 +363,7 @@ minetest.register_node("default:ladder_wood", {
     </figcaption>
 </figure>
 
-I nodi pianta raffigurano la loro texture in un pattern a forma di X.
+I nodi pianta (*plantlike*) raffigurano la loro texture in un pattern a forma di X.
 
 ```lua
 minetest.register_node("default:papyrus", {
@@ -405,8 +381,7 @@ minetest.register_node("default:papyrus", {
 
 ## Nodi fiamma
 
-I nodi fiamma (firelike) sono simili ai pianta, ad eccezione del fatto che sono
-ideati per "avvinghiarsi" ai muri e ai soffitti.
+I nodi fiamma (*firelike*) sono simili ai pianta, ad eccezione del fatto che sono ideati per avvinghiarsi ai muri e ai soffitti.
 
 <figure>
     <img src="{{ page.root }}//static/drawtype_firelike.png" alt="Drawtype fiamma">
@@ -426,7 +401,7 @@ minetest.register_node("miamod:avvinghiatutto", {
 
 ## Altri drawtype
 
-Questa non è una lista definitiva, ci sono infatti altri tipi di nodi come:
+Questa non è una lista esaustiva, in quanto ci sono infatti altri tipi di nodi come:
 
 * Nodi staccionata
 * Nodi pianta radicata - per quelle acquatiche
@@ -435,5 +410,4 @@ Questa non è una lista definitiva, ci sono infatti altri tipi di nodi come:
   Le torce in Minetest Game usano in verità due diverse definizioni dei
   nodi mesh (default:torch e default:torch_wall).
 
-Come al solito, consulta la [documentazione sull'API Lua](../../lua_api.html#node-drawtypes)
-per l'elenco completo.
+Come al solito, consulta la [documentazione sull'API Lua](../../lua_api.html#node-drawtypes) per l'elenco completo.

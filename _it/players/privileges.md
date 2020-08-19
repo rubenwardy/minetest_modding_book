@@ -32,7 +32,7 @@ I privilegi non sono fatti per indicare classi o status.
 * ban
 * vote
 * worldedit
-* area_admin - admin functions of one mod is ok
+* area_admin - se si tratta di un privilegio per gli amministratori è ok
 
 **Privilegi sbagliati:**
 
