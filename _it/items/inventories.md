@@ -1,5 +1,5 @@
 ---
-title: ItemStack e Inventari
+title: ItemStack e inventari
 layout: default
 root: ../..
 idx: 2.4

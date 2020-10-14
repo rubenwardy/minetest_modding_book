@@ -101,7 +101,7 @@ Il codice sovrastante implementa `/msg <a> <messaggio>`. Vediamo cos'è successo
 * `()` è un gruppo - qualsiasi cosa che combaci con ciò che è contenuto al suo interno verrà ritornato da string.match;
 * `[]` significa che i caratteri al suo interno sono accettati;
 * `%a` significa che accetta ogni lettera e `%d` ogni cifra.
-* `[%d%a_-]` significa che accetta ogni lettera, cifra, `_` e `-`.
+* `[%a%d_-]` significa che accetta ogni lettera, cifra, `_` e `-`.
 * `+` dice di combaciare ciò che lo precede una o più volte.
 * `*` dice di combaciare qualsiasi tipo di carattere.
 * `$` dice di combaciare la fine della stringa.

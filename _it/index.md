@@ -1,5 +1,5 @@
 ---
-title: Front Cover
+title: Copertina
 layout: default
 homepage: true
 no_header: true

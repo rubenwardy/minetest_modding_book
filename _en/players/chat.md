@@ -109,7 +109,7 @@ The above code implements `/msg <to> <message>`. Let's go through left to right:
   returned from string.match.
 * `[]` means accept characters in this list.
 * `%a` means accept any letter and `%d` means accept any digit.
-* `[%d%a_-]` means accept any letter or digit or `_` or `-`.
+* `[%a%d_-]` means accept any letter or digit or `_` or `-`.
 * `+` means match the thing before one or more times.
 * `*` means match any character in this context.
 * `$` means match the end of the string.

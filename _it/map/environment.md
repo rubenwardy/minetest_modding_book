@@ -7,7 +7,7 @@ description: Operazioni base come set_node e get_node
 redirect_from: /it/chapters/environment.html
 ---
 
-## Introduction <!-- omit in toc -->
+## Introduzione <!-- omit in toc -->
 
 In questo capitolo imparerai come eseguire semplici azioni sulla mappa.
 
