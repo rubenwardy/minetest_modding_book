@@ -13,11 +13,11 @@ In this chapter, you will learn how to perform basic actions on the map.
 
 - [Map Structure](#map-structure)
 - [Reading](#reading)
-  - [Reading Nodes](#reading-nodes)
-  - [Finding Nodes](#finding-nodes)
+	- [Reading Nodes](#reading-nodes)
+	- [Finding Nodes](#finding-nodes)
 - [Writing](#writing)
-  - [Writing Nodes](#writing-nodes)
-  - [Removing Nodes](#removing-nodes)
+	- [Writing Nodes](#writing-nodes)
+	- [Removing Nodes](#removing-nodes)
 - [Loading Blocks](#loading-blocks)
 - [Deleting Blocks](#deleting-blocks)
 
@@ -106,13 +106,14 @@ local pos_list   =
 local grow_speed = 1
 for i=1, #pos_list do
     local delta = vector.subtract(pos_list[i], pos)
-    if delta.x*delta.x + delta.y*delta.y <= 5*5 then
+    if delta.x*delta.x + delta.y*delta.y + delta.z*delta.z <= 5*5 then
         grow_speed = grow_speed + 1
     end
 end
 ```
 
 Now your code will correctly increase `grow_speed` based on mese nodes in range.
+
 Note how we compared the squared distance from the position, rather than square
 rooting it to obtain the actual distance. This is because computers find square
 roots computationally expensive, so you should avoid them as much as possible.

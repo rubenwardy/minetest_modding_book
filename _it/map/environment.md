@@ -98,13 +98,14 @@ local lista_pos   =
 local vel_crescita = 1
 for i=1, #lista_pos do
     local delta = vector.subtract(lista_pos[i], pos)
-    if delta.x*delta.x + delta.y*delta.y <= 5*5 then
+    if delta.x*delta.x + delta.y*delta.y + delta.z*delta.z <= 5*5 then
         vel_crescita = vel_crescita + 1
     end
 end
 ```
 
 Ora il codice aumenterà correttamente `vel_crescita` basandosi su quanti nodi di pietra ci sono in un intervallo.
+
 Notare come si sia comparata la distanza al quadrato dalla posizione, invece che calcolarne la radice quadrata per ottenerne la distanza vera e propria.
 Questo perché i computer trovano le radici quadrate computazionalmente pesanti, quindi dovresti evitare di usarle il più possibile.
 
