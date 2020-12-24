@@ -11,8 +11,8 @@ La sicurezza è molto importante per evitare che una mod permetta di far perdere
 
 - [Concetti fondamentali](#concetti-fondamentali)
 - [Formspec](#formspec)
-  - [Non fidarsi mai dei campi dei formspec](#non-fidarsi-mai-dei-campi-dei-formspec)
-  - [Il momento per controllare non è il momento dell'uso (Time of Check is not Time of Use)](#il-momento-per-controllare-non-e-il-momento-delluso-time-of-check-is-not-time-of-use)
+	- [Non fidarsi mai dei campi dei formspec](#non-fidarsi-mai-dei-campi-dei-formspec)
+	- [Il momento per controllare non è il momento dell'uso (Time of Check is not Time of Use)](#il-momento-per-controllare-non-è-il-momento-delluso-time-of-check-is-not-time-of-use)
 - [Ambienti (non sicuri)](#ambienti-non-sicuri)
 
 ## Concetti fondamentali

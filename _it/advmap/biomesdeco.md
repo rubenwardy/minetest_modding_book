@@ -14,9 +14,9 @@ Questo capitolo mostra come registrare nuovi biomi, come controllarne la distrib
 
 - [Cosa sono i biomi?](#cosa-sono-i-biomi)
 - [Collocare un bioma](#collocare-un-bioma)
-  - [Calore e umidità](#calore-e-umidita)
-  - [Visualizzare i confini usando i diagrammi di Voronoi](#visualizzare-i-confini-usando-i-diagrammi-di-voronoi)
-  - [Creare un diagramma di Voronoi usando Geogebra](#creare-un-diagramma-di-voronoi-usando-geogebra)
+	- [Calore e umidità](#calore-e-umidità)
+	- [Visualizzare i confini usando i diagrammi di Voronoi](#visualizzare-i-confini-usando-i-diagrammi-di-voronoi)
+	- [Creare un diagramma di Voronoi usando Geogebra](#creare-un-diagramma-di-voronoi-usando-geogebra)
 - [Registrare un bioma](#registrare-un-bioma)
 - [Cosa sono le decorazioni?](#cosa-sono-le-decorazioni)
 - [Registrare una decorazione semplice](#registrare-una-decorazione-semplice)

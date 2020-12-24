@@ -10,51 +10,26 @@ redirect_from: /it/chapters/common_mistakes.html
 
 Questo capitolo illustra gli errori più comuni e come evitarli.
 
-- [Non salvare mai ObjectRef (giocatori ed entità)](#non-salvare-mai-objectref-giocatori-ed-entita)
+- [Fai attenzione quando salvi gli ObjectRef in delle variabili (giocatori ed entità)](#fai-attenzione-quando-salvi-gli-objectref-in-delle-variabili-giocatori-ed-entità)
 - [Non fidarti dei campi dei formspec](#non-fidarti-dei-campi-dei-formspec)
 - [Imposta gli ItemStack dopo averli modificati](#imposta-gli-itemstack-dopo-averli-modificati)
 
-## Non salvare mai ObjectRef (giocatori ed entità)
+## Fai attenzione quando salvi gli ObjectRef in delle variabili (giocatori ed entità)
 
-Se l'oggetto rappresentato da un ObjectRef viene rimosso - per esempio quando il giocatore si disconnette o un'entità viene rimossa dalla memoria - chiamare metodi su quell'oggetto causerà la chiusura improvvisa del server (*crash*).
+Un ObjectRef viene invalidato quando il giocatore o l'entità che esso rappresenta abbandona il gioco.
+Ciò si verifica quando un giocatore si disconnette, o quando un'entità viene rimossa dalla memoria.
 
-Sbagliato:
+Da Minetest 5.2, i metodi degli ObjectRef ritorneranno sempre `nil` quando non validi.
+In altre parole, ogni chiamata verrà ignorata.
 
-```lua
-minetest.register_on_joinplayer(function(player)
-    local function func()
-        local pos = player:get_pos() -- MALE!
-        -- `player` viene salvato per essere utilizzato dopo.
-        -- Se il giocatore si disconnette, il server crasha
-    end
-
-    minetest.after(1, func)
-
-    foobar[player:get_player_name()] = player
-    -- RISCHIOSO
-    -- Non è consigliato fare così.
-    -- Usa invece minetest.get_connected_players() e minetest.get_player_by_name().
-end)
-```
-
-Giusto:
+Si dovrebbe evitare quanto possibile di immagazzinare gli ObjectRef in delle variabili.
+Se ciò tuttavia accade, assicurati di controllare se esiste ancora, come illustrato qui di seguito:
 
 ```lua
-minetest.register_on_joinplayer(function(player)
-    local function func(name)
-        -- Tenta di ottenere il riferimento
-        local player = minetest.get_player_by_name(name)
-
-        -- Controlla che il giocatore sia online
-        if player then
-            -- è online, procedo
-            local pos = player:get_pos()
-        end
-    end
-
-    -- Passa il nome nella funzione
-    minetest.after(1, func, player:get_player_name())
-end)
+-- questo codice funziona solo da Minetest 5.2 in poi
+if obj:get_pos() then
+	-- è valido!
+end
 ```
 
 ## Non fidarti dei campi dei formspec

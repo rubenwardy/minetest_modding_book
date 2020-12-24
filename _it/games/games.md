@@ -9,10 +9,10 @@ idx: 7.1
 
 Il punto forte di Minetest è quello di poter sviluppare giochi con facilità senza il bisogno di costruirsi il proprio motore grafico voxel, i propri algoritmi voxel, o la propria parte network.
 
-- [Cos'è un gioco?](#cose-un-gioco)
+- [Cos'è un gioco?](#cosè-un-gioco)
 - [Cartella di un gioco](#cartella-di-un-gioco)
-- [Compatibilità tra giochi](#compatibilita-tra-giochi)
-	- [Compatibilità delle API](#compatibilita-delle-api)
+- [Compatibilità tra giochi](#compatibilità-tra-giochi)
+	- [Compatibilità delle API](#compatibilità-delle-api)
 	- [Gruppi e alias](#gruppi-e-alias)
 - [Il tuo turno](#il-tuo-turno)
 

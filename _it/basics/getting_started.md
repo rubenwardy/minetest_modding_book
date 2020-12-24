@@ -16,15 +16,13 @@ Capire la struttura base della cartella di una mod è un requisito essenziale pe
 - [Cosa sono i giochi e le mod?](#cosa-sono-i-giochi-e-le-mod)
 - [Dove vengono salvate le mod?](#dove-vengono-salvate-le-mod)
 - [Cartella mod](#cartella-mod)
-- [Dipendenze](#dipendenze)
-  - [mod.conf](#modconf)
-  - [depends.txt](#dependstxt)
+- [mod.conf](#modconf)
+	- [Dipendenze](#dipendenze)
 - [Pacchetti mod](#pacchetti-mod-mod-pack)
 - [Esempio](#esempio)
-  - [Cartella mod](#cartella-mod-1)
-  - [depends.txt](#dependstxt-1)
-  - [init.lua](#initlua)
-  - [mod.conf](#modconf-1)
+	- [Cartella mod](#cartella-mod-1)
+	- [init.lua](#initlua)
+	- [mod.conf](#modconf-1)
 
 
 ## Cosa sono i giochi e le mod?
@@ -101,7 +99,17 @@ Solo il file init.lua è necessario in una mod per eseguirla al lanciare un gioc
 tuttavia, mod.conf è consigliato e altri componenti potrebbero essere richiesti a
 seconda di quello che si vuole fare.
 
-## Dipendenze
+## mod.conf
+
+Questo file è utilizzato per i metadati della mod, che includono il suo nome, la descrizione e altre informazioni.
+
+Per esempio:
+
+    name = lamiamod
+    description = Aggiunge X, Y, e Z
+    depends = mod1, mod2
+
+### Dipendenze
 
 Una dipendenza avviene quando una mod ne richiede un'altra da avviare prima di essa.
 Una mod potrebbe infatti richiedere il codice di quest'ultima, i suoi oggetti o altre risorse.
@@ -111,27 +119,10 @@ Entrambe richiedono che la mod richiesta venga caricata prima, con la differenza
 
 Una dipendenza opzionale è utile se si vuole integrare opzionalmente un'altra mod; può abilitare contenuti extra se l'utente desidera usare entrambe le mod in contemporanea.
 
-Le dipendenze vanno elencate in mod.conf.
+Le dipendenze sono specificate in un elenco separato da virgole in mod.conf.
 
-### mod.conf
-
-Questo file è utilizzato per i metadati della mod, che includono il suo nome, la descrizione e altre informazioni.
-Per esempio:
-
-    name = lamiamod
-    description = Aggiunge X, Y, e Z.
     depends = mod1, mod2
     optional_depends = mod3
-
-### depends.txt
-
-Per questioni di compatibilità con le versioni 0.4.x di Minetest, al posto di specificare le dipendenze solamente in mod.conf, c'è bisogno di fornire un file depends.txt nel quale vanno elencate tutte le dipendenze:
-
-    mod1
-    mod2
-    mod3?
-
-Ogni nome mod occupa una riga, e quelli seguiti da un punto di domanda indicano una dipendenza opzionale.
 
 ## Pacchetti mod (mod pack)
 
@@ -155,12 +146,8 @@ Segue un esempio che mette insieme tutto ciò discusso finora:
     lamiamod
     ├── textures
     │   └── lamiamod_nodo.png
-    ├── depends.txt
     ├── init.lua
     └── mod.conf
-
-### depends.txt
-    default
 
 ### init.lua
 ```lua
@@ -178,7 +165,7 @@ minetest.register_node("lamiamod:nodo", {
     descriptions = Aggiunge un nodo
     depends = default
 
-Questa mod ha come nome "lamiamod". Ha tre file di testo: init.lua, mod.conf e depends.txt.\\
+Questa mod ha come nome "lamiamod". Ha due file di testo: init.lua e mod.conf.\\
 Lo script stampa un messaggio e poi registra un nodo – che sarà spiegato nel prossimo capitolo.\\
 C'è una sola dipendenza, la [mod default](https://content.minetest.net/metapackages/default/), che
 si trova solitamente nel Minetest Game.\\

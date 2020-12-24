@@ -29,16 +29,16 @@ Tieni presente che se non si ha bisogno di ricevere input dal giocatore, per ese
 
 - [Coordinate reali o datate](#coordinate-reali-o-datate)
 - [Anatomia di un formspec](#anatomia-di-un-formspec)
-  - [Elementi](#elementi)
-  - [Intestazione](#intestazione)
+	- [Elementi](#elementi)
+	- [Intestazione](#intestazione)
 - [Esempio: indovina un numero](#esempio-indovina-un-numero)
-  - [Imbottitura e spaziatura](#imbottitura-e-spaziatura)
-  - [Ricevere i moduli di compilazione](#ricevere-i-moduli-di-compilazione)
-  - [Contesti](#contesti)
+	- [Imbottitura e spaziatura](#imbottitura-e-spaziatura)
+	- [Ricevere i moduli di compilazione](#ricevere-i-moduli-di-compilazione)
+	- [Contesti](#contesti)
 - [Ricavare un formspec](#ricavare-un-formspec)
-  - [Formspec nei nodi](#formspec-nei-nodi)
-  - [Inventario del giocatore](#inventario-del-giocatore)
-  - [Il tuo turno](#il-tuo-turno)
+	- [Formspec nei nodi](#formspec-nei-nodi)
+	- [Inventario del giocatore](#inventario-del-giocatore)
+	- [Il tuo turno](#il-tuo-turno)
 
 
 ## Coordinate reali o datate
@@ -47,6 +47,8 @@ Nelle vecchie versioni di Minetest, i formspec erano incoerenti.
 Il modo in cui elementi diversi venivano posizionati nel formspec variava in maniere inaspettate; era difficile predirne la collocazione e allinearli correttamente.
 Da Minetest 5.1.0, tuttavia, è stata introdotta una funzione chiamata Coordinate Reali (*real coordinates*), la quale punta a correggere questo comportamento tramite l'introduzione di un sistema di coordinate coerente.
 L'uso delle coordinate reali è caldamente consigliato, onde per cui questo capitolo non tratterà di quelle vecchie.
+
+Usando una versione del formspec maggiore o uguale a 2, esse saranno abilitate di base.
 
 ## Anatomia di un formspec
 
@@ -72,12 +74,12 @@ L'intestazione di un formspec contiene informazioni che devono apparire prima di
 Questo include la grandezza del formspec, la posizione, l'ancoraggio, e se il tema specifico del gioco debba venir applicato.
 
 Gli elementi nell'intestazione devono essere definiti in un ordine preciso, altrimenti ritorneranno un errore.
-L'ordine è dato nel paragrafo qui in alto e, come sempre, documentato inlua_api.txt.
+L'ordine è dato nel paragrafo qui in alto e, come sempre, documentato in lua_api.txt.
 
 La grandezza è in caselle formspec - un'unità di misura che è circa 64 pixel, ma varia a seconda della densità dello schermo e delle impostazioni del client.
 Ecco un formspec di 2x2:
 
-    formspec_version[3]
+    formspec_version[4]
     size[2,2]
 
 Notare come è stata esplicitamente definita la versione del linguaggio: senza di essa, il sistema datato sarebbe stato usato di base - che avrebbe impossibilitato il posizionamento coerente degli elementi e altre nuove funzioni.
@@ -86,9 +88,8 @@ La posizione e l'ancoraggio degli elementi sono usati per collocare il formspec 
 La posizione imposta dove si troverà (con valore predefinito al centro, `0.5,0.5`), mentre l'ancoraggio da dove partire, permettendo di allineare il formspec con i bordi dello schermo.
 Per esempio, lo si può posizionare ancorato a sinistra in questo modo:
 
-    formspec_version[3]
+    formspec_version[4]
     size[2,2]
-    real_coordinates[true]
     position[0,0.5]
     anchor[0,0.5]
 
@@ -120,6 +121,7 @@ function indovina.prendi_formspec(nome)
     local testo = "Sto pensando a un numero... Prova a indovinare!"
 
     local formspec = {
+        "formspec_version[4]",
         "size[6,3.476]",
         "label[0.375,0.5;", minetest.formspec_escape(testo), "]",
         "field[0.375,1.25;5.25,0.8;numero;Numero;]",
@@ -295,7 +297,7 @@ minetest.register_node("miamod:tastodestro", {
 
         local meta = minetest.get_meta(pos)
         meta:set_string("formspec",
-                "formspec_version[3]" ..
+                "formspec_version[4]" ..
                 "size[5,5]"..
                 "label[1,1;Questo è mostrato al premere col destro]"..
                 "field[1,2;2,1;x;x;]")

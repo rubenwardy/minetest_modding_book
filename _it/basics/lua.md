@@ -13,14 +13,14 @@ In questo capitolo parleremo della programmazione in Lua, degli strumenti necess
 
 - [Editor di codice](#editor-di-codice)
 - [Programmare in Lua](#programmare-in-lua)
-  - [Flusso del programma](#flusso-del-programma)
-  - [Tipi di variabili](#tipi-di-variabili)
-  - [Operatori matematici](#operatori-matematici)
-  - [Selezione](#selezione)
-  - [Operatori logici](#operatori-logici)
+	- [Flusso del programma](#flusso-del-programma)
+	- [Tipi di variabili](#tipi-di-variabili)
+	- [Operatori matematici](#operatori-matematici)
+	- [Selezione](#selezione)
+	- [Operatori logici](#operatori-logici)
 - [Programmare](#programmare)
 - [Portata locale e globale](#portata-locale-e-globale)
-  - [Local dovrebbe essere usato il più possibile](#local-dovrebbe-essere-usato-il-piu-possibile)
+	- [Local dovrebbe essere usato il più possibile](#local-dovrebbe-essere-usato-il-piu-possibile)
 - [Inclusione di altri script Lua](#inclusione-di-altri-script-lua)
 
 ## Editor di codice

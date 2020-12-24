@@ -17,7 +17,7 @@ Non c'è il modo giusto e il modo sbagliato per ideare una mod, in quanto il lor
 - [Coesione, dipendenze, e separazione degli ambiti](#coesione-dipendenze-e-separazione-degli-ambiti)
 - [Osservatore](#osservatore)
 - [Modello-Vista-Controllo](#modello-vista-controllo)
-  - [API-Vista](#api-vista)
+	- [API-Vista](#api-vista)
 - [Conclusione](#conclusione)
 
 

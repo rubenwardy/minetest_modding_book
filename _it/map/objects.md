@@ -86,18 +86,6 @@ Come mostrato nella prossima sezione, le entità possono avere delle proprietà 
 Un'entità ha una tabella di definizione che ricorda quella degli oggetti (intesi come *items*).
 Questa tabella può contenere metodi di callback, proprietà iniziali e membri personalizzati.
 
-Tuttavia, c'è una differenza sostanziale tra le due; perché quando un'entità appare (come quando viene creata o caricata) una nuova tabella viene generata per quell'entità, *ereditando* le proprietà dalla tabella originaria tramite una metatabella.
-Ci si riferisce solitamente a questa nuova tabella con Tabella di Entità Lua e può essere usata per immagazzinare variabili per quella specifica entità.
-
-Le metatabelle rappresentano un aspetto importante di Lua, che bisogna tenere bene a mente in quanto sono una parte essenziale del linguaggio.
-
-In parole povere, le metatabelle permettono di controllare come si comporta una tabella quando viene usata una certa sintassi in Lua.
-Vengono usate soprattutto per la loro abilità di usare un'altra tabella come prototipo, fungendo da valori di base di quest'ultima quando essa non contiene le proprietà e i metodi richiesti.
-
-Mettiamo che si voglia accedere al campo X della tabella A.
-Se la tabella A ha quel campo, allora ritornerà normalmente.
-Tuttavia, se X non esiste ma esiste una metatabella B associata ad A, B verrà ispezionata alla ricerca di un eventuale X prima di ritornare (eventualmente) nil.
-
 ```lua
 local MiaEntita = {
     initial_properties = {
@@ -119,6 +107,19 @@ function MiaEntita:imposta_messaggio(msg)
     self.messaggio = msg
 end
 ```
+
+Tuttavia, c'è una differenza sostanziale tra entità e oggetti; perché quando un'entità appare (come quando viene creata o caricata) una nuova tabella viene generata per quell'entità, *ereditando* le proprietà dalla tabella originaria tramite una metatabella.
+
+<!--
+Questa eredità avviene usando una metatabella. Le metatabelle rappresentano un aspetto importante di Lua, che bisogna tenere bene a mente in quanto sono una parte essenziale del linguaggio.
+
+In parole povere, le metatabelle permettono di controllare come si comporta una tabella quando viene usata una certa sintassi in Lua.
+Vengono usate soprattutto per la loro abilità di usare un'altra tabella come prototipo, fungendo da valori di base di quest'ultima quando essa non contiene le proprietà e i metodi richiesti.
+
+Mettiamo che si voglia accedere al campo `x` della tabella `a` (`a.x`).
+Se la tabella `a` ha quel campo, allora ritornerà normalmente.
+Tuttavia, se `a.x` non esiste ma esiste una metatabella `b` associata ad `a`, `b` verrà ispezionata alla ricerca di un eventuale `b.x` da ritornare al posto di `nil`.
+-->
 
 Sia la tabella di un ObjectRef che quella di un'entità forniscono modi per ottenerne la controparte:
 

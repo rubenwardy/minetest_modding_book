@@ -14,13 +14,13 @@ redirect_from:
 In questo capitolo imparerai i vari modi per immagazzinare dati.
 
 - [Metadati](#metadati)
-  - [Cos'è un metadato?](#cos-e-un-metadato)
-  - [Ottenere i metadati di un oggetto](#ottenere-i-metadati-di-un-oggetto)
-  - [Lettura e scrittura](#lettura-e-scrittura)
-  - [Chiavi speciali](#chiavi-speciali)
-  - [Immagazzinare tabelle](#immagazzinare-tabelle)
-  - [Metadati privati](#metadati-privati)
-  - [Tabelle Lua](#tabelle-lua)
+	- [Cos'è un metadato?](#cos-e-un-metadato)
+	- [Ottenere i metadati di un oggetto](#ottenere-i-metadati-di-un-oggetto)
+	- [Lettura e scrittura](#lettura-e-scrittura)
+	- [Chiavi speciali](#chiavi-speciali)
+	- [Immagazzinare tabelle](#immagazzinare-tabelle)
+	- [Metadati privati](#metadati-privati)
+	- [Tabelle Lua](#tabelle-lua)
 - [Storaggio mod](#storaggio-mod)
 - [Database](#database)
 - [Decidere quale usare](#decidere-quale-usare)
@@ -107,7 +107,7 @@ data = minetest.deserialize(minetest:get_string("foo"))
 
 ### Metadati privati
 
-Le voci nei metadati di un nodo possono essere segnate come private, senza venire quindi inviate al client (al contrario delle normali).
+Di base, tutti i metadati dei nodi sono inviati al client. Rendendo le loro chiavi private, questo invece non succede.
 
 ```lua
 meta:set_string("segreto", "asd34dn")

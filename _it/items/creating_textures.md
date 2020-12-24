@@ -16,12 +16,12 @@ Fornire spiegazioni dettagliate non rientra tuttavia nell'ambito di questo libro
 Se si vuole approfondire, ci sono comunque molti [buoni tutorial online](http://www.photonstorm.com/art/tutorials-art/16x16-pixel-art-tutorial) disponibili, che si occupano di pixel art in modo molto più dettagliato.
 
 - [Tecniche](#tecniche)
-  - [Usare la matita](#usare-la-matita)
-  - [Piastrellatura (tiling)](#piastrellatura-tiling)
-  - [Trasparenza](#trasparenza)
+	- [Usare la matita](#usare-la-matita)
+	- [Piastrellatura (tiling)](#piastrellatura-tiling)
+	- [Trasparenza](#trasparenza)
 - [Programmi](#programmi)
-  - [MS Paint](#ms-paint)
-  - [GIMP](#gimp)
+	- [MS Paint](#ms-paint)
+	- [GIMP](#gimp)
 
 ## Tecniche
 

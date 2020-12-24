@@ -11,21 +11,21 @@ redirect_from: /it/chapters/releasing.html
 Rilasciare (o pubblicare) una mod permette ad altre persone di poterne usufruire.
 Una volta che una mod è stata rilasciata potrebbe venir usata nelle partite locali (a giocatore singolo) o nei server, inclusi quelli pubblici.
 
-- [Scegliere la licenza](#scegliere-la-licenza)
-  - [LGPL e CC-BY-SA](#lgpl-e-cc-by-sa)
-  - [CC0](#cc0)
-  - [MIT](#mit)
+- [Scegliere una licenza](#scegliere-una-licenza)
+	- [LGPL e CC-BY-SA](#lgpl-e-cc-by-sa)
+	- [CC0](#cc0)
+	- [MIT](#mit)
 - [Impacchettare](#impacchettare)
-  - [README.txt](#readmetxt)
-  - [description.txt](#descriptiontxt)
-  - [screenshot.png](#screenshotpng)
+	- [README.txt](#readmetxt)
+	- [mod.conf / game.conf](#modconf--gameconf)
+	- [screenshot.png](#screenshotpng)
 - [Caricare](#caricare)
-  - [Sistemi di Controllo Versione](#sistemi-di-controllo-versione)
-  - [Allegati sul forum](#allegati-sul-forum)
+	- [Sistemi di Controllo Versione](#sistemi-di-controllo-versione)
+	- [Allegati sul forum](#allegati-sul-forum)
+- [Rilasciare su ContentDB](#rilasciare-su-contentdb)
 - [Creare la discussione sul forum](#creare-la-discussione-sul-forum)
-  - [Titolo](#titolo)
 
-## Scegliere la licenza
+## Scegliere una licenza
 
 Avrai bisogno di specificare una licenza per la tua mod.
 Questo è importante perché dice alle altre persone cosa possono e non possono fare col tuo lavoro.
@@ -73,18 +73,18 @@ Il README dovrebbe dichiarare:
 * Versione corrente della mod;
 * Eventualmente, dove segnalare i problemi o comunque richiedere aiuto.
 
-### description.txt
+### mod.conf / game.conf
 
-Questo file spiega cosa fa la mod.
+Assicurati di aggiungere una descrizione che spieghi cosa fa la mod, usando la chiave `description`.
 Cerca di essere preciso e coinciso: dovrebbe essere breve perché il contenuto verrà mostrato nell'installer del motore di gioco, che ha uno spazio limitato.
 
 Per esempio, consigliato:
 
-    Aggiunge zuppa, torte, pane e succhi.
+    description = Aggiunge zuppa, torte, pane e succhi
 
 Sconsigliato:
 
-    Cibo per Minetest.
+    description = Cibo per Minetest
 
 ### screenshot.png
 
@@ -95,83 +95,43 @@ Lo screen verrà mostrato nel bazar delle mod (sono tutte gratuite).
 ## Caricare
 
 Per far sì che un potenziale utente possa scaricare la tua mod, c'è bisogno di caricarla in uno spazio pubblico.
-Ci sono svariati modi per fare ciò quindi usa l'approccio che ritieni più opportuno; l'importante è che esso rispetti i requisiti qui elencati, ed eventuale richieste aggiuntive aggiunta dai moderatori del forum:
+Ci sono svariati modi per fare ciò quindi usa l'approccio che ritieni più opportuno; l'importante è che esso rispetti i requisiti qui elencati, ed eventuale richieste aggiuntive dei moderatori del forum:
 
-* **Stabile**      - Il sito che conterrà il file non dovrebbe essere propenso a morire da un momento all'altro senza preavviso;
-* **Link diretto** - Dovresti essere in grado di cliccare su un link sul forum e scaricare il file senza il bisogno di dover passare per altre pagine;
+* **Stabile**      - Il sito che conterrà il file non dovrebbe essere propenso a chiudere i battenti da un momento all'altro senza preavviso;
+* **Link diretto** - Dovresti essere in grado di cliccare su un link e scaricare il file senza il bisogno di dover passare per altre pagine;
 * **Senza virus**  - Le mod con contenuti malevoli saranno rimosse dal forum.
+
+ContentDB soddisfa questi requisiti, richiedendo giusto un file .zip.
 
 ### Sistemi di Controllo Versione
 
-È consigliato usare un sistema di controllo versione che:
+Un Sistema di Controllo Versione (VCS, *Version Control System*) è un programma che gestisce i cambiamenti di altri programmi, spesso facilitandone la distribuzione e la collaborazione.
 
-* Permetta agli altri sviluppatori di inviare le loro modifiche facilmente;
-* Permetta al codice di essere visualizzato prima di essere scaricato;
-* Permetta agli utenti di fare segnalazioni (bug, domande ecc).
+La maggior parte dei creatori di mod su Minetest usa Git e un sito per ospitare il loro codice come GitHub o GitLab.
 
-La maggior parte dei creatori di mod su Minetest usa GitHub o GitLab come sito per ospitare il loro codice, ma esistono anche altre opzioni.
-
-Usare siti come GitHub e GitLab può essere difficile all'inizio.
+Usare git può essere difficile all'inizio.
 Se hai bisogno di una mano e mastichi l'inglese, prova a dare un occhio a [Pro Git book](http://git-scm.com/book/en/v1/Getting-Started) - gratis da leggere online.
 
-### Allegati sul forum
+## Rilasciare su ContentDB
 
-Un'alternativa all'usare un sistema di controllo versione è il caricare le mod come allegati sul forum.
-Questo può essere fatto alla creazione della discussione nella sezione delle mod (spiegato sotto).
+ContentDB è il luogo ufficiale dove trovare e distribuire mod, giochi e pacchetti texture.
+Gli utenti possono manualmente andare alla ricerca di contenuti tramite il sito, o scaricarli e installarli direttamente dall'integrazione presente nel menù principale di Minetest.
 
-Prima di tutto, avrai bisogno di creare uno zip con i file della mod (il procedimento varia da sistema operativo a sistema operativo, ma solitamente si parla di premere il tasto destro su uno dei file dopo averli selezionati tutti).
-
-Quando crei una discussione sul forum - nella pagina "Create a Topic" illustrata sotto - vai alla "Upload Attachment" situata in basso.
-Clicca poi su "Browse", selezionando il file zip.
-È inoltre consigliato specificare la versione della mod nel campo dei commenti ("File comment").
-
-<figure>
-    <img src="{{ page.root }}/static/releasing_attachments.png" alt="Upload Attachment">
-    <figcaption>
-        La scheda Upload Attachment.
-    </figcaption>
-</figure>
+Iscriviti su [ContentDB](https://content.minetest.net) e aggiungi il tuo lavoro.
+Assicurati di leggere le linee guida (in inglese) nella sezione d'aiuto (*Help*).
 
 ## Creare la discussione sul forum
+
+Puoi anche creare una discussione sul forum per far in modo che gli utenti possano discutere ciò che hai fatto.
+
+Per le mod usa la sezione ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (*Work In Progress*), per i giochi invece ["WIP Games"](https://forum.minetest.net/viewforum.php?f=50).
+
 
 Puoi ora creare la discussione nella sezione ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (WIP sta per *Work In Progress*, lavori in corso).\\
 Quando ritieni che la tua mod abbia raggiunto la sua prima versione ufficiale, puoi [richiedere (in inglese) che venga spostata](https://forum.minetest.net/viewtopic.php?f=11&t=10418) in "Mod Releases".
 
 La discussione dovrebbe contenere contenuti simili al README, con giusto un po' più di coinvolgimento e il link per scaricare la mod.
 È buona cosa aggiungere anche degli eventuali screenshot per far capire al volo cosa fa la mod, se possibile.
-
-La formattazione del forum di Minetest è in bbcode.
-Segue un esempio di una mod chiamata "superspecial" (si è tenuto l'esempio in inglese dato che bisogna scrivere appunto in inglese sul forum, NdT):
-
-
-    Adds magic, rainbows and other special things.
-
-    See download attached.
-
-    [b]Version:[/b] 1.1
-    [b]License:[/b] LGPL 2.1 or later
-
-    Dependencies: default mod (found in minetest_game)
-
-    Report bugs or request help on the forum topic.
-
-    [h]Installation[/h]
-
-    Unzip the archive, rename the folder to superspecial and
-    place it in minetest/mods/
-
-    (  GNU/Linux: If you use a system-wide installation place
-        it in ~/.minetest/mods/.  )
-
-    (  If you only want this to be used in a single world, place
-        the folder in worldmods/ in your world directory.  )
-
-    For further information or help see:
-    [url]https://wiki.minetest.net/Installing_Mods[/url]
-
-Se hai intenzione di usare questo esempio per la tua mod, ricordati ovviamente di cambiare "superspecial" con il nome vero e proprio.
-
-### Titolo
 
 Il titolo della discussione deve seguire uno dei seguenti formati:
 

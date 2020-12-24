@@ -13,17 +13,17 @@ Saper registrare nuovi nodi, oggetti fabbricabili e conseguenti ricette, è un r
 
 - [Cosa sono i nodi e gli oggetti?](#cosa-sono-i-nodi-e-gli-oggetti)
 - [Registrare gli oggetti](#registrare-gli-oggetti)
-  - [Nomi oggetto e alias](#nomi-oggetto-e-alias)
-  - [Texture](#texture)
+	- [Nomi oggetto e alias](#nomi-oggetto-e-alias)
+	- [Texture](#texture)
 - [Registrare un nodo base](#registrare-un-nodo-base)
 - [Azioni e callback](#azioni-e-callback)
-  - [on_use](#onuse)
+	- [on_use](#onuse)
 - [Fabbricazione](#fabbricazione)
-  - [Fisse (shaped)](#fisse-shaped)
-  - [Informi (shapeless)](#informi-shapeless)
-  - [Cottura (cooking) e Carburante (fuel)](#cottura-cooking-e-carburante-fuel)
+	- [Fisse (shaped)](#fisse-shaped)
+	- [Informi (shapeless)](#informi-shapeless)
+	- [Cottura (cooking) e Carburante (fuel)](#cottura-cooking-e-carburante-fuel)
 - [Gruppi](#gruppi)
-- [Strumenti, Capacità e Friabilità](#strumenti-capacita-e-friabilita)
+- [Strumenti, Capacità e Friabilità](#strumenti-capacità-e-friabilità)
 
 ## Cosa sono i nodi e gli oggetti?
 

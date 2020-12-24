@@ -13,11 +13,11 @@ In questo capitolo imparerai come eseguire semplici azioni sulla mappa.
 
 - [Struttura della mappa](#struttura-della-mappa)
 - [Lettura](#lettura)
-  - [Lettura dei nodi](#lettura-dei-nodi)
-  - [Ricerca dei nodi](#ricerca-dei-nodi)
+	- [Lettura dei nodi](#lettura-dei-nodi)
+	- [Ricerca dei nodi](#ricerca-dei-nodi)
 - [Scrittura](#scrittura)
-  - [Scrittura dei nodi](#scrittura-dei-nodi)
-  - [Rimozione dei nodi](#rimozione-dei-nodi)
+	- [Scrittura dei nodi](#scrittura-dei-nodi)
+	- [Rimozione dei nodi](#rimozione-dei-nodi)
 - [Caricamento blocchi](#caricamento-blocchi)
 - [Cancellazione blocchi](#cancellazione-blocchi)
 

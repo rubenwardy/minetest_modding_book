@@ -13,9 +13,9 @@ Scrivere i testing d'unità per le funzioni dove vengono chiamate quelle di Mine
 
 - [Installare Busted](#installare-busted)
 - [Il tuo primo test](#il-tuo-primo-test)
-  - [init.lua](#initlua)
-  - [api.lua](#apilua)
-  - [tests/api_spec.lua](#testsapispeclua)
+	- [init.lua](#initlua)
+	- [api.lua](#apilua)
+	- [tests/api_spec.lua](#testsapispeclua)
 - [Simulare: usare funzioni esterne](#simulare-usare-funzioni-esterne)
 - [Controllare commit con Travis](#controllare-commit-con-travis)
 - [Conclusione](#conclusione)

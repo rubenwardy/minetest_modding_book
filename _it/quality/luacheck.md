@@ -13,11 +13,11 @@ In questo capitolo, imparerai come usare uno strumento chiamato LuaCheck per sca
 LuaCheck può essere usato in combinazione con l'editor per fornire avvertimenti vari.
 
 - [Installare LuaCheck](#installare-luacheck)
-  - [Windows](#windows)
-  - [Linux](#linux)
+	- [Windows](#windows)
+	- [Linux](#linux)
 - [Eseguire LuaCheck](#eseguire-luacheck)
 - [Configurare LuaCheck](#configurare-luacheck)
-  - [Risoluzione problemi](#risoluzione-problemi)
+	- [Risoluzione problemi](#risoluzione-problemi)
 - [Uso nell'editor](#uso-nelleditor)
 - [Controllare i commit con Travis](#controllare-i-commit-con-travis)
 
