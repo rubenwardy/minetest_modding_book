@@ -15,10 +15,10 @@ degrad:
 
 In questo capitolo imparerai come manipolare gli oggetti e come definirne di tuoi.
 
-- [Cosa sono gli oggetti, i giocatori e le entità?](#cosa-sono-gli-oggetti-i-giocatori-e-le-entita)
-- [Posizione e velocità](#posizione-e-velocita)
-- [Proprietà degli oggetti](#proprieta-degli-oggetti)
-- [Entità](#entita)
+- [Cosa sono gli oggetti, i giocatori e le entità?](#cosa-sono-gli-oggetti-i-giocatori-e-le-entità)
+- [Posizione e velocità](#posizione-e-velocità)
+- [Proprietà degli oggetti](#proprietà-degli-oggetti)
+- [Entità](#entità)
 - [Oggetti figli](#oggetti-figli)
 - [Il tuo turno](#il-tuo-turno)
 
@@ -129,7 +129,7 @@ print("L'entità si trova a " .. minetest.pos_to_string(oggetto:get_pos()))
 ```
 
 Ci sono diversi callback disponibili da usare per le entità.
-Una lista completa può essere trovata in [lua_api.txt]({{ page.root }}/lua_api.html#registered-entities).
+Una lista completa può essere trovata in [lua_api.txt](https://minetest.gitlab.io/minetest/minetest-namespace-reference/#registered-definition-tables).
 
 ```lua
 function MiaEntita:on_step(dtime)

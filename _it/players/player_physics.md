@@ -14,8 +14,8 @@ Per esempio, un valore di 2 sulla gravità, renderà la gravità di un utente du
 
 - [Esempio base](#esempio-base)
 - [Sovrascritture disponibili](#sovrascritture-disponibili)
-  - [Vecchio sistema di movimento](#vecchio-sistema-di-movimento)
-- [Incompatibilità tra mod](#incompatibilita-tra-mod)
+	- [Vecchio sistema di movimento](#vecchio-sistema-di-movimento)
+- [Incompatibilità tra mod](#incompatibilità-tra-mod)
 - [Il tuo turno](#il-tuo-turno)
 
 ## Esempio base
@@ -36,7 +36,7 @@ minetest.register_chatcommand("antigrav", {
 
 ## Sovrascritture disponibili
 
-`set_physics_override()` è una tabella. Stando a [lua_api.txt]({{ page.root }}/lua_api.html#player-only-no-op-for-other-objects), le chiavi possono essere:
+`set_physics_override()` è una tabella. Stando a [lua_api.txt](https://minetest.gitlab.io/minetest/class-reference/#player-only-no-op-for-other-objects), le chiavi possono essere:
 
 * `speed`: moltiplicatore della velocità di movimento (predefinito: 1)
 * `jump`: moltiplicatore del salto (predefinito: 1)

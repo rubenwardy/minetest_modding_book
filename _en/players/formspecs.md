@@ -77,7 +77,7 @@ on multiple lines, like so:
 
 Elements are items such as text boxes or buttons, or can be metadata such
 as size or background. You should refer to
-[lua_api.txt](../../lua_api.html#elements)
+[lua_api.txt](https://minetest.gitlab.io/minetest/formspec/)
 for a list of all possible elements.
 
 
@@ -89,7 +89,7 @@ game-wide theme should be applied.
 
 The elements in the header must be defined in a specific order, otherwise you
 will see an error. This order is given in the above paragraph, and, as always,
-documented in [lua_api.txt](../../lua_api.html#sizewhfixed_size).
+documented in the Lua API reference.
 
 The size is in formspec slots - a unit of measurement which is roughly
 around 64 pixels, but varies based on the screen density and scaling

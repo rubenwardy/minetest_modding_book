@@ -151,7 +151,7 @@ print("entity is at " .. minetest.pos_to_string(object:get_pos()))
 ```
 
 There are a number of available callbacks for use with entities.
-A complete list can be found in [lua_api.txt]({{ page.root }}/lua_api.html#registered-entities).
+A complete list can be found in [lua_api.txt](https://minetest.gitlab.io/minetest/minetest-namespace-reference/#registered-definition-tables).
 
 ```lua
 function MyEntity:on_step(dtime)

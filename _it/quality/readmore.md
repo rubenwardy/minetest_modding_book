@@ -12,7 +12,7 @@ Dopo aver letto questo libro, se mastichi l'inglese dai un occhio a ciò che seg
 
 ### Modding di Minetest
 
-* Riferimento alla API Lua di Minetest - [versione HTML]({{ page.root }}/lua_api.html) |
+* Riferimento alla API Lua di Minetest - [versione HTML](https://minetest.gitlab.io/minetest/) |
   [versione solo testo](https://github.com/minetest/minetest/blob/master/doc/lua_api.txt).
 * Esplora la [Wiki Sviluppatore](http://dev.minetest.net/Main_Page).
 * Spulcia le [mod esistenti](https://forum.minetest.net/viewforum.php?f=11).

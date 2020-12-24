@@ -14,15 +14,15 @@ Heads Up Display (HUD) elements allow you to show text, images, and other graphi
 The HUD doesn't accept user input; for that, you should use a [formspec](formspecs.html).
 
 - [Positioning](#positioning)
-  - [Position and Offset](#position-and-offset)
-  - [Alignment](#alignment)
-  - [Scoreboard](#scoreboard)
+	- [Position and Offset](#position-and-offset)
+	- [Alignment](#alignment)
+	- [Scoreboard](#scoreboard)
 - [Text Elements](#text-elements)
-  - [Parameters](#parameters)
-  - [Our Example](#our-example)
+	- [Parameters](#parameters)
+	- [Our Example](#our-example)
 - [Image Elements](#image-elements)
-  - [Parameters](#parameters-1)
-  - [Scale](#scale)
+	- [Parameters](#parameters-1)
+	- [Scale](#scale)
 - [Changing an Element](#changing-an-element)
 - [Storing IDs](#storing-ids)
 - [Other Elements](#other-elements)
@@ -291,4 +291,4 @@ end)
 
 ## Other Elements
 
-Read [lua_api.txt]({{ page.root }}/lua_api.html#hud-element-types) for a complete list of HUD elements.
+Read [lua_api.txt](https://minetest.gitlab.io/minetest/hud/) for a complete list of HUD elements.

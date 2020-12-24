@@ -13,15 +13,15 @@ Le HUD (Heads Up Display) ti permettono di mostrare testi, immagini e altri elem
 Le HUD, infatti, non accettano input dall'utente, lasciando quel ruolo ai [formspec](formspecs.html).
 
 - [Posizionamento](#posizionamento)
-  - [Posizione e scostamento](#posizione-e-scostamento)
-  - [Allineamento](#allineamento)
-  - [Esempio: tabellone segnapunti](#esempio-tabellone-segnapunti)
+	- [Posizione e scostamento](#posizione-e-scostamento)
+	- [Allineamento](#allineamento)
+	- [Esempio: tabellone segnapunti](#esempio-tabellone-segnapunti)
 - [Elementi di testo](#elementi-di-testo)
-  - [Parametri](#parametri)
-  - [Tornando all'esempio](#tornando-all-esempio)
+	- [Parametri](#parametri)
+	- [Tornando all'esempio](#tornando-allesempio)
 - [Elementi immagine](#elementi-immagine)
-  - [Parametri](#parametri-1)
-  - [Tornando all'esempio](#tornando-all-esempio-1)
+	- [Parametri](#parametri-1)
+	- [Tornando all'esempio](#tornando-allesempio-1)
 - [Cambiare un elemento](#cambiare-un-elemento)
 - [Salvare gli ID](#salvare-gli-id)
 - [Altri elementi](#altri-elementi)
@@ -278,4 +278,4 @@ end)
 
 ## Altri elementi
 
-Dai un occhio a [lua_api.txt]({{ page.root }}/lua_api.html#hud-element-types) per una lista completa degli elementi HUD.
+Dai un occhio a [lua_api.txt](https://minetest.gitlab.io/minetest/hud/) per una lista completa degli elementi HUD.

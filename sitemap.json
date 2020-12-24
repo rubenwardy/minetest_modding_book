@@ -22,14 +22,6 @@
 
 	{% assign num = num | plus:1 %}
 {% endfor %}
-
-	{
-		"title": "Lua Modding API Reference",
-		"loc": "https://rubenwardy.com/minetest_modding_book/lua_api.html",
-		"description": "lua_api.html is an HTML version of lua_api.txt",
-		"priority": 0.75
-	},
-
 	{
 		"title": "Download Examples",
 		"loc": "https://github.com/rubenwardy/minetest_modding_book/archive/examples.zip",

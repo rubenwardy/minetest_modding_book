@@ -28,12 +28,12 @@ The node params are used to control how a node is individually rendered.
 
 - [Cubic Nodes: Normal and Allfaces](#cubic-nodes-normal-and-allfaces)
 - [Glasslike Nodes](#glasslike-nodes)
-  - [Glasslike_Framed](#glasslikeframed)
+	- [Glasslike_Framed](#glasslike_framed)
 - [Airlike Nodes](#airlike-nodes)
 - [Lighting and Sunlight Propagation](#lighting-and-sunlight-propagation)
 - [Liquid Nodes](#liquid-nodes)
 - [Node Boxes](#node-boxes)
-  - [Wallmounted Node Boxes](#wallmounted-node-boxes)
+	- [Wallmounted Node Boxes](#wallmounted-node-boxes)
 - [Mesh Nodes](#mesh-nodes)
 - [Signlike Nodes](#signlike-nodes)
 - [Plantlike Nodes](#plantlike-nodes)
@@ -442,5 +442,5 @@ This is not a comprehensive list, there are more types including:
   The torches in Minetest Game actually use two different node definitions of
   mesh nodes (default:torch and default:torch_wall).
 
-As always, read the [Lua API documentation](../../lua_api.html#node-drawtypes)
+As always, read the [Lua API documentation](https://minetest.gitlab.io/minetest/nodes/#node-drawtypes)
 for the complete list.

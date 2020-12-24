@@ -9,8 +9,8 @@ redirect_from: /it/chapters/node_drawtypes.html
 
 ## Introduzione <!-- omit in toc -->
 
-Il metodo col quale un nodo viene disegnato in gioco è chiamato *drawtype*. 
-Ci sono diversi tipi di drawtype: il loro comportamento è determinato dalle proprietà impostate durante la definizione del tipo di nodo. 
+Il metodo col quale un nodo viene disegnato in gioco è chiamato *drawtype*.
+Ci sono diversi tipi di drawtype: il loro comportamento è determinato dalle proprietà impostate durante la definizione del tipo di nodo.
 Queste proprietà sono fisse, uguali per tutte le istanze, tuttavia è possibile manipolarne alcune per singolo nodo usando una cosa chiamata `param2`.
 
 Il concetto di nodo è stato introdotto nello scorso capitolo, ma non è mai stata data una definizione completa.
@@ -410,4 +410,4 @@ Questa non è una lista esaustiva, in quanto ci sono infatti altri tipi di nodi 
   Le torce in Minetest Game usano in verità due diverse definizioni dei
   nodi mesh (default:torch e default:torch_wall).
 
-Come al solito, consulta la [documentazione sull'API Lua](../../lua_api.html#node-drawtypes) per l'elenco completo.
+Come al solito, consulta la [documentazione sull'API Lua](https://minetest.gitlab.io/minetest/nodes/#node-drawtypes) per l'elenco completo.

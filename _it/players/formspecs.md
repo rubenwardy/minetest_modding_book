@@ -64,7 +64,7 @@ Si possono concatenare più elementi, piazzandoli eventualmente su più linee:
     bo[param1]
 
 Gli elementi sono o oggetti come i campi di testo e i pulsanti, o dei metadati come la grandezza e lo sfondo.
-Per una lista esaustiva di tutti i possibili elementi, si rimanda a [lua_api.txt](../../lua_api.html#elements).
+Per una lista esaustiva di tutti i possibili elementi, si rimanda a [lua_api.txt](https://minetest.gitlab.io/minetest/formspec/).
 
 ### Intestazione
 
@@ -72,7 +72,7 @@ L'intestazione di un formspec contiene informazioni che devono apparire prima di
 Questo include la grandezza del formspec, la posizione, l'ancoraggio, e se il tema specifico del gioco debba venir applicato.
 
 Gli elementi nell'intestazione devono essere definiti in un ordine preciso, altrimenti ritorneranno un errore.
-L'ordine è dato nel paragrafo qui in alto e, come sempre, documentato in [lua_api.txt](../../lua_api.html#sizewhfixed_size).
+L'ordine è dato nel paragrafo qui in alto e, come sempre, documentato inlua_api.txt.
 
 La grandezza è in caselle formspec - un'unità di misura che è circa 64 pixel, ma varia a seconda della densità dello schermo e delle impostazioni del client.
 Ecco un formspec di 2x2:
