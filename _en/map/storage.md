@@ -14,13 +14,13 @@ redirect_from:
 In this chapter, you will learn how you can store data.
 
 - [Metadata](#metadata)
-  - [What is Metadata?](#what-is-metadata)
-  - [Obtaining a Metadata Object](#obtaining-a-metadata-object)
-  - [Reading and Writing](#reading-and-writing)
-  - [Special Keys](#special-keys)
-  - [Storing Tables](#storing-tables)
-  - [Private Metadata](#private-metadata)
-  - [Lua Tables](#lua-tables)
+	- [What is Metadata?](#what-is-metadata)
+	- [Obtaining a Metadata Object](#obtaining-a-metadata-object)
+	- [Reading and Writing](#reading-and-writing)
+	- [Special Keys](#special-keys)
+	- [Storing Tables](#storing-tables)
+	- [Private Metadata](#private-metadata)
+	- [Lua Tables](#lua-tables)
 - [Mod Storage](#mod-storage)
 - [Databases](#databases)
 - [Deciding Which to Use](#deciding-which-to-use)
@@ -111,7 +111,7 @@ Minetest offers two formats for doing this: Lua and JSON.
 
 The Lua method tends to be a lot faster and matches the format Lua
 uses for tables, while JSON is a more standard format, is better
-structured, and is well suited when you need to exchange information
+structured, and is well suited for when you need to exchange information
 with another program.
 
 ```lua
@@ -123,8 +123,8 @@ data = minetest.deserialize(minetest:get_string("foo"))
 
 ### Private Metadata
 
-Entries in Node Metadata can be marked as private, and not sent to the client.
-Entries not marked as private will be sent to the client.
+By default, all node metadata is sent to the client.
+You can mark keys as private to prevent this.
 
 ```lua
 meta:set_string("secret", "asd34dn")

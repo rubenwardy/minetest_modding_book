@@ -10,54 +10,27 @@ redirect_from: /en/chapters/common_mistakes.html
 
 This chapter details common mistakes, and how to avoid them.
 
-- [Never Store ObjectRefs (ie: players or entities)](#never-store-objectrefs-ie-players-or-entities)
+- [Be Careful When Storing ObjectRefs (ie: players or entities)](#be-careful-when-storing-objectrefs-ie-players-or-entities)
 - [Don't Trust Formspec Submissions](#dont-trust-formspec-submissions)
 - [Set ItemStacks After Changing Them](#set-itemstacks-after-changing-them)
 
-## Never Store ObjectRefs (ie: players or entities)
+## Be Careful When Storing ObjectRefs (ie: players or entities)
 
-If the object an ObjectRef represents is deleted - for example, if the player goes
-offline or the entity is unloaded - then calling methods on that object
-will result in a crash.
+An ObjectRef is invalidated when the player or entity it represents leaves
+the game. This may happen when the player goes offline, or the entity is unloaded
+or removed.
 
-For example, don't do this:
+The methods of ObjectRefs will always return nil when invalid, since Minetest 5.2.
+Any call will essentially be ignored.
 
-```lua
-minetest.register_on_joinplayer(function(player)
-    local function func()
-        local pos = player:get_pos() -- BAD!
-        -- `player` is stored then accessed later.
-        -- If the player leaves in that second, the server *will* crash.
-    end
-
-    minetest.after(1, func)
-
-    foobar[player:get_player_name()] = player
-    -- RISKY
-    -- It's not recommended to do this.
-    -- Use minetest.get_connected_players() and
-    -- minetest.get_player_by_name() instead.
-end)
-```
-
-Do this instead:
+You should avoid storing ObjectRefs where possible. If you do to store an
+ObjectRef, you should make you check it before use, like so:
 
 ```lua
-minetest.register_on_joinplayer(function(player)
-    local function func(name)
-        -- Attempt to get the ref again
-        local player = minetest.get_player_by_name(name)
-
-        -- Check that the player is still online
-        if player then
-            -- Yay! This is fine
-            local pos = player:get_pos()
-        end
-    end
-
-    -- Pass the name into the function
-    minetest.after(1, func, player:get_player_name())
-end)
+-- This only works in Minetest 5.2+
+if obj:get_pos() then
+	-- is valid!
+end
 ```
 
 ## Don't Trust Formspec Submissions

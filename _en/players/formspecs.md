@@ -35,16 +35,16 @@ unexpected windows tend to disrupt gameplay.
 
 - [Real or Legacy Coordinates](#real-or-legacy-coordinates)
 - [Anatomy of a Formspec](#anatomy-of-a-formspec)
-  - [Elements](#elements)
-  - [Header](#header)
+	- [Elements](#elements)
+	- [Header](#header)
 - [Guessing Game](#guessing-game)
-  - [Padding and Spacing](#padding-and-spacing)
-  - [Receiving Formspec Submissions](#receiving-formspec-submissions)
-  - [Contexts](#contexts)
+	- [Padding and Spacing](#padding-and-spacing)
+	- [Receiving Formspec Submissions](#receiving-formspec-submissions)
+	- [Contexts](#contexts)
 - [Formspec Sources](#formspec-sources)
-  - [Node Meta Formspecs](#node-meta-formspecs)
-  - [Player Inventory Formspecs](#player-inventory-formspecs)
-  - [Your Turn](#your-turn)
+	- [Node Meta Formspecs](#node-meta-formspecs)
+	- [Player Inventory Formspecs](#player-inventory-formspecs)
+	- [Your Turn](#your-turn)
 
 
 ## Real or Legacy Coordinates
@@ -55,6 +55,8 @@ placement of elements and align them. Minetest 5.1.0 contains a feature
 called real coordinates which aims to rectify this by introducing a consistent
 coordinate system. The use of real coordinates is highly recommended, and so
 this chapter will use them exclusively.
+
+Using a formspec_version of 2 or above will enable real coordinates.
 
 ## Anatomy of a Formspec
 
@@ -93,7 +95,7 @@ The size is in formspec slots - a unit of measurement which is roughly
 around 64 pixels, but varies based on the screen density and scaling
 settings of the client. Here's a formspec which is `2,2` in size:
 
-    formspec_version[3]
+    formspec_version[4]
     size[2,2]
 
 Notice how we explicitly defined the formspec language version.
@@ -106,9 +108,8 @@ the center (`0.5,0.5`). The anchor sets where on the formspec the position is,
 allowing you to line the formspec up with the edge of the screen. The formspec
 can be placed to the left of the screen like so:
 
-    formspec_version[3]
+    formspec_version[4]
     size[2,2]
-    real_coordinates[true]
     position[0,0.5]
     anchor[0,0.5]
 
@@ -143,7 +144,7 @@ function guessing.get_formspec(name)
     local text = "I'm thinking of a number... Make a guess!"
 
     local formspec = {
-        "formspec_version[3]",
+        "formspec_version[4]",
         "size[6,3.476]",
         "label[0.375,0.5;", minetest.formspec_escape(text), "]",
         "field[0.375,1.25;5.25,0.8;number;Number;]",
@@ -334,7 +335,7 @@ minetest.register_node("mymod:rightclick", {
 
         local meta = minetest.get_meta(pos)
         meta:set_string("formspec",
-                "formspec_version[3]" ..
+                "formspec_version[4]" ..
                 "size[5,5]" ..
                 "label[1,1;This is shown on right click]" ..
                 "field[1,2;2,1;x;x;]")

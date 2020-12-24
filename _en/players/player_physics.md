@@ -18,7 +18,7 @@ For example, a value of 2 for gravity would make gravity twice as strong.
 
 - [Basic Example](#basic-example)
 - [Available Overrides](#available-overrides)
-  - [Old Movement Behaviour](#old-movement-behaviour)
+	- [Old Movement Behaviour](#old-movement-behaviour)
 - [Mod Incompatibility](#mod-incompatibility)
 - [Your Turn](#your-turn)
 

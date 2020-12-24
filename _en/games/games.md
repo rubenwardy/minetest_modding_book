@@ -57,7 +57,7 @@ convenient, as it'll make porting mods to another game much easier.
 
 The best way to keep compatibility with another game is to keep API compatibility
 with any mods which have the same name.
-That is, if a mod uses the same name as another mod, even if third party,
+That is, if a mod uses the same name as another mod, even if third-party,
 it should have a compatible API.
 For example, if a game includes a mod called `doors`, then it should have the
 same API as `doors` in Minetest Game.

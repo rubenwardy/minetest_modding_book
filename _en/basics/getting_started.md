@@ -17,15 +17,13 @@ creating mods.
 - [What are Games and Mods?](#what-are-games-and-mods)
 - [Where are mods stored?](#where-are-mods-stored)
 - [Mod Directory](#mod-directory)
-- [Dependencies](#dependencies)
-  - [mod.conf](#modconf)
-  - [depends.txt](#dependstxt)
+- [mod.conf](#modconf)
+	- [Dependencies](#dependencies)
 - [Mod Packs](#mod-packs)
 - [Example](#example)
-  - [Mod Folder](#mod-folder)
-  - [depends.txt](#dependstxt-1)
-  - [init.lua](#initlua)
-  - [mod.conf](#modconf-1)
+	- [Mod Folder](#mod-folder)
+	- [init.lua](#initlua)
+	- [mod.conf](#modconf-1)
 
 
 ## What are Games and Mods?
@@ -119,8 +117,18 @@ Only the init.lua file is required in a mod for it to run on game load;
 however, mod.conf is recommended and other components may be needed
 depending on the mod's functionality.
 
+## mod.conf
 
-## Dependencies
+This file is used for mod metadata including the mod's name, description, and other
+information.
+
+For example:
+
+    name = mymod
+    description = Adds foo, bar, and bo.
+    depends = modone, modtwo
+
+### Dependencies
 
 A dependency occurs when a mod requires another mod to be loaded before itself.
 One mod may require another mod's code, items, or other resources to be available
@@ -134,34 +142,14 @@ dependency might lead to fewer features being enabled.
 An optional dependency is useful if you want to optionally support another mod; it can
 enable extra content if the user wishes to use both the mods at the same time.
 
-Dependencies should be listed in mod.conf.
+Dependencies are specified in a comma-separated list in mod.conf.
 
-### mod.conf
-
-This file is used for mod metadata including the mod's name, description, and other
-information. For example:
-
-    name = mymod
-    description = Adds foo, bar, and bo.
     depends = modone, modtwo
     optional_depends = modthree
 
-### depends.txt
-
-For compatibility with 0.4.x versions of Minetest, instead of only specifying
-dependencies in mod.conf, you need to provide a depends.txt file in which
-you list all dependencies:
-
-    modone
-    modtwo
-    modthree?
-
-Each mod name is on its own line, and mod names with a question mark
-following them are optional dependencies.
-
 ## Mod Packs
 
-Mods can be grouped into mod packs which allow multiple mods to be packaged
+Mods can be grouped into mod packs, which allow multiple mods to be packaged
 and moved together. They are useful if you want to supply multiple mods to
 a player, but don't want to make them download each one individually.
 
@@ -184,12 +172,8 @@ Here is an example which puts all of this together:
     mymod
     ├── textures
     │   └── mymod_node.png files
-    ├── depends.txt
     ├── init.lua
     └── mod.conf
-
-### depends.txt
-    default
 
 ### init.lua
 ```lua
@@ -207,8 +191,7 @@ minetest.register_node("mymod:node", {
     descriptions = Adds a node
     depends = default
 
-This mod has the name "mymod". It has three text files: init.lua, mod.conf,
-and depends.txt.\\
+This mod has the name "mymod". It has two text files: init.lua and mod.conf.\\
 The script prints a message and then registers a node –
 which will be explained in the next chapter.\\
 There's a single dependency, the

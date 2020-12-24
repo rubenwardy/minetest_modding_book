@@ -103,28 +103,6 @@ An Entity has a definition table that resembles an item definition table.
 This table can contain callback methods, initial object properties, and custom
 members.
 
-However, entities differ in one very important way from items. When an entity is
-emerged (ie: loaded or created), a new table is created for that entity that
-*inherits* from the definition table using metatables.
-This new table is commonly referred to as a Lua Entity table.
-
-Metatables are an important Lua feature that you will need
-to be aware of, as it is an essential part of the Lua language.
-
-In layman's terms, a metatable allows you to control how the table behaves when
-using certain Lua syntax. The most common use of metatables is the ability to use
-another table as a prototype, defaulting to the other table's properties and methods when
-they do not exist in the current table.
-
-Say you want to access member X on table A. If table A has that member, then
-it will be returned as normal. However, if the table doesn't have that member but
-it does have a metatable could table B, then table B will be checked to see if it
-has that member.
-
-<!--table A is a metatable of table B, then table
-B will have all the properties and methods of table A if the derived table doesn't
-have any itself.-->
-
 ```lua
 local MyEntity = {
     initial_properties = {
@@ -147,9 +125,22 @@ function MyEntity:set_message(msg)
 end
 ```
 
-When an entity has emerged, a table is created for it by copying everything from
-its type table.
-This table can be used to store variables for that particular entity.
+Entity definitions differ in one very important way from Item definitions.
+When an entity is emerged (ie: loaded or created), a new table is created for
+that entity that *inherits* from the definition table.
+
+<!--
+This inheritance is done using a Metatables are an important Lua feature that you will need
+to be aware of, as it is an essential part of the Lua language.
+In layman's terms, a metatable allows you to control how the table behaves when
+using certain Lua syntax. The most common use of metatables is the ability to use
+another table as a prototype, defaulting to the other table's properties and methods when
+they do not exist in the current table.
+Say you want to access `a.x`. If the table `a` has that member, then it will be
+returned as normal. However, if the table doesn't have that member and the
+metatable lists a table `b` as a prototype, then table `b` will be checked to see
+if it has that member.
+-->
 
 Both an ObjectRef and an entity table provide ways to get the counterpart:
 
