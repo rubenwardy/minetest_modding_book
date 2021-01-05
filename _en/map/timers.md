@@ -41,20 +41,8 @@ local timer = minetest.get_node_timer(pos)
 timer:start(10.5) -- in seconds
 ```
 
-You can also check the status or stop the timer:
-
-```lua
-if timer:is_started() then
-    print("The timer is running, and has " .. timer:get_timeout() .. "s remaining!")
-    print(timer:get_elapsed() .. "s has elapsed.")
-end
-
-timer:stop()
-```
-
 When a node timer is up, the `on_timer` method in the node's definition table will
-be called.
-The method only takes a single parameter, the position of the node.
+be called. The method only takes a single parameter, the position of the node:
 
 ```lua
 minetest.register_node("autodoors:door_open", {
@@ -66,6 +54,8 @@ minetest.register_node("autodoors:door_open", {
 ```
 
 Returning true in `on_timer` will cause the timer to run again for the same interval.
+It's also possible to use `get_node_timer(pos)` inside of `on_timer`, just make
+sure you return false to avoid conflict.
 
 You may have noticed a limitation with timers: for optimisation reasons, it's
 only possible to have one type of timer per node type, and only one timer running per node.
