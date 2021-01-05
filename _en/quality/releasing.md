@@ -42,11 +42,16 @@ able to modify it and release the modified version.)
 Please note that **public domain is not a valid licence**, because the definition varies
 in different countries.
 
+It is important to note that WTFPL is strongly discouraged and people may
+choose not to use your mod if it has this license.
+
 ### LGPL and CC-BY-SA
 
 This is a common license combination in the Minetest community, and is what
 Minetest and Minetest Game use.
+
 You license your code under LGPL 2.1 and your art under CC-BY-SA.
+
 This means that:
 
 * Anyone can modify, redistribute and sell modified or unmodified versions.
@@ -55,40 +60,36 @@ This means that:
 
 ### CC0
 
-These licenses allow anyone to do what they want with your mod,
-which means they can modify, redistribute, sell, or leave-out attribution.
-These licenses can be used for both code and art.
-
-It is important to note that WTFPL is strongly discouraged and people may
-choose not to use your mod if it has this license.
+This license can be used for both code and art, and allows anyone to do what
+they want with your work. This means they can modify, redistribute, sell, or
+leave-out attribution.
 
 ### MIT
 
-This is a common license for mod code. The only restriction it places on users
-of your mod is that they must include the same copyright notice and license
-in any copies of the mod or of substantial parts of the mod.
+This is a common license for code. The only restriction it places on users
+of your code is that they must include the same copyright notice and license
+in any copies of the code or of substantial parts of the code.
 
 ## Packaging
 
-There are some files that are recommended to include in your mod
+There are some files that are recommended to include in your mod or game
 before you release it.
 
 ### README.txt
 
 The README file should state:
 
-* What the mod does.
+* What the mod/game does, how to use it.
 * What the license is.
-* What dependencies there are.
-* How to install the mod.
-* Current version of the mod.
-* Optionally, the where to report problems or get help.
+* Optionally:
+  * where to report problems or get help.
+  * credits
 
 ### mod.conf / game.conf
 
-Make sure you add a description key to explain what your mod does. Be concise without being vague.
-It should be short because it will be displayed in the content installer which has
-limited space.
+Make sure you add a description key to explain what your mod or game does. Be
+concise without being vague. It should be short because it will be displayed in
+the content installer which has limited space.
 
 Good example:
 
@@ -103,7 +104,7 @@ Avoid this:
 Screenshots should be 3:2 (3 pixels of width for every 2 pixels of height)
 and have a minimum size of 300 x 200px.
 
-The screenshot is displayed in the mod store.
+The screenshot is displayed inside of Minetest as a thumbnail for the content.
 
 ## Uploading
 
@@ -115,7 +116,7 @@ others which may be added by forum moderators:
 * **Stable**      - The hosting website should be unlikely to shut down without warning.
 * **Direct link** - You should be able to click a link and download the file
                    without having to view another page.
-* **Virus Free**  - Mods with malicious content will be removed from the forum.
+* **Virus Free**  - Scammy upload hosts may contain insecure adverts.
 
 ContentDB allows you to upload zip files, and meets these criteria.
 
@@ -135,16 +136,16 @@ Using a graphical interface on Windows to upload your code.
 
 ## Releasing on ContentDB
 
-ContentDB is the official place to find and distribute mods and games. Users can
-find content using the website, or download and install using the integration
-built into the Minetest main menu.
+ContentDB is the official place to find and distribute content such as mods,
+games, and texture packs. Users can find content using the website, or download
+and install using the integration built into the Minetest main menu.
 
-Sign up to [ContentDB](https://content.minetest.net) and add your mod or game.
+Sign up to [ContentDB](https://content.minetest.net) and add your content.
 Make sure to read the guidance given in the Help section.
 
 ## Forum Topic
 
-You can also create a forum topic to let users discuss your mod or game.
+You can also create a forum topic to let users discuss your creation.
 
 Mod topics should be created in ["WIP Mods"](https://forum.minetest.net/viewforum.php?f=9) (Work In Progress)
 forum, and Game topics in the ["WIP Games"](https://forum.minetest.net/viewforum.php?f=50) forum.

@@ -130,16 +130,17 @@ When an entity is emerged (ie: loaded or created), a new table is created for
 that entity that *inherits* from the definition table.
 
 <!--
-This inheritance is done using a Metatables are an important Lua feature that you will need
-to be aware of, as it is an essential part of the Lua language.
-In layman's terms, a metatable allows you to control how the table behaves when
-using certain Lua syntax. The most common use of metatables is the ability to use
-another table as a prototype, defaulting to the other table's properties and methods when
-they do not exist in the current table.
+This inheritance is done using a metatables.
+Metatables are an important Lua feature that you will need to be aware of, as it
+is an essential part of the Lua language. In layman's terms, a metatable allows
+you to control how the table behaves when using certain Lua syntax. The most
+common use of metatables is the ability to use another table as a prototype,
+defaulting to the other table's properties and methods when they do not exist in
+the current table.
 Say you want to access `a.x`. If the table `a` has that member, then it will be
 returned as normal. However, if the table doesn't have that member and the
-metatable lists a table `b` as a prototype, then table `b` will be checked to see
-if it has that member.
+metatable lists a table `b` as a prototype, then table `b` will be checked to
+see if it has that member.
 -->
 
 Both an ObjectRef and an entity table provide ways to get the counterpart:
