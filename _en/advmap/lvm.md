@@ -105,9 +105,8 @@ if data[idx] == c_stone then
 end
 ```
 
-It is recommended that you find and store the content IDs of nodes types
-at load time because the IDs of a node type will never change. Make sure to store
-the IDs in a local variable for performance reasons.
+Content IDs of a node type may change during load time, so it is recommended that
+you don't try getting them during this time.
 
 Nodes in an LVM data array are stored in reverse co-ordinate order, so you should
 always iterate in the order `z, y, x`. For example:
@@ -170,11 +169,10 @@ time using `minetest.fix_light`.
 ## Example
 
 ```lua
--- Get content IDs during load time, and store into a local
-local c_dirt  = minetest.get_content_id("default:dirt")
-local c_grass = minetest.get_content_id("default:dirt_with_grass")
-
 local function grass_to_dirt(pos1, pos2)
+    local c_dirt  = minetest.get_content_id("default:dirt")
+    local c_grass = minetest.get_content_id("default:dirt_with_grass")
+
     -- Read data into LVM
     local vm = minetest.get_voxel_manip()
     local emin, emax = vm:read_from_map(pos1, pos2)
