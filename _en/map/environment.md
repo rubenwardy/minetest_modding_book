@@ -13,11 +13,11 @@ In this chapter, you will learn how to perform basic actions on the map.
 
 - [Map Structure](#map-structure)
 - [Reading](#reading)
-	- [Reading Nodes](#reading-nodes)
-	- [Finding Nodes](#finding-nodes)
+    - [Reading Nodes](#reading-nodes)
+    - [Finding Nodes](#finding-nodes)
 - [Writing](#writing)
-	- [Writing Nodes](#writing-nodes)
-	- [Removing Nodes](#removing-nodes)
+    - [Writing Nodes](#writing-nodes)
+    - [Removing Nodes](#removing-nodes)
 - [Loading Blocks](#loading-blocks)
 - [Deleting Blocks](#deleting-blocks)
 
@@ -74,6 +74,10 @@ For example, say we wanted to make a certain type of plant that grows
 better near mese; you would need to search for any nearby mese nodes,
 and adapt the growth rate accordingly.
 
+`minetest.find_node_near` will return the first found node in a certain radius
+which matches the node names or groups given. In the following example,
+we look for a mese node within 5 nodes of the position:
+
 ```lua
 local grow_speed = 1
 local node_pos   = minetest.find_node_near(pos, 5, { "default:mese" })
@@ -84,7 +88,7 @@ end
 ```
 
 Let's say, for example, that the growth rate increases the more mese there is
-nearby. You should then use a function which can find multiple nodes in area:
+nearby. You should then use a function that can find multiple nodes in the area:
 
 ```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
@@ -94,9 +98,9 @@ local pos_list   =
 local grow_speed = 1 + #pos_list
 ```
 
-The above code doesn't quite do what we want, as it checks based on area, whereas
-`find_node_near` checks based on range. In order to fix this, we will,
-unfortunately, need to manually check the range ourselves.
+The above code finds the number of nodes in a *cuboid volume*. This is different
+to `find_node_near`, which uses the distance to the position (ie: a *sphere*). In
+order to fix this, we will need to manually check the range ourselves:
 
 ```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
@@ -112,11 +116,11 @@ for i=1, #pos_list do
 end
 ```
 
-Now your code will correctly increase `grow_speed` based on mese nodes in range.
+Now the code will correctly increase `grow_speed` based on mese nodes in range.
 
 Note how we compared the squared distance from the position, rather than square
 rooting it to obtain the actual distance. This is because computers find square
-roots computationally expensive, so you should avoid them as much as possible.
+roots computationally expensive, so they should avoided as much as possible.
 
 There are more variations of the above two functions, such as
 `find_nodes_with_meta` and `find_nodes_in_area_under_air`, which work similarly
@@ -127,8 +131,8 @@ and are useful in other circumstances.
 ### Writing Nodes
 
 You can use `set_node` to write to the map. Each call to set_node will cause
-lighting to be recalculated, which means that set_node is fairly slow for large
-numbers of nodes.
+lighting to be recalculated and node callbacks to run, which means that set_node
+is fairly slow for large numbers of nodes.
 
 ```lua
 minetest.set_node({ x = 1, y = 3, z = 4 }, { name = "default:mese" })
@@ -140,7 +144,7 @@ print(node.name) --> default:mese
 set_node will remove any associated metadata or inventory from that position.
 This isn't desirable in all circumstances, especially if you're using multiple
 node definitions to represent one conceptual node. An example of this is the
-furnace node - whilst you think conceptually of it as one node, it's actually
+furnace node - whilst you conceptually think of it as one node, it's actually
 two.
 
 You can set a node without deleting metadata or the inventory like so:
@@ -160,7 +164,7 @@ minetest.remove_node(pos)
 minetest.set_node(pos, { name = "air" })
 ```
 
-In fact, remove_node will call set_node with the name being air.
+In fact, remove_node is just a helper function that calls set_node with `"air"`.
 
 ## Loading Blocks
 
@@ -205,7 +209,8 @@ local function emerge_callback(pos, action,
 end
 ```
 
-This is not the only way of loading blocks; using an LVM will also cause the
+This is not the only way of loading blocks; using an
+[Lua Voxel Manipulator (LVM)](../advmap/lvm.html) will also cause the
 encompassed blocks to be loaded synchronously.
 
 ## Deleting Blocks
