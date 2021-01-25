@@ -14,7 +14,8 @@ basic requirements for many mods.
 
 - [What are Nodes and Items?](#what-are-nodes-and-items)
 - [Registering Items](#registering-items)
-  - [Item Names and Aliases](#item-names-and-aliases)
+  - [Item Names](#item-names)
+  - [Item Aliases](#item-aliases)
   - [Textures](#textures)
 - [Registering a basic node](#registering-a-basic-node)
 - [Actions and Callbacks](#actions-and-callbacks)
@@ -55,7 +56,7 @@ minetest.register_craftitem("modname:itemname", {
 })
 ```
 
-### Item Names and Aliases
+### Item Names
 
 Every item has an item name used to refer to it, which should be in the
 following format:
@@ -66,6 +67,8 @@ The modname is the name of the mod in which the item is registered, and the
 item name is the name of the item itself.
 The item name should be relevant to what the item is and can't already be registered.
 
+### Item Aliases
+
 Items can also have *aliases* pointing to their name.
 An *alias* is a pseudo-item name which results in the engine treating any
 occurrences of the alias as if it were the item name.
@@ -74,8 +77,6 @@ There are two main common uses of this:
 * Renaming removed items to something else.
   There may be unknown nodes in the world and in inventories if an item is
   removed from a mod without any corrective code.
-  It's important to avoid aliasing to an unobtainable node if the remove node
-  could be obtained.
 * Adding a shortcut. `/giveme dirt` is easier than `/giveme default:dirt`.
 
 Registering an alias is pretty simple.
