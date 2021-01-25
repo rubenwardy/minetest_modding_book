@@ -20,12 +20,13 @@ own.
 - [Position and Velocity](#position-and-velocity)
 - [Object Properties](#object-properties)
 - [Entities](#entities)
+- [Health and Damage](#health-and-damage)
 - [Attachments](#attachments)
 - [Your Turn](#your-turn)
 
 ## What are Objects, Players, and Entities?
 
-Players and Entities are both types of Objects. An Object is something that can move
+Players and Entities are both types of Objects. An object is something that can move
 independently of the node grid and has properties such as velocity and scale.
 Objects aren't items, and they have their own separate registration system.
 
@@ -235,6 +236,89 @@ use a [chat command](../players/chat.html) to spawn entities:
 
     /spawnentity mymod:entity
 
+
+## Health and Damage
+
+### HitPoints (HP)
+
+Each object has a HitPoints (HP) number, which represents the current health.
+Players have a maximum hp set using the `hp_max` object property.
+An object will die if its hp reaches 0.
+
+```lua
+local hp = object:get_hp()
+object:set_hp(hp + 3)
+```
+
+### Punch, Damage Groups, and Armor Groups
+
+Damage is the reduction of an object's HP. An object can *punch* another object to
+inflict damage. A punch isn't necessarily an actual punch - it can be an
+explosion, a sword slash, or something else.
+
+The total damage is calculated by multiplying the punch's damage groups with the
+target's vulnerabilities. This is then limited depending on how recent the last
+punch was. We will go over an example of this calculation in a bit.
+
+Just like [node dig groups](../items/nodes_items_crafting.html#tools-capabilities-and-dig-types),
+these groups can take any name and do not need to be registered. However, it's
+common to use the same group names as with node digging.
+
+How vulnerable an object is to particular types of damage depends on its
+`armor_groups` [object property](#object-properties). Despite its misleading
+name, `armor_groups` specify the percentage damage taken from particular damage
+groups, not the resistance. If a damage group is not listed in an object's armor
+groups, that object is completely invulnerable to it.
+
+```lua
+target:set_properties({
+    armor_groups = { fleshy = 90, crumbly = 50 },
+})
+```
+
+In the above example, the object will take 90% of `fleshy` damage and 50% of
+`crumbly` damage.
+
+When a player punches an object, the damage groups come from the item they are
+currently wielding. In other cases, mods decide which damage groups are used.
+
+### Example Damage Calculation
+
+Let's punch the `target` object:
+
+```lua
+local tool_capabilities = {
+    full_punch_interval = 0.8,
+    damage_groups = { fleshy = 5, choppy = 10 },
+
+    -- This is only used for digging nodes, but is still required
+    max_drop_level=1,
+    groupcaps={
+        fleshy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=30, maxlevel=2},
+    },
+}
+
+local time_since_last_punch = tool_capabilities.full_punch_interval
+target:punch(object, time_since_last_punch, tool_capabilities)
+```
+
+Now, let's work out what the damage will be. The punch's damage groups are
+`fleshy=5` and `choppy=10`, and `target` will take 90% damage from fleshy and 0%
+from choppy.
+
+First, we multiply the damage groups by the vulnerability and sum the result.
+We then multiply by a number between 0 or 1 depending on the `time_since_last_punch`.
+
+```lua
+= (5*90/100 + 10*0/100) * limit(time_since_last_punch / full_punch_interval, 0, 1)
+= (5*90/100 + 10*0/100) * 1
+= 4.5
+```
+
+As HP is an integer, the damage is rounded to 5 points.
+
+
+
 ## Attachments
 
 Attached objects will move when the parent - the object they are attached to -
@@ -245,7 +329,7 @@ An object can have an unlimited number of children, but at most one parent.
 child:set_attach(parent, bone, position, rotation)
 ```
 
-An Object's `get_pos()` will always return the global position of the object, no
+An object's `get_pos()` will always return the global position of the object, no
 matter whether it is attached or not.
 `set_attach` takes a relative position, but not as you'd expect.
 The attachment position is relative to the parent's origin as scaled up by 10 times.
