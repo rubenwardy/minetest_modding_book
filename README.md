@@ -3,7 +3,7 @@
 [![Build status](https://gitlab.com/rubenwardy/minetest_modding_book/badges/master/pipeline.svg)](https://gitlab.com/rubenwardy/minetest_modding_book/pipelines)<br>
 [Read Online](https://rubenwardy.com/minetest_modding_book/)
 
-Book written by rubenwardy.  
+Book written by rubenwardy.
 License: CC-BY-SA 3.0
 
 ## Finding your way around
@@ -23,15 +23,25 @@ License: CC-BY-SA 3.0
 I'm happy to fix the formatting of any chapters. It is
 the writing which is the hard bit, not the formatting.
 
-### Chapter Guidelines
+### Chapter and Writing Guide
 
+Grammar and such:
+
+* British English, except when referring common code words like `color` and
+  `initialize`.
 * Prefer pronounless text, but `you` if you must. Never `we` nor `I`.
+* Titles and subheadings should be in Title Case.
+* References to code (such as function names) should be formatted as \`inline-code`.
+* Italics used for emphasis, not necessarily for technical words.
+* Full stops and correct punctionation, except for lists without full sentences.
+
+Formatting:
+
 * Do not rely on anything that isn't printable to a physical book.
 * Any links must be invisible - ie: if they're removed, then the chapter must
   still make sense.
 * Table of contents for each chapter with anchor links.
 * Add `your turn`s to the end of a chapter when relevant.
-* Titles and subheadings should be in Title Case.
 
 ### Making a Chapter
 
