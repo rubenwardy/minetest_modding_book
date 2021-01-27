@@ -91,11 +91,6 @@ declared by using the `local` keyword, and then given an initial value. Local
 will be discussed later, because it's part of a very important concept called
 *scope*.
 
-The `=` means *assignment*, so `result = a + b` means set "result" to a + b.
-Variable names can be longer than one character unlike in mathematics, as seen
-with the "result" variable. It's also worth noting that Lua is *case-sensitive*;
-A is a different variable to a.
-
 The `=` sign means *assignment*, so `result = a + b` means set the value of
 `result` to the value of `a + b`. Variable names can be longer than one
 character, as seen with the `result` variable. It's also worth noting that, like
@@ -274,7 +269,7 @@ local function foo(bar)
 end
 ```
 
-To allow mods to call you functions, you should create a table with the same
+To allow mods to call your functions, you should create a table with the same
 name as the mod and add your function to it. This table is often called an API
 table or namespace.
 
