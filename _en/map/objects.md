@@ -239,9 +239,9 @@ use a [chat command](../players/chat.html) to spawn entities:
 
 ## Health and Damage
 
-### HitPoints (HP)
+### Health Points (HP)
 
-Each object has a HitPoints (HP) number, which represents the current health.
+Each object has a Health Points (HP) number, which represents the current health.
 Players have a maximum hp set using the `hp_max` object property.
 An object will die if its hp reaches 0.
 
