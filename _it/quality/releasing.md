@@ -37,6 +37,8 @@ Puoi adottare la licenza che preferisci; tuttavia, sappi che le mod con licenze 
 
 Tieni anche a mente che **la licenza di pubblico dominio non è una licenza valida**, perché la sua definizione varia da stato a stato.
 
+È importante sottolineare che la WTFPL (*do What The Fuck you want to Public License*, la "facci il cazzo che ti pare") è caldamente *s*consigliata, e alcune persone potrebbero decidere di non usare la tua mod se ha questa licenza.
+
 ### LGPL e CC-BY-SA
 
 Questa è la combinazione più comune nella comunità di Minetest, nonché quella usata sia da Minetest che da Minetest Game.
@@ -49,9 +51,7 @@ Ciò significa che:
 
 ### CC0
 
-Queste licenze permettono a chiunque di fare quello che gli va - incluso il non citare l'autore - e possono essere usate sia per il codice che per i contenuti artistici.
-
-È importante sottolineare che la WTFPL (*do What The Fuck you want to Public License*, la "facci il cazzo che ti pare") è caldamente *s*consigliata, e alcune persone potrebbero decidere di non usare la tua mod se ha questa licenza.
+Queste licenze possono essere usate sia per il codice che per contenuti artistici, permettendo a chiunque di fare quello che gli va - incluso il non citare l'autore.
 
 ### MIT
 
@@ -60,13 +60,14 @@ La differenza con la LGPL è che le copie derivate in questo caso non devono per
 
 ## Impacchettare
 
-Ci sono alcuni file che è consigliato includere nella propria mod prima di rilasciarla.
+Ci sono alcuni file che è consigliato includere nelle proprie mod e nei propri giochi prima di rilasciarli.
 
 ### README.txt
 
 Il README dovrebbe dichiarare:
 
-* Cosa fa la mod;
+* Cosa fa la mod/gioco;
+* Come si usa;
 * Che licenza ha;
 * Quali dipendenze richiede;
 * Come installare la mod;
@@ -75,7 +76,7 @@ Il README dovrebbe dichiarare:
 
 ### mod.conf / game.conf
 
-Assicurati di aggiungere una descrizione che spieghi cosa fa la mod, usando la chiave `description`.
+Assicurati di aggiungere una descrizione che spieghi cosa fa la mod o il gioco, usando la chiave `description`.
 Cerca di essere preciso e coinciso: dovrebbe essere breve perché il contenuto verrà mostrato nell'installer del motore di gioco, che ha uno spazio limitato.
 
 Per esempio, consigliato:
@@ -90,7 +91,7 @@ Sconsigliato:
 
 Gli screenshot dovrebbero essere in proporzione 3:2 e avere una grandezza minima di 300x200px.
 
-Lo screen verrà mostrato nel bazar delle mod (sono tutte gratuite).
+Lo screen verrà mostrato all'interno di Minetest come anteprima del contenuto.
 
 ## Caricare
 
@@ -99,7 +100,7 @@ Ci sono svariati modi per fare ciò quindi usa l'approccio che ritieni più oppo
 
 * **Stabile**      - Il sito che conterrà il file non dovrebbe essere propenso a chiudere i battenti da un momento all'altro senza preavviso;
 * **Link diretto** - Dovresti essere in grado di cliccare su un link e scaricare il file senza il bisogno di dover passare per altre pagine;
-* **Senza virus**  - Le mod con contenuti malevoli saranno rimosse dal forum.
+* **Senza virus**  - Caricamenti su siti sospetti potrebbero contenere materiali non sicuri.
 
 ContentDB soddisfa questi requisiti, richiedendo giusto un file .zip.
 

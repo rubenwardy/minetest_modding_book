@@ -13,7 +13,8 @@ Saper registrare nuovi nodi, oggetti fabbricabili e conseguenti ricette, è un r
 
 - [Cosa sono i nodi e gli oggetti?](#cosa-sono-i-nodi-e-gli-oggetti)
 - [Registrare gli oggetti](#registrare-gli-oggetti)
-	- [Nomi oggetto e alias](#nomi-oggetto-e-alias)
+	- [Nomi oggetto](#nomi-oggetto)
+	- [Alias](#alias)
 	- [Texture](#texture)
 - [Registrare un nodo base](#registrare-un-nodo-base)
 - [Azioni e callback](#azioni-e-callback)
@@ -50,7 +51,7 @@ minetest.register_craftitem("nomemod:nomeoggetto", {
 })
 ```
 
-### Nomi oggetto e alias
+### Nomi oggetto
 
 Ogni oggetto ha un nome usato per riferirsi a esso, che dovrebbe seguire la seguente struttura:
 
@@ -59,13 +60,14 @@ Ogni oggetto ha un nome usato per riferirsi a esso, che dovrebbe seguire la segu
 `nomemod` equivale appunto al nome della mod che registra l'oggetto, e `nomeoggetto` è il nome che si vuole assegnare a quest'ultimo.
 Esso dovrebbe essere inerente a quello che rappresenta e deve essere unico nella mod.
 
+### Alias
+
 Gli oggetti possono anche avere degli *alias* che puntano al loro nome.
 Un *alias* è uno pseudonimo che dice al motore di gioco di trattarlo come se fosse il nome a cui punta.
 Ciò è comunemente usato in due casi:
 
 * Rinominare gli oggetti rimossi in qualcos'altro.
   Ci potrebbero essere nodi sconosciuti nel mondo e negli inventari se un oggetto viene rimosso da una mod senza nessun codice per gestirlo.
-  È importante evitare di assegnare come alias nomi di nodi inottenibili già esistenti al nodo rimosso, se quest'ultimo poteva essere ottenuto.
 * Aggiungere una scorciatoia.
   `/giveme dirt` è più semplice di `/giveme default:dirt`.
 

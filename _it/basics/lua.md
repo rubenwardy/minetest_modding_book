@@ -20,13 +20,14 @@ In questo capitolo parleremo della programmazione in Lua, degli strumenti necess
 	- [Operatori logici](#operatori-logici)
 - [Programmare](#programmare)
 - [Portata locale e globale](#portata-locale-e-globale)
-	- [Local dovrebbe essere usato il più possibile](#local-dovrebbe-essere-usato-il-piu-possibile)
 - [Inclusione di altri script Lua](#inclusione-di-altri-script-lua)
 
 ## Editor di codice
 
 Un editor di codice con evidenziamento delle parole chiave è sufficiente per scrivere script in Lua.
-L'evidenziamento assegna colori diversi a parole e caratteri diversi a seconda del loro significato, permettendo di individuare più facilmente eventuali errori.
+L'evidenziamento assegna colori diversi a parole e caratteri diversi, a seconda del loro significato, permettendo quindi di individuare più facilmente eventuali errori e inconsistenze.
+
+Per esempio:
 
 ```lua
 function ctf.post(team,msg)
@@ -44,15 +45,16 @@ function ctf.post(team,msg)
 end
 ```
 
-Per esempio, parole chiave come if, then, end e return sono evidenziate nel passaggio qui sopra.
-Lo stesso vale per le funzioni interne di Lua come table.insert.
+Nel passaggio qui sopra, le parole chiave `if`, `then`, `end` e `return` sono evidenziate.
+E Lo stesso vale per le funzioni interne di Lua come `table.insert`.
 
-Segue una lista di editor noti che si prestano bene per programmare in Lua.
-Non sono, ovviamente, gli unici esisteneti.
+Tra gli editor più famosi che ben si prestano a lavorare in Lua, troviamo:
 
-* Windows: [Notepad++](http://notepad-plus-plus.org/), [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
-* Linux: Kate, Gedit, [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
-* OSX: [Atom](http://atom.io/), [VS Code](https://code.visualstudio.com/)
+* [VSCode](https://code.visualstudio.com/) - software libero (come Code-OSS e VSCodium), rinomato, e che dispone di [estensioni per il modding su Minetest](https://marketplace.visualstudio.com/items?itemName=GreenXenith.minetest-tools).
+* [Notepad++](http://notepad-plus-plus.org/) - Solo per Windows
+
+(ne esistono ovviamente anche altri)
+
 
 ## Programmare in Lua
 
@@ -65,8 +67,7 @@ Essi possono essere:
 
 * Sequenziali: eseguono un'istruzione dopo l'altra, senza salti.
 * Selettivi: saltano alcune sequenze a seconda delle condizioni.
-* Iteranti: ripetono ciclicamente. Continuano a eseguire le stesse istruzioni
-  finché una condizione non è soddisfatta.
+* Iteranti: continuano a eseguire le stesse istruzioni finché una condizione non è soddisfatta.
 
 Quindi, come vengono rappresentate le istruzioni in Lua?
 
@@ -78,13 +79,10 @@ a = a + 10
 print("La somma è ".. risultato)
 ```
 
-Whoa, cos'è appena successo?
-
-a, b, e risultato sono *variabili*. Le variabili locali si dichiarano tramite l'uso della parola chiave local (che vedremo tra poco), e assegnando eventualmente loro un valore iniziale.
+In quest'esempio, `a`, `b`, e `risultato` sono *variabili*. Le variabili locali si dichiarano tramite l'uso della parola chiave `local` (che vedremo tra poco), e assegnando eventualmente loro un valore iniziale.
 
 Il simbolo `=` significa *assegnazione*, quindi `risultato = a + b` significa impostare "risultato" ad a + b.
-Per quanto riguarda i nomi delle variabili, essi possono essere più lunghi di un carattere - al contrario che in matematica - come visto in "risultato", e vale anche la pena notare che Lua è *case-sensitive* (differenzia maiuscole da minuscole); 
-A è una variabile diversa da a.
+Per quanto riguarda i nomi delle variabili, essi possono essere più lunghi di un carattere - al contrario che in matematica - come visto in `risultato`, e vale anche la pena notare che Lua è *case-sensitive* (differenzia maiuscole da minuscole); `A` è una variabile diversa da `a`.
 
 ### Tipi di variabili
 
@@ -102,7 +100,7 @@ Una variabile può equivalere solo a uno dei seguenti tipi e può cambiare tipo 
 
 ### Operatori matematici
 
-Lista non esaustiva, ce ne sono altri
+Tra gli operatori di Lua ci sono:
 
 | Simbolo | Scopo              | Esempio                   |
 |---------|--------------------|---------------------------|
@@ -113,9 +111,11 @@ Lista non esaustiva, ce ne sono altri
 | A ^ B   | Potenze            | 2 ^ 2 = 2<sup>2</sup> = 4 |
 | A .. B  | Concatena stringhe | "foo" .. "bar" = "foobar" |
 
+Si tenga presente che questa non è comunque una lista esaustiva.
+
 ### Selezione
 
-La selezione più basica è il costrutto if.
+Il metodo di selezione più basico è il costrutto if.
 Si presenta così:
 
 ```lua
@@ -129,9 +129,10 @@ end
 
 Questo esempio genera un numero casuale tra 1 e 100.
 Stampa poi "Woohoo!" se il numero è superiore a 50, altrimenti stampa "No!".
-Cos'altro si può usare oltre a '>'?
 
 ### Operatori logici
+
+Tra gli operatori logici di Lua ci sono:
 
 | Simbolo  | Scopo                               | Esempio                                                     |
 |---------|--------------------------------------|-------------------------------------------------------------|
@@ -153,9 +154,9 @@ if not A and B then
 end
 ```
 
-Che stampa "Yay!" se A è falso e B vero.
+Che stampa "Yay!" se `A` è falso e `B` vero.
 
-Gli operatori logici e matematici funzionano esattamente allo stesso modo; entrambi accettano input e ritornano un valore che può essere immagazzinato.
+Gli operatori logici e matematici funzionano esattamente allo stesso modo; entrambi accettano input e ritornano un valore che può essere immagazzinato. Per esempio:
 
 ```lua
 local A = 5
@@ -173,7 +174,7 @@ Insegnarti i processi logici della programmazione non rientra nell'ambito di que
 
 * [Codecademy](http://www.codecademy.com/) è una delle migliori risorse per imparare come scrivere codice; offre un'esperienza guidata interattiva.
 * [Scratch](https://scratch.mit.edu) è una buona risorsa quando si comincia dalle basi assolute, imparando le tecniche di problem solving necessarie per la programmazione.\\
-  Scratch è **ideato per insegnare ai bambini** e non è un linguaggio serio di programmazione.
+  Scratch è *ideato per insegnare ai bambini* e non è un linguaggio serio di programmazione.
 
 ## Portata locale e globale
 
@@ -198,24 +199,6 @@ end
 Mentre le variabili globali sono accessibili da qualsiasi script di qualsiasi mod.
 
 ```lua
-my_global_variable = "ciao"
-
-function one()
-    my_global_variable = "hey"
-end
-
-print(my_global_variable) -- Output: "ciao"
-one()
-print(my_global_variable) -- Output: "hey"
-```
-
-
-### Local dovrebbe essere usato il più possibile
-
-Lua è globale di default (a differenza di molti altri linguaggi di programmazione).
-Le variabili locali devono essere identificate come tali.
-
-```lua
 function one()
     foo = "bar"
 end
@@ -228,14 +211,12 @@ one()
 two()
 ```
 
-dump() è una funzione che può trasformare qualsiasi variabile in una stringa, cosicché il programmatore possa vedere cosa rappresenta.
-In questo caso `foo` sarà stampata come "bar", virgolette incluse (che dimostrano che è una stringa).
-
-L'esempio precedente non è tuttavia buona norma e Minetest, infatti, ci avviserà di ciò:
+Le variabili locali dovrebbero venire usate il più possibile, con le mod che creano al massimo una globale corrispondente al nome della mod.
+Crearne di ulteriori è considerato cattiva programmazione, e Minetest ci avviserà di ciò:
 
     Assignment to undeclared global 'foo' inside function at init.lua:2
 
-Per ovviare, usa "local":
+Per ovviare, usa `local`:
 
 ```lua
 function one()
@@ -250,11 +231,10 @@ one()
 two()
 ```
 
-Ricorda che nil significa **non inizializzato**.
-Ovvero la variabile non è stata ancora assegnata a un valore, non esiste o è stata deinizializzata (cioè impostata a nil)
+Ricorda che `nil` significa **non inizializzato**.
+Ovvero la variabile non è stata ancora assegnata a un valore, non esiste o è stata deinizializzata (cioè impostata a `nil`)
 
-La stessa cosa vale per le funzioni.
-Le funzioni sono variabili di tipo speciale, e dovrebbero essere dichiarate locali, in quanto altre mod potrebbero sennò avere funzioni con lo stesso nome.
+La stessa cosa vale per le funzioni: esse sono variabili di tipo speciale, e dovrebbero essere dichiarate locali, in quanto altre mod potrebbero sennò avere funzioni con lo stesso nome.
 
 ```lua
 local function foo(bar)
@@ -262,7 +242,8 @@ local function foo(bar)
 end
 ```
 
-Le tabelle API dovrebbero essere usate per permettere ad altre mod di chiamare le funzioni, come in:
+Per permettere alle mod di richiamare le tue funzioni, dovresti creare una tabella con lo stesso nome della mod e aggiungercele all'interno.
+Questa tabella è spesso chiamata una API.
 
 ```lua
 mymod = {}
@@ -294,5 +275,4 @@ local ret = dofile(minetest.get_modpath("modname") .. "/script.lua")
 print(ret) -- Hello world!
 ```
 
-Nei capitoli seguenti si parlerà nel dettaglio di come suddividere il codice di una mod.
-Tuttavia, per ora l'approccio semplicistico è di avere file differenti per diversi tipi di cose — nodi.lua, craft.lua, oggetti.lua ecc.
+Nei [capitoli seguenti](../quality/clean_arch.html) si parlerà nel dettaglio di come suddividere il codice di una mod.

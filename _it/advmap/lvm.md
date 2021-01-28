@@ -94,7 +94,7 @@ if data[idx] == c_pietra then
 end
 ```
 
-Si consiglia di ottenere e salvare (in una variabile locale) gli ID di contenuto al caricare della mod in quanto questi non possono cambiare.
+Gli ID di contenuto di un nodo potrebbero cambiare durante la fase di caricamento, quindi è consigliato non tentare di ottenerli durante tale fase.
 
 Le coordinate dei nodi nell'array di un LVM sono salvate in ordine inverso (`z, y, x`), quindi se le si vuole iterare, si tenga presente che si inizierà dalla Z:
 
@@ -148,11 +148,9 @@ Se si passa `false` invece, ci sarà bisogno di ricalcolarla in un secondo tempo
 ## Esempio
 
 ```lua
--- ottiene l'ID di contenuto al caricare della mod, salvandolo in variabili locali
-local c_terra  = minetest.get_content_id("default:dirt")
-local c_erba = minetest.get_content_id("default:dirt_with_grass")
-
 local function da_erba_a_terra(pos1, pos2)
+    local c_terra  = minetest.get_content_id("default:dirt")
+    local c_erba = minetest.get_content_id("default:dirt_with_grass")
     -- legge i dati nella LVM
     local vm = minetest.get_voxel_manip()
     local emin, emax = vm:read_from_map(pos1, pos2)

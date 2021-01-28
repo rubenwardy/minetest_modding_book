@@ -67,6 +67,9 @@ Le più frequenti sono quelle per trovare i nodi.
 Per esempio, mettiamo che si voglia creare un certo tipo di pianta che cresce più velocemente vicino alla pietra;
 si dovrebbe controllare che ogni nodo nei pressi della pianta sia pietra, e modificarne il suo indice di crescita di conseguenza.
 
+`minetest.find_node_near` ritornerà il primo nodo trovato in un dato raggio, combaciante con le informazioni passategli (nomi di nodi o gruppi).
+Nell'esempio che segue, andiamo alla ricerca di un nodo di mese nel raggio di 5 nodi:
+
 ```lua
 local vel_crescita = 1
 local pos_nodo   = minetest.find_node_near(pos, 5, { "default:stone" })
@@ -87,8 +90,9 @@ local lista_pos   =
 local vel_crescita = 1 + #lista_pos
 ```
 
-Il codice qui in alto, tuttavia, non fa proprio quello che ci serve, in quanto fa controlli basati su un'area, mentre `find_node_near` li fa su un intervallo.
-Per ovviare a ciò, bisogna purtroppo controllare l'intervallo manualmente.
+Il codice qui in alto ritorna il numero di nodi in un *volume cuboidale*.
+Il che è diverso da usare `find_node_near`, il quale usa la distanza dalla posizione data (cioé una *sfera*).
+Per ovviare a ciò, bisogna controllare l'intervallo manualmente.
 
 ```lua
 local pos1       = vector.subtract(pos, { x = 5, y = 5, z = 5 })
@@ -107,7 +111,7 @@ end
 Ora il codice aumenterà correttamente `vel_crescita` basandosi su quanti nodi di pietra ci sono in un intervallo.
 
 Notare come si sia comparata la distanza al quadrato dalla posizione, invece che calcolarne la radice quadrata per ottenerne la distanza vera e propria.
-Questo perché i computer trovano le radici quadrate computazionalmente pesanti, quindi dovresti evitare di usarle il più possibile.
+Questo perché i computer trovano le radici quadrate computazionalmente pesanti, quindi dovrebbero essere evitate il più possibile.
 
 Ci sono altre variazioni delle due funzioni sopracitate, come `find_nodes_with_meta` e `find_nodes_in_area_under_air`, che si comportano in modo simile e sono utili in altre circostanze.
 
@@ -116,7 +120,7 @@ Ci sono altre variazioni delle due funzioni sopracitate, come `find_nodes_with_m
 ### Scrittura dei nodi
 
 Puoi usare `set_node` per sovrascrivere nodi nella mappa.
-Ogni chiamata a set_node ricalcolerà la luce, il ché significa che set_node è alquanto lento quando usato su un elevato numero di nodi.
+Ogni chiamata a `set_node` ricalcolerà la luce e richiamerà i suoi callback, il che significa che `set_node` è alquanto lento quando usato su un elevato numero di nodi.
 
 ```lua
 minetest.set_node({ x = 1, y = 3, z = 4 }, { name = "default:stone" })
@@ -125,7 +129,7 @@ local nodo = minetest.get_node({ x = 1, y = 3, z = 4 })
 print(nodo.name) --> default:stone
 ```
 
-set_node rimuoverà ogni metadato e inventario associato a quel nodo: ciò non è sempre desiderabile, specialmente se si stanno usando
+`set_node` rimuoverà ogni metadato e inventario associato a quel nodo: ciò non è sempre desiderabile, specialmente se si stanno usando
 più definizioni di nodi per rappresentarne concettualmente uno. Un esempio è il nodo fornace: per quanto lo si immagini come un nodo unico,
 sono in verità due.
 

@@ -19,6 +19,10 @@ In questo capitolo imparerai come manipolare gli oggetti e come definirne di tuo
 - [Posizione e velocità](#posizione-e-velocità)
 - [Proprietà degli oggetti](#proprietà-degli-oggetti)
 - [Entità](#entità)
+- [Salute e danno](#salute-e-danno)
+	- [Punti vita (HP)](#punti-vita-hp)
+	- [Pugni, Gruppi Danno e Gruppi Armatura](#pugni-gruppi-danno-e-gruppi-armatura)
+	- [Esempi di calcolo del danno](#esempi-di-calcolo-del-danno)
 - [Oggetti figli](#oggetti-figli)
 - [Il tuo turno](#il-tuo-turno)
 
@@ -202,6 +206,81 @@ Per impostare il messaggio, puoi usare la Tabella di Entità Lua:
 ```lua
 oggetto:get_luaentity():imposta_messaggio("ciao!")
 ```
+
+## Salute e danno
+
+### Punti vita (HP)
+
+Ogni oggetto ha un valore Punti Vita (HP), che rappresenta la salute attuale.
+Nei giocatori è inoltre possibile impostare il valore di salute massima tramite la proprietà `hp_max`.
+Al raggiungere gli 0 HP, un oggetto muore.
+
+```lua
+local hp = oggetto:get_hp()
+oggetto:set_hp(hp + 3)
+```
+
+### Pugni, Gruppi Danno e Gruppi Armatura
+
+Il danno è la riduzione degli HP di un oggetto.
+Quest'ultimo può prendere "a pugni" un altro oggetto per infliggere danno.
+"A pugni" perché non si parla necessariamente di un pugno vero e proprio: può essere infatti un'esplosione, un fendente, e via dicendo.
+
+Il danno complessivo è calcolato moltiplicando i Gruppi Danno del pugno con le vulnerabilità dell'obiettivo.
+Questo è poi eventualmente ridotto a seconda di quanto recente è stato il colpo precedente.
+Vedremo tra poco nel dettaglio quest'aspetto.
+
+Proprio come i [Gruppi Danno dei nodi](../items/nodes_items_crafting.html#strumenti-capacità-e-friabilità), questi gruppi possono prendere qualsiasi nome e non necessitano di essere registrati.
+Tuttavia, si è soliti usare gli stessi nomi di quelli dei nodi.
+
+La vulnerabilità di un oggetto a un certo tipo di danno dipende dalla sua [proprietà](#proprietà-degli-oggetti) `armor_groups`.
+Al contrario di quello che potrebbe far intendere il nome, `armor_groups` specifica la percentuale di danno subita da specifici Gruppi Danno, e non la resistenza.
+Se un Gruppo Danno non è elencato nei Gruppi Armatura di un oggetto, quest'ultimo ne sarà completamente immune.
+
+```lua
+obiettivo:set_properties({
+    armor_groups = { fleshy = 90, crumbly = 50 },
+})
+```
+
+Nell'esempio qui sopra, l'oggetto subirà il 90% di danno `fleshy` e 50% di quello `crumbly`.
+
+Quando un giocatore prende "a pugni" un oggetto, i Gruppi Danno vengono estrapolati dall'oggetto che ha attualmente il mano.
+Negli altri casi, saranno le mod a decidere quali Gruppi Danno usare.
+
+### Esempi di calcolo del danno
+
+Prendiamo a pugni l'oggetto `target`:
+
+```lua
+local capacita_oggetto = {
+    full_punch_interval = 0.8,
+    damage_groups = { fleshy = 5, choppy = 10 },
+
+    -- Questo è usato solo per scavare nodi, ma è comunque richiesto
+    max_drop_level=1,
+    groupcaps={
+        fleshy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=30, maxlevel=2},
+    },
+}
+
+local tempo_da_ultimo_pugno = capacita_oggetto.full_punch_interval
+obiettivo:punch(oggetto, tempo_da_ultimo_pugno, capacita_oggetto)
+```
+
+Ora, calcoliamo a quanto ammonterà il danno.
+I Gruppi Danno del pugno sono `fleshy=5` e `choppy=10`, con l'obiettivo che prenderà 90% di danno da fleshy e 0% da choppy.
+
+Per prima cosa, moltiplichiamo i Gruppi Danno per le vulnerabilità, e ne sommiamo il risultato.
+Poi, moltiplichiamo per un numero tra 0 e 1 a seconda di `tempo_da_ultimo_pugno`.
+
+```lua
+= (5*90/100 + 10*0/100) * limit(tempo_da_ultimo_pugno / full_punch_interval, 0, 1)
+= (5*90/100 + 10*0/100) * 1
+= 4.5
+```
+
+Dato che HP è un intero, il danno è arrotondato a 5 punti.
 
 ## Oggetti figli
 

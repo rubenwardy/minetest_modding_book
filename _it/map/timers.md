@@ -36,17 +36,6 @@ local timer = minetest.get_node_timer(pos)
 timer:start(10.5) -- in secondi
 ```
 
-Nell'esempio sottostante controlliamo che un timer sia attivo (`is_started()`), da quanto (`get_elapsed()`), quanto manca (`get_timeout()`) e infine lo fermiamo (`stop()`)
-
-```lua
-if timer:is_started() then
-    print("Il timer sta andando, e gli rimangono " .. timer:get_timeout() .. " secondi!")
-    print("Sono passati " .. timer:get_elapsed() .. " secondi")
-end
-
-timer:stop()
-```
-
 Quando un timer raggiunge lo zero, viene eseguito il metodo `on_timer`, che va dichiarato dentro la tabella di definizione del nodo.
 `on_timer` richiede un solo parametro, ovvero la posizione del nodo.
 
@@ -59,7 +48,9 @@ minetest.register_node("porteautomatiche:porta_aperta", {
 })
 ```
 
-Ritornando true, il timer ripartirà (con la stessa durata di prima).
+Ritornando `true`, il timer ripartirà (con la stessa durata di prima).
+È inoltre possibile usare `get_node_timer(pos)` all'interno di `on_timer`, basta assicurarsi di ritornare `false` per evitare conflitti.
+
 
 Potresti aver tuttavia notato una limitazione: per questioni di ottimizzazione, infatti, è possibile avere uno e un solo timer per tipo di nodo, e solo un timer attivo per nodo.
 
