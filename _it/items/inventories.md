@@ -140,7 +140,7 @@ minetest.create_detached_inventory("inventory_name", {
     end,
 
     allow_take = function(inv, listname, index, stack, player)
-        return -1 -- non permette di rimuoverli
+        return 0 -- non permette di rimuoverli
     end,
 
     on_put = function(inv, listname, index, stack, player)
@@ -151,7 +151,7 @@ minetest.create_detached_inventory("inventory_name", {
 })
 ```
 
-I callback dei permessi - quelle che iniziano con `allow_` - ritornano il numero degli oggetti da trasferire, e si usa -1 per impedirne del tutto l'azione.
+I callback dei permessi - quelle che iniziano con `allow_` - ritornano il numero degli oggetti da trasferire, e si usa 0 per impedirne del tutto l'azione.
 
 I callback delle azioni - quelle che iniziano con `on_` - non ritornano invece alcun valore.
 

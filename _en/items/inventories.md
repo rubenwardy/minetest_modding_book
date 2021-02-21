@@ -142,7 +142,7 @@ before accessing it:
 minetest.create_detached_inventory("inventory_name")
 ```
 
-The create_detached_inventory function accepts 3 arguments, where only the first - the inventory name - 
+The create_detached_inventory function accepts 3 arguments, where only the first - the inventory name -
 is required.
 The second argument takes a table of callbacks, which can be used to control how
 players interact with the inventory:
@@ -159,7 +159,7 @@ minetest.create_detached_inventory("inventory_name", {
     end,
 
     allow_take = function(inv, listname, index, stack, player)
-        return -1 -- don't allow taking
+        return 0 -- don't allow taking
     end,
 
     on_put = function(inv, listname, index, stack, player)
@@ -171,7 +171,7 @@ minetest.create_detached_inventory("inventory_name", {
 ```
 
 Permission callbacks - ie: those starting with `allow_` - return the number
-of items to transfer, with -1 being used to prevent transfer completely.
+of items to transfer, with 0 being used to prevent transfer completely.
 
 On the contrary, action callbacks - starting with `on_` - don't have a return value.
 
