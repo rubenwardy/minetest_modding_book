@@ -189,7 +189,7 @@ function backend.set_foo(key, value)
     storage:set_string(key, minetest.serialize(value))
 end
 
-function backend.get_foo(key, value)
+function backend.get_foo(key)
     return minetest.deserialize(storage:get_string(key))
 end
 
