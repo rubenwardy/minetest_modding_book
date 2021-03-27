@@ -154,7 +154,7 @@ and moved together. They are useful if you want to supply multiple mods to
 a player, but don't want to make them download each one individually.
 
     modpack1
-    ├── modpack.lua (required) - signals that this is a mod pack
+    ├── modpack.conf (required) - signals that this is a mod pack
     ├── mod1
     │   └── ... mod files
     └── mymod (optional)
