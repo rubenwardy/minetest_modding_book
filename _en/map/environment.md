@@ -23,15 +23,17 @@ In this chapter, you will learn how to perform basic actions on the map.
 
 ## Map Structure
 
-The Minetest map is split into MapBlocks, each MapBlocks being a cube of size 16.
-As players travel around the map, MapBlocks are created, loaded, and unloaded.
-Areas of the map which are not yet loaded are full of *ignore* nodes, an impassable
-unselectable placeholder node. Empty space is full of *air* nodes, an invisible node
-you can walk through.
+The Minetest map is split into MapBlocks, each MapBlocks being a cube of size
+16. As players travel around the map, MapBlocks are created, loaded, activated,
+and unloaded. Areas of the map which are not yet loaded are full of *ignore*
+nodes, an impassable unselectable placeholder node. Empty space is full of *air*
+nodes, an invisible node you can walk through.
+
+An active MapBlock is one which is loaded and has updates running on it.
 
 Loaded map blocks are often referred to as *active blocks*. Active Blocks can be
-read from or written to by mods or players, and have active entities. The Engine also
-performs operations on the map, such as performing liquid physics.
+read from or written to by mods or players, and have active entities. The Engine
+also performs operations on the map, such as performing liquid physics.
 
 MapBlocks can either be loaded from the world database or generated. MapBlocks
 will be generated up to the map generation limit (`mapgen_limit`) which is set

@@ -124,9 +124,9 @@ Patterns would probably be the
 or the [PIL documentation](https://www.lua.org/pil/20.2.html).
 
 <p class="book_hide">
-There is also a library written by the author of this book which can be used
-to make complex chat commands without patterns called
-<a href="chat_complex.html">Chat Command Builder</a>.
+	There is also a library written by the author of this book which can be used
+	to make complex chat commands without patterns called
+	<a href="https://gitlab.com/rubenwardy/ChatCmdBuilder">Chat Command Builder</a>.
 </p>
 
 

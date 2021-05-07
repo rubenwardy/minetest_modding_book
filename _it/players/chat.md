@@ -113,7 +113,9 @@ Questo è come molte mod implementano comandi complessi.
 Una guida più completa ai pattern è probabilmente quella su [lua-users.org](http://lua-users.org/wiki/PatternsTutorial) o la [documentazione PIL](https://www.lua.org/pil/20.2.html).
 
 <p class="book_hide">
-C'è anche una libreria scritta dall'autore di questo libro che può essere usata per creare comandi complessi senza l'utilizzo di pattern: <a href="chat_complex.html">Chat Command Builder</a>.
+	C'è anche una libreria scritta dall'autore di questo libro che può essere usata
+	per creare comandi complessi senza l'utilizzo di pattern:
+	<a href="https://gitlab.com/rubenwardy/ChatCmdBuilder">Chat Command Builder</a>.
 </p>
 
 
