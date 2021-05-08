@@ -148,7 +148,7 @@ minetest.register_node("mymod:diamond", {
 })
 ```
 
-The is_ground_content attribute allows caves to be generated over the stone.
+The `is_ground_content` attribute allows caves to be generated over the stone.
 This is essential for any node which may be placed during map generation underground.
 Caves are cut out of the world after all the other nodes in an area have generated.
 

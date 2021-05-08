@@ -68,30 +68,15 @@ They are, in order:
    particular world.
    Eg: `minetest/worlds/world/worldmods/`
 
-Minetest will check the locations in the order given above. If it encounters a mod
-with a name the same as one found previously, the later mod will be loaded in place
-of the earlier mod.
-This means that you can override game mods by placing a mod with the same name
-in the global mod location.
+`minetest` is the user-data directory. You can find the location of the
+user-data directory by opening up Minetest and clicking
+"Open User Data Directory" in the Credits tab.
 
-The actual location of each mod load path depends on what operating system you're
-using, and how you installed Minetest.
+When loading mods, Minetest will check each of the above locations in order.
+If it encounters a mod with a name the same as one found previously, the later
+mod will be loaded in place of the earlier mod. This means that you can override
+game mods by placing a mod with the same name in the global mod location.
 
-* **Windows:**
-    * For portable builds, ie: from a .zip file, just go to the directory where
-      you extracted the zip and look for the `games`, `mods`, and `worlds`
-      directories.
-    * For installed builds, ie: from a setup.exe,
-      look in C:\\\\Minetest or C:\\\\Games\\Minetest.
-* **GNU/Linux:**
-    * For system-wide installs, look in `~/.minetest`.
-      Note that `~` means the user home directory, and that files and directories
-      starting with a dot (`.`) are hidden.
-    * For portable installs, look in the build directory.
-    * For Flatpak installs, look in `~/.var/app/net.minetest.Minetest/.minetest/mods/`.
-* **MacOS**
-    * Look in `~/Library/Application Support/minetest/`.
-      Note that `~` means the user home, ie: `/Users/USERNAME/`.
 
 ## Mod Directory
 
@@ -184,6 +169,12 @@ minetest.register_node("mymod:node", {
     tiles = {"mymod_node.png"},
     groups = {cracky = 1}
 })
+
+minetest.register_craft({
+    type = "shapeless",
+    output = "mymod:node 3",
+    recipe = { "default:dirt", "default:stone" },
+})
 ```
 
 ### mod.conf
@@ -191,10 +182,9 @@ minetest.register_node("mymod:node", {
     descriptions = Adds a node
     depends = default
 
-This mod has the name "mymod". It has two text files: init.lua and mod.conf.\\
-The script prints a message and then registers a node –
-which will be explained in the next chapter.\\
-There's a single dependency, the
-[default mod](https://content.minetest.net/metapackages/default/), which is
-usually found in Minetest Game.\\
-There is also a texture in textures/ for the node.
+This mod has the name "mymod". It has two text files: init.lua and mod.conf. The
+script prints a message and then registers a node and craft recipe – these will
+be explained later on. There's a single dependency, the
+[default mod](https://content.minetest.net/metapackages/default/),
+which is usually found in Minetest Game. There is also a texture in textures/
+for the node.
